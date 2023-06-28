@@ -12,8 +12,10 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('admins', function (Blueprint $table) {
-            $table->integer('id')->autoIncrement()->comment('ID');
-            $table->char('role')->comment('権限');
+            $table->id()->comment('ID');
+            $table->char('username')->comment('ユーザー名');
+            $table->char('password')->comment('パスワード');
+            $table->char('mail_address')->comment('メールアドレス');
             $table->timestamp('deleted_at')->comment('削除日時');
             $table->timestamp('created_at')->comment('作成日時');
             $table->timestamp('updated_at')->comment('更新日時');
