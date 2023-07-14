@@ -13,10 +13,10 @@ return new class extends Migration
     {
         Schema::create('admins', function (Blueprint $table) {
             $table->id()->comment('ID');
-            $table->char('username')->comment('ユーザー名');
-            $table->char('password')->comment('パスワード');
-            $table->char('mail_address')->comment('メールアドレス');
-            $table->timestamp('deleted_at')->comment('削除日時');
+            $table->string('username')->comment('ユーザー名');
+            $table->string('password')->comment('パスワード');
+            $table->string('mail_address')->comment('メールアドレス');
+            $table->timestamp('deleted_at')->nullable()->comment('削除日時');
             $table->timestamp('created_at')->comment('作成日時');
             $table->timestamp('updated_at')->comment('更新日時');
         });
