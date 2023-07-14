@@ -22,9 +22,9 @@ class AdminSeeder extends Seeder
                         'username' => sprintf('admin_%02d', $sequence->index + 1),
                         'password' => Hash::make('admin'),
                         'mail_address' => sprintf('admin_%02d@admin', $sequence->index + 1),
-                        'deleted_at' => '2023-06-30 00:50:00',
-                        'created_at' => '2023-06-01 01:22:34',
-                        'updated_at' => '2023-06-22 12:12:22',
+                        'deleted_at' => null,
+                        'created_at' => '2023-06-01 01:23:47',
+                        'updated_at' => '2023-06-30 21:58:59',
                     ];
                 })
                 ->create();
