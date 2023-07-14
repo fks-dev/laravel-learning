@@ -23,10 +23,10 @@ Route::prefix('admin')->group(function () {
     Route::prefix('courses')->name('course')->controller(CourseController::class)->group(function () {
         Route::get('', 'index')->name('.index');
         Route::post('sort', 'sort')->name('.sort');
-        Route::get('add', 'create')->name('.create');
-        Route::post('add', 'store')->name('.store');
+        Route::get('create', 'create')->name('.create');
+        Route::post('', 'store')->name('.store');
         Route::get('{course}/edit', 'edit')->name('.edit');
-        Route::patch('{course}/edit', 'update')->name('.update');
+        Route::patch('{course}', 'update')->name('.update');
         Route::delete('{course}', 'destroy')->name('.destroy');
     });
 });
