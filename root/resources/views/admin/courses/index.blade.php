@@ -2,6 +2,7 @@
 <html lang="ja">
 <head>
     @include('admin.courses.head')
+    {{-- CSRFトークン --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- CSS --}}
     <link rel="stylesheet" href="/css/course.css">
@@ -40,10 +41,10 @@
                     </tr>
             </thead>
 
-            <tbody id="sort">
+            <tbody>
 
                 @foreach ($courses as $course)
-                    <tr id="tr" data-id="{{ $course->id }}">
+                    <tr data-id="{{ $course->id }}">
                         <td class="align-middle">{{ $course->title }}</td>
                         <td class="align-middle text-center">{{ $course->created_at }}</td>
                         <td class="align-middle text-center">{{ $course->updated_at }}</td>
