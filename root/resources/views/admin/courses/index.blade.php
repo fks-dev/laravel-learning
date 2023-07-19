@@ -17,6 +17,7 @@
             </div>
         </div>
 {{-- 登録・削除　メッセージ --}}
+        <div id="message"></div>
         @if (session('message'))
             <div class="alert alert-success">
             {{ session('message') }}
@@ -28,7 +29,9 @@
         @endif
 
         <div class="alert alert-warning">
-            ドラッグアンドドロップでコースの並び順が変更できます。
+            ドラッグ＆ドロップでコースの並び順が変更できます。
+            <button class="btn btn-primary me-md-2" id="saveBtn" disabled>変更確定</button>
+            <button class="btn btn-secondary me-md-2" id="backBtn" disabled>元に戻す</button>
         </div>
 
         <table class="table table-striped" id="sortable">
@@ -41,7 +44,7 @@
                     </tr>
             </thead>
 
-            <tbody>
+            <tbody id="tableBody">
 
                 @foreach ($courses as $course)
                     <tr data-id="{{ $course->id }}">
