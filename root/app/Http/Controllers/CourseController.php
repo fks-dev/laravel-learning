@@ -26,7 +26,7 @@ class CourseController extends Controller
             Course::where('id', $id)->update(['position' => $index + 1]);
         }
 
-        return response()->json(['success' => true]);
+        return response()->json(['message' => '並び替えを保存しました。']);
     }
 
     /**
