@@ -1,35 +1,33 @@
 <!-- JavaScript Bundle with Popper ver.5.2.3 -->
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
+<script defer src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script>
 <!-- SortableJS -->
 <script defer src="https://cdn.jsdelivr.net/npm/sortablejs@1.15.0/Sortable.min.js" integrity="sha384-eeLEhtwdMwD3X9y+8P3Cn7Idl/M+w8H4uZqkgD/2eJVkWIN1yKzEj6XegJ9dL3q0" crossorigin="anonymous"></script>
 
 <script>
 
 document.addEventListener("DOMContentLoaded", (event) => {
+    const saveBtn = document.getElementById("saveBtn");
+    const backBtn = document.getElementById("backBtn");
 
     // 並び替えの処理
     new Sortable(document.getElementById("tableBody"), {
         animation: 150,
         onEnd: function (event) {
-            const saveBtn = document.getElementById("saveBtn");
-            const backBtn = document.getElementById("backBtn");
             saveBtn.disabled = false;
             backBtn.disabled = false;
         }
     });
 
     // 元に戻すボタンを押した時の処理（リロード）
-    const back = document.getElementById("backBtn");
-    back.addEventListener("click", function() {
-        back.disabled = false;
+    backBtn.addEventListener("click", function() {
+        backBtn.disabled = false;
         location.reload();
     })
 
     // 変更確定ボタンを押した時の処理
-    const save = document.getElementById("saveBtn");
-    save.addEventListener("click", function() {
-        save.disabled = true;
-        back.disabled = true;
+    saveBtn.addEventListener("click", function() {
+        saveBtn.disabled = true;
+        backBtn.disabled = true;
         saveSortOrder();
     });
 
