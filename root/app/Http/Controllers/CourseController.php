@@ -6,6 +6,7 @@ use App\Http\Requests\StoreCourseRequest;
 use App\Http\Requests\UpdateCourseRequest;
 use Illuminate\Http\Request;
 use App\Models\Course;
+use Illuminate\Support\Facades\DB;
 
 class CourseController extends Controller
 {
@@ -22,9 +23,12 @@ class CourseController extends Controller
     public function sort(Request $request)
     {
         $positions = $request->input('positions');
-        foreach ($positions as $index => $id) {
-            Course::where('id', $id)->update(['position' => $index + 1]);
-        }
+
+        DB::transaction(function () use ($positions) {
+            foreach ($positions as $index => $id) {
+                Course::where('id', $id)->update(['position' => $index + 1]);
+            }
+        });
 
         return response()->json(['message' => '並び替えを保存しました。']);
     }
@@ -65,7 +69,7 @@ class CourseController extends Controller
      */
     public function update(UpdateCourseRequest $request, Course $course)
     {
-        Course::find($course->id)->update([
+        $course->update([
             'title'       => $request->title,
             'introduction' => $request->introduction,
             'remarks'      => $request->remarks,
