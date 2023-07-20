@@ -1,7 +1,8 @@
 <?php
 
-use App\Http\Controllers\Controller;
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\UserLoginController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -19,14 +20,41 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->group(function () {
-    Route::prefix('courses')->name('course')->controller(CourseController::class)->group(function () {
-        Route::get('', 'index')->name('.index');
-        Route::post('sort', 'sort')->name('.sort');
-        Route::get('create', 'create')->name('.create');
-        Route::post('', 'store')->name('.store');
-        Route::get('{course}/edit', 'edit')->name('.edit');
-        Route::patch('{course}', 'update')->name('.update');
-        Route::delete('{course}', 'destroy')->name('.destroy');
+// 管理ログイン画面
+Route::get('/admin/login', [AdminLoginController::class, 'create'])->name('admin.login');
+// 管理ログイン
+Route::post('/admin/login', [AdminLoginController::class, 'store'])->name('admin.login.store');
+// 管理ログアウト
+Route::delete('/admin/login', [AdminLoginController::class, 'destroy'])->name('admin.login.destroy');
+
+// 管理ログイン後のみアクセス可
+Route::middleware('auth:admin')->group(function () {
+    Route::get('admin', function () {
+        return view('admin.index');
+    })->name('admin.index');
+    Route::prefix('admin')->group(function () {
+        Route::prefix('courses')->name('course')->controller(CourseController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::post('sort', 'sort')->name('.sort');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{course}/edit', 'edit')->name('.edit');
+            Route::patch('{course}', 'update')->name('.update');
+            Route::delete('{course}', 'destroy')->name('.destroy');
+        });
     });
+});
+
+// ユーザーログイン画面
+Route::get('/users/login', [UserLoginController::class, 'create'])->name('users.login');
+// ユーザーログイン
+Route::post('/users/login', [UserLoginController::class, 'store'])->name('users.login.store');
+// ユーザーログアウト
+Route::delete('/users/login', [UserLoginController::class, 'destroy'])->name('users.login.destroy');
+
+// ユーザーログイン後のみアクセス可
+Route::middleware('auth:web')->group(function () {
+    Route::get('users', function () {
+        return view('users.index');
+    })->name('users.index');
 });
