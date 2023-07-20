@@ -57,7 +57,7 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
-        Group::find($group->id)->update([
+        $group->update([
             'group_name' => $request->group_name,
             'remarks'    => $request->remarks,
         ]);
