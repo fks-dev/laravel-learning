@@ -7,6 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
+use App\Models\LoginLog;
 
 class AdminLoginController extends Controller
 {
@@ -25,7 +26,18 @@ class AdminLoginController extends Controller
     {
         $request->authenticate();
         $request->session()->regenerate();
+
+        if (Auth::guard('admin')->check()) {
+            $user = Auth::guard('admin')->user();
+
+            $loginLog = new LoginLog();
+
+            $loginLog->admin_id = $user->id;
+            $loginLog->login_at = now();
+            $loginLog->save();
+        }
         return redirect()->intended(route('admin.index'));
+
     }
 
     /**
