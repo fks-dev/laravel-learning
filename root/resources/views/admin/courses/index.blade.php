@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.courses.head')
+    @include('admin.head')
     {{-- CSRFトークン --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- CSS --}}
@@ -10,6 +10,9 @@
 </head>
 <body>
     <div class="mt-5 container">
+
+        @include('admin.menu')
+
         <div class="d-flex justify-content-between">
             <h2 class="col">コース一覧</h2>
             <div class="col-auto">
