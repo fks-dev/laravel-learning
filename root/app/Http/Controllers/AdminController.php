@@ -18,7 +18,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $admins = Admin::all();
-        $logins = AdminLog::orderbyDesc('id')->get();
+        $logins = AdminLog::all();
 
         return view('admin.adminMgmt.index', compact('admins', 'logins'));
     }
