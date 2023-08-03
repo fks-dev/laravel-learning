@@ -20,6 +20,6 @@ class Admin extends Authenticatable
 
     public function loginLogs()
     {
-        return $this->hasMany(LoginLog::class);
+        return $this->hasMany(AdminLog::class);
     }
 }
