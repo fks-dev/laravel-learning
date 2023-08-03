@@ -6,9 +6,8 @@ use Illuminate\Http\Request;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
-use App\Models\LoginLog;
+use App\Models\AdminLog;
 use Illuminate\Support\Facades\Hash;
-
 use Illuminate\Support\Facades\Validator;
 
 class AdminController extends Controller
@@ -19,9 +18,9 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $admins = Admin::all();
-        $logins = LoginLog::all();
+        $logins = AdminLog::orderbyDesc('id')->get();
 
-        return view('admin.index', compact('admins', 'logins'));
+        return view('admin.adminMgmt.index', compact('admins', 'logins'));
     }
 
     /**
@@ -31,17 +30,11 @@ class AdminController extends Controller
     {
         $search = $request->input('name');
 
-        $results = Admin::where('username', 'LIKE', "%{$search}%")->get();
+        $results = Admin::leftJoin('admin_logs', 'admins.id', '=', 'admin_logs.admin_id')
+            ->where('admins.username', 'LIKE', "%{$search}%")
+            ->select('admins.*', 'admin_logs.updated_at as login_at')
+            ->get();
 
-        return response()->json($results);
-    }
-
-    /**
-     * 並び替え
-     */
-    public function sort(Request $request)
-    {
-        $results = Admin::orderby('username', 'desc')->get();
         return response()->json($results);
     }
 
@@ -50,7 +43,7 @@ class AdminController extends Controller
      */
     public function create()
     {
-        return view('admin.create');
+        return view('admin.adminMgmt.create');
     }
 
     /**
@@ -65,7 +58,7 @@ class AdminController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('admin.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('adminMgmt.index')->with('message', $request->username.'を登録しました');
     }
 
     /**
@@ -73,7 +66,7 @@ class AdminController extends Controller
      */
     public function edit(Admin $admin)
     {
-        return view('admin.edit', compact('admin'));
+        return view('admin.adminMgmt.edit', compact('admin'));
     }
 
     /**
@@ -87,7 +80,7 @@ class AdminController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('admin.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('adminMgmt.index')->with('message', $request->username.'の情報を更新しました');
     }
 
     /**
@@ -96,7 +89,7 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         $admin->delete();
-        return redirect()->route('admin.index')->with('danger', $admin->username.'を削除しました');
+        return redirect()->route('adminMgmt.index')->with('danger', $admin->username.'を削除しました');
     }
 
     /**
@@ -105,7 +98,7 @@ class AdminController extends Controller
     public function csv()
     {
         $csvRecords = self::getAdminCsvRecords();
-        return self::streamDownloadCsv('admins.csv', $csvRecords);
+        return self::streamDownloadCsv('adminMgmt.csv', $csvRecords);
     }
 
     // レコード取得
@@ -160,7 +153,7 @@ class AdminController extends Controller
      */
     public function import()
     {
-        return view('admin.import');
+        return view('admin.adminMgmt.import');
     }
 
     /**
@@ -197,6 +190,6 @@ class AdminController extends Controller
             fclose($handle);
         }
 
-        return redirect()->route('admin.index')->with('message', 'CSVファイルをインポートしました。');
+        return redirect()->route('adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
     }
 }
