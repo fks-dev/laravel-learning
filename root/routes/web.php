@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\ContentController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -41,6 +42,19 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('{course}/edit', 'edit')->name('.edit');
             Route::patch('{course}', 'update')->name('.update');
             Route::delete('{course}', 'destroy')->name('.destroy');
+        });
+
+        Route::prefix('contents')->name('content')->controller(ContentController::class)->group(function () {
+            Route::get('index/{course}', 'index')->name('.index');
+            Route::post('sort', 'sort')->name('.sort'); //並べ替え
+            Route::get('create/{course}', 'create')->name('.create');
+            Route::post('index/{course}', 'store')->name('.store');
+            Route::get('{content}', 'show')->name('.show');
+            Route::get('{content}/download', 'download')->name('.download'); //ダウンロード
+            Route::get('{content}/edit', 'edit')->name('.edit');
+            Route::patch('{content}', 'update')->name('.update');
+            Route::post('{content}/duplicate', 'duplicate')->name('.duplicate'); //複製
+            Route::delete('{content}', 'destroy')->name('.destroy');
         });
     });
 });
