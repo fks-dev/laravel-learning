@@ -48,7 +48,9 @@
 
                 @foreach ($courses as $course)
                     <tr data-id="{{ $course->id }}">
-                        <td class="align-middle">{{ $course->title }}</td>
+                        <td class="align-middle">
+                            <a href="{{ route('content.index', $course) }}">{{ $course->title }}</a>
+                        </td>
                         <td class="align-middle text-center">{{ $course->created_at }}</td>
                         <td class="align-middle text-center">{{ $course->updated_at }}</td>
 
