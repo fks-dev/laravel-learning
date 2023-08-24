@@ -63,6 +63,24 @@ chmod -R 777 bootstrap/cache/
 chmod -R 777 storage/
 ```
 
+#### マルチログインについて
+
+```bash
+# ■ Webサーバーで入力
+cd /var/www/root
+# テーブルの作成＆初期データを挿入
+php artisan migrate --seed
+```
+
+- 管理者側へログイン
+  - <http://127.0.0.1/admin/login> ログイン画面
+  - ログインID：admin_01 〜 admin_10 のいずれかが利用可能。
+  - パスワード：admin
+- ユーザー側へログイン
+  - <http://127.0.0.1/users/login> ログイン画面
+  - ログインID：test_01 〜 test_10 のいずれかが利用可能。
+  - パスワード：test
+
 ## 環境構築の確認
 
 - Web ※ **IP・ポート番号は [`.env`](./.env) の `IP`・`PORT_WEB` を参照**
