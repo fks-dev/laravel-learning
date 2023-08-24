@@ -74,12 +74,12 @@ php artisan migrate --seed
 
 - 管理者側へログイン
   - <http://127.0.0.1/admin/login> ログイン画面
-  - ログインID：admin_01 〜 admin_10 のいずれかが利用可能。
-  - パスワード：admin
+  - ログインID：`admin_01` 〜 `admin_10` （管理者10人分）
+  - パスワード：`admin`
 - ユーザー側へログイン
   - <http://127.0.0.1/users/login> ログイン画面
-  - ログインID：test_01 〜 test_10 のいずれかが利用可能。
-  - パスワード：test
+  - ログインID：`test_01` 〜 `test_10` （ユーザー10人分）
+  - パスワード：`test`
 
 ## 環境構築の確認
 
