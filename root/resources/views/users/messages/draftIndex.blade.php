@@ -16,18 +16,17 @@
         </div>
     </div>
 {{-- 登録・削除　メッセージ --}}
-    <div id="message"></div>
     @if (session('message'))
         <div class="alert alert-success">
-        {{ session('message') }}
+            {{ session('message') }}
         </div>
     @elseif (session('danger'))
-    <div class="alert alert-danger">
-        {{ session('danger') }}
+        <div class="alert alert-danger">
+            {{ session('danger') }}
         </div>
     @endif
 
-    <table class="table table-striped" id="sortable">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th class="col-3">件名</th>
@@ -38,13 +37,16 @@
                 </tr>
         </thead>
 
-        <tbody id="tableBody">
+        <tbody>
 
             @foreach ($messages as $message)
                 <tr data-id="{{ $message->id }}">
                     <td class="align-middle">
-                        <a href="{{ route('user.message.edit', $message->id) }}">{{ Str::limit($message->title, $limit = 28, $end = '...') }}</a>
+                        <a href="{{ route('user.message.edit', $message->id) }}">
+                            {{ Str::limit($message->title, $limit = 28, $end = '...') }}
+                        </a>
                     </td>
+
                     <td class="align-middle">
                         @foreach ($admins as $admin)
                             {{ $message->admin_id == $admin->id ? $admin->username : ''}}
@@ -60,13 +62,12 @@
                             <input class="btn btn-danger" type="submit" value="削除"
                             onClick="return confirm('本当に削除しますか？');">
                         </form>
-
                     </td>
+
                 </tr>
             @endforeach
 
         </tbody>
-
     </table>
 </div>
 </body>
