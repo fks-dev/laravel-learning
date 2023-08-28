@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\User;
@@ -17,7 +18,11 @@ class AdminMessageController extends Controller
     public function index()
     {
         $adminId = Auth::guard('admin')->user()->id;
-        $messages = UserMessage::where('admin_id', $adminId)->where('text', '!=', null)->get();
+        $messages = UserMessage::withTrashed()
+                                ->where('admin_id', $adminId)
+                                ->where('text', '!=', null)
+                                ->where('hidden', '==', 0)
+                                ->orderByDesc('id')->get();
         $users = User::all();
         return view('admin.messages.index', compact('messages', 'users'));
     }
@@ -44,6 +49,24 @@ class AdminMessageController extends Controller
         return view('admin.messages.sentIndex', compact('messages', 'users'));
     }
 
+    /**
+     * ゴミ箱
+     */
+    public function dust()
+    {
+        $adminId  = Auth::guard('admin')->user()->id;
+        $messages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
+        $userMsg  = UserMessage::where('hidden', 1)->where('admin_id', $adminId)->get();
+        return view('admin.messages.dust', compact('messages', 'userMsg'));
+    }
+
+    // 復元
+    public function restore($message)
+    {
+        $record = AdminMessage::withTrashed()->find($message);
+        $record->restore();
+        return redirect()->back()->with('success', 'メールを復元しました。');
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -131,7 +154,7 @@ class AdminMessageController extends Controller
 
         AdminMessage::create($data);
 
-        return redirect()->route('admin.message.show', compact('message'))->with('message', 'メッセージを送信しました');
+        return redirect()->route('admin.message.index', compact('message'))->with('message', 'メッセージを返信しました');
     }
 
     /**
@@ -177,6 +200,22 @@ class AdminMessageController extends Controller
     public function destroy(AdminMessage $message)
     {
         $message->delete();
-        return redirect()->route('admin.message.index')->with('danger', $message->title . 'を削除しました');
+        return Redirect::back()->with('danger', $message->title . 'を削除しました');
+    }
+
+    /**
+     * 非表示
+     */
+    public function hidden(UserMessage $message)
+    {
+        $hidden = UserMessage::find($message->id);
+
+        if ($message->hidden == 1) {
+            $hidden->update(['hidden' => 0]);
+            return redirect()->route('admin.message.index')->with('success', $message->title . 'を復元しました');
+        } else {
+            $hidden->update(['hidden' => 1]);
+            return redirect()->route('admin.message.index')->with('danger', $message->title . 'を削除しました');
+        }
     }
 }
