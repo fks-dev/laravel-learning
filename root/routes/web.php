@@ -101,6 +101,8 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
+            Route::get('dust', 'dust')->name('.dust'); //ゴミ箱
+            Route::post('dust/{message}', 'restore')->name('.restore'); //復元
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
             Route::get('{message}', 'show')->name('.show');
@@ -110,6 +112,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('{message}/edit', 'edit')->name('.edit');
             Route::patch('{message}', 'update')->name('.update');
             Route::delete('{message}', 'destroy')->name('.destroy');
+            Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
     });
 });
@@ -142,6 +145,9 @@ Route::middleware('auth:web')->group(function () {
             Route::get('{message}/edit', 'edit')->name('.edit');
             Route::patch('{message}', 'update')->name('.update');
             Route::delete('{message}', 'destroy')->name('.destroy');
+
+            Route::post('{message}/hidden', 'hidden')->name('.hidden');
+            Route::get('dustBox', 'dustBox')->name('.dustBox'); //削除済み
         });
     });
 });
