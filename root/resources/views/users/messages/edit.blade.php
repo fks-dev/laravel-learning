@@ -27,14 +27,14 @@
                 <div class="row m-3">
                     <label class="col-sm-2 col-form-label fw-bold" for="admin_id">宛先</label>
                     <div class="col-sm-10">
-                    <select class="form-control" name="admin_id" id="admin_id">
-                        @foreach ($admins as $admin)
-                            <option value="{{ $admin->id }}"
-                                @if ($message->admin_id == $admin->id) selected @endif
-                                >{{ $admin->username }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                        <select class="form-control" name="admin_id" id="admin_id">
+                            @foreach ($admins as $admin)
+                                <option value="{{ $admin->id }}"
+                                    @if ($message->admin_id == $admin->id) selected @endif
+                                    >{{ $admin->username }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="row m-3">
@@ -45,6 +45,7 @@
                         <input class="form-contorl btn btn-secondary mt-3" type="submit" name="action" value="下書き">
                     </div>
                 </div>
+
             </div>
         </form>
     </div>
