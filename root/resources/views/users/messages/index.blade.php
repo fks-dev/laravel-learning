@@ -27,7 +27,7 @@
         </div>
     @endif
 
-    <table class="table table-striped" id="sortable">
+    <table class="table table-striped">
         <thead>
             <tr>
                 <th class="col-3">件名</th>
@@ -38,13 +38,16 @@
                 </tr>
         </thead>
 
-        <tbody id="tableBody">
+        <tbody>
 
             @foreach ($messages as $message)
                 <tr data-id="{{ $message->id }}">
                     <td class="align-middle">
-                        <a href="{{ route('user.message.show', $message) }}">{{ Str::limit($message->title, $limit = 28, $end = '...') }}</a>
+                        <a href="{{ route('user.message.show', $message) }}">
+                            {{ Str::limit($message->title, $limit = 28, $end = '...') }}
+                        </a>
                     </td>
+
                     <td class="align-middle">
                         @foreach ($admins as $admin)
                             {{ $message->admin_id == $admin->id ? $admin->username : ''}}
@@ -54,19 +57,17 @@
                     <td class="align-middle text-center">{{ $message->created_at }}</td>
 
                     <td class="text-center">
-                        <form action="{{ route('user.message.destroy', $message) }}" method="post" class="d-inline">
+                        <form action="{{ route('user.message.hidden', $message) }}" method="post" class="d-inline">
                             @csrf
-                            @method('delete')
                             <input class="btn btn-danger" type="submit" value="削除"
                             onClick="return confirm('本当に削除しますか？');">
                         </form>
-
                     </td>
+
                 </tr>
             @endforeach
 
         </tbody>
-
     </table>
 </div>
 </body>
