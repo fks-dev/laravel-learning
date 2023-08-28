@@ -16,7 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('course_id')->comment('コースID');
             $table->unsignedBigInteger('admin_id')->comment('管理者ID');
             $table->char('title')->comment('タイトル');
-            $table->char('kind')->comment('コンテンツ種別');
+            $table->unsignedTinyInteger('content_type')->comment('コンテンツ種別:1:ラベル 2:YouTubeURL 3:配布資料 4:リッチテキスト 5:動画 6:テスト');
             $table->text('text')->nullable()->comment('リッチテキスト');
             $table->char('url')->nullable()->comment('URL');
             $table->string('movie')->nullable()->comment('動画');
