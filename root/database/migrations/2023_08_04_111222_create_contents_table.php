@@ -26,7 +26,7 @@ return new class extends Migration
             $table->integer('testVol')->nullable()->comment('出題数');
             $table->text('remarks')->nullable()->comment('備考');
             $table->boolean('public')->comment('公開・非公開');
-            $table->unsignedInteger('position')->default(0)->comment('ソート番号');
+            $table->unsignedSmallInteger('position')->default(0)->comment('ソート番号');
             $table->timestamp('deleted_at')->nullable()->comment('削除日時');
             $table->timestamp('created_at')->comment('削除日時');
             $table->timestamp('updated_at')->comment('更新日時');
