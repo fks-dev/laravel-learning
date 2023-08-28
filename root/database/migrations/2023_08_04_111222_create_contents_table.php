@@ -21,9 +21,9 @@ return new class extends Migration
             $table->char('url')->nullable()->comment('URL');
             $table->string('movie')->nullable()->comment('動画');
             $table->string('file')->nullable()->comment('配布資料');
-            $table->integer('testTime')->nullable()->comment('テスト制限時間');
-            $table->integer('testPer')->nullable()->comment('合格得点率');
-            $table->integer('testVol')->nullable()->comment('出題数');
+            $table->integer('time_limit_minutes')->nullable()->comment('テストの制限時間（分）');
+            $table->integer('passing_score_rate')->nullable()->comment('合格する得点率（％）');
+            $table->integer('amount_questions')->nullable()->comment('出題問題数');
             $table->text('remarks')->nullable()->comment('備考');
             $table->boolean('public')->comment('公開・非公開');
             $table->unsignedSmallInteger('position')->default(0)->comment('ソート番号');
