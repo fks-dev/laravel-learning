@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Redirect;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\Admin;
@@ -17,7 +18,11 @@ class UserMessageController extends Controller
     public function index()
     {
         $userId = Auth::guard('web')->user()->id;
-        $messages = AdminMessage::where('user_id', $userId)->where('text', '!=', null)->orderByDesc('id')->get();
+        $messages = AdminMessage::withTrashed()
+                                ->where('user_id', $userId)
+                                ->where('text', '!=', null)
+                                ->where('hidden', '==', 0)
+                                ->orderByDesc('id')->get();
         $admins = Admin::all();
         return view('users.messages.index', compact('messages', 'admins'));
     }
@@ -44,6 +49,14 @@ class UserMessageController extends Controller
         return view('users.messages.sentIndex', compact('messages', 'admins'));
     }
 
+    /**
+     * ゴミ箱
+     */
+    public function dust()
+    {
+        $messages = UserMessage::all();
+        return view('users.messages.dust', compact('messages'));
+    }
 
     /**
      * Show the form for creating a new resource.
@@ -71,12 +84,12 @@ class UserMessageController extends Controller
         if ($action == '送信') {
             $data['text']  = $request->text;
             UserMessage::create($data);
-            return redirect()->route('message.index')->with('message', 'メッセージを送信しました');
+            return redirect()->route('user.message.index')->with('message', 'メッセージを送信しました');
 
         } else {
             $data['draft'] = $request->text;
             UserMessage::create($data);
-            return redirect()->route('message.index')->with('message', '下書きを保存しました');
+            return redirect()->route('user.message.index')->with('message', '下書きを保存しました');
         }
     }
 
@@ -132,7 +145,7 @@ class UserMessageController extends Controller
 
         UserMessage::create($data);
 
-        return redirect()->route('message.show', compact('message'))->with('message', 'メッセージを送信しました');
+        return redirect()->route('user.message.show', compact('message'))->with('message', 'メッセージを送信しました');
     }
 
     /**
@@ -162,13 +175,13 @@ class UserMessageController extends Controller
             $data['text']  = $request->text;
             $data['draft'] = null;
             $message->update($data);
-            return redirect()->route('message.index')->with('message', 'メッセージを送信しました');
+            return redirect()->route('user.message.index')->with('message', 'メッセージを送信しました');
 
         } else {
             $data['draft'] = $request->text;
             $data['text']  = null;
             $message->update($data);
-            return redirect()->route('message.index')->with('message', '下書きを保存しました');
+            return redirect()->route('user.message.index')->with('message', '下書きを保存しました');
         }
     }
 
@@ -178,6 +191,16 @@ class UserMessageController extends Controller
     public function destroy(UserMessage $message)
     {
         $message->delete();
-        return redirect()->route('message.index')->with('danger', $message->title . 'を削除しました');
+        return Redirect::back()->with('danger', $message->title . 'を削除しました');
+    }
+
+    /**
+     * 非表示
+     */
+    public function hidden(AdminMessage $message)
+    {
+        $hidden = UserMessage::find($message->id);
+        $hidden->update(['hidden' => 1]);
+        return redirect()->route('user.message.index')->with('danger', $message->title . 'を削除しました');
     }
 }
