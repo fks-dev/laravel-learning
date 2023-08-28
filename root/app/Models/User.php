@@ -13,6 +13,21 @@ class User extends Authenticatable
     use HasApiTokens, HasFactory, Notifiable;
     use SoftDeletes;
 
+    public function adminMessages()
+    {
+        return $this->hasMany(AdminMessage::class);
+    }
+
+    public function userMessagess()
+    {
+        return $this->hasMany(UserMessage::class);
+    }
+
+    /**
+     * The attributes that are mass assignable.
+     *
+     * @var array<int, string>
+     */
     protected $fillable = [
         'username',
         'password',
