@@ -21,8 +21,9 @@ class AdminMessageController extends Controller
         $messages = UserMessage::withTrashed()
                                 ->where('admin_id', $adminId)
                                 ->where('text', '!=', null)
-                                ->where('hidden', '==', 0)
-                                ->orderByDesc('id')->get();
+                                ->where('is_hidden', '==', 0)
+                                ->orderByDesc('id')
+                                ->paginate(10);
         $users = User::all();
         return view('admin.messages.index', compact('messages', 'users'));
     }
@@ -56,7 +57,7 @@ class AdminMessageController extends Controller
     {
         $adminId  = Auth::guard('admin')->user()->id;
         $messages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
-        $userMsg  = UserMessage::where('hidden', 1)->where('admin_id', $adminId)->get();
+        $userMsg  = UserMessage::where('is_hidden', 1)->where('admin_id', $adminId)->get();
         return view('admin.messages.dust', compact('messages', 'userMsg'));
     }
 
@@ -147,12 +148,17 @@ class AdminMessageController extends Controller
         ];
 
         if ($action == '送信') {
-            $data['text']  = $request->text;
+            $data['text']           = $request->text;
         } else {
             $data['draft'] = $request->text;
         }
 
         AdminMessage::create($data);
+
+        // 返信フラッグ
+        $userMessage = UserMessage::find($message);
+        $userMessage->is_replied = true;
+        $userMessage->save();
 
         return redirect()->route('admin.message.index', compact('message'))->with('message', 'メッセージを返信しました');
     }
@@ -211,10 +217,10 @@ class AdminMessageController extends Controller
         $hidden = UserMessage::find($message->id);
 
         if ($message->hidden == 1) {
-            $hidden->update(['hidden' => 0]);
+            $hidden->update(['is_hidden' => 0]);
             return redirect()->route('admin.message.index')->with('success', $message->title . 'を復元しました');
         } else {
-            $hidden->update(['hidden' => 1]);
+            $hidden->update(['is_hidden' => 1]);
             return redirect()->route('admin.message.index')->with('danger', $message->title . 'を削除しました');
         }
     }
