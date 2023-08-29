@@ -50,13 +50,13 @@
     <label class="col-sm-2 col-form-label fw-bold" for="file">ファイル</label>
     <div class="col-sm-10">
         @if (@isset($content->document_file_path))
-            <input class="form-control" type="file" name="document_file_path" id="file">
+            <input class="form-control" type="file" name="document_file_path" id="file" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt">
             <div class="mt-3">
                 <p>こちらのファイルがすでに登録されています。</p>
                 <p>{{ str_replace('handout/', '', $content->document_file_path) }}</p>
             </div>
         @else
-            <input class="form-control" type="file" name="document_file_path" id="file">
+            <input class="form-control" type="file" name="document_file_path" id="file" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt">
         @endif
     </div>
 </div>
