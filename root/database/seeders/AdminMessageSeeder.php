@@ -17,15 +17,16 @@ class AdminMessageSeeder extends Seeder
     {
         if(app()->isLocal()) {
             AdminMessage::factory()
-                ->count(10)
+                ->count(30)
                 ->sequence(function($sequence) {
                     return [
                         'admin_id' => 1,
                         'user_id' => 1,
-                        'title' => sprintf('メッセージ%d', $sequence->index + 1),
+                        'title' => sprintf('管理者からのメッセージ%d', $sequence->index + 1),
                         'text' => Str::random(20),
                         'draft' => null,
-                        'hidden' => 0,
+                        'is_hidden' => 0,
+                        'is_replied' => 0,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
