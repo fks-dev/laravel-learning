@@ -21,7 +21,7 @@ class UserMessageController extends Controller
         $messages = AdminMessage::withTrashed()
                                 ->where('user_id', $userId)
                                 ->where('text', '!=', null)
-                                ->where('hidden', '==', 0)
+                                ->where('is_hidden', '==', 0)
                                 ->orderByDesc('id')->get();
         $admins = Admin::all();
         return view('users.messages.index', compact('messages', 'admins'));
@@ -200,7 +200,7 @@ class UserMessageController extends Controller
     public function hidden(AdminMessage $message)
     {
         $hidden = UserMessage::find($message->id);
-        $hidden->update(['hidden' => 1]);
+        $hidden->update(['is_hidden' => 1]);
         return redirect()->route('user.message.index')->with('danger', $message->title . 'を削除しました');
     }
 }
