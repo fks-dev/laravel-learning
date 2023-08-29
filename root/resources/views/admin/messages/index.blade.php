@@ -51,6 +51,7 @@
                         <a href="{{ route('admin.message.show', $message) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
+                        @if ($message->is_replied == 1) &#9166; @endif
                     </td>
                     <td class="align-middle">
                         @foreach ($users as $user)
@@ -70,9 +71,9 @@
 
                 </tr>
             @endforeach
-
         </tbody>
     </table>
+    {{ $messages->links('pagination::bootstrap-5') }}
 </div>
 </body>
 </html>
