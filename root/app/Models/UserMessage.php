@@ -27,6 +27,7 @@ class UserMessage extends Model
         'title',
         'text',
         'draft',
-        'hidden',
+        'is_hidden',
+        'is_replied',
     ];
 }
