@@ -19,8 +19,8 @@ return new class extends Migration
             $table->text('text')->nullable()->comment('本文');
             $table->text('draft')->nullable()->comment('下書き');
             $table->boolean('hidden')->default(0)->comment('表示・非表示');
-            $table->timestamp('deleted_at')->nullable()->comment('削除日時');
-            $table->timestamps();
+            $table->softDeletesDatetime();
+            $table->datetimes();
 
             $table->foreign('admin_id')->references('id')->on('admins');
             $table->foreign('user_id')->references('id')->on('users');
