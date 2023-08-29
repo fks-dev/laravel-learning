@@ -18,24 +18,24 @@ class ContentSeeder extends Seeder
                 ->count(20)
                 ->sequence(function ($sequence) {
                     return [
-                        'course_id'=> random_int(1,10),
-                        'admin_id' => random_int(1,10),
-                        'title'    => sprintf('コンテンツ%d', $sequence->index + 1),
-                        'kind'     => 'URL',
-                        'text'     => null,
-                        'url'      => 'https://youtu.be/nkqdhXSwEVs',
-                        'movie'    => null,
-                        'file'     => null,
-                        'testTime' => null,
-                        'testPer'  => null,
-                        'testVol'  => null,
-                        'remarks'  => sprintf('コンテンツ%d', $sequence->index + 1),
-                        'public'   => random_int(0,1),
-                        'position' => $sequence->index + 1,
+                        'course_id'          => random_int(1,10),
+                        'admin_id'           => random_int(1,10),
+                        'title'              => sprintf('コンテンツ%d', $sequence->index + 1),
+                        'content_type'       => 2,
+                        'text'               => null,
+                        'youtube_video_id'   => 'nkqdhXSwEVs',
+                        'movie_file_path'    => null,
+                        'document_file_path' => null,
+                        'time_limit_minutes' => null,
+                        'passing_score_rate' => null,
+                        'amount_questions'   => null,
+                        'remarks'            => sprintf('コンテンツ%d', $sequence->index + 1),
+                        'is_public'          => random_int(0,1),
+                        'position'           => $sequence->index + 1,
 
-                        'deleted_at' => null,
-                        'created_at' => '2022-12-30 11:22:33',
-                        'updated_at' => '2022-12-31 23:58:59',
+                        'deleted_at'         => null,
+                        'created_at'         => '2022-12-30 11:22:33',
+                        'updated_at'         => '2022-12-31 23:58:59',
                     ];
                 })
                 ->create();
