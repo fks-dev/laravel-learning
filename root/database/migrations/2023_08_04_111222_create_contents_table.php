@@ -27,9 +27,8 @@ return new class extends Migration
             $table->text('remarks')->nullable()->comment('備考');
             $table->boolean('is_public')->comment('公開・非公開');
             $table->unsignedSmallInteger('position')->default(0)->comment('ソート番号');
-            $table->timestamp('deleted_at')->nullable()->comment('削除日時');
-            $table->timestamp('created_at')->comment('削除日時');
-            $table->timestamp('updated_at')->comment('更新日時');
+            $table->softDeletesDatetime();
+            $table->datetimes();
         });
     }
 
