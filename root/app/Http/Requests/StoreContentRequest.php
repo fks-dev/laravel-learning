@@ -22,16 +22,17 @@ class StoreContentRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'course_id'=> 'required',
-            'title'    => 'required',
-            'kind'     => 'required',
-            'public'   => 'required',
-            'movie'    => 'mimes:mp4,avi,webm | max:2048', //2MBまで
+            'course_id'          => 'required',
+            'title'              => 'required',
+            'content_type'       => 'required | integer',
+            'is_public'          => 'required',
+            'movie_file_path'    => 'mimes:mp4,avi,webm | max:2048', //2MBまで
+            'document_file_path' => 'mimes:xls,xlsx,doc,docx,pdf,ppt,pptx', //Excel、Word、PDF、パワポ
         ];
-        if ($this->input('kind') === 'テスト') {
-            $rules['testTime'] = 'integer | min:1 | max:100';
-            $rules['testPer'] = 'integer | min:1 | max:100';
-            $rules['testVol'] = 'integer | min:1 | max:100';
+        if ($this->input('content_type') === 6) {
+            $rules['time_limit_minutes'] = 'integer | min:1 | max:100';
+            $rules['passing_score_rate'] = 'integer | min:1 | max:100';
+            $rules['amount_questions']   = 'integer | min:1 | max:100';
         }
 
         return $rules;
