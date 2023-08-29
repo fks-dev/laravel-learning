@@ -13,6 +13,16 @@
         <div class="border">
             <div class="p-2 bg-secondary text-white">コンテンツ編集</div>
 
+            @if($errors->any())
+                <div class="alert alert-danger">
+                    <ul>
+                        @foreach($errors->all() as $error)
+                            <li>{{ $error }}</li>
+                        @endforeach
+                    </ul>
+                </div>
+            @endif
+
             {{-- フォーム --}}
             <form action="{{ route('content.update', $content) }}" method="post" enctype="multipart/form-data">
                 @csrf
@@ -31,7 +41,7 @@
 
                     {{-- コース選択 --}}
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="title">所属コース
+                        <label class="col-sm-2 col-form-label fw-bold" for="course_id">所属コース
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-10">
@@ -60,13 +70,13 @@
                         </label>
                         <div class="col-sm-10 mt-2">
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="public" id="inlineRadio1" value="1"
-                                {{ $content->public == 1 ? 'checked' : '' }} >
+                                <input class="form-check-input" type="radio" name="is_public" id="inlineRadio1" value="1"
+                                {{ $content->is_public == 1 ? 'checked' : '' }} >
                                 <label class="form-check-label" for="inlineRadio1">公開</label>
                             </div>
                             <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="public" id="inlineRadio2" value="0"
-                                {{ $content->public == 0 ? 'checked' : '' }}>
+                                <input class="form-check-input" type="radio" name="is_public" id="inlineRadio2" value="0"
+                                {{ $content->is_public == 0 ? 'checked' : '' }}>
                                 <label class="form-check-label" for="inlineRadio2">非公開</label>
                             </div>
                             <div>
