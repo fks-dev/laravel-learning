@@ -18,7 +18,8 @@ return new class extends Migration
             $table->string('title')->comment('件名');
             $table->text('text')->nullable()->comment('本文');
             $table->text('draft')->nullable()->comment('下書き');
-            $table->boolean('hidden')->default(0)->comment('表示・非表示');
+            $table->boolean('is_hidden')->default(0)->comment('表示・非表示');
+            $table->boolean('is_replied')->default(0)->comment('返信済みフラッグ');
             $table->softDeletesDatetime();
             $table->datetimes();
 
