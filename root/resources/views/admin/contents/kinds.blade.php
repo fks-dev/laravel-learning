@@ -7,10 +7,10 @@
         {{-- ラベル --}}
         <div class="form-check">
             @if (isset($content))
-                <input class="form-check-input" type="radio" name="kind" id="ContentLabel" value="ラベル"
-                @if ($content->kind == 'ラベル') checked @endif onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentLabel" value="1"
+                @if ($content->content_type == 1) checked @endif onchange="showText()">
             @else
-                <input class="form-check-input" type="radio" name="kind" id="ContentLabel" value="ラベル"
+                <input class="form-check-input" type="radio" name="content_type" id="ContentLabel" value="1"
                 onchange="showText()" checked>
             @endif
             <label class="form-check-label" for="ContentLabel">
@@ -18,13 +18,41 @@
             </label>
         </div>
 
+        {{-- URL埋め込み --}}
+        <div class="form-check">
+            @if (isset($content))
+                <input class="form-check-input" type="radio" name="content_type" id="ContentURL" value="2"
+                @if ($content->content_type == 2) checked @endif onchange="showText()">
+            @else
+                <input class="form-check-input" type="radio" name="content_type" id="ContentURL" value="2" onchange="showText()">
+            @endif
+
+            <label class="form-check-label" for="ContentURL">
+                <span class="fw-bold">URL</span>（YouTubeのURL末尾のIDを挿入してください。）
+            </label>
+        </div>
+
+        {{-- 資料配布 --}}
+        <div class="form-check">
+            @if (isset($content))
+                <input class="form-check-input" type="radio" name="content_type" id="ContentFile" value="3"
+                @if ($content->content_type == 3) checked @endif onchange="showText()">
+            @else
+                <input class="form-check-input" type="radio" name="content_type" id="ContentFile" value="3" onchange="showText()">
+            @endif
+
+            <label class="form-check-label" for="ContentFile">
+                <span class="fw-bold">配布資料</span>（配布したいファイルをアップロードします。）
+            </label>
+        </div>
+
         {{-- リッチテキスト --}}
         <div class="form-check">
             @if (isset($content))
-                <input class="form-check-input" type="radio" name="kind" id="ContentHTML" value="リッチテキスト"
-                @if ($content->kind == 'リッチテキスト') checked @endif onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentHTML" value="4"
+                @if ($content->content_type == 4) checked @endif onchange="showText()">
             @else
-                <input class="form-check-input" type="radio" name="kind" id="ContentHTML" value="リッチテキスト" onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentHTML" value="4" onchange="showText()">
             @endif
             <label class="form-check-label" for="ContentHTML">
                 <span class="fw-bold">リッチテキスト</span>（HTML形式で学習項目を作成します。YouTubeなどの動画の埋め込みなどにも使用可能です。）
@@ -34,10 +62,10 @@
         {{-- 動画 --}}
         <div class="form-check">
             @if (isset($content))
-                <input class="form-check-input" type="radio" name="kind" id="ContentMovie" value="動画"
-                @if ($content->kind == '動画') checked @endif onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentMovie" value="5"
+                @if ($content->content_type == 5) checked @endif onchange="showText()">
             @else
-                <input class="form-check-input" type="radio" name="kind" id="ContentMovie" value="動画" onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentMovie" value="5" onchange="showText()">
             @endif
 
             <label class="form-check-label" for="ContentMovie">
@@ -45,41 +73,13 @@
             </label>
         </div>
 
-        {{-- URL埋め込み --}}
-        <div class="form-check">
-            @if (isset($content))
-                <input class="form-check-input" type="radio" name="kind" id="ContentURL" value="URL"
-                @if ($content->kind == 'URL') checked @endif onchange="showText()">
-            @else
-                <input class="form-check-input" type="radio" name="kind" id="ContentURL" value="URL" onchange="showText()">
-            @endif
-
-            <label class="form-check-label" for="ContentURL">
-                <span class="fw-bold">URL</span>（外部のWebページを学習項目として追加します。）
-            </label>
-        </div>
-
-        {{-- 資料配布 --}}
-        <div class="form-check">
-            @if (isset($content))
-                <input class="form-check-input" type="radio" name="kind" id="ContentFile" value="資料"
-                @if ($content->kind == '資料') checked @endif onchange="showText()">
-            @else
-                <input class="form-check-input" type="radio" name="kind" id="ContentFile" value="資料" onchange="showText()">
-            @endif
-
-            <label class="form-check-label" for="ContentFile">
-                <span class="fw-bold">配布資料</span>（配布したいファイルをアップロードします。）
-            </label>
-        </div>
-
         {{-- テスト --}}
         <div class="form-check">
             @if (isset($content))
-                <input class="form-check-input" type="radio" name="kind" id="ContentTest" value="テスト"
-                @if ($content->kind == 'テスト') checked @endif onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentTest" value="6"
+                @if ($content->content_type == 6) checked @endif onchange="showText()">
             @else
-                <input class="form-check-input" type="radio" name="kind" id="ContentTest" value="テスト" onchange="showText()">
+                <input class="form-check-input" type="radio" name="content_type" id="ContentTest" value="6" onchange="showText()">
             @endif
             <label class="form-check-label" for="ContentTest">
                 <span class="fw-bold">テスト</span>（テストを作成します。問題はテスト作成後、別画面にて追加します。）
