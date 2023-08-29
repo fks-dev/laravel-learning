@@ -27,7 +27,7 @@ class UpdateContentRequest extends FormRequest
             'content_type'       => 'required | integer',
             'is_public'          => 'required',
             'movie_file_path'    => 'mimes:mp4,avi,webm | max:2048', //2MBまで
-            'document_file_path' => 'mimes:xls,xlsx,doc,docx,pdf,ppt,pptx', //Excel、Word、PDF、パワポ
+            'document_file_path' => 'mimes:xls,xlsx,doc,docx,pdf,ppt,pptx,txt', //Excel、Word、PDF、パワポ、テキスト
         ];
         if ($this->input('content_type') == 6) {
             $rules['time_limit_minutes'] = 'integer | min:1 | max:100';
