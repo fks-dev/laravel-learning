@@ -17,16 +17,17 @@
             </div>
         </div>
 {{-- 登録・削除　メッセージ --}}
-        <div id="message"></div>
-        @if (session('message'))
-            <div class="alert alert-success">
-            {{ session('message') }}
-            </div>
-        @elseif (session('danger'))
-        <div class="alert alert-danger">
-            {{ session('danger') }}
-            </div>
-        @endif
+        <div id="message">
+            @if (session('message'))
+                <div class="alert alert-success">
+                {{ session('message') }}
+                </div>
+            @elseif (session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
+                </div>
+            @endif
+        </div>
 
         <div class="alert alert-warning">
             ドラッグ＆ドロップでコースの並び順が変更できます。
