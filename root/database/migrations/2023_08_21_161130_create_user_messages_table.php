@@ -17,7 +17,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id');
             $table->string('title')->comment('件名');
             $table->text('text')->nullable()->comment('本文');
-            $table->text('draft')->nullable()->comment('下書き');
+            $table->integer('action')->default(0)->comment('状態:0:下書き 1:送信 2:未返信');
             $table->boolean('is_hidden')->default(0)->comment('表示・非表示');
             $table->boolean('is_replied')->default(0)->comment('返信済みフラッグ');
             $table->softDeletesDatetime();
