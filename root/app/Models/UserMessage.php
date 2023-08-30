@@ -26,7 +26,7 @@ class UserMessage extends Model
         'user_id',
         'title',
         'text',
-        'draft',
+        'action',
         'is_hidden',
         'is_replied',
     ];
