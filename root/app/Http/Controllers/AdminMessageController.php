@@ -4,6 +4,8 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
 use App\Models\AdminMessage;
@@ -15,38 +17,47 @@ class AdminMessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
         $adminId = Auth::guard('admin')->user()->id;
         $messages = UserMessage::withTrashed()
                                 ->where('admin_id', $adminId)
-                                ->where('text', '!=', null)
+                                ->where('action', '==', 1)
                                 ->where('is_hidden', '==', 0)
                                 ->orderByDesc('id')
                                 ->paginate(10);
         $users = User::all();
+        Session::put('pageNumber', $request->get('page', 1));
         return view('admin.messages.index', compact('messages', 'users'));
     }
 
     /**
      * 下書き一覧
      */
-    public function draft()
+    public function draft(Request $request)
     {
         $adminId = Auth::guard('admin')->user()->id;
-        $messages = AdminMessage::where('admin_id', $adminId)->where('draft', '!=', null)->orderByDesc('id')->get();
+        $messages = AdminMessage::where('admin_id', $adminId)
+                                ->where('action', '==', 0)
+                                ->orderByDesc('id')
+                                ->paginate(10);
         $users = User::all();
+        Session::put('pageNumber', $request->get('page', 1));
         return view('admin.messages.draftIndex', compact('messages', 'users'));
     }
 
     /**
      * 送信済み一覧
      */
-    public function sent()
+    public function sent(Request $request)
     {
         $adminId = Auth::guard('admin')->user()->id;
-        $messages = AdminMessage::where('admin_id', $adminId)->where('text', '!=', null)->orderByDesc('id')->get();
+        $messages = AdminMessage::where('admin_id', $adminId)
+                                ->where('action', '==', 1)
+                                ->orderByDesc('id')
+                                ->paginate(10);
         $users = User::all();
+        Session::put('pageNumber', $request->get('page', 1));
         return view('admin.messages.sentIndex', compact('messages', 'users'));
     }
 
@@ -57,8 +68,9 @@ class AdminMessageController extends Controller
     {
         $adminId  = Auth::guard('admin')->user()->id;
         $messages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
-        $userMsg  = UserMessage::where('is_hidden', 1)->where('admin_id', $adminId)->get();
-        return view('admin.messages.dust', compact('messages', 'userMsg'));
+        $userMessages  = UserMessage::where('is_hidden', 1)->where('admin_id', $adminId)->get();
+        $combinedMessages = $messages->concat($userMessages)->sortByDesc('updated_at');
+        return view('admin.messages.dust', compact('combinedMessages'));
     }
 
     // 復元
@@ -75,7 +87,8 @@ class AdminMessageController extends Controller
     public function create()
     {
         $users = User::all();
-        return view('admin.messages.create', compact('users'));
+        $currentPage = Session::get('pageNumber', 1);
+        return view('admin.messages.create', compact('users', 'currentPage'));
     }
 
     /**
@@ -90,14 +103,15 @@ class AdminMessageController extends Controller
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
+            'text'     => $request->text,
         ];
 
         if ($action == '送信') {
-            $data['text']  = $request->text;
+            $data['action'] = 1;
             AdminMessage::create($data);
             return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
         } else {
-            $data['draft'] = $request->text;
+            $data['action'] = 0;
             AdminMessage::create($data);
             return redirect()->route('admin.message.index')->with('message', '下書きを保存しました');
         }
@@ -109,8 +123,8 @@ class AdminMessageController extends Controller
     public function show(UserMessage $message)
     {
         $users = User::all();
-
-        return view('admin.messages.show', compact('message', 'users'));
+        $currentPage = Session::get('pageNumber', 1);
+        return view('admin.messages.show', compact('message', 'users', 'currentPage'));
     }
 
     /**
@@ -120,7 +134,8 @@ class AdminMessageController extends Controller
     {
         $users = User::all();
         $admin = 1;
-        return view('admin.messages.show', compact('message', 'admin', 'users'));
+        $currentPage = Session::get('pageNumber', 1);
+        return view('admin.messages.show', compact('message', 'admin', 'users', 'currentPage'));
 
     }
 
@@ -145,20 +160,20 @@ class AdminMessageController extends Controller
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
+            'text'     => $request->text,
         ];
 
-        if ($action == '送信') {
-            $data['text']           = $request->text;
-        } else {
-            $data['draft'] = $request->text;
+        if ($action == '下書き') {
+            $data['action'] = 2;
+        } elseif ($action == '送信') {
+            $data['action'] = 1;
+            // 返信フラッグ
+            $userMessage = UserMessage::find($message);
+            $userMessage->is_replied = true;
+            $userMessage->save();
         }
 
         AdminMessage::create($data);
-
-        // 返信フラッグ
-        $userMessage = UserMessage::find($message);
-        $userMessage->is_replied = true;
-        $userMessage->save();
 
         return redirect()->route('admin.message.index', compact('message'))->with('message', 'メッセージを返信しました');
     }
@@ -169,7 +184,8 @@ class AdminMessageController extends Controller
     public function edit(AdminMessage $message)
     {
         $users = User::all();
-        return view('admin.messages.edit', compact('message', 'users'));
+        $currentPage = Session::get('pageNumber', 1);
+        return view('admin.messages.edit', compact('message', 'users', 'currentPage'));
     }
 
     /**
@@ -184,17 +200,15 @@ class AdminMessageController extends Controller
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
+            'text'     => $request->text,
         ];
 
         if ($action == '送信') {
-            $data['text']  = $request->text;
-            $data['draft'] = null;
+            $data['action'] = 1;
             $message->update($data);
             return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
-
         } else {
-            $data['draft'] = $request->text;
-            $data['text']  = null;
+            $data['action'] = 0;
             $message->update($data);
             return redirect()->route('admin.message.index')->with('message', '下書きを保存しました');
         }
