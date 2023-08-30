@@ -53,8 +53,8 @@
                             {{ $message->user_id == $user->id ? $user->username : ''}}
                         @endforeach
                     </td>
-                    <td class="align-middle">{{ Str::limit($message->draft, $limit = 50, $end = '...') }}</td>
-                    <td class="align-middle text-center">{{ $message->created_at }}</td>
+                    <td class="align-middle">{{ Str::limit($message->text, $limit = 50, $end = '...') }}</td>
+                    <td class="align-middle text-center">{{ $message->updated_at }}</td>
 
                     <td class="text-center">
                         <form action="{{ route('admin.message.destroy', $message) }}" method="post" class="d-inline">
@@ -70,6 +70,7 @@
 
         </tbody>
     </table>
+    {{ $messages->links('pagination::bootstrap-5') }}
 </div>
 </body>
 </html>
