@@ -69,6 +69,7 @@
 
         </tbody>
     </table>
+    {{ $messages->links('pagination::bootstrap-5') }}
 </div>
 </body>
 </html>

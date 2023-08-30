@@ -6,7 +6,7 @@
 </head>
 <body>
 <div class="mt-3 container">
-    <a href="{{ route('admin.message.index') }}">&lt;&lt;戻る</a>
+    <a href="{{ route('admin.message.index') }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
     <div class="border">
         <div class="p-2 bg-secondary text-white">受講者にメッセージを作成</div>
 

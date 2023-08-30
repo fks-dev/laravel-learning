@@ -7,7 +7,10 @@
 <body>
     <div class="mt-5 container">
         <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ isset($admin) ? route('admin.message.sent') : route('admin.message.index') }}">戻る</a>
+            <a class="btn btn-secondary"
+            href="{{ isset($admin) ? route('admin.message.sent') : route('admin.message.index') }}?page={{$currentPage}}"
+            >戻る
+            </a>
         </div>
         <div class="mb-2">
             @if ( empty($admin) )
