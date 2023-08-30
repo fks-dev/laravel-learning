@@ -44,7 +44,7 @@
 
         <tbody>
 
-            @foreach ($userMsg as $message)
+            @foreach ($combinedMessages as $message)
                 <tr data-id="{{ $message }}">
                     <td class="align-middle">
                         <a href="{{ route('admin.message.show', $message) }}">
@@ -52,8 +52,18 @@
                         </a>
                     </td>
 
-                    <td class="align-middle">受信</td>
-                    <td class="align-middle">{{ Str::limit($message->text, $limit = 50, $end = '...') }}</td>
+                    <td class="align-middle">
+                        @if ($message->is_hidden == 1)
+                            受信
+                        @elseif($message->text != null)
+                            送信済み
+                        @else
+                            下書き
+                        @endif
+                    </td>
+                    <td class="align-middle">
+                        {{ $message->text ? Str::limit($message->text, $limit = 50, $end = '...') : $message->draft }}
+                    </td>
                     <td class="align-middle text-center">{{ $message->updated_at }}</td>
 
                     <td class="text-center">
@@ -67,7 +77,7 @@
                 </tr>
             @endforeach
 
-            @foreach ($messages as $message)
+            {{-- @foreach ($messages as $message)
                 <tr data-id="{{ $message }}">
                     <td class="align-middle">
                         <a href="{{ route('admin.message.show', $message) }}">
@@ -92,10 +102,11 @@
                     </td>
 
                 </tr>
-            @endforeach
+            @endforeach --}}
 
         </tbody>
     </table>
+    {{-- {{ $messages->links('pagination::bootstrap-5') }} --}}
 </div>
 </body>
 </html>
