@@ -27,6 +27,7 @@ class UserMessageSeeder extends Seeder
                         'action' => random_int(0,1),
                         'is_hidden' => 0,
                         'is_replied' => 0,
+                        'reply_message_id' => null,
                         'created_at' => now(),
                         'updated_at' => now(),
                     ];
