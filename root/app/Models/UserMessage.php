@@ -29,5 +29,12 @@ class UserMessage extends Model
         'action',
         'is_hidden',
         'is_replied',
+        'reply_message_id',
+    ];
+
+    protected $casts = [
+        'action'    => 'integer',
+        'is_hidden' => 'boolean',
+        'is_replied'=> 'boolean',
     ];
 }
