@@ -1,6 +1,6 @@
 {{-- リッチテキスト --}}
 <div class="row m-3" id="rich" style="display: none;">
-    <label class="col-sm-2 col-form-label fw-bold" for="rich">リッチテキスト</label>
+    <label class="col-sm-2 col-form-label fw-bold">リッチテキスト</label>
     <div class="col-sm-10">
         @if (@isset($content->text))
             <div id="editor" style="height: 100px; overflow: auto;">{!! $content->text !!}</div>
@@ -14,10 +14,10 @@
 
 {{-- 動画 --}}
 <div class="row m-3" id="movie" style="display: none;">
-    <label class="col-sm-2 col-form-label fw-bold" for="movie">動画</label>
+    <label class="col-sm-2 col-form-label fw-bold" for="movieFile">動画</label>
     <div class="col-sm-10">
         @if (@isset($content->movie_file_path))
-            <input class="form-control" type="file" name="movie_file_path" id="movie" accept="video/*">
+            <input class="form-control" type="file" name="movie_file_path" id="movieFile" accept="video/*">
             <div class="mt-3">
                 <p>こちらの動画がすでに登録されています。</p>
                 <video controls>
@@ -25,21 +25,21 @@
                 </video>
             </div>
         @else
-            <input class="form-control" type="file" name="movie_file_path" id="movie" accept="video/*">
+            <input class="form-control" type="file" name="movie_file_path" id="movieFile" accept="video/*">
         @endif
     </div>
 </div>
 
 {{-- URL --}}
 <div class="row m-3" id="url" style="display: none;">
-    <label class="col-sm-2 col-form-label fw-bold" for="url">URL</label>
+    <label class="col-sm-2 col-form-label fw-bold" for="YouTube">URL</label>
         <div class="col-sm-10">
             <div class="input-group">
                 <span class="input-group-text">https://www.youtube.com/watch?v=</span>
                 @if (@isset($content->youtube_video_id))
-                    <input class="form-control" type="text" id="url" name="youtube_video_id" value="{{ $content->youtube_video_id }}">
+                    <input class="form-control" type="text" id="YouTube" name="youtube_video_id" value="{{ $content->youtube_video_id }}">
                 @else
-                    <input class="form-control" type="text" id="url" name="youtube_video_id">
+                    <input class="form-control" type="text" id="YouTube" name="youtube_video_id">
                 @endif
             </div>
     </div>
@@ -47,16 +47,16 @@
 
 {{-- ファイル --}}
 <div class="row m-3" id="file" style="display: none;">
-    <label class="col-sm-2 col-form-label fw-bold" for="file">ファイル</label>
+    <label class="col-sm-2 col-form-label fw-bold" for="fileText">ファイル</label>
     <div class="col-sm-10">
         @if (@isset($content->document_file_path))
-            <input class="form-control" type="file" name="document_file_path" id="file" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt">
+            <input class="form-control" type="file" name="document_file_path" id="fileText" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt">
             <div class="mt-3">
                 <p>こちらのファイルがすでに登録されています。</p>
                 <p>{{ str_replace('handout/', '', $content->document_file_path) }}</p>
             </div>
         @else
-            <input class="form-control" type="file" name="document_file_path" id="file" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt">
+            <input class="form-control" type="file" name="document_file_path" id="fileText" accept=".xls,.xlsx,.doc,.docx,.pdf,.ppt,.pptx,.txt">
         @endif
     </div>
 </div>
@@ -91,12 +91,12 @@
 
 {{-- 備考 --}}
 <div class="row m-3" id="remarks" style="display: none;">
-    <label class="col-sm-2 col-form-label fw-bold" for="remarks">備考</label>
+    <label class="col-sm-2 col-form-label fw-bold" for="remarksArea">備考</label>
     <div class="col-sm-10">
         @if (@isset($content))
-            <textarea class="form-control" name="remarks" rows="5">{{ $content->remarks }}</textarea>
+            <textarea class="form-control" name="remarks" id="remarksArea" rows="5">{{ $content->remarks }}</textarea>
         @else
-            <textarea class="form-control" name="remarks" rows="5"></textarea>
+            <textarea class="form-control" name="remarks" id="remarksArea" rows="5"></textarea>
         @endif
     </div>
 </div>
