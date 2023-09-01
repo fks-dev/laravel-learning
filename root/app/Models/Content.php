@@ -29,9 +29,19 @@ class Content extends Model
         'amount_questions',
     ];
 
+    protected $casts = [
+        'content_type' => 'integer',
+        'is_public'    => 'boolean',
+    ];
+
     public function course()
     {
         return $this->belongsTo(Course::class);
+    }
+
+    public function admin()
+    {
+        return $this->belongsTo(Admin::class);
     }
 
     protected static function boot()
