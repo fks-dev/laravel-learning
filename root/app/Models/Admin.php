@@ -9,4 +9,9 @@ use Illuminate\Database\Eloquent\Relations\BelongsToMany;
 class Admin extends Authenticatable
 {
     use HasFactory;
+
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
 }

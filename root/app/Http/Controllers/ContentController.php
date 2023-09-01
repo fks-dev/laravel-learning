@@ -104,7 +104,7 @@ class ContentController extends Controller
      */
     public function show(Content $content)
     {
-        $admin = Admin::where('id', $content->admin_id)->first();
+        $admin = $content->admin;
 
         return view('admin.contents.show', compact('content', 'admin'));
     }

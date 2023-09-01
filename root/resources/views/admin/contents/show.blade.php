@@ -9,6 +9,7 @@
         <a href="{{ route('content.index', $content->course_id) }}">&lt;&lt;戻る</a>
 
         <h2 class="m-3">{{ $content->title }}</h2>
+        <p class="m-3">作成者:{{ $admin->username }}</p>
 
         @if ($content->youtube_video_id != null)
         <div class="ratio ratio-16x9 mx-auto p-2" style="width: 80%; height: 80%">
