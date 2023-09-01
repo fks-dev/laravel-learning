@@ -64,7 +64,7 @@
 
                     {{-- 公開・非公開 --}}
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="introduction">ステータス
+                        <label class="col-sm-2 col-form-label fw-bold">ステータス
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-10 mt-2">
