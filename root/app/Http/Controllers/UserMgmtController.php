@@ -201,9 +201,9 @@ class UserMgmtController extends Controller
             $header = fgetcsv($handle, 1000, ',');
 
             while (($data = fgetcsv($handle, 1000, ',')) !== false) {
-                $username = $data[0];
-                $password = Hash::make($data[1]);
-                $mail_address = $data[2];
+                $username = $data[1];
+                $password = Hash::make($data[2]);
+                $mail_address = $data[3];
 
                 User::create([
                     'username' => $username,

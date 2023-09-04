@@ -22,7 +22,8 @@
                     <span>CSVの形式</span>
                 </div>
                 <div class="d-flex justify-content-start ms-3 mb-3">
-                    <div class="p-2 border border-dark">ユーザー名</div>
+                    <div class="p-2 border border-dark">ID</div>
+                    <div class="p-2 border border-dark border-start-0">ユーザー名</div>
                     <div class="p-2 border border-dark border-start-0">パスワード</div>
                     <div class="p-2 border border-dark border-start-0">メールアドレス</div>
                 </div>
