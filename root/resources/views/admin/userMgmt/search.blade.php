@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     <td class="align-middle text-center">${formatDate}</td>
 
                     <td class="text-center">
-                        <a class="btn btn-success" href="userMgmt/${result.id}/edit">編集</a>
+                        <a class="btn btn-success edit-btn" href="userMgmt/${result.id}/edit">編集</a>
 
                         <form action="userMgmt/${result.id}" method="post" class="d-inline">
                             @csrf

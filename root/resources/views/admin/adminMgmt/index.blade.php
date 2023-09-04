@@ -107,7 +107,7 @@
                             <td class="align-middle text-center">{{ $admin->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success" href="{{ route('adminMgmt.edit', $admin->id) }}">編集</a>
+                                <a class="btn btn-success edit-btn" href="{{ route('adminMgmt.edit', $admin->id) }}">編集</a>
 
                                 <form action="{{ route('adminMgmt.destroy', $admin) }}" method="post" class="d-inline">
                                     @csrf
