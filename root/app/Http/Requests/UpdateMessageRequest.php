@@ -24,7 +24,6 @@ class UpdateMessageRequest extends FormRequest
     {
         return [
             'title'   => 'required | max:255',
-            'action' => ['required', new ActionEnum],
         ];
     }
 }
