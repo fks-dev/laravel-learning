@@ -55,7 +55,7 @@
                     <td class="align-middle">
                         @if ($message->is_hidden == 1)
                             受信
-                        @elseif($message->text != null)
+                        @elseif($message->action == $action[1])
                             送信済み
                         @else
                             下書き
@@ -76,33 +76,6 @@
 
                 </tr>
             @endforeach
-
-            {{-- @foreach ($messages as $message)
-                <tr data-id="{{ $message }}">
-                    <td class="align-middle">
-                        <a href="{{ route('admin.message.show', $message) }}">
-                            {{ Str::limit($message->title, $limit = 28, $end = '...') }}
-                        </a>
-                    </td>
-                    <td class="align-middle">
-                        {{ $message->text ? '送信済み' :  '下書き'}}
-                    </td>
-
-                    <td class="align-middle">
-                        {{ $message->text ? Str::limit($message->text, $limit = 50, $end = '...') : $message->draft }}
-                    </td>
-                    <td class="align-middle text-center">{{ $message->deleted_at }}</td>
-
-                    <td class="text-center">
-                        <form action="{{ route('admin.message.restore', $message) }}" method="post" class="d-inline">
-                            @csrf
-                            <input class="btn btn-danger" type="submit" value="復元"
-                            onClick="return confirm('元に戻しますか？');">
-                        </form>
-                    </td>
-
-                </tr>
-            @endforeach --}}
 
         </tbody>
     </table>
