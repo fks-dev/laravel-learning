@@ -2,6 +2,7 @@
 
 namespace App\Models;
 
+use App\Enums\ActionEnum;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\SoftDeletes;
 use Illuminate\Database\Eloquent\Model;
@@ -33,7 +34,7 @@ class UserMessage extends Model
     ];
 
     protected $casts = [
-        'action'    => 'integer',
+        'action'    => ActionEnum::class,
         'is_hidden' => 'boolean',
         'is_replied'=> 'boolean',
     ];

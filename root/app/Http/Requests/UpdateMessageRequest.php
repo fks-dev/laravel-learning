@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ActionEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class UpdateMessageRequest extends FormRequest
@@ -23,6 +24,7 @@ class UpdateMessageRequest extends FormRequest
     {
         return [
             'title'   => 'required | max:255',
+            'action' => ['required', new ActionEnum],
         ];
     }
 }

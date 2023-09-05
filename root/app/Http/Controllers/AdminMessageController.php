@@ -172,6 +172,10 @@ class AdminMessageController extends Controller
         } elseif ($action == '送信') {
             $data['action'] = 1;
             AdminMessage::create($data);
+            // 返信フラッグ
+            $userMessage = UserMessage::find($message);
+            $userMessage->is_replied = true;
+            $userMessage->save();
             return redirect()->route('admin.message.index', compact('message'))->with('message', 'メッセージを返信しました');
         }
     }
@@ -208,7 +212,15 @@ class AdminMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($action == '送信') {
+        if ($message->action == 2) {
+            $data['action'] = 1;
+            $message->update($data);
+            // 返信フラッグ
+            $userMessage = UserMessage::find($message->reply_message_id);
+            $userMessage->is_replied = true;
+            $userMessage->save();
+            return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
+        } elseif ($action == '送信') {
             $data['action'] = 1;
             $message->update($data);
             return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
