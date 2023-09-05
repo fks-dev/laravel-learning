@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('courses', function (Blueprint $table) {
             $table->id()->comment('ID');
-            $table->char('title')->comment('タイトル');
+            $table->string('title')->comment('タイトル');
             $table->text('introduction')->nullable()->comment('コース紹介');
             $table->text('remarks')->nullable()->comment('備考');
             $table->unsignedInteger('position')->default(0)->comment('ソート番号');
