@@ -49,16 +49,15 @@
                         <label class="col-sm-2 col-form-label fw-bold">メッセージ内容</label>
                         <div class="col-sm-10">
                             <textarea class="form-control" rows="10" disabled>{{ $reply->text }}</textarea>
-                            <input class="form-contorl btn btn-primary mt-3" type="submit" name="action" value="送信">
-                            <input class="form-contorl btn btn-secondary mt-3" type="submit" name="action" value="下書き">
                         </div>
                     </div>
                 @endif
 
                 <div class="row m-3">
+                    <label class="col-sm-2 col-form-label fw-bold"></label>
                     <div class="col-sm-10">
-                        <input class="form-contorl btn btn-primary mt-3" type="submit" name="action" value="送信">
-                        <input class="form-contorl btn btn-secondary mt-3" type="submit" name="action" value="下書き">
+                        <input class="form-contorl btn btn-primary" type="submit" name="action" value="送信">
+                        <input class="form-contorl btn btn-secondary" type="submit" name="action" value="下書き">
                     </div>
                 </div>
 
