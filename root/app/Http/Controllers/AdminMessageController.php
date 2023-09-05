@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Enums\ActionEnum;
 use App\Http\Requests\StoreMessageRequest;
 use App\Http\Requests\UpdateMessageRequest;
 use Illuminate\Http\Request;
@@ -67,10 +68,15 @@ class AdminMessageController extends Controller
     public function dust()
     {
         $adminId  = Auth::guard('admin')->user()->id;
-        $messages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
+        $adminMessages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
+        $messages = $adminMessages->map(function ($item) {
+            $item->is_hidden = 0;
+            return $item;
+        });
         $userMessages  = UserMessage::where('is_hidden', 1)->where('admin_id', $adminId)->get();
         $combinedMessages = $messages->concat($userMessages)->sortByDesc('updated_at');
-        return view('admin.messages.dust', compact('combinedMessages'));
+        $action = ActionEnum::cases();
+        return view('admin.messages.dust', compact('combinedMessages', 'action'));
     }
 
     // 復元
@@ -188,7 +194,7 @@ class AdminMessageController extends Controller
         $users = User::all();
         $currentPage = Session::get('pageNumber', 1);
 
-        if ($message->action == 2) {
+        if ($message->action = 2) {
             $reply = UserMessage::find($message->reply_message_id);
         } else {
             $reply = null;
@@ -204,6 +210,7 @@ class AdminMessageController extends Controller
     {
         $adminId = Auth::guard('admin')->user()->id;
         $action = $request->input('action');
+        $type = ActionEnum::cases();
 
         $data = [
             'admin_id' => $adminId,
@@ -212,22 +219,24 @@ class AdminMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($message->action == 2) {
-            $data['action'] = 1;
-            $message->update($data);
-            // 返信フラッグ
-            $userMessage = UserMessage::find($message->reply_message_id);
-            $userMessage->is_replied = true;
-            $userMessage->save();
-            return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
-        } elseif ($action == '送信') {
+        if ($action == '送信') {
+            if ($message->action == $type[2]) {
+                // 返信フラッグ
+                $userMessage = UserMessage::find($message->reply_message_id);
+                $userMessage->is_replied = true;
+                $userMessage->save();
+            }
             $data['action'] = 1;
             $message->update($data);
             return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
         } else {
-            $data['action'] = 0;
+            if ($message->action == $type[2]) {
+                $data['action'] = 2;
+            } else {
+                $data['action'] = 0;
+            }
             $message->update($data);
-            return redirect()->route('admin.message.index')->with('message', '下書きを保存しました');
+            return redirect()->route('admin.message.draft')->with('message', '下書きを保存しました');
         }
     }
 
