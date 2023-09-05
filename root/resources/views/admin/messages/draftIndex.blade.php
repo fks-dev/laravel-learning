@@ -36,7 +36,7 @@
                 <th class="col-5">本文</th>
                 <th class="col-2 text-center">保存日時</th>
                 <th class="col-2 text-center">Actions</th>
-                </tr>
+            </tr>
         </thead>
 
         <tbody>
