@@ -10,22 +10,14 @@
     <div class="d-flex justify-content-between">
         <h2 class="col">受信一覧</h2>
         <div class="col-auto">
+            <a class="btn btn-primary" href="{{ route('user.message.create')}}">&plus;追加</a>
             <a class="btn btn-success" href="{{ route('user.message.draft')}}">下書き</a>
             <a class="btn btn-secondary" href="{{ route('user.message.sent')}}">送信済み</a>
-            <a class="btn btn-primary" href="{{ route('user.message.create')}}">&plus;追加</a>
+            <a class="btn btn-danger" href="{{ route('user.message.dust')}}">ゴミ箱</a>
         </div>
     </div>
-{{-- 登録・削除　メッセージ --}}
-    <div id="message"></div>
-    @if (session('message'))
-        <div class="alert alert-success">
-        {{ session('message') }}
-        </div>
-    @elseif (session('danger'))
-    <div class="alert alert-danger">
-        {{ session('danger') }}
-        </div>
-    @endif
+
+    @include('alert')
 
     <table class="table table-striped">
         <thead>
@@ -46,8 +38,8 @@
                         <a href="{{ route('user.message.show', $message) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
+                        @if ($message->is_replied == 1) &#9166; @endif
                     </td>
-
                     <td class="align-middle">
                         @foreach ($admins as $admin)
                             {{ $message->admin_id == $admin->id ? $admin->username : ''}}
@@ -59,7 +51,7 @@
                     <td class="text-center">
                         <form action="{{ route('user.message.hidden', $message) }}" method="post" class="d-inline">
                             @csrf
-                            <input class="btn btn-danger" type="submit" value="削除"
+                            <input class="btn btn-danger" name="action" type="submit" value="削除"
                             onClick="return confirm('本当に削除しますか？');">
                         </form>
                     </td>
@@ -69,6 +61,7 @@
 
         </tbody>
     </table>
+    {{ $messages->links('pagination::bootstrap-5') }}
 </div>
 </body>
 </html>

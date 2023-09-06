@@ -10,22 +10,14 @@
     <div class="d-flex justify-content-between">
         <h2 class="col">送信済み一覧</h2>
         <div class="col-auto">
-            <a class="btn btn-primary" href="{{ route('admin.message.create')}}">&plus;追加</a>
+            <a class="btn btn-primary" href="{{ route('admin.message.create', ['source' => 'send'])}}">&plus;追加</a>
             <a class="btn btn-info" href="{{ route('admin.message.index')}}">受信</a>
             <a class="btn btn-success" href="{{ route('admin.message.draft')}}">下書き</a>
             <a class="btn btn-danger" href="{{ route('admin.message.dust')}}">ゴミ箱</a>
         </div>
     </div>
-{{-- 登録・削除　メッセージ --}}
-    @if (session('message'))
-        <div class="alert alert-success">
-            {{ session('message') }}
-        </div>
-    @elseif (session('danger'))
-        <div class="alert alert-danger">
-            {{ session('danger') }}
-        </div>
-    @endif
+
+    @include('alert')
 
     <table class="table table-striped">
         <thead>
@@ -53,7 +45,7 @@
                         @endforeach
                     </td>
                     <td class="align-middle">{{ Str::limit($message->text, $limit = 50, $end = '...') }}</td>
-                    <td class="align-middle text-center">{{ $message->created_at }}</td>
+                    <td class="align-middle text-center">{{ $message->updated_at }}</td>
 
                     <td class="text-center">
                         <form action="{{ route('admin.message.destroy', $message) }}" method="post" class="d-inline">
