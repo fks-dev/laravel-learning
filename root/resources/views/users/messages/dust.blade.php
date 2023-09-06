@@ -35,7 +35,7 @@
             @foreach ($paginator as $message)
                 <tr data-id="{{ $message }}">
                     <td class="align-middle">
-                        <a href="{{ route('admin.message.show', ['message' => $message, 'source' => 'dust']) }}">
+                        <a href="{{ route('user.message.show', ['message' => $message, 'source' => 'dust']) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
                     </td>
