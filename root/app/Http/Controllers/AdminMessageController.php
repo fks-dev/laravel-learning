@@ -9,6 +9,7 @@ use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Redirect;
+use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\User;
@@ -40,7 +41,7 @@ class AdminMessageController extends Controller
         $adminId = Auth::guard('admin')->user()->id;
         $messages = AdminMessage::where('admin_id', $adminId)
                                 ->where('action', '!=', 1)
-                                ->orderByDesc('id')
+                                ->orderByDesc('updated_at')
                                 ->paginate(10);
         $users = User::all();
         Session::put('pageNumber', $request->get('page', 1));
@@ -55,7 +56,7 @@ class AdminMessageController extends Controller
         $adminId = Auth::guard('admin')->user()->id;
         $messages = AdminMessage::where('admin_id', $adminId)
                                 ->where('action', '=', 1)
-                                ->orderByDesc('id')
+                                ->orderByDesc('updated_at')
                                 ->paginate(10);
         $users = User::all();
         Session::put('pageNumber', $request->get('page', 1));
@@ -65,7 +66,7 @@ class AdminMessageController extends Controller
     /**
      * ゴミ箱
      */
-    public function dust()
+    public function dust(Request $request)
     {
         $adminId  = Auth::guard('admin')->user()->id;
         $adminMessages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
@@ -75,8 +76,22 @@ class AdminMessageController extends Controller
         });
         $userMessages  = UserMessage::where('is_hidden', 1)->where('admin_id', $adminId)->get();
         $combinedMessages = $messages->concat($userMessages)->sortByDesc('updated_at');
+        Session::put('pageNumber', $request->get('page', 1));
         $action = ActionEnum::cases();
-        return view('admin.messages.dust', compact('combinedMessages', 'action'));
+
+        // カスタムページネーション
+        $perPage = 10;
+        $page = request('page', 1);
+        Session::put('pageNumber', $page);
+        $paginator = new LengthAwarePaginator(
+            $combinedMessages->forPage($page, $perPage),
+            $combinedMessages->count(),
+            $perPage,
+            $page,
+            ['path' => route('admin.message.dust')]
+        );
+
+        return view('admin.messages.dust', compact('paginator', 'action'));
     }
 
     // 復元
@@ -84,17 +99,27 @@ class AdminMessageController extends Controller
     {
         $record = AdminMessage::withTrashed()->find($message);
         $record->restore();
-        return redirect()->back()->with('success', 'メールを復元しました。');
+        return redirect()->back()->with('success', $record->title.'を復元しました。');
     }
 
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(Request $request)
     {
+        $source = $request->input('source');
+        if ($source === 'draft') {
+            $backRoute = route('admin.message.draft');
+        } elseif ($source === 'send') {
+            $backRoute = route('admin.message.sent');
+        } elseif ($source === 'dust') {
+            $backRoute = route('admin.message.dust');
+        } else {
+            $backRoute = route('admin.message.index');
+        }
         $users = User::all();
         $currentPage = Session::get('pageNumber', 1);
-        return view('admin.messages.create', compact('users', 'currentPage'));
+        return view('admin.messages.create', compact('users', 'currentPage', 'backRoute'));
     }
 
     /**
@@ -119,29 +144,38 @@ class AdminMessageController extends Controller
         } else {
             $data['action'] = 0;
             AdminMessage::create($data);
-            return redirect()->route('admin.message.index')->with('message', '下書きを保存しました');
+            return redirect()->route('admin.message.draft')->with('message', '下書きを保存しました');
         }
     }
 
     /**
      * Display the specified resource.
      */
-    public function show(UserMessage $message)
+    public function show(UserMessage $message, Request $request)
     {
+        $source = $request->input('source');
+        if ($source === 'dust') {
+            $source = true;
+            $backRoute = route('admin.message.dust');
+        } else {
+            $source = false;
+            $backRoute = route('admin.message.index');
+        }
         $users = User::all();
         $currentPage = Session::get('pageNumber', 1);
-        return view('admin.messages.show', compact('message', 'users', 'currentPage'));
+        return view('admin.messages.show', compact('message', 'source', 'users', 'currentPage', 'backRoute'));
     }
 
     /**
      * 送信済みShow
      */
-    public function sentShow(UserMessage $message)
+    public function sentShow(AdminMessage $message, Request $request)
     {
+        $source = true;
+        $backRoute = route('admin.message.sent');
         $users = User::all();
-        $admin = 1;
         $currentPage = Session::get('pageNumber', 1);
-        return view('admin.messages.show', compact('message', 'admin', 'users', 'currentPage'));
+        return view('admin.messages.show', compact('message', 'source', 'users', 'currentPage', 'backRoute'));
 
     }
 
@@ -256,11 +290,11 @@ class AdminMessageController extends Controller
     {
         $hidden = UserMessage::find($message->id);
 
-        if ($message->hidden == 1) {
-            $hidden->update(['is_hidden' => 0]);
-            return redirect()->route('admin.message.index')->with('success', $message->title . 'を復元しました');
+        if ($message->is_hidden == true) {
+            $hidden->update(['is_hidden' => false]);
+            return redirect()->route('admin.message.dust')->with('success', $message->title . 'を復元しました');
         } else {
-            $hidden->update(['is_hidden' => 1]);
+            $hidden->update(['is_hidden' => true]);
             return redirect()->route('admin.message.index')->with('danger', $message->title . 'を削除しました');
         }
     }
