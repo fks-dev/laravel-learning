@@ -7,13 +7,10 @@
 <body>
     <div class="mt-5 container">
         <div class="mb-2">
-            <a class="btn btn-secondary"
-            href="{{ isset($admin) ? route('admin.message.sent') : route('admin.message.index') }}?page={{$currentPage}}"
-            >戻る
-            </a>
+            <a class="btn btn-secondary" href="{{ $backRoute }}?page={{$currentPage}}">戻る</a>
         </div>
         <div class="mb-2">
-            @if ( empty($admin) )
+            @if ( $source == false )
                 <a class="btn btn-success" href="{{ route('admin.message.reply', $message) }}">返信</a>
             @endif
         </div>
@@ -22,7 +19,7 @@
             <p>件名：{{ $message->title }}</p>
         </div>
         <div>
-            <p>@if (isset($admin)) 宛先 @else 差出人 @endif：
+            <p>@if ( $source == true ) 宛先 @else 差出人 @endif：
                 @foreach ($users as $user)
                     {{ $message->user_id == $user->id ? $user->username : '' }}
                 @endforeach
