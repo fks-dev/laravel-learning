@@ -2,11 +2,11 @@
 <html lang="ja">
 <head>
     @include('admin.courses.head')
-    <title>送信</title>
+    <title>新規問い合わせ</title>
 </head>
 <body>
 <div class="mt-3 container">
-    <a href="{{ route('user.message.index') }}">&lt;&lt;戻る</a>
+    <a href="{{ $backRoute }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
     <div class="border">
         <div class="p-2 bg-secondary text-white">先生にメッセージを作成</div>
 
@@ -26,12 +26,12 @@
                 <div class="row m-3">
                     <label class="col-sm-2 col-form-label fw-bold" for="admin_id">宛先</label>
                     <div class="col-sm-10">
-                    <select class="form-control" name="admin_id" id="admin_id">
-                        @foreach ($admins as $admin)
-                            <option value="{{ $admin->id }}">{{ $admin->username }}</option>
-                        @endforeach
-                    </select>
-                </div>
+                        <select class="form-control" name="admin_id" id="admin_id">
+                            @foreach ($admins as $admin)
+                                <option value="{{ $admin->id }}">{{ $admin->username }}</option>
+                            @endforeach
+                        </select>
+                    </div>
                 </div>
 
                 <div class="row m-3">
