@@ -24,4 +24,9 @@ class Course extends Model
             $model->position = Course::max('position') + 1;
         });
     }
+
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
 }

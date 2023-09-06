@@ -17,9 +17,8 @@ return new class extends Migration
             $table->text('introduction')->nullable()->comment('コース紹介');
             $table->text('remarks')->nullable()->comment('備考');
             $table->unsignedInteger('position')->default(0)->comment('ソート番号');
-            $table->timestamp('deleted_at')->nullable()->comment('削除日時');
-            $table->timestamp('created_at')->comment('作成日時');
-            $table->timestamp('updated_at')->comment('更新日時');
+            $table->softDeletesDatetime();
+            $table->datetimes();
         });
     }
 
