@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('groups', function (Blueprint $table) {
             $table->id()->comment('ID');
-            $table->char('group_name')->comment('グループ名');
+            $table->string('group_name')->comment('グループ名');
             $table->text('remarks')->nullable()->comment('備考');
             $table->softDeletesDatetime();
             $table->datetimes();
