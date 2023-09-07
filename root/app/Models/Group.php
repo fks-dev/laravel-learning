@@ -15,4 +15,14 @@ class Group extends Model
         'group_name',
         'remarks',
     ];
+
+    public function Courses()
+    {
+        return $this->hasMany(Course::class);
+    }
+
+    public function Users()
+    {
+        return $this->hasMany(User::class);
+    }
 }
