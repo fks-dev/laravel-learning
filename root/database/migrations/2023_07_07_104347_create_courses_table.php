@@ -11,11 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('users', function (Blueprint $table) {
+        Schema::create('courses', function (Blueprint $table) {
             $table->id()->comment('ID');
-            $table->string('username')->comment('ユーザー名');
-            $table->string('password')->comment('パスワード');
-            $table->string('mail_address')->comment('メールアドレス');
+            $table->char('title')->comment('タイトル');
+            $table->text('introduction')->nullable()->comment('コース紹介');
+            $table->text('remarks')->nullable()->comment('備考');
+            $table->unsignedInteger('position')->default(0)->comment('ソート番号');
             $table->softDeletesDatetime();
             $table->datetimes();
         });
@@ -26,6 +27,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('users');
+        Schema::dropIfExists('courses');
     }
 };
