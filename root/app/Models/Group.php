@@ -16,13 +16,13 @@ class Group extends Model
         'remarks',
     ];
 
-    public function Courses()
+    public function groupsCourses()
     {
-        return $this->hasMany(Course::class);
+        return $this->belongsToMany(Course::class, 'groups_courses', 'course_id', 'group_id');
     }
 
-    public function Users()
+    public function groupsUsers()
     {
-        return $this->hasMany(User::class);
+        return $this->belongsToMany(User::class, 'users_groups', 'user_id', 'group_id');
     }
 }
