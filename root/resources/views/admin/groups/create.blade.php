@@ -1,6 +1,10 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
+    <!-- Choices.jsのCSS -->
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
+    {{-- CSS --}}
+    <link rel="stylesheet" href="/css/select.css">
     @include('admin.groups.head')
     <title>グループ登録</title>
 </head>
@@ -24,16 +28,28 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="course">受講コース</label>
+                        <label class="col-sm-2 col-form-label fw-bold" for="course">所属コース</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="course" id="course">
-                                <option hidden>受講するコースを選択してください。（複数選択可）</option>
-                                <option value="1">1</option>
-                                <option value="1">2</option>
-                                <option value="1">3</option>
+                            <select class="form-select" name="course[]" id="course" multiple>
+                                <option disabled>コースを選んでください</option>
+                                @foreach ($courses as $course)
+                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
+
+                    {{-- <div class="row m-3">
+                        <label class="col-sm-2 col-form-label fw-bold" for="user">所属ユーザー</label>
+                        <div class="col-sm-10">
+                            <select class="form-select" name="user[]" id="user" multiple>
+                                <option disabled>ユーザーを選択してください</option>
+                                @foreach ($users as $user)
+                                    <option value="{{ $user->id }}">{{ $user->username }}</option>
+                                @endforeach
+                            </select>
+                        </div>
+                    </div> --}}
 
                     <div class="row m-3">
                         <label class="col-sm-2 col-form-label fw-bold" for="remarks">備考</label>
@@ -46,5 +62,8 @@
             </form>
         </div>
     </div>
+
+@include('admin.groups.courseSelect')
+{{-- @include('admin.groups.userSelect') --}}
 </body>
 </html>

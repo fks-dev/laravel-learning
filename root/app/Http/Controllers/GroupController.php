@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
+use App\Models\Course;
 use App\Models\Group;
+use App\Models\User;
 
 class GroupController extends Controller
 {
@@ -17,18 +19,14 @@ class GroupController extends Controller
         return view('admin.groups.index', compact('groups'));
     }
 
-    // 並び替え
-    public function sort()
-    {
-
-    }
-
     /**
      * Show the form for creating a new resource.
      */
     public function create()
     {
-        return view('admin.groups.create');
+        $courses = Course::all();
+        $users = User::all();
+        return view('admin.groups.create', compact('courses', 'users'));
     }
 
     /**
