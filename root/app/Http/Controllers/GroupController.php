@@ -39,6 +39,20 @@ class GroupController extends Controller
             'remarks'    => $request->remarks,
         ]);
 
+        $group = Group::orderByDesc('id')->first();
+        $courses = $request->input('course', []);
+        $users = $request->input('user', []);
+
+        foreach ($courses as $courseId) {
+            $course = Course::find($courseId);
+            $group->Courses()->attach($course);
+        }
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+            $group->Users()->attach($user);
+        }
+
         return redirect()->route('group.index')->with('message', 'グループを登録しました');
     }
 

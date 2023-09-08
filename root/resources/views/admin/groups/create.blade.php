@@ -39,7 +39,7 @@
                         </div>
                     </div>
 
-                    {{-- <div class="row m-3">
+                    <div class="row m-3">
                         <label class="col-sm-2 col-form-label fw-bold" for="user">所属ユーザー</label>
                         <div class="col-sm-10">
                             <select class="form-select" name="user[]" id="user" multiple>
@@ -49,7 +49,7 @@
                                 @endforeach
                             </select>
                         </div>
-                    </div> --}}
+                    </div>
 
                     <div class="row m-3">
                         <label class="col-sm-2 col-form-label fw-bold" for="remarks">備考</label>
@@ -64,6 +64,6 @@
     </div>
 
 @include('admin.groups.courseSelect')
-{{-- @include('admin.groups.userSelect') --}}
+@include('admin.groups.userSelect')
 </body>
 </html>
