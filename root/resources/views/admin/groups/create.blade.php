@@ -28,7 +28,7 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="course">所属コース</label>
+                        <label class="col-sm-2 col-form-label fw-bold">所属コース</label>
                         <div class="col-sm-10">
                             <select class="form-select" name="course[]" id="course" multiple>
                                 <option disabled>コースを選んでください</option>
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="user">所属ユーザー</label>
+                        <label class="col-sm-2 col-form-label fw-bold">所属ユーザー</label>
                         <div class="col-sm-10">
                             <select class="form-select" name="user[]" id="user" multiple>
                                 <option disabled>ユーザーを選択してください</option>
