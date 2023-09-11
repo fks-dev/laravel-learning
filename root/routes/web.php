@@ -42,6 +42,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
+            Route::get('{group}', 'show')->name('.show');
             Route::get('{group}/edit', 'edit')->name('.edit');
             Route::patch('{group}', 'update')->name('.update');
             Route::delete('{group}', 'destroy')->name('.destroy');
