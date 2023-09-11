@@ -46,6 +46,21 @@ class User extends Authenticatable
 
     public function Groups()
     {
-        return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id');
+        return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id')->withTimestamps();
+    }
+
+    // ユーザーが削除された時に、IDに紐づく中間テーブルの値も削除される
+    protected static function boot()
+    {
+        parent::boot();
+        static::deleting(function ($user) {
+            $user->UsersGroupsTable()->delete();
+        });
+    }
+
+    // users_groupsテーブルとのリレーション
+    public function UsersGroupsTable()
+    {
+        return $this->hasMany(UsersGroup::class, 'user_id', 'id');
     }
 }
