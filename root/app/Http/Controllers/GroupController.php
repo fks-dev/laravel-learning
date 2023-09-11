@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreGroupRequest;
 use App\Http\Requests\UpdateGroupRequest;
+use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\User;
@@ -53,15 +54,31 @@ class GroupController extends Controller
             $group->Users()->attach($user);
         }
 
-        return redirect()->route('group.index')->with('message', 'グループを登録しました');
+        return redirect()->route('group.index')->with('message', $request->group_name.'を登録しました');
+    }
+
+    /**
+     * Display the specified resource.
+     */
+    public function show(Group $group)
+    {
+        return view('admin.groups.show', compact('group'));
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group)
+    public function edit(Group $group, Request $request)
     {
-        return view('admin.groups.edit', compact('group'));
+        $courses = Course::all();
+        $users = User::all();
+
+        if ($request) {
+            $show = $request->input('show');
+            $backBtn = route('group.show', $group);
+        }
+
+        return view('admin.groups.edit', compact('courses', 'users', 'group', 'backBtn'));
     }
 
     /**
@@ -69,12 +86,29 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
+        $group->Courses()->detach();
+        $group->Users()->detach();
+
         $group->update([
             'group_name' => $request->group_name,
             'remarks'    => $request->remarks,
+            'updated_at' => now(),
         ]);
 
-        return redirect()->route('group.index')->with('message', 'グループを編集しました');
+        $courses = $request->input('course', []);
+        $users = $request->input('user', []);
+
+        foreach ($courses as $courseId) {
+            $course = Course::find($courseId);
+            $group->Courses()->attach($course);
+        }
+
+        foreach ($users as $userId) {
+            $user = User::find($userId);
+            $group->Users()->attach($user);
+        }
+
+        return redirect()->route('group.index')->with('message', $request->group_name.'を編集しました');
 
     }
 
