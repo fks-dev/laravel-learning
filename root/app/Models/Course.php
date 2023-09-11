@@ -23,6 +23,12 @@ class Course extends Model
         static::creating(function ($model) {
             $model->position = Course::max('position') + 1;
         });
+
+        // ユーザーが削除された時に、IDに紐づく中間テーブルの値も削除される
+        static::deleting(function ($course) {
+            $course->GroupsCoursesTable()->delete();
+        });
+
     }
 
     public function contents()
@@ -32,6 +38,13 @@ class Course extends Model
 
     public function Groups()
     {
-        return $this->belongsToMany(Group::class, 'groups_courses', 'course_id', 'group_id');
+        return $this->belongsToMany(Group::class, 'groups_courses', 'course_id', 'group_id')->withTimestamps();
     }
+
+    // groups_coursesテーブルとのリレーション
+    public function GroupsCoursesTable()
+    {
+        return $this->hasMany(GroupsCourse::class, 'course_id', 'id');
+    }
+
 }
