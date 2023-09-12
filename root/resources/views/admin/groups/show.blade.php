@@ -5,10 +5,10 @@
     <title>コース</title>
 </head>
 <body>
-    <div class="container">
+    <div class="container mt-3 border">
         <a href="{{ route('group.index') }}">&lt;&lt;戻る</a>
         <h2 class="mt-3">{{ $group->group_name }}</h2>
-        <div class="d-flex border">
+        <div class="d-flex">
             <div class="p-3">
                 <h3>所属コース</h3>
                 <div>
@@ -50,6 +50,14 @@
                             onClick="return confirm('本当に削除しますか？');">
                         </form>
                     </div>
+                </div>
+            </div>
+        </div>
+        <div class="p-3">
+            <h3>備考</h3>
+            <div class="border">
+                <div class="p-2">
+                    <p>{!! nl2br(htmlspecialchars($group->remarks)) !!}</p>
                 </div>
             </div>
         </div>
