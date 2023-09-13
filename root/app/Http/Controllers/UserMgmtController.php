@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
@@ -19,7 +20,7 @@ class UserMgmtController extends Controller
      */
     public function index()
     {
-        $users = User::with('courses')->get();
+        $users = User::all();
         $logins = UserLog::all();
 
         return view('admin.userMgmt.index', compact('users', 'logins'));
@@ -85,6 +86,14 @@ class UserMgmtController extends Controller
     }
 
     /**
+     * パスワードの変更
+     */
+    public function password(User $user)
+    {
+        return view('admin.userMgmt.password', compact('user'));
+    }
+
+    /**
      * Update the specified resource in storage.
      */
     public function update(UpdateUserMgmtRequest $request, User $user)
@@ -93,7 +102,6 @@ class UserMgmtController extends Controller
 
         $user->update([
             'username'     => $request->username,
-            'password'     => Hash::make($request->password),
             'mail_address' => $request->mail_address,
         ]);
 
@@ -105,6 +113,22 @@ class UserMgmtController extends Controller
         }
 
         return redirect()->route('userMgmt.index')->with('message', $request->username.'の情報を更新しました');
+    }
+
+    /**
+     * パスワードの更新
+     */
+    public function changePassword(PasswordRequest $request, User $user)
+    {
+        if (!Hash::check($request->password, $user->password)) {
+            return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
+        }
+
+        $user->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return redirect()->route('userMgmt.index')->with('message', 'パスワードが変更されました');
     }
 
     /**
