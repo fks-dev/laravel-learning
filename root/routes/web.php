@@ -54,6 +54,8 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
             Route::get('{admin}/edit', 'edit')->name('.edit');
+            Route::get('{admin}/password', 'password')->name('.password');
+            Route::post('{admin}/password', 'changePassword')->name('.changePassword');
             Route::patch('{admin}', 'update')->name('.update');
             Route::delete('{admin}', 'destroy')->name('.destroy');
             // CSVエクスポート
@@ -70,6 +72,8 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
             Route::get('{user}/edit', 'edit')->name('.edit');
+            Route::get('{user}/password', 'password')->name('.password');
+            Route::post('{user}/password', 'changePassword')->name('.changePassword');
             Route::patch('{user}', 'update')->name('.update');
             Route::delete('{user}', 'destroy')->name('.destroy');
             // CSVエクスポート
