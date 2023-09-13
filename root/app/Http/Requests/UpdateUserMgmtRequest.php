@@ -23,7 +23,6 @@ class UpdateUserMgmtRequest extends FormRequest
     {
         return [
             'username'     => 'required | max:255',
-            'password'     => 'required | max:255',
             'mail_address' => 'required | max:255',
         ];
     }
