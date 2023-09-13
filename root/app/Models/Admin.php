@@ -22,4 +22,9 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(AdminLog::class);
     }
+
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
 }

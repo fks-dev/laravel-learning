@@ -44,4 +44,8 @@ class Course extends Model
     }
 
 
+    public function contents()
+    {
+        return $this->hasMany(Content::class);
+    }
 }

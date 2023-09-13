@@ -20,16 +20,17 @@
             </div>
         </div>
 {{-- 登録・削除　メッセージ --}}
-        <div id="message"></div>
-        @if (session('message'))
-            <div class="alert alert-success">
-            {{ session('message') }}
-            </div>
-        @elseif (session('danger'))
-        <div class="alert alert-danger">
-            {{ session('danger') }}
-            </div>
-        @endif
+        <div id="message">
+            @if (session('message'))
+                <div class="alert alert-success">
+                {{ session('message') }}
+                </div>
+            @elseif (session('danger'))
+            <div class="alert alert-danger">
+                {{ session('danger') }}
+                </div>
+            @endif
+        </div>
 
         <div class="alert alert-warning">
             ドラッグ＆ドロップでコースの並び順が変更できます。
@@ -51,7 +52,9 @@
 
                 @foreach ($courses as $course)
                     <tr data-id="{{ $course->id }}">
-                        <td class="align-middle">{{ $course->title }}</td>
+                        <td class="align-middle">
+                            <a href="{{ route('content.index', $course) }}">{{ $course->title }}</a>
+                        </td>
                         <td class="align-middle text-center">{{ $course->created_at }}</td>
                         <td class="align-middle text-center">{{ $course->updated_at }}</td>
 
