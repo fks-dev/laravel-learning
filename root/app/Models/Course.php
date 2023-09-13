@@ -43,7 +43,6 @@ class Course extends Model
         return $this->hasMany(UsersCourse::class, 'course_id', 'id');
     }
 
-
     public function contents()
     {
         return $this->hasMany(Content::class);
