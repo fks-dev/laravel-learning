@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
@@ -70,17 +71,40 @@ class AdminController extends Controller
     }
 
     /**
+     * パスワードの変更
+     */
+    public function password(Admin $admin)
+    {
+        return view('admin.adminMgmt.password', compact('admin'));
+    }
+
+    /**
      * Show the form for editing the specified resource.
      */
     public function update(UpdateAdminRequest $request, Admin $admin)
     {
         $admin->update([
             'username'     => $request->username,
-            'password'     => Hash::make($request->password),
             'mail_address' => $request->mail_address,
         ]);
 
         return redirect()->route('adminMgmt.index')->with('message', $request->username.'の情報を更新しました');
+    }
+
+    /**
+     * パスワードの更新
+     */
+    public function changePassword(PasswordRequest $request, Admin $admin)
+    {
+        if (!Hash::check($request->password, $admin->password)) {
+            return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
+        }
+
+        $admin->update([
+            'password' => Hash::make($request->new_password),
+        ]);
+
+        return redirect()->route('adminMgmt.index')->with('message', 'パスワードが変更されました');
     }
 
     /**
