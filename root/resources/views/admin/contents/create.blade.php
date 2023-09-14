@@ -4,7 +4,7 @@
     <!-- Quill CDN -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-    @include('admin.courses.head')
+    @include('admin.head')
     <title>新規コンテンツ登録</title>
 </head>
 <body>
