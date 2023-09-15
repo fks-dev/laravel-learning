@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container mt-3 border">
-        <a href="{{ route('group.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.group.index') }}">&lt;&lt;戻る</a>
         <h2 class="mt-3">{{ $group->group_name }}</h2>
         <div class="d-flex">
             <div class="p-3">
@@ -41,9 +41,9 @@
                 <div class="mt-2">
                     <div class="fw-bold fs-5">Action</div>
                     <div class="action-btn">
-                        <a class="btn btn-success" href="{{ route('group.edit', $group->id) }}">編集</a>
+                        <a class="btn btn-success" href="{{ route('admin.group.edit', $group->id) }}">編集</a>
 
-                        <form action="{{ route('group.destroy', ['group' => $group, 'show' => 'show']) }}" method="post" class="d-inline">
+                        <form action="{{ route('admin.group.destroy', ['group' => $group, 'show' => 'show']) }}" method="post" class="d-inline">
                             @csrf
                             @method('delete')
                             <input class="btn btn-danger" type="submit" value="削除"
