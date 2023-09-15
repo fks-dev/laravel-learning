@@ -10,6 +10,8 @@
 </head>
 <body>
     <div class="mt-5 container">
+        @include('admin.logoutBtn')
+
         <div class="d-flex justify-content-between">
             <h2 class="col">コース名『{{ $courseTitle[0]['title'] }}』のコンテンツ</h2>
             <div class="col-auto me-2">
