@@ -35,10 +35,10 @@ Route::prefix('admin')->name('admin.login')->controller(AdminLoginController::cl
 
 // 管理ログイン後のみアクセス可
 Route::middleware('auth:admin')->group(function () {
-    // コース画面
-    Route::prefix('admin')->group(function () {
 
-        Route::prefix('courses')->name('course')->controller(CourseController::class)->group(function () {
+    Route::prefix('admin')->name('admin')->group(function () {
+        // コース
+        Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort');
             Route::get('create', 'create')->name('.create');
@@ -49,7 +49,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // コンテンツ
-        Route::prefix('contents')->name('content')->controller(ContentController::class)->group(function () {
+        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function () {
             Route::get('index/{course}', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort'); //並べ替え
             Route::get('create/{course}', 'create')->name('.create');
@@ -62,7 +62,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('{content}', 'destroy')->name('.destroy');
         });
         // 管理者一覧画面
-        Route::prefix('adminMgmt')->name('adminMgmt')->controller(AdminController::class)->group(function() {
+        Route::prefix('adminMgmt')->name('.adminMgmt')->controller(AdminController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -80,7 +80,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // ユーザー　一覧画面
-        Route::prefix('userMgmt')->name('userMgmt')->controller(UserMgmtController::class)->group(function() {
+        Route::prefix('userMgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
