@@ -59,7 +59,7 @@ class AdminController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('adminMgmt.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('admin.adminMgmt.index')->with('message', $request->username.'を登録しました');
     }
 
     /**
@@ -88,7 +88,7 @@ class AdminController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('adminMgmt.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.adminMgmt.index')->with('message', $request->username.'の情報を更新しました');
     }
 
     /**
@@ -104,7 +104,7 @@ class AdminController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
-        return redirect()->route('adminMgmt.index')->with('message', 'パスワードが変更されました');
+        return redirect()->route('admin.adminMgmt.index')->with('message', 'パスワードが変更されました');
     }
 
     /**
@@ -113,7 +113,7 @@ class AdminController extends Controller
     public function destroy(Admin $admin)
     {
         $admin->delete();
-        return redirect()->route('adminMgmt.index')->with('danger', $admin->username.'を削除しました');
+        return redirect()->route('admin.adminMgmt.index')->with('danger', $admin->username.'を削除しました');
     }
 
     /**
@@ -214,6 +214,6 @@ class AdminController extends Controller
             fclose($handle);
         }
 
-        return redirect()->route('adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
+        return redirect()->route('admin.adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
     }
 }
