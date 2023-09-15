@@ -3,6 +3,7 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ContentController;
 use Illuminate\Support\Facades\Route;
 
@@ -33,7 +34,20 @@ Route::middleware('auth:admin')->group(function () {
     Route::get('admin', function () {
         return view('admin.index');
     })->name('admin.index');
+
+    // グループ画面
     Route::prefix('admin')->name('admin')->group(function () {
+        // グループ
+        Route::prefix('groups')->name('.group')->controller(GroupController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{group}', 'show')->name('.show');
+            Route::get('{group}/edit', 'edit')->name('.edit');
+            Route::patch('{group}', 'update')->name('.update');
+            Route::delete('{group}', 'destroy')->name('.destroy');
+        });
+
         // コース
         Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
