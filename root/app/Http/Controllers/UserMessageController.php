@@ -88,7 +88,7 @@ class UserMessageController extends Controller
             $combinedMessages->count(),
             $perPage,
             $page,
-            ['path' => route('user.message.dust')]
+            ['path' => route('users.message.dust')]
         );
 
         return view('users.messages.dust', compact('paginator', 'action'));
@@ -109,13 +109,13 @@ class UserMessageController extends Controller
     {
         $source = $request->input('source');
         if ($source === 'draft') {
-            $backRoute = route('user.message.draft');
+            $backRoute = route('users.message.draft');
         } elseif ($source === 'send') {
-            $backRoute = route('user.message.sent');
+            $backRoute = route('users.message.sent');
         } elseif ($source === 'dust') {
-            $backRoute = route('user.message.dust');
+            $backRoute = route('users.message.dust');
         } else {
-            $backRoute = route('user.message.index');
+            $backRoute = route('users.message.index');
         }
         $admins = Admin::all();
         $currentPage = Session::get('pageNumber', 1);
@@ -140,11 +140,11 @@ class UserMessageController extends Controller
         if ($action == '送信') {
             $data['action'] = 1;
             UserMessage::create($data);
-            return redirect()->route('user.message.index')->with('message', 'メッセージを送信しました');
+            return redirect()->route('users.message.index')->with('message', 'メッセージを送信しました');
         } else {
             $data['action'] = 0;
             UserMessage::create($data);
-            return redirect()->route('user.message.draft')->with('message', '下書きを保存しました');
+            return redirect()->route('users.message.draft')->with('message', '下書きを保存しました');
         }
     }
 
@@ -156,10 +156,10 @@ class UserMessageController extends Controller
         $source = $request->input('source');
         if ($source === 'dust') {
             $source = true;
-            $backRoute = route('user.message.dust');
+            $backRoute = route('users.message.dust');
         } else {
             $source = false;
-            $backRoute = route('user.message.index');
+            $backRoute = route('users.message.index');
         }
         $admins = Admin::all();
         $currentPage = Session::get('pageNumber', 1);
@@ -169,7 +169,7 @@ class UserMessageController extends Controller
     public function sentShow(UserMessage $message, Request $request)
     {
         $source = true;
-        $backRoute = route('user.message.sent');
+        $backRoute = route('users.message.sent');
         $admins = Admin::all();
         $currentPage = Session::get('pageNumber', 1);
         return view('users.messages.show', compact('message', 'source', 'admins', 'currentPage', 'backRoute'));
@@ -204,7 +204,7 @@ class UserMessageController extends Controller
         if ($action == '下書き') {
             $data['action'] = 2;
             UserMessage::create($data);
-            return redirect()->route('user.message.index', compact('message'))->with('message', '下書きを保存しました');
+            return redirect()->route('users.message.index', compact('message'))->with('message', '下書きを保存しました');
 
         } elseif ($action == '送信') {
             $data['action'] = 1;
@@ -213,7 +213,7 @@ class UserMessageController extends Controller
             $adminMessage = AdminMessage::find($message);
             $adminMessage->is_replied = true;
             $adminMessage->save();
-            return redirect()->route('user.message.index', compact('message'))->with('message', 'メッセージを返信しました');
+            return redirect()->route('users.message.index', compact('message'))->with('message', 'メッセージを返信しました');
         }
     }
 
@@ -260,7 +260,7 @@ class UserMessageController extends Controller
             }
             $data['action'] = 1;
             $message->update($data);
-            return redirect()->route('user.message.index')->with('message', 'メッセージを送信しました');
+            return redirect()->route('users.message.index')->with('message', 'メッセージを送信しました');
         } else {
             if ($message->action == $type[2]) {
                 $data['action'] = 2;
@@ -268,7 +268,7 @@ class UserMessageController extends Controller
                 $data['action'] = 0;
             }
             $message->update($data);
-            return redirect()->route('user.message.draft')->with('message', '下書きを保存しました');
+            return redirect()->route('users.message.draft')->with('message', '下書きを保存しました');
         }
     }
 
@@ -290,10 +290,10 @@ class UserMessageController extends Controller
 
         if ($message->is_hidden == true) {
             $hidden->update(['is_hidden' => false]);
-            return redirect()->route('user.message.dust')->with('success', $message->title . 'を復元しました');
+            return redirect()->route('users.message.dust')->with('success', $message->title . 'を復元しました');
         } else {
             $hidden->update(['is_hidden' => true]);
-            return redirect()->route('user.message.index')->with('danger', $message->title . 'を削除しました');
+            return redirect()->route('users.message.index')->with('danger', $message->title . 'を削除しました');
         }
     }
 }
