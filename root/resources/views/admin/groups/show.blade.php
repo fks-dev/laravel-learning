@@ -41,9 +41,9 @@
                 <div class="mt-2">
                     <div class="fw-bold fs-5">Action</div>
                     <div class="action-btn">
-                        <a class="btn btn-success" href="{{ route('group.edit', $group->id) }}">編集</a>
+                        <a class="btn btn-success" href="{{ route('group.edit', ['group' => $group, 'show' => 'show']) }}">編集</a>
 
-                        <form action="{{ route('group.destroy', ['group' => $group, 'show' => 'show']) }}" method="post" class="d-inline">
+                        <form action="{{ route('group.destroy', $group) }}" method="post" class="d-inline">
                             @csrf
                             @method('delete')
                             <input class="btn btn-danger" type="submit" value="削除"
