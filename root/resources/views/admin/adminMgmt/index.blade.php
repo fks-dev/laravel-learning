@@ -21,20 +21,20 @@
         <div class="d-flex justify-content-between">
             <h2 class="me-4">管理者一覧</h2>
             <div class="me-auto">
-                <a class="btn btn-info" href="{{ route('userMgmt.index') }}">⇆ ユーザー 一覧</a>
+                <a class="btn btn-info" href="{{ route('admin.userMgmt.index') }}">⇆ ユーザー 一覧</a>
             </div>
             <div class="col-auto">
-                <form action="{{ route('adminMgmt.csv') }}" method="POST">
+                <form action="{{ route('admin.adminMgmt.csv') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">エクスポート</button>
                 </form>
             </div>
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('adminMgmt.import') }}">インポート</a>
+                <a class="btn btn-primary" href="{{ route('admin.adminMgmt.import') }}">インポート</a>
             </div>
 
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('adminMgmt.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.adminMgmt.create')}}">&plus;追加</a>
             </div>
 
         </div>
@@ -107,9 +107,9 @@
                             <td class="align-middle text-center">{{ $admin->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('adminMgmt.edit', $admin->id) }}">編集</a>
+                                <a class="btn btn-success edit-btn" href="{{ route('admin.adminMgmt.edit', $admin->id) }}">編集</a>
 
-                                <form action="{{ route('adminMgmt.destroy', $admin) }}" method="post" class="d-inline">
+                                <form action="{{ route('admin.adminMgmt.destroy', $admin) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
