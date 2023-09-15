@@ -6,11 +6,11 @@
 </head>
 <body>
 <div class="mt-3 container">
-    <a href="{{ route('user.message.draft') }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
+    <a href="{{ route('users.message.draft') }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
     <div class="border">
         <div class="p-2 bg-secondary text-white">先生にメッセージを作成</div>
 
-        <form action="{{ route('user.message.update', $message) }}" method="post">
+        <form action="{{ route('users.message.update', $message) }}" method="post">
             @csrf
             @method('patch')
             <div class="mx-5 px-5">
