@@ -10,10 +10,10 @@
     <div class="d-flex justify-content-between">
         <h2 class="col">ゴミ箱</h2>
         <div class="col-auto">
-            <a class="btn btn-primary" href="{{ route('user.message.create', ['source' => 'dust'])}}">&plus;追加</a>
-            <a class="btn btn-info" href="{{ route('user.message.index')}}">受信</a>
-            <a class="btn btn-success" href="{{ route('user.message.draft')}}">下書き</a>
-            <a class="btn btn-secondary" href="{{ route('user.message.sent')}}">送信済み</a>
+            <a class="btn btn-primary" href="{{ route('users.message.create', ['source' => 'dust'])}}">&plus;追加</a>
+            <a class="btn btn-info" href="{{ route('users.message.index')}}">受信</a>
+            <a class="btn btn-success" href="{{ route('users.message.draft')}}">下書き</a>
+            <a class="btn btn-secondary" href="{{ route('users.message.sent')}}">送信済み</a>
         </div>
     </div>
 
@@ -35,7 +35,7 @@
             @foreach ($paginator as $message)
                 <tr data-id="{{ $message }}">
                     <td class="align-middle">
-                        <a href="{{ route('user.message.show', ['message' => $message, 'source' => 'dust']) }}">
+                        <a href="{{ route('users.message.show', ['message' => $message, 'source' => 'dust']) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
                     </td>
@@ -57,7 +57,7 @@
                     <td class="text-center">
                         <form
                         action="{{ $message->is_hidden == 0 && $message->deleted_at != null ?
-                        route('user.message.restore', $message) :route('user.message.hidden', $message) }}"
+                        route('users.message.restore', $message) :route('users.message.hidden', $message) }}"
                         method="post" class="d-inline">
                             @csrf
                             <input class="btn btn-danger" name='action' type="submit" value="復元"
