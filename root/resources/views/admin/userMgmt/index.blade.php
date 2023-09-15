@@ -22,20 +22,20 @@
         <div class="d-flex justify-content-between">
             <h2 class="me-4">ユーザー 一覧</h2>
             <div class="me-auto">
-                <a class="btn btn-info" href="{{ route('adminMgmt.index') }}">⇆ 管理者一覧</a>
+                <a class="btn btn-info" href="{{ route('admin.adminMgmt.index') }}">⇆ 管理者一覧</a>
             </div>
             <div class="col-auto">
-                <form action="{{ route('userMgmt.csv') }}" method="POST">
+                <form action="{{ route('admin.userMgmt.csv') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">エクスポート</button>
                 </form>
             </div>
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('userMgmt.import') }}">インポート</a>
+                <a class="btn btn-primary" href="{{ route('admin.userMgmt.import') }}">インポート</a>
             </div>
 
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('userMgmt.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.userMgmt.create')}}">&plus;追加</a>
             </div>
 
         </div>
@@ -116,9 +116,9 @@
                             <td class="align-middle text-center">{{ $user->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('userMgmt.edit', $user->id) }}">編集</a>
+                                <a class="btn btn-success edit-btn" href="{{ route('admin.userMgmt.edit', $user->id) }}">編集</a>
 
-                                <form action="{{ route('userMgmt.destroy', $user) }}" method="post" class="d-inline">
+                                <form action="{{ route('admin.userMgmt.destroy', $user) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
