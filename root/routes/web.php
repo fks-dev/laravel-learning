@@ -62,7 +62,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('{content}', 'destroy')->name('.destroy');
         });
         // 管理者一覧画面
-        Route::prefix('adminMgmt')->name('.adminMgmt')->controller(AdminController::class)->group(function() {
+        Route::prefix('admin-mgmt')->name('.adminMgmt')->controller(AdminController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -80,7 +80,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // ユーザー　一覧画面
-        Route::prefix('userMgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
+        Route::prefix('user-mgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
