@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('adminMgmt.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.adminMgmt.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">インポート</div>
             <div class="m-3">
@@ -28,7 +28,7 @@
                     <div class="p-2 border border-dark border-start-0">メールアドレス</div>
                 </div>
 
-                <form action="{{ route('adminMgmt.import.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.adminMgmt.import.store') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="ms-3">
                         <input type="file" name="csv_file">
