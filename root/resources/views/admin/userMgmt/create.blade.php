@@ -12,11 +12,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('userMgmt.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.userMgmt.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規ユーザー登録</div>
 
-            <form action="{{ route('userMgmt.store') }}" method="post">
+            <form action="{{ route('admin.userMgmt.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 
@@ -55,7 +55,7 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-3 col-form-label fw-bold" for="course">所属コース</label>
+                        <label class="col-sm-3 col-form-label fw-bold">所属コース</label>
                         <div class="col-sm-9">
                             <select class="form-select" name="course[]" id="course" multiple>
                                 <option disabled>コースを選んでください</option>
