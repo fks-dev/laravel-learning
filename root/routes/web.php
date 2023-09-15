@@ -1,6 +1,8 @@
 <?php
 
 use App\Http\Controllers\CourseController;
+use App\Http\Controllers\AdminController;
+use App\Http\Controllers\UserMgmtController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\ContentController;
@@ -21,18 +23,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-// 管理ログイン画面
-Route::get('/admin/login', [AdminLoginController::class, 'create'])->name('admin.login');
-// 管理ログイン
-Route::post('/admin/login', [AdminLoginController::class, 'store'])->name('admin.login.store');
-// 管理ログアウト
-Route::delete('/admin/login', [AdminLoginController::class, 'destroy'])->name('admin.login.destroy');
+Route::prefix('admin')->name('admin.login')->controller(AdminLoginController::class)->group(function () {
+    // 管理ログイン画面
+    Route::get('', 'create')->name('');
+    // 管理ログイン
+    Route::post('', 'store')->name('.store');
+    // 管理ログアウト
+    Route::delete('', 'destroy')->name('.destroy');
+});
+
 
 // 管理ログイン後のみアクセス可
 Route::middleware('auth:admin')->group(function () {
-    Route::get('admin', function () {
-        return view('admin.index');
-    })->name('admin.index');
     Route::prefix('admin')->name('admin')->group(function () {
         // コース
         Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
@@ -57,6 +59,41 @@ Route::middleware('auth:admin')->group(function () {
             Route::patch('{content}', 'update')->name('.update');
             Route::post('{content}/duplicate', 'duplicate')->name('.duplicate'); //複製
             Route::delete('{content}', 'destroy')->name('.destroy');
+        });
+        // 管理者一覧画面
+        Route::prefix('admin-mgmt')->name('.adminMgmt')->controller(AdminController::class)->group(function() {
+            Route::get('', 'index')->name('.index');
+            Route::post('search', 'search')->name('.search');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{admin}/edit', 'edit')->name('.edit');
+            Route::get('{admin}/password', 'password')->name('.password');
+            Route::post('{admin}/password', 'changePassword')->name('.changePassword');
+            Route::patch('{admin}', 'update')->name('.update');
+            Route::delete('{admin}', 'destroy')->name('.destroy');
+            // CSVエクスポート
+            Route::post('csv', 'csv')->name('.csv');
+            // CSVインポート
+            Route::get('import', 'import')->name('.import');
+            Route::post('import', 'importStore')->name('.import.store');
+        });
+
+        // ユーザー　一覧画面
+        Route::prefix('user-mgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
+            Route::get('', 'index')->name('.index');
+            Route::post('search', 'search')->name('.search');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{user}/edit', 'edit')->name('.edit');
+            Route::get('{user}/password', 'password')->name('.password');
+            Route::post('{user}/password', 'changePassword')->name('.changePassword');
+            Route::patch('{user}', 'update')->name('.update');
+            Route::delete('{user}', 'destroy')->name('.destroy');
+            // CSVエクスポート
+            Route::post('csv', 'csv')->name('.csv');
+            // CSVインポート
+            Route::get('import', 'import')->name('.import');
+            Route::post('import', 'importStore')->name('.import.store');
         });
     });
 });
