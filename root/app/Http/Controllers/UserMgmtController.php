@@ -118,10 +118,14 @@ class UserMgmtController extends Controller
     /**
      * パスワードの更新
      */
-    public function changePassword(PasswordRequest $request, User $user)
+    public function changePassword(Request $request, User $user)
     {
+        $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
+
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
+        }elseif ($validator->fails()) {
+            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user->update([
