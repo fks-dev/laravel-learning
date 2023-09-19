@@ -75,9 +75,9 @@ class GroupController extends Controller
         $show = $request->input('show');
 
         if ($show === 'show') {
-            $backBtn = route('group.show', $group);
+            $backBtn = route('admin.group.show', $group);
         }else {
-            $backBtn = route('group.index');
+            $backBtn = route('admin.group.index');
         }
 
         return view('admin.groups.edit', compact('courses', 'users', 'group', 'backBtn'));
