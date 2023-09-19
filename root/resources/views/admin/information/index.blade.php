@@ -3,6 +3,7 @@
 <head>
     @include('admin.courses.head')
     @include('admin.sort')
+    <link rel="stylesheet" href="/css/information.css">
     <title>お知らせ一覧</title>
 </head>
 <body>
@@ -29,10 +30,10 @@
         <table class="table table-striped" id="sortable">
             <thead>
                 <tr>
-                    <th class="col-3" data-sort="asc">タイトル</th>
+                    <th class="col-3 sort" data-sort="asc">タイトル</th>
                     <th class="col-3">対象グループ</th>
-                    <th class="col-2 text-center" data-sort="asc">作成日時</th>
-                    <th class="col-2 text-center" data-sort="asc">更新日時</th>
+                    <th class="col-2 text-center sort" data-sort="asc">作成日時</th>
+                    <th class="col-2 text-center sort" data-sort="asc">更新日時</th>
                     <th class="col-2 text-center">Actions</th>
                     </tr>
             </thead>
