@@ -20,12 +20,12 @@ class User extends Authenticatable
         'mail_address',
     ];
 
-    public function UserLogs()
+    public function userLogs()
     {
         return $this->hasMany(UserLog::class);
     }
 
-    public function Courses()
+    public function courses()
     {
         return $this->belongsToMany(Course::class, 'users_courses', 'user_id', 'course_id');
     }
@@ -35,12 +35,12 @@ class User extends Authenticatable
     {
         parent::boot();
         static::deleting(function ($user) {
-            $user->UsersCoursesTable()->delete();
+            $user->usersCoursesTable()->delete();
         });
     }
 
     // users_coursesテーブルとのリレーション
-    public function UsersCoursesTable()
+    public function usersCoursesTable()
     {
         return $this->hasMany(UsersCourse::class, 'user_id', 'id');
     }
