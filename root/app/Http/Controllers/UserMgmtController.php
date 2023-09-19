@@ -72,7 +72,7 @@ class UserMgmtController extends Controller
             $user->Courses()->attach($course);
         }
 
-        return redirect()->route('userMgmt.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('admin.userMgmt.index')->with('message', $request->username.'を登録しました');
     }
 
     /**
@@ -112,7 +112,7 @@ class UserMgmtController extends Controller
             $user->Courses()->attach($course);
         }
 
-        return redirect()->route('userMgmt.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.userMgmt.index')->with('message', $request->username.'の情報を更新しました');
     }
 
     /**
@@ -132,7 +132,7 @@ class UserMgmtController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
-        return redirect()->route('userMgmt.index')->with('message', 'パスワードが変更されました');
+        return redirect()->route('admin.userMgmt.index')->with('message', 'パスワードが変更されました');
     }
 
     /**
@@ -141,7 +141,7 @@ class UserMgmtController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('userMgmt.index')->with('danger', $user->username.'を削除しました');
+        return redirect()->route('admin.userMgmt.index')->with('danger', $user->username.'を削除しました');
     }
 
     /**
@@ -150,7 +150,7 @@ class UserMgmtController extends Controller
     public function csv()
     {
         $csvRecords = self::getAdminCsvRecords();
-        return self::streamDownloadCsv('userMgmt.csv', $csvRecords);
+        return self::streamDownloadCsv('admin.userMgmt.csv', $csvRecords);
     }
 
     // レコード取得
@@ -242,7 +242,7 @@ class UserMgmtController extends Controller
             fclose($handle);
         }
 
-        return redirect()->route('userMgmt.index')->with('message', 'CSVファイルをインポートしました。');
+        return redirect()->route('admin.userMgmt.index')->with('message', 'CSVファイルをインポートしました。');
     }
 
 }
