@@ -13,7 +13,7 @@ class InformationController extends Controller
      */
     public function index()
     {
-        $informations = Information::all();
+        $informations = Information::orderByDesc('updated_at')->get();
         return view('admin.information.index', compact('informations'));
     }
 
