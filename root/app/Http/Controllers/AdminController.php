@@ -94,7 +94,7 @@ class AdminController extends Controller
     /**
      * パスワードの更新
      */
-    public function changePassword(Request $request, Admin $admin)
+    public function changeAdminPassword(Request $request, Admin $admin)
     {
         $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
