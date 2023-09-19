@@ -6,6 +6,7 @@ use App\Http\Controllers\UserMgmtController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\InformationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -94,6 +95,15 @@ Route::middleware('auth:admin')->group(function () {
             // CSVインポート
             Route::get('create-csv', 'createCsv')->name('.create-csv');
             Route::post('store-csv', 'storeCsv')->name('.store-csv');
+        });
+
+        Route::prefix('information')->name('admin.information')->controller(InformationController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{information}/edit', 'edit')->name('.edit');
+            Route::patch('{information}', 'update')->name('.update');
+            Route::delete('{information}', 'destroy')->name('.destroy');
         });
     });
 });
