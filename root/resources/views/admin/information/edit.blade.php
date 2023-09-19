@@ -37,7 +37,7 @@
                             <select class="form-control" name="group" id="group">
                                 <option value="1">グループ1</option>
                             </select>
-                            <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
+                            <input class="form-contorl btn btn-primary mt-3" type="submit" value="更新">
                         </div>
                     </div>
 
