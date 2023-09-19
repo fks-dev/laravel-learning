@@ -75,8 +75,8 @@ Route::middleware('auth:admin')->group(function () {
             // CSVエクスポート
             Route::post('csv', 'csv')->name('.csv');
             // CSVインポート
-            Route::get('import', 'import')->name('.import');
-            Route::post('import', 'importStore')->name('.import.store');
+            Route::get('import', 'createCsv')->name('.import');
+            Route::post('import', 'storeCsv')->name('.import.store');
         });
 
         // ユーザー　一覧画面
@@ -93,8 +93,8 @@ Route::middleware('auth:admin')->group(function () {
             // CSVエクスポート
             Route::post('csv', 'csv')->name('.csv');
             // CSVインポート
-            Route::get('import', 'import')->name('.import');
-            Route::post('import', 'importStore')->name('.import.store');
+            Route::get('import', 'createCsv')->name('.import');
+            Route::post('import', 'storeCsv')->name('.import.store');
         });
     });
 });

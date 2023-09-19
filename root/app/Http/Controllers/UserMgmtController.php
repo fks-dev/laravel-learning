@@ -201,9 +201,9 @@ class UserMgmtController extends Controller
     }
 
     /**
-     * インポート画面
+     * CSVインポート画面
      */
-    public function import()
+    public function createCsv()
     {
         return view('admin.userMgmt.import');
     }
@@ -211,7 +211,7 @@ class UserMgmtController extends Controller
     /**
      * CSVインポート
      */
-    public function importStore(Request $request)
+    public function storeCsv(Request $request)
     {
         $validator = Validator::make($request->all(), [
             'csv_file' => 'required | mimes:csv,txt',
