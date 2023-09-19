@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="container mt-3 border">
-        <a href="{{ route('group.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.group.index') }}">&lt;&lt;戻る</a>
         <h2 class="mt-3">{{ $group->group_name }}</h2>
         <div class="d-flex">
             <div class="p-3">

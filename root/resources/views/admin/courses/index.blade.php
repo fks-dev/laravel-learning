@@ -13,7 +13,7 @@
         <div class="d-flex justify-content-between">
             <h2 class="col">コース一覧</h2>
             <div class="col-auto">
-                <a class="btn btn-primary" href="{{ route('course.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.course.create')}}">&plus;追加</a>
             </div>
         </div>
 {{-- 登録・削除　メッセージ --}}
@@ -50,15 +50,15 @@
                 @foreach ($courses as $course)
                     <tr data-id="{{ $course->id }}">
                         <td class="align-middle">
-                            <a href="{{ route('content.index', $course) }}">{{ $course->title }}</a>
+                            <a href="{{ route('admin.content.index', $course) }}">{{ $course->title }}</a>
                         </td>
                         <td class="align-middle text-center">{{ $course->created_at }}</td>
                         <td class="align-middle text-center">{{ $course->updated_at }}</td>
 
                         <td class="text-center">
-                            <a class="btn btn-success" href="{{ route('course.edit', $course->id) }}">編集</a>
+                            <a class="btn btn-success" href="{{ route('admin.course.edit', $course->id) }}">編集</a>
 
-                            <form action="{{ route('course.destroy', $course) }}" method="post" class="d-inline">
+                            <form action="{{ route('admin.course.destroy', $course) }}" method="post" class="d-inline">
                                 @csrf
                                 @method('delete')
                                 <input class="btn btn-danger" type="submit" value="削除"

@@ -11,7 +11,7 @@
         <div class="d-flex justify-content-between">
             <h2 class="col">グループ一覧</h2>
             <div class="col-auto">
-                <a class="btn btn-primary" href="{{ route('group.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.group.create')}}">&plus;追加</a>
             </div>
         </div>
 {{-- 登録・削除　メッセージ --}}
@@ -43,7 +43,7 @@
                     <tr data-id="{{ $group->id }}">
                         <td class="align-middle">
                             <div class="scrollable">
-                                <a href="{{ route('group.show', $group) }}">{{ $group->group_name }}</a>
+                                <a href="{{ route('admin.group.show', $group) }}">{{ $group->group_name }}</a>
                             </div>
                         </td>
                         <td class="align-middle">
@@ -61,9 +61,9 @@
 
                         <td class="text-center">
                             <div class="action-btn">
-                            <a class="btn btn-success" href="{{ route('group.edit', $group->id) }}">編集</a>
+                            <a class="btn btn-success" href="{{ route('admin.group.edit', $group->id) }}">編集</a>
 
-                            <form action="{{ route('group.destroy', $group) }}" method="post" class="d-inline">
+                            <form action="{{ route('admin.group.destroy', $group) }}" method="post" class="d-inline">
                                 @csrf
                                 @method('delete')
                                 <input class="btn btn-danger" type="submit" value="削除"

@@ -54,7 +54,7 @@ class GroupController extends Controller
             $group->Users()->attach($user);
         }
 
-        return redirect()->route('group.index')->with('message', $request->group_name.'を登録しました');
+        return redirect()->route('admin.group.index')->with('message', $request->group_name.'を登録しました');
     }
 
     /**
@@ -110,7 +110,7 @@ class GroupController extends Controller
             $group->Users()->attach($user);
         }
 
-        return redirect()->route('group.index')->with('message', $request->group_name.'を編集しました');
+        return redirect()->route('admin.group.index')->with('message', $request->group_name.'を編集しました');
 
     }
 
@@ -120,6 +120,6 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         $group->delete();
-        return redirect()->route('group.index')->with('danger', $group->group_name . 'を削除しました');
+        return redirect()->route('admin.group.index')->with('danger', $group->group_name . 'を削除しました');
     }
 }

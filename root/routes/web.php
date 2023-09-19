@@ -36,9 +36,9 @@ Route::middleware('auth:admin')->group(function () {
     })->name('admin.index');
 
     // グループ画面
-    Route::prefix('admin')->group(function () {
+    Route::prefix('admin')->name('admin')->group(function () {
         // グループ
-        Route::prefix('groups')->name('group')->controller(GroupController::class)->group(function () {
+        Route::prefix('groups')->name('.group')->controller(GroupController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
@@ -49,7 +49,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // コース
-        Route::prefix('courses')->name('course')->controller(CourseController::class)->group(function () {
+        Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort');
             Route::get('create', 'create')->name('.create');
@@ -60,7 +60,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // コンテンツ
-        Route::prefix('contents')->name('content')->controller(ContentController::class)->group(function () {
+        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function () {
             Route::get('index/{course}', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort'); //並べ替え
             Route::get('create/{course}', 'create')->name('.create');
