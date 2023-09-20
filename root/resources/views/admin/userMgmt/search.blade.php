@@ -6,7 +6,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const formData = new FormData(this);
 
         try {
-            const response = await fetch("{{ route('userMgmt.search') }}", {
+            const response = await fetch("{{ route('admin.userMgmt.search') }}", {
                 method: 'POST',
                 body: formData,
             });
@@ -35,9 +35,9 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     <td class="align-middle text-center">${formatDate}</td>
 
                     <td class="text-center">
-                        <a class="btn btn-success edit-btn" href="userMgmt/${result.id}/edit">編集</a>
+                        <a class="btn btn-success edit-btn" href="user-mgmt/${result.id}/edit">編集</a>
 
-                        <form action="userMgmt/${result.id}" method="post" class="d-inline">
+                        <form action="user-mgmt/${result.id}" method="post" class="d-inline">
                             @csrf
                             @method('delete')
                             <input class="btn btn-danger" type="submit" value="削除"

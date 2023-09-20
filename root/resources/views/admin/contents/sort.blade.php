@@ -35,7 +35,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
         const positions = Array.from(rows).map(row => row.dataset.id);
 
         try {
-            const response = await fetch("{{ route('content.sort') }}", {
+            const response = await fetch("{{ route('admin.content.sort') }}", {
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json",
