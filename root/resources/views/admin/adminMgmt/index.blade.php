@@ -18,13 +18,13 @@
                 <a class="btn btn-info" href="{{ route('admin.userMgmt.index') }}">⇆ ユーザー 一覧</a>
             </div>
             <div class="col-auto">
-                <form action="{{ route('admin.adminMgmt.csv') }}" method="POST">
+                <form action="{{ route('admin.adminMgmt.download-csv') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">エクスポート</button>
                 </form>
             </div>
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.adminMgmt.import') }}">インポート</a>
+                <a class="btn btn-primary" href="{{ route('admin.adminMgmt.create-csv') }}">インポート</a>
             </div>
 
             <div class="col-auto  ms-2">

@@ -72,10 +72,10 @@ Route::middleware('auth:admin')->group(function () {
             Route::patch('{admin}', 'update')->name('.update');
             Route::delete('{admin}', 'destroy')->name('.destroy');
             // CSVエクスポート
-            Route::post('csv', 'downloadCsv')->name('.csv');
+            Route::post('download-csv', 'downloadCsv')->name('.download-csv');
             // CSVインポート
-            Route::get('import', 'createCsv')->name('.import');
-            Route::post('import', 'storeCsv')->name('.import.store');
+            Route::get('create-csv', 'createCsv')->name('.create-csv');
+            Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
 
         // ユーザー　一覧画面
@@ -90,10 +90,10 @@ Route::middleware('auth:admin')->group(function () {
             Route::patch('{user}', 'update')->name('.update');
             Route::delete('{user}', 'destroy')->name('.destroy');
             // CSVエクスポート
-            Route::post('csv', 'downloadCsv')->name('.csv');
+            Route::post('download-csv', 'downloadCsv')->name('.download-csv');
             // CSVインポート
-            Route::get('import', 'createCsv')->name('.import');
-            Route::post('import', 'storeCsv')->name('.import.store');
+            Route::get('create-csv', 'createCsv')->name('.create-csv');
+            Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
     });
 });

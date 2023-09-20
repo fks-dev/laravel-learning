@@ -27,7 +27,7 @@
                     <div class="p-2 border border-dark border-start-0">メールアドレス</div>
                 </div>
 
-                <form action="{{ route('admin.adminMgmt.import.store') }}" method="POST" enctype="multipart/form-data">
+                <form action="{{ route('admin.adminMgmt.store-csv') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="ms-3">
                         <input type="file" name="csv_file">
