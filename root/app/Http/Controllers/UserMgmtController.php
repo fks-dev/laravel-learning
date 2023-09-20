@@ -7,7 +7,7 @@ use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
-use App\Models\UserLog;
+use App\Models\UserLogin;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -21,7 +21,7 @@ class UserMgmtController extends Controller
     public function index()
     {
         $users = User::all();
-        $logins = UserLog::all();
+        $logins = UserLogin::all();
 
         return view('admin.userMgmt.index', compact('users', 'logins'));
     }

@@ -22,7 +22,7 @@ class User extends Authenticatable
 
     public function userLogs()
     {
-        return $this->hasMany(UserLog::class);
+        return $this->hasMany(UserLogin::class);
     }
 
     public function courses()

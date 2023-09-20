@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class UserLog extends Model
+class UserLogin extends Model
 {
     use HasFactory;
 
@@ -13,5 +13,7 @@ class UserLog extends Model
     {
         return $this->belongsTo(User::class);
     }
+
+    protected $table = 'user_logs';
 
 }
