@@ -147,10 +147,11 @@ class UserMgmtController extends Controller
     /**
      * CSVファイルダウンロード
      */
-    public function csv()
+    public function downloadCsv()
     {
+        $fileName = 'user.csv';
         $csvRecords = self::getAdminCsvRecords();
-        return self::streamDownloadCsv('admin.userMgmt.csv', $csvRecords);
+        return self::streamDownloadCsv($fileName, $csvRecords);
     }
 
     // レコード取得

@@ -123,10 +123,11 @@ class AdminController extends Controller
     /**
      * CSVファイルダウンロード
      */
-    public function csv()
+    public function downloadCsv()
     {
+        $fileName = 'admin.csv';
         $csvRecords = self::getAdminCsvRecords();
-        return self::streamDownloadCsv('adminMgmt.csv', $csvRecords);
+        return self::streamDownloadCsv($fileName, $csvRecords);
     }
 
     // レコード取得

@@ -72,7 +72,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::patch('{admin}', 'update')->name('.update');
             Route::delete('{admin}', 'destroy')->name('.destroy');
             // CSVエクスポート
-            Route::post('csv', 'csv')->name('.csv');
+            Route::post('csv', 'downloadCsv')->name('.csv');
             // CSVインポート
             Route::get('import', 'createCsv')->name('.import');
             Route::post('import', 'storeCsv')->name('.import.store');
@@ -90,7 +90,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::patch('{user}', 'update')->name('.update');
             Route::delete('{user}', 'destroy')->name('.destroy');
             // CSVエクスポート
-            Route::post('csv', 'csv')->name('.csv');
+            Route::post('csv', 'downloadCsv')->name('.csv');
             // CSVインポート
             Route::get('import', 'createCsv')->name('.import');
             Route::post('import', 'storeCsv')->name('.import.store');
