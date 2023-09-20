@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class AdminLog extends Model
+class AdminLogin extends Model
 {
     use HasFactory;
 
@@ -13,5 +13,7 @@ class AdminLog extends Model
     {
         return $this->belongsTo(Admin::class);
     }
+
+    protected $table = 'admin_logs';
 
 }

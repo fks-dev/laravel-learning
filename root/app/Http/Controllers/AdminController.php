@@ -7,7 +7,7 @@ use App\Http\Requests\PasswordRequest;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
-use App\Models\AdminLog;
+use App\Models\AdminLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
@@ -19,7 +19,7 @@ class AdminController extends Controller
     public function index(Request $request)
     {
         $admins = Admin::all();
-        $logins = AdminLog::all();
+        $logins = AdminLogin::all();
 
         return view('admin.adminMgmt.index', compact('admins', 'logins'));
     }
