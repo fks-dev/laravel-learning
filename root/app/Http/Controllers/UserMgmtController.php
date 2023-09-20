@@ -174,6 +174,16 @@ class UserMgmtController extends Controller
         return $csvRecords;
     }
 
+    // CSV or TSV
+    private static function determineContentType($separator)
+    {
+        if ($separator === ',') {
+            'text/csv';
+        } elseif ($separator === "\t") {
+            'text/tab-separated-values';
+        }
+    }
+
     // CSVストリームダウンロード
     private static function streamDownloadCsv(
         string $name,
@@ -183,12 +193,7 @@ class UserMgmtController extends Controller
         string $escape = "\\",
         string $eol = "\r\n",
     ) {
-        $contentType = 'text/plain';
-        if ($separator === ',') {
-            $contentType = 'text/csv';
-        } elseif ($separator === "\t") {
-            $contentType = 'text/tab-separated-values';
-        }
+        $contentType = self::determineContentType($separator);
         $headers = ['Content-Type' => $contentType];
 
         return response()->streamDownload(function () use ($fieldList, $separator, $enclosure, $escape, $eol) {
