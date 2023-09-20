@@ -202,9 +202,10 @@ class AdminController extends Controller
         if (($handle = fopen($file, 'r')) !== false) {
 
             // ヘッダー部分の読み込み
-            $header = fgetcsv($handle, 1000, ',');
+            $length = 1000;
+            $header = fgetcsv($handle, $length, ',');
 
-            while (($data = fgetcsv($handle, 1000, ',')) !== false) {
+            while (($data = fgetcsv($handle, $length, ',')) !== false) {
                 $username = $data[1];
                 $password = Hash::make('admin');
                 $mail_address = $data[2];
