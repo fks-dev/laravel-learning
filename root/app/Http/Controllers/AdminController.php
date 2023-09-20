@@ -135,13 +135,12 @@ class AdminController extends Controller
     {
         $admins = Admin::withTrashed()->get();
         $csvRecords = [
-            ['ID', 'ユーザー名', 'パスワード', 'メールアドレス', '削除日時', '作成日時', '更新日時'],
+            ['ID', 'ユーザー名', 'メールアドレス', '削除日時', '作成日時', '更新日時'],
         ];
         foreach ($admins as $admin) {
             $csvRecords[] = [
                 $admin->id,
                 $admin->username,
-                $admin->password,
                 $admin->mail_address,
                 $admin->deleted_at,
                 $admin->created_at,
@@ -207,8 +206,8 @@ class AdminController extends Controller
 
             while (($data = fgetcsv($handle, 1000, ',')) !== false) {
                 $username = $data[1];
-                $password = Hash::make($data[2]);
-                $mail_address = $data[3];
+                $password = Hash::make('admin');
+                $mail_address = $data[2];
 
                 Admin::create([
                     'username' => $username,

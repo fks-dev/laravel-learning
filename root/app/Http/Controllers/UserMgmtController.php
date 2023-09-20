@@ -159,13 +159,12 @@ class UserMgmtController extends Controller
     {
         $users = User::withTrashed()->get();
         $csvRecords = [
-            ['ID', 'ユーザー名', 'パスワード', 'メールアドレス', '削除日時', '作成日時', '更新日時'],
+            ['ID', 'ユーザー名', 'メールアドレス', '削除日時', '作成日時', '更新日時'],
         ];
         foreach ($users as $user) {
             $csvRecords[] = [
                 $user->id,
                 $user->username,
-                $user->password,
                 $user->mail_address,
                 $user->deleted_at,
                 $user->created_at,
@@ -231,8 +230,8 @@ class UserMgmtController extends Controller
 
             while (($data = fgetcsv($handle, 1000, ',')) !== false) {
                 $username = $data[1];
-                $password = Hash::make($data[2]);
-                $mail_address = $data[3];
+                $password = Hash::make('test');
+                $mail_address = $data[2];
 
                 User::create([
                     'username' => $username,
