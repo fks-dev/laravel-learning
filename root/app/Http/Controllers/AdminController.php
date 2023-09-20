@@ -198,9 +198,11 @@ class AdminController extends Controller
         }
 
         $file = $request->file('csv_file');
+        $handle = fopen($file, 'r');
 
-        if (($handle = fopen($file, 'r')) !== false) {
-
+        if (!$handle) {
+            return redirect()->route('adminMgmt.index')->with('danger', 'CSVファイルを開けませんでした。');
+        } else {
             // ヘッダー部分の読み込み
             $length = 1000;
             $header = fgetcsv($handle, $length, ',');
@@ -217,8 +219,7 @@ class AdminController extends Controller
                 ]);
             }
             fclose($handle);
+            return redirect()->route('admin.adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
         }
-
-        return redirect()->route('admin.adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
     }
 }
