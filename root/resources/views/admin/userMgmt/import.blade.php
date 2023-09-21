@@ -30,7 +30,7 @@
                 <form action="{{ route('admin.userMgmt.store-csv') }}" method="POST" enctype="multipart/form-data">
                     @csrf
                     <div class="ms-3">
-                        <input type="file" name="csv_file">
+                        <input type="file" name="csv_file" accept="text/csv">
                     </div>
                     <div class="ms-3 my-3">
                         <button type="submit" class="btn btn-primary">インポート</button>
