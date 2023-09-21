@@ -14,7 +14,7 @@ class AdminLoginController extends Controller
     /**
      * ログイン画面
      */
-    public function create(): View
+    public function index(): View
     {
         return view('admin.login');
     }
@@ -22,7 +22,7 @@ class AdminLoginController extends Controller
     /**
      * ログイン
      */
-    public function store(AdminLoginRequest $request): RedirectResponse
+    public function login(AdminLoginRequest $request): RedirectResponse
     {
         $request->authenticate();
         $request->session()->regenerate();
@@ -50,7 +50,7 @@ class AdminLoginController extends Controller
     /**
      * ログアウト
      */
-    public function destroy(Request $request): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('admin')->logout();
         $request->session()->invalidate();

@@ -23,13 +23,13 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->name('admin.login')->controller(AdminLoginController::class)->group(function () {
+Route::prefix('admin')->name('admin')->controller(AdminLoginController::class)->group(function () {
     // 管理ログイン画面
-    Route::get('', 'create')->name('');
+    Route::get('', 'index')->name('');
     // 管理ログイン
-    Route::post('', 'store')->name('.store');
+    Route::post('', 'login')->name('.login');
     // 管理ログアウト
-    Route::delete('', 'destroy')->name('.destroy');
+    Route::delete('', 'logout')->name('.logout');
 });
 
 

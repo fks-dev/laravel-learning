@@ -7,7 +7,7 @@
 <body>
     <div class="mt-5 container">
         <h2>管理者ログイン画面</h2>
-        <form action="{{ route('admin.login.store') }}" method="POST">
+        <form action="{{ route('admin.login') }}" method="POST">
             @csrf
             <div>
                 <label for="username">ユーザー名：</label>
