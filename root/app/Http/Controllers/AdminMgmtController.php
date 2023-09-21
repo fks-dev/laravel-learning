@@ -151,12 +151,12 @@ class AdminMgmtController extends Controller
     }
 
     // CSV or TSV
-    private static function determineContentType($separator)
+    private static function determineContentType(string $separator)
     {
         if ($separator === ',') {
-            'text/csv';
+           return 'text/csv';
         } elseif ($separator === "\t") {
-            'text/tab-separated-values';
+           return 'text/tab-separated-values';
         }
     }
 
