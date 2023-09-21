@@ -227,27 +227,28 @@ class UserMgmtController extends Controller
         }
 
         $file = $request->file('csv_file');
+        $handle = fopen($file, 'r');
 
-        if (($handle = fopen($file, 'r')) !== false) {
-
-            // ヘッダー部分の読み込み
-            $length = 1000;
-            $header = fgetcsv($handle, $length, ',');
-
-            while (($data = fgetcsv($handle, $length, ',')) !== false) {
-                $username = $data[1];
-                $password = Hash::make('test');
-                $mail_address = $data[2];
-
-                User::create([
-                    'username' => $username,
-                    'password' => $password,
-                    'mail_address' => $mail_address,
-                ]);
-            }
-            fclose($handle);
+        if (!$handle) {
+            return redirect()->route('adminMgmt.index')->with('danger', 'CSVファイルを開けませんでした。');
         }
 
+        // ヘッダー部分の読み込み
+        $length = 1000;
+        $header = fgetcsv($handle, $length, ',');
+
+        while (($data = fgetcsv($handle, $length, ',')) !== false) {
+            $username = $data[1];
+            $password = Hash::make('test');
+            $mail_address = $data[2];
+
+            User::create([
+                'username' => $username,
+                'password' => $password,
+                'mail_address' => $mail_address,
+            ]);
+        }
+        fclose($handle);
         return redirect()->route('admin.userMgmt.index')->with('message', 'CSVファイルをインポートしました。');
     }
 

@@ -207,24 +207,24 @@ class AdminMgmtController extends Controller
 
         if (!$handle) {
             return redirect()->route('adminMgmt.index')->with('danger', 'CSVファイルを開けませんでした。');
-        } else {
-            // ヘッダー部分の読み込み
-            $length = 1000;
-            $header = fgetcsv($handle, $length, ',');
-
-            while (($data = fgetcsv($handle, $length, ',')) !== false) {
-                $username = $data[1];
-                $password = Hash::make('admin');
-                $mail_address = $data[2];
-
-                Admin::create([
-                    'username' => $username,
-                    'password' => $password,
-                    'mail_address' => $mail_address,
-                ]);
-            }
-            fclose($handle);
-            return redirect()->route('admin.adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
         }
+
+        // ヘッダー部分の読み込み
+        $length = 1000;
+        $header = fgetcsv($handle, $length, ',');
+
+        while (($data = fgetcsv($handle, $length, ',')) !== false) {
+            $username = $data[1];
+            $password = Hash::make('admin');
+            $mail_address = $data[2];
+
+            Admin::create([
+                'username' => $username,
+                'password' => $password,
+                'mail_address' => $mail_address,
+            ]);
+        }
+        fclose($handle);
+        return redirect()->route('admin.adminMgmt.index')->with('message', 'CSVファイルをインポートしました。');
     }
 }
