@@ -8,7 +8,7 @@
 </head>
 <body>
     <h2>ユーザーログイン画面</h2>
-    <form action="{{ route('users.login.store') }}" method="POST">
+    <form action="{{ route('users.login') }}" method="POST">
         @csrf
         <div>
             <label for="username">ユーザー名：</label>

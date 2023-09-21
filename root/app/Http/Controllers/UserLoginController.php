@@ -14,7 +14,7 @@ class UserLoginController extends Controller
     /**
      * ログイン画面
      */
-    public function create(): View
+    public function index(): View
     {
         return view('users.login');
     }
@@ -22,7 +22,7 @@ class UserLoginController extends Controller
     /**
      * ログイン
      */
-    public function store(UserLoginRequest $request): RedirectResponse
+    public function login(UserLoginRequest $request): RedirectResponse
     {
         $request->authenticate();
         $request->session()->regenerate();
@@ -49,11 +49,11 @@ class UserLoginController extends Controller
     /**
      * ログアウト
      */
-    public function destroy(Request $request): RedirectResponse
+    public function logout(Request $request): RedirectResponse
     {
         Auth::guard('web')->logout();
         $request->session()->invalidate();
         $request->session()->regenerateToken();
-        return to_route('users.login');
+        return to_route('users.login.index');
     }
 }

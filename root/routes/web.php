@@ -99,11 +99,11 @@ Route::middleware('auth:admin')->group(function () {
 });
 
 // ユーザーログイン画面
-Route::get('/users/login', [UserLoginController::class, 'create'])->name('users.login');
+Route::get('/users/login', [UserLoginController::class, 'index'])->name('users.login.index');
 // ユーザーログイン
-Route::post('/users/login', [UserLoginController::class, 'store'])->name('users.login.store');
+Route::post('/users/login', [UserLoginController::class, 'login'])->name('users.login');
 // ユーザーログアウト
-Route::delete('/users/login', [UserLoginController::class, 'destroy'])->name('users.login.destroy');
+Route::delete('/users/login', [UserLoginController::class, 'logout'])->name('users.logout');
 
 // ユーザーログイン後のみアクセス可
 Route::middleware('auth:web')->group(function () {
