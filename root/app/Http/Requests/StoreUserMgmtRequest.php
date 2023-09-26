@@ -27,4 +27,18 @@ class StoreUserMgmtRequest extends FormRequest
             'mail_address' => 'required | max:255',
         ];
     }
+
+    /**
+     * Get custom attributes for validator errors.
+     *
+     * @return array
+     */
+    public function attributes(): array
+    {
+        return [
+            'username'     => 'ユーザーID',
+            'password'     => 'パスワード',
+            'mail_address' => 'メールアドレス',
+        ];
+    }
 }
