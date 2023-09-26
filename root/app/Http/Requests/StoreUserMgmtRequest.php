@@ -22,7 +22,7 @@ class StoreUserMgmtRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username'     => 'required | max:255',
+            'username'     => 'required | max:255 | unique:users',
             'password'     => 'required | max:255',
             'mail_address' => 'required | max:255',
         ];

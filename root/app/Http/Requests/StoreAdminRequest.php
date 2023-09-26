@@ -22,7 +22,7 @@ class StoreAdminRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'username'     => 'required | max:255',
+            'username'     => 'required | max:255 | unique:admins',
             'password'     => 'required | max:255',
             'mail_address' => 'required | max:255',
         ];
