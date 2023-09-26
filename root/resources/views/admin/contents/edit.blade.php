@@ -4,12 +4,12 @@
     <!-- Quill CDN -->
     <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
 
-    @include('admin.courses.head')
+    @include('admin.head')
     <title>コンテンツ編集</title>
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('content.index', $content->course_id) }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.content.index', $content->course_id) }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">コンテンツ編集</div>
 
@@ -24,7 +24,7 @@
             @endif
 
             {{-- フォーム --}}
-            <form action="{{ route('content.update', $content) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.content.update', $content) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 @method('patch')
                 <div class="mx-5 px-5">

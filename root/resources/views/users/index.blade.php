@@ -13,7 +13,7 @@
             <p>あなたはユーザーです。</p>
             <p>ログイン中です。</p>
         @endauth
-        <form action="{{ route('users.login.destroy') }}" method="POST">
+        <form action="{{ route('users.logout') }}" method="POST">
             @method('DELETE')
             @csrf
             <button type="submit">ログアウト</button>

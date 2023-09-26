@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.courses.head')
+    @include('admin.head')
     <title>コンテンツ</title>
 </head>
 <body>
     <div class="container">
-        <a href="{{ route('content.index', $content->course_id) }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.content.index', $content->course_id) }}">&lt;&lt;戻る</a>
 
         <h2 class="m-3">{{ $content->title }}</h2>
         <p class="m-3">作成者:{{ $admin->username }}</p>
@@ -32,7 +32,7 @@
         </video>
 
         @elseif ($content->document_file_path != null)
-            <a href="{{ route('content.download', $content) }}" class="btn btn-primary">ダウンロード開始</a>
+            <a href="{{ route('admin.content.download', $content) }}" class="btn btn-primary">ダウンロード開始</a>
 
         @elseif ($content->content_type == 6)
             <p>制限時間　　　：　{{ $content->time_limit_minutes }}分</p>
