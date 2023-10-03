@@ -29,7 +29,7 @@ class UpdateAdminRequest extends FormRequest
                 'max:255',
                 Rule::unique('admins')->ignore($this->admin->id),
             ],
-            'mail_address' => 'required | max:255',
+            'mail_address' => 'required|max:255',
         ];
     }
 

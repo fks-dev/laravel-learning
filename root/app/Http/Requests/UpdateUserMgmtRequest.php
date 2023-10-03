@@ -29,7 +29,7 @@ class UpdateUserMgmtRequest extends FormRequest
                 'max:255',
                 Rule::unique('users')->ignore($this->user->id),
             ],
-            'mail_address' => 'required | max:255',
+            'mail_address' => 'required|max:255',
         ];
     }
 
