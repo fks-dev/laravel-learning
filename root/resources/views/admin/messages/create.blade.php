@@ -38,8 +38,8 @@
                     <label class="col-sm-2 col-form-label fw-bold" for="text">本文</label>
                     <div class="col-sm-10">
                         <textarea class="form-control" name="text" id="text" rows="5"></textarea>
-                        <input class="form-contorl btn btn-primary mt-3" type="submit" name="action" value="送信">
-                        <input class="form-contorl btn btn-secondary mt-3" type="submit" name="action" value="下書き">
+                        <button class="form-contorl btn btn-primary mt-3" type="submit" name="{{ App\Enums\ActionEnum::SEND->value }}">送信</button>
+                        <button class="form-contorl btn btn-secondary mt-3" type="submit" name="{{ App\Enums\ActionEnum::DRAFT->value }}">下書き</button>
                     </div>
                 </div>
             </div>
