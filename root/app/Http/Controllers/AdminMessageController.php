@@ -304,7 +304,7 @@ class AdminMessageController extends Controller
     {
         $hidden = UserMessage::find($message->id);
 
-        if ($message->is_hidden == true) {
+        if ($message->is_hidden) {
             $hidden->update(['is_hidden' => false]);
             return redirect()->route('admin.message.dust')->with('success', $message->title . 'を復元しました');
         } else {
