@@ -16,6 +16,7 @@ use App\Models\User;
 
 class AdminMessageController extends Controller
 {
+
     private const DEFAULT_PAGE_NUMBER = 1;
 
     /**
@@ -153,12 +154,12 @@ class AdminMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($action == '送信') {
-            $data['action'] = 1;
+        if ($request->has(ActionEnum::SEND->value)) {
+            $data['action'] = ActionEnum::SEND;
             AdminMessage::create($data);
             return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
         } else {
-            $data['action'] = 0;
+            $data['action'] = ActionEnum::DRAFT;
             AdminMessage::create($data);
             return redirect()->route('admin.message.draft')->with('message', '下書きを保存しました');
         }
@@ -218,13 +219,12 @@ class AdminMessageController extends Controller
             'reply_message_id' => $message,
         ];
 
-        if ($action == '下書き') {
-            $data['action'] = 2;
+        if ($request->has(ActionEnum::DRAFT->value)) {
+            $data['action'] = ActionEnum::NO_REPLY;
             AdminMessage::create($data);
             return redirect()->route('admin.message.index', compact('message'))->with('message', '下書きを保存しました');
-
-        } elseif ($action == '送信') {
-            $data['action'] = 1;
+        } else {
+            $data['action'] = ActionEnum::SEND;
             AdminMessage::create($data);
             // 返信フラッグ
             $userMessage = UserMessage::find($message);
@@ -242,12 +242,11 @@ class AdminMessageController extends Controller
         $users = $this->getUserAll();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
 
-        if ($message->action = 2) {
+        if ($message->action === ActionEnum::NO_REPLY) {
             $reply = UserMessage::find($message->reply_message_id);
         } else {
             $reply = null;
         }
-
         return view('admin.messages.edit', compact('message', 'users', 'reply', 'currentPage'));
     }
 
@@ -265,25 +264,21 @@ class AdminMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($action == '送信') {
-            if ($message->action == $type[2]) {
-                // 返信フラッグ
-                $userMessage = UserMessage::find($message->reply_message_id);
-                $userMessage->is_replied = true;
-                $userMessage->save();
-            }
-            $data['action'] = 1;
-            $message->update($data);
-            return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
-        } else {
-            if ($message->action == $type[2]) {
-                $data['action'] = 2;
-            } else {
-                $data['action'] = 0;
-            }
+        if ($request->has(ActionEnum::DRAFT->value)) {
+            $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
             $message->update($data);
             return redirect()->route('admin.message.draft')->with('message', '下書きを保存しました');
         }
+
+        if ($message->action === ActionEnum::NO_REPLY) {
+            // 返信フラッグ
+            $userMessage = UserMessage::find($message->reply_message_id);
+            $userMessage->is_replied = true;
+            $userMessage->save();
+        }
+        $data['action'] = ActionEnum::SEND;
+        $message->update($data);
+        return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
     }
 
     /**
