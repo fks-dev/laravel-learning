@@ -42,12 +42,12 @@ class AdminMessageController extends Controller
         $adminId = $this->getAdminId();
         $messages = UserMessage::withTrashed()
                                 ->where('admin_id', $adminId)
-                                ->where('action', '=', 1)
-                                ->where('is_hidden', '=', 0)
+                                ->where('action', '=', ActionEnum::SEND)
+                                ->where('is_hidden', '=', false)
                                 ->orderByDesc('id')
                                 ->paginate(10);
         $users = $this->getUserAll();
-        Session::put('pageNumber', $request->get('page', 1));
+        Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('admin.messages.index', compact('messages', 'users'));
     }
 
@@ -58,11 +58,11 @@ class AdminMessageController extends Controller
     {
         $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
-                                ->where('action', '!=', 1)
+                                ->where('action', '!=', ActionEnum::SEND)
                                 ->orderByDesc('updated_at')
                                 ->paginate(10);
         $users = $this->getUserAll();
-        Session::put('pageNumber', $request->get('page', 1));
+        Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('admin.messages.draftIndex', compact('messages', 'users'));
     }
 
@@ -73,11 +73,11 @@ class AdminMessageController extends Controller
     {
         $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
-                                ->where('action', '=', 1)
+                                ->where('action', '=', ActionEnum::SEND)
                                 ->orderByDesc('updated_at')
                                 ->paginate(10);
         $users = $this->getUserAll();
-        Session::put('pageNumber', $request->get('page', 1));
+        Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('admin.messages.sentIndex', compact('messages', 'users'));
     }
 
@@ -89,18 +89,17 @@ class AdminMessageController extends Controller
         $adminId = $this->getAdminId();
         $adminMessages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
         $messages = $adminMessages->map(function ($item) {
-            $item->is_hidden = 0;
+            $item->is_hidden = false;
             return $item;
         });
-        $userMessages  = UserMessage::where('is_hidden', 1)->where('admin_id', $adminId)->get();
+        $userMessages  = UserMessage::where('is_hidden', true)->where('admin_id', $adminId)->get();
         $combinedMessages = $messages->concat($userMessages)->sortByDesc('updated_at');
-        Session::put('pageNumber', $request->get('page', 1));
+        Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         $action = ActionEnum::cases();
 
         // カスタムページネーション
         $perPage = 10;
-        $page = request('page', 1);
-        Session::put('pageNumber', $page);
+        $page = $request->get('page', self::DEFAULT_PAGE_NUMBER);
         $paginator = new LengthAwarePaginator(
             $combinedMessages->forPage($page, $perPage),
             $combinedMessages->count(),
@@ -136,7 +135,7 @@ class AdminMessageController extends Controller
             $backRoute = route('admin.message.index');
         }
         $users = $this->getUserAll();
-        $currentPage = Session::get('pageNumber', 1);
+        $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('admin.messages.create', compact('users', 'currentPage', 'backRoute'));
     }
 
@@ -179,7 +178,7 @@ class AdminMessageController extends Controller
             $backRoute = route('admin.message.index');
         }
         $users = $this->getUserAll();
-        $currentPage = Session::get('pageNumber', 1);
+        $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('admin.messages.show', compact('message', 'source', 'users', 'currentPage', 'backRoute'));
     }
 
@@ -191,9 +190,8 @@ class AdminMessageController extends Controller
         $source = true;
         $backRoute = route('admin.message.sent');
         $users = $this->getUserAll();
-        $currentPage = Session::get('pageNumber', 1);
+        $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('admin.messages.show', compact('message', 'source', 'users', 'currentPage', 'backRoute'));
-
     }
 
     /**
@@ -242,7 +240,7 @@ class AdminMessageController extends Controller
     public function edit(AdminMessage $message)
     {
         $users = $this->getUserAll();
-        $currentPage = Session::get('pageNumber', 1);
+        $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
 
         if ($message->action = 2) {
             $reply = UserMessage::find($message->reply_message_id);
