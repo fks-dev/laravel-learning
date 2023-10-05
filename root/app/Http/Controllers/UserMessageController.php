@@ -16,6 +16,8 @@ use App\Models\Admin;
 
 class UserMessageController extends Controller
 {
+    private const DEFAULT_PAGE_NUMBER = 1;
+
     /**
      * Display a listing of the resource.
      */
