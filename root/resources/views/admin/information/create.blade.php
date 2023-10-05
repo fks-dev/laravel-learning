@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.courses.head')
+    @include('admin.head')
     <title>新規お知らせ登録</title>
 </head>
 <body>
