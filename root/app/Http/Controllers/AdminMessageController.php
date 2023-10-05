@@ -19,11 +19,20 @@ class AdminMessageController extends Controller
     private const DEFAULT_PAGE_NUMBER = 1;
 
     /**
+     * ログインユーザーのIDを取得
+     */
+    private function getAdminId()
+    {
+        return Auth::guard('admin')->user()->id;
+    }
+
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $adminId = Auth::guard('admin')->user()->id;
+        $adminId = $this->getAdminId();
         $messages = UserMessage::withTrashed()
                                 ->where('admin_id', $adminId)
                                 ->where('action', '=', 1)
@@ -40,7 +49,7 @@ class AdminMessageController extends Controller
      */
     public function draft(Request $request)
     {
-        $adminId = Auth::guard('admin')->user()->id;
+        $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
                                 ->where('action', '!=', 1)
                                 ->orderByDesc('updated_at')
@@ -55,7 +64,7 @@ class AdminMessageController extends Controller
      */
     public function sent(Request $request)
     {
-        $adminId = Auth::guard('admin')->user()->id;
+        $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
                                 ->where('action', '=', 1)
                                 ->orderByDesc('updated_at')
@@ -70,7 +79,7 @@ class AdminMessageController extends Controller
      */
     public function dust(Request $request)
     {
-        $adminId  = Auth::guard('admin')->user()->id;
+        $adminId = $this->getAdminId();
         $adminMessages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
         $messages = $adminMessages->map(function ($item) {
             $item->is_hidden = 0;
@@ -129,8 +138,7 @@ class AdminMessageController extends Controller
      */
     public function store(StoreMessageRequest $request)
     {
-        $adminId = Auth::guard('admin')->user()->id;
-        $action = $request->input('action');
+        $adminId = $this->getAdminId();
 
         $data = [
             'admin_id' => $adminId,
@@ -195,8 +203,7 @@ class AdminMessageController extends Controller
      */
     public function replyStore(StoreMessageRequest $request, $message)
     {
-        $adminId = Auth::guard('admin')->user()->id;
-        $action = $request->input('action');
+        $adminId = $this->getAdminId();
 
         $data = [
             'admin_id' => $adminId,
@@ -244,9 +251,7 @@ class AdminMessageController extends Controller
      */
     public function update(UpdateMessageRequest $request, AdminMessage $message)
     {
-        $adminId = Auth::guard('admin')->user()->id;
-        $action = $request->input('action');
-        $type = ActionEnum::cases();
+        $adminId = $this->getAdminId();
 
         $data = [
             'admin_id' => $adminId,
