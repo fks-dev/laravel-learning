@@ -17,7 +17,7 @@ class Group extends Model
         'updated_at',
     ];
 
-    public function Courses()
+    public function courses()
     {
         return $this->belongsToMany(Course::class, 'groups_courses', 'group_id', 'course_id')->withTimestamps();
     }

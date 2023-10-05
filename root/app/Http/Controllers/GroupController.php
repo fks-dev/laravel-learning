@@ -46,7 +46,7 @@ class GroupController extends Controller
 
         foreach ($courses as $courseId) {
             $course = Course::find($courseId);
-            $group->Courses()->attach($course);
+            $group->courses()->attach($course);
         }
 
         foreach ($users as $userId) {
@@ -88,7 +88,7 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
-        $group->Courses()->detach();
+        $group->courses()->detach();
         $group->Users()->detach();
 
         $group->update([
@@ -101,7 +101,7 @@ class GroupController extends Controller
 
         foreach ($courses as $courseId) {
             $course = Course::find($courseId);
-            $group->Courses()->attach($course);
+            $group->courses()->attach($course);
         }
 
         foreach ($users as $userId) {
