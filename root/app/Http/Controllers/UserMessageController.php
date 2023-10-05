@@ -19,11 +19,19 @@ class UserMessageController extends Controller
     private const DEFAULT_PAGE_NUMBER = 1;
 
     /**
+     * ログインユーザーのIDを取得
+     */
+    private function getUserId()
+    {
+        return Auth::guard('web')->user()->id;
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $userId = Auth::guard('web')->user()->id;
+        $userId = $this->getUserId();
         $messages = AdminMessage::withTrashed()
                                 ->where('user_id', $userId)
                                 ->where('action', '=', 1)
@@ -40,7 +48,7 @@ class UserMessageController extends Controller
      */
     public function draft(Request $request)
     {
-        $userId = Auth::guard('web')->user()->id;
+        $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
                                 ->where('action', '!=', 1)
                                 ->orderByDesc('updated_at')
@@ -55,7 +63,7 @@ class UserMessageController extends Controller
      */
     public function sent(Request $request)
     {
-        $userId = Auth::guard('web')->user()->id;
+        $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
                                 ->where('action', '=', 1)
                                 ->orderByDesc('updated_at')
@@ -70,7 +78,7 @@ class UserMessageController extends Controller
      */
     public function dust(Request $request)
     {
-        $userId  = Auth::guard('web')->user()->id;
+        $userId = $this->getUserId();
         $userMessages = UserMessage::onlyTrashed()->where('user_id', $userId)->get();
         $messages = $userMessages->map(function ($item) {
             $item->is_hidden = 0;
@@ -129,8 +137,7 @@ class UserMessageController extends Controller
      */
     public function store(StoreMessageRequest $request)
     {
-        $userId = Auth::guard('web')->user()->id;
-        $action = $request->input('action');
+        $userId = $this->getUserId();
 
         $data = [
             'admin_id' => $request->admin_id,
@@ -192,8 +199,7 @@ class UserMessageController extends Controller
      */
     public function replyStore(StoreMessageRequest $request, $message)
     {
-        $userId = Auth::guard('web')->user()->id;
-        $action = $request->input('action');
+        $userId = $this->getUserId();
 
         $data = [
             'admin_id' => $request->admin_id,
@@ -242,9 +248,7 @@ class UserMessageController extends Controller
      */
     public function update(UpdateMessageRequest $request, UserMessage $message)
     {
-        $userId = Auth::guard('web')->user()->id;
-        $action = $request->input('action');
-        $type = ActionEnum::cases();
+        $userId = $this->getUserId();
 
         $data = [
             'admin_id' => $request->admin_id,
