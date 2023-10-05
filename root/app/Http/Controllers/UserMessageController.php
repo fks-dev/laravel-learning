@@ -27,6 +27,14 @@ class UserMessageController extends Controller
     }
 
     /**
+     * 管理者情報取得
+     */
+    private function getAdminAll()
+    {
+        return Admin::all();
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -38,7 +46,7 @@ class UserMessageController extends Controller
                                 ->where('is_hidden', '=', 0)
                                 ->orderByDesc('id')
                                 ->paginate(10);
-        $admins = Admin::all();
+        $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', 1));
         return view('users.messages.index', compact('messages', 'admins'));
     }
@@ -53,7 +61,7 @@ class UserMessageController extends Controller
                                 ->where('action', '!=', 1)
                                 ->orderByDesc('updated_at')
                                 ->paginate(10);
-        $admins = Admin::all();
+        $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', 1));
         return view('users.messages.draftIndex', compact('messages', 'admins'));
     }
@@ -68,7 +76,7 @@ class UserMessageController extends Controller
                                 ->where('action', '=', 1)
                                 ->orderByDesc('updated_at')
                                 ->paginate(10);
-        $admins = Admin::all();
+        $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', 1));
         return view('users.messages.sentIndex', compact('messages', 'admins'));
     }
@@ -127,7 +135,7 @@ class UserMessageController extends Controller
         } else {
             $backRoute = route('users.message.index');
         }
-        $admins = Admin::all();
+        $admins = $this->getAdminAll();
         $currentPage = Session::get('pageNumber', 1);
         return view('users.messages.create', compact('admins', 'currentPage', 'backRoute'));
     }
@@ -170,8 +178,7 @@ class UserMessageController extends Controller
             $source = false;
             $backRoute = route('users.message.index');
         }
-        $admins = Admin::all();
-        $currentPage = Session::get('pageNumber', 1);
+        $admins = $this->getAdminAll();
         return view('users.messages.show', compact('message', 'admins', 'source', 'currentPage', 'backRoute'));
     }
 
@@ -179,7 +186,7 @@ class UserMessageController extends Controller
     {
         $source = true;
         $backRoute = route('users.message.sent');
-        $admins = Admin::all();
+        $admins = $this->getAdminAll();
         $currentPage = Session::get('pageNumber', 1);
         return view('users.messages.show', compact('message', 'source', 'admins', 'currentPage', 'backRoute'));
 
@@ -230,7 +237,7 @@ class UserMessageController extends Controller
      */
     public function edit(UserMessage $message)
     {
-        $admins = Admin::all();
+        $admins = $this->getAdminAll();
         $currentPage = Session::get('pageNumber', 1);
 
         if ($message->action = 2) {
