@@ -15,6 +15,7 @@ return new class extends Migration
             $table->id();
             $table->string('title')->comment('タイトル');
             $table->text('text')->nullable()->comment('本文');
+            $table->bigInteger('admin_id')->comment('管理者ID');
             $table->softDeletesDatetime();
             $table->datetimes();
         });

@@ -14,6 +14,7 @@ class Information extends Model
     protected $fillable = [
         'title',
         'text',
+        'admin_id',
     ];
 
 }
