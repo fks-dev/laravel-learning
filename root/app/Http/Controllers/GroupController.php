@@ -94,7 +94,6 @@ class GroupController extends Controller
         $group->update([
             'group_name' => $request->group_name,
             'remarks'    => $request->remarks,
-            'updated_at' => now(),
         ]);
 
         $courses = $request->input('course', []);
