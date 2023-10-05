@@ -97,6 +97,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
 
+        //お知らせ画面一覧
         Route::prefix('information')->name('admin.information')->controller(InformationController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
