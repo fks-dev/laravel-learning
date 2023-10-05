@@ -1,7 +1,7 @@
 <script>
 document.addEventListener("DOMContentLoaded", (event) => {
     // 日付の文字列をDateオブジェクトに変換
-    function parseDate(datestring) {
+    function parseDate(dateString) {
         const [year, month, day] = dateString.split("-");
         return new Date(year, month -1, day);
     }
