@@ -44,10 +44,7 @@ class GroupController extends Controller
         $courses = $request->input('course', []);
         $users = $request->input('user', []);
 
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $group->courses()->attach($course);
-        }
+        $group->courses()->attach(Course::findMany($courses));
 
         foreach ($users as $userId) {
             $user = User::find($userId);
