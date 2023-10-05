@@ -199,7 +199,7 @@ class AdminMessageController extends Controller
      */
     public function reply(UserMessage $message)
     {
-        $user = User::where('id' , $message->user_id)->first();
+        $user = $message->user;
         return view('admin.messages.reply', compact('message', 'user'));
     }
 
