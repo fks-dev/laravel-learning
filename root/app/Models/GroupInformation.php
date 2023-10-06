@@ -6,15 +6,15 @@ use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Information extends Model
+class GroupInformation extends Model
 {
     use HasFactory;
     use SoftDeletes;
 
     protected $fillable = [
-        'title',
-        'text',
-        'admin_id',
+        'group_id',
+        'information_id',
     ];
 
+    protected $table = 'groups_information';
 }

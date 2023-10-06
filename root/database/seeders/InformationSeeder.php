@@ -21,6 +21,7 @@ class InformationSeeder extends Seeder
                     return [
                         'title' => sprintf('お知らせ_%02d', $sequence->index + 1),
                         'text' => Str::random(20),
+                        'admin_id' => 1,
                         'deleted_at' => null,
                         'created_at' => '2023-06-01 01:23:45',
                         'updated_at' => '2023-06-30 21:58:59',

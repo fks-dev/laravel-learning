@@ -11,13 +11,12 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('information', function (Blueprint $table) {
+        Schema::create('groups_information', function (Blueprint $table) {
             $table->id();
-            $table->string('title')->comment('タイトル');
-            $table->text('text')->nullable()->comment('本文');
-            $table->bigInteger('admin_id')->comment('管理者ID');
+            $table->bigInteger('group_id');
+            $table->bigInteger('information_id');
             $table->softDeletesDatetime();
-            $table->datetimes();
+            $table->timestamps();
         });
     }
 
@@ -26,6 +25,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('information');
+        Schema::dropIfExists('groups_information');
     }
 };
