@@ -46,7 +46,7 @@ class AdminMessageController extends Controller
                                 ->where('action', '=', ActionEnum::SEND)
                                 ->where('is_hidden', '=', false)
                                 ->orderByDesc('id')
-                                ->paginate(10);
+                                ->paginate(config('constants.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('admin.messages.index', compact('messages', 'users'));
@@ -61,7 +61,7 @@ class AdminMessageController extends Controller
         $messages = AdminMessage::where('admin_id', $adminId)
                                 ->where('action', '!=', ActionEnum::SEND)
                                 ->orderByDesc('updated_at')
-                                ->paginate(10);
+                                ->paginate(config('constants.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('admin.messages.draftIndex', compact('messages', 'users'));
@@ -76,7 +76,7 @@ class AdminMessageController extends Controller
         $messages = AdminMessage::where('admin_id', $adminId)
                                 ->where('action', '=', ActionEnum::SEND)
                                 ->orderByDesc('updated_at')
-                                ->paginate(10);
+                                ->paginate(config('constants.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('admin.messages.sentIndex', compact('messages', 'users'));
@@ -99,12 +99,12 @@ class AdminMessageController extends Controller
         $action = ActionEnum::cases();
 
         // カスタムページネーション
-        $perPage = 10;
+        $ItemsPerPage = config('constants.ITEMS_PER_PAGE');
         $page = $request->get('page', self::DEFAULT_PAGE_NUMBER);
         $paginator = new LengthAwarePaginator(
-            $combinedMessages->forPage($page, $perPage),
+            $combinedMessages->forPage($page, $ItemsPerPage),
             $combinedMessages->count(),
-            $perPage,
+            $ItemsPerPage,
             $page,
             ['path' => route('admin.message.dust')]
         );
