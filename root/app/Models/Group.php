@@ -36,7 +36,7 @@ class Group extends Model
         });
 
         static::deleting(function ($group) {
-            $group->GroupsCoursesTable()->delete();
+            $group->groupsCoursesTable()->delete();
         });
     }
 
@@ -47,7 +47,7 @@ class Group extends Model
     }
 
     // groups_coursesテーブルとのリレーション
-    public function GroupsCoursesTable()
+    public function groupsCoursesTable()
     {
         return $this->hasMany(GroupsCourse::class, 'group_id', 'id');
     }
