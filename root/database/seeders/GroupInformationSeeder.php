@@ -19,7 +19,7 @@ class GroupInformationSeeder extends Seeder
                 ->sequence(function ($sequence) {
                     return [
                         'group_id' => 1,
-                        'information_id' => 1,
+                        'information_id' => $sequence->index + 1,
                     ];
                 })
                 ->create();
