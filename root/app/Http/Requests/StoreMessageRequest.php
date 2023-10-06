@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ActionEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
-class StoreCourseRequest extends FormRequest
+class StoreMessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,8 +22,7 @@ class StoreCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'  => 'required',
-            'action' => ['required', new ActionEnum],
+            'title'   => 'required|max:255',
         ];
     }
 }
