@@ -85,9 +85,6 @@ class GroupController extends Controller
      */
     public function update(UpdateGroupRequest $request, Group $group)
     {
-        $group->courses()->detach();
-        $group->users()->detach();
-
         $group->update([
             'group_name' => $request->group_name,
             'remarks'    => $request->remarks,
@@ -96,15 +93,8 @@ class GroupController extends Controller
         $courses = $request->input('course', []);
         $users = $request->input('user', []);
 
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $group->courses()->attach($course);
-        }
-
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-            $group->Users()->attach($user);
-        }
+        $group->courses()->sync($courses);
+        $group->users()->sync($users);
 
         return redirect()->route('admin.group.index')->with('message', $request->group_name.'を編集しました');
 
