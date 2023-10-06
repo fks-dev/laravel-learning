@@ -20,9 +20,9 @@ class GroupSeeder extends Seeder
                 ->sequence(function($sequence) {
                     return [
                         'group_name' => sprintf('グループ%d', $sequence->index + 1),
-                        'remarks' => Str::random(20),
-                        'created_at' => now(),
-                        'updated_at' => now(),
+                        'remarks' => sprintf('備考%d', $sequence->index + 1),
+                        'created_at' => '2023-09-01 10:05:00',
+                        'updated_at' => '2023-09-01 10:05:00',
                     ];
                 })->create();
         }
