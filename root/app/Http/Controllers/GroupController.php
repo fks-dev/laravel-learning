@@ -48,7 +48,7 @@ class GroupController extends Controller
 
         foreach ($users as $userId) {
             $user = User::find($userId);
-            $group->Users()->attach($user);
+            $group->users()->attach($user);
         }
 
         return redirect()->route('admin.group.index')->with('message', $request->group_name.'を登録しました');
@@ -86,7 +86,7 @@ class GroupController extends Controller
     public function update(UpdateGroupRequest $request, Group $group)
     {
         $group->courses()->detach();
-        $group->Users()->detach();
+        $group->users()->detach();
 
         $group->update([
             'group_name' => $request->group_name,

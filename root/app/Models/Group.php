@@ -22,7 +22,7 @@ class Group extends Model
         return $this->belongsToMany(Course::class, 'groups_courses', 'group_id', 'course_id')->withTimestamps();
     }
 
-    public function Users()
+    public function users()
     {
         return $this->belongsToMany(User::class, 'users_groups', 'group_id', 'user_id')->withTimestamps();
     }
