@@ -45,11 +45,7 @@ class GroupController extends Controller
         $users = $request->input('user', []);
 
         $group->courses()->attach(Course::findMany($courses));
-
-        foreach ($users as $userId) {
-            $user = User::find($userId);
-            $group->users()->attach($user);
-        }
+        $group->users()->attach(User::findMany($users));
 
         return redirect()->route('admin.group.index')->with('message', $request->group_name.'を登録しました');
     }
