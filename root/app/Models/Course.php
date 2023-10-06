@@ -26,7 +26,7 @@ class Course extends Model
 
         // ユーザーが削除された時に、IDに紐づく中間テーブルの値も削除される
         static::deleting(function ($course) {
-            $course->GroupsCoursesTable()->delete();
+            $course->groupsCoursesTable()->delete();
         });
 
     }
@@ -36,13 +36,13 @@ class Course extends Model
         return $this->hasMany(Content::class);
     }
 
-    public function Groups()
+    public function groups()
     {
         return $this->belongsToMany(Group::class, 'groups_courses', 'course_id', 'group_id')->withTimestamps();
     }
 
     // groups_coursesテーブルとのリレーション
-    public function GroupsCoursesTable()
+    public function groupsCoursesTable()
     {
         return $this->hasMany(GroupsCourse::class, 'course_id', 'id');
     }
