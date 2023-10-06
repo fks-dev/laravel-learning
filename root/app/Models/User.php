@@ -44,7 +44,7 @@ class User extends Authenticatable
         'password' => 'hashed',
     ];
 
-    public function Groups()
+    public function groups()
     {
         return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id')->withTimestamps();
     }
@@ -54,12 +54,12 @@ class User extends Authenticatable
     {
         parent::boot();
         static::deleting(function ($user) {
-            $user->UsersGroupsTable()->delete();
+            $user->usersGroupsTable()->delete();
         });
     }
 
     // users_groupsテーブルとのリレーション
-    public function UsersGroupsTable()
+    public function usersGroupsTable()
     {
         return $this->hasMany(UsersGroup::class, 'user_id', 'id');
     }
