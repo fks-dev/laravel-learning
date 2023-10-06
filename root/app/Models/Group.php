@@ -32,7 +32,7 @@ class Group extends Model
     {
         parent::boot();
         static::deleting(function ($group) {
-            $group->UsersGroupsTable()->delete();
+            $group->usersGroupsTable()->delete();
         });
 
         static::deleting(function ($group) {
@@ -41,7 +41,7 @@ class Group extends Model
     }
 
     // users_groupsテーブルとのリレーション
-    public function UsersGroupsTable()
+    public function usersGroupsTable()
     {
         return $this->hasMany(UsersGroup::class, 'group_id', 'id');
     }
