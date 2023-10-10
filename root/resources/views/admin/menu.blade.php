@@ -9,5 +9,8 @@
         <li class="list-group-item">
             <a class="text-decoration-none" href="{{ route('admin.course.index') }}">コース</a>
         </li>
+        <li class="list-group-item">
+            <a class="text-decoration-none" href="{{ route('admin.group.index') }}">グループ</a>
+        </li>
     </ul>
 </div>

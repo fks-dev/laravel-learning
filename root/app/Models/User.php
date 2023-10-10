@@ -50,6 +50,7 @@ class User extends Authenticatable
         parent::boot();
         static::deleting(function ($user) {
             $user->usersCoursesTable()->delete();
+            $user->usersGroupsTable()->delete();
         });
     }
 
@@ -78,4 +79,15 @@ class User extends Authenticatable
         'email_verified_at' => 'datetime',
         'password' => 'hashed',
     ];
+
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id')->withTimestamps();
+    }
+
+    // users_groupsテーブルとのリレーション
+    public function usersGroupsTable()
+    {
+        return $this->hasMany(UsersGroup::class, 'user_id', 'id');
+    }
 }
