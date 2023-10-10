@@ -3,6 +3,8 @@
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminMgmtController;
 use App\Http\Controllers\UserMgmtController;
+use App\Http\Controllers\AdminMessageController;
+use App\Http\Controllers\UserMessageController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\ContentController;
@@ -96,6 +98,23 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create-csv', 'createCsv')->name('.create-csv');
             Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
+        Route::prefix('messages')->name('admin.message')->controller(AdminMessageController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::get('draft', 'draft')->name('.draft'); //下書き
+            Route::get('sent', 'sent')->name('.sent'); //送信済み
+            Route::get('dust', 'dust')->name('.dust'); //ゴミ箱
+            Route::post('dust/{message}', 'restore')->name('.restore'); //復元
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{message}', 'show')->name('.show');
+            Route::get('{message}/sent', 'sentShow')->name('.sent.show'); //送信済み
+            Route::get('{message}/reply', 'reply')->name('.reply'); //返信メール
+            Route::post('{message}', 'replyStore')->name('.reply.store'); //返信メール保存
+            Route::get('{message}/edit', 'edit')->name('.edit');
+            Route::patch('{message}', 'update')->name('.update');
+            Route::delete('{message}', 'destroy')->name('.destroy');
+            Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
+        });
     });
 });
 
@@ -109,4 +128,25 @@ Route::delete('/users/login', [UserLoginController::class, 'logout'])->name('use
 // ユーザーログイン後のみアクセス可
 Route::middleware('auth:web')->group(function (){
     Route::get('/users', [UserController::class, 'index'])->name('users.index');
+
+    Route::prefix('users')->group(function () {
+
+        Route::prefix('messages')->name('user.message')->controller(UserMessageController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::get('draft', 'draft')->name('.draft'); //下書き
+            Route::get('sent', 'sent')->name('.sent'); //送信済み
+            Route::get('dust', 'dust')->name('.dust'); //ゴミ箱
+            Route::post('dust/{message}', 'restore')->name('.restore'); //復元
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{message}', 'show')->name('.show');
+            Route::get('{message}/sent', 'sentShow')->name('.sent.show'); //送信済み
+            Route::get('{message}/reply', 'reply')->name('.reply'); //返信メール
+            Route::post('{message}', 'replyStore')->name('.reply.store'); //返信メール保存
+            Route::get('{message}/edit', 'edit')->name('.edit');
+            Route::patch('{message}', 'update')->name('.update');
+            Route::delete('{message}', 'destroy')->name('.destroy');
+            Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
+        });
+    });
 });

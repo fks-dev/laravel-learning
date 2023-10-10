@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('users', function (Blueprint $table) {
             $table->id()->comment('ID');
-            $table->string('username')->comment('ユーザー名');
+            $table->string('username')->unique('users_username_unique')->comment('ユーザー名');
             $table->string('password')->comment('パスワード');
             $table->string('mail_address')->comment('メールアドレス');
             $table->softDeletesDatetime();

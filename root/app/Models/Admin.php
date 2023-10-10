@@ -26,4 +26,15 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(Content::class);
     }
+
+    public function adminMessages()
+    {
+        return $this->hasMany(AdminMessage::class);
+    }
+
+    public function userMessages()
+    {
+        return $this->hasMany(UserMessage::class);
+    }
+
 }

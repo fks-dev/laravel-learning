@@ -25,7 +25,10 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="text" name="username" id="username" required>
+                            <input class="form-control @error('username') is-invalid @enderror" type="text" name="username" id="username" required>
+                            @error('username')
+                            <div class="invalid-feedback">{{ $message }}</div>
+                            @enderror
                         </div>
                     </div>
 
