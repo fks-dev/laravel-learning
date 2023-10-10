@@ -19,7 +19,7 @@
                 <div class="mx-5 px-5">
 
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="group_name">コース名
+                        <label class="col-sm-2 col-form-label fw-bold" for="group_name">グループ名
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-10">
