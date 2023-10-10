@@ -144,9 +144,10 @@ Route::middleware('auth:web')->group(function () {
         return view('users.index');
     })->name('users.index');
 
-    Route::prefix('users')->group(function () {
+    Route::prefix('users')->name('users')->group(function () {
 
-        Route::prefix('messages')->name('user.message')->controller(UserMessageController::class)->group(function () {
+        //メッセージ機能
+        Route::prefix('messages')->name('.message')->controller(UserMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
