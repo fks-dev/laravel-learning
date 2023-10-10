@@ -111,3 +111,8 @@ php artisan migrate --seed
     - ユーザーID: `root`
     - パスワード: `root`  ～  `DB_ROOT_PASSWORD` 参照
     - ポート番号: `3306`  ～  `PORT_DB` 参照
+
+
+## 資料
+
+- <https://github.com/epkotsoftware/dev-docs/tree/main/repositories/dev-laravel-learning>

@@ -2,6 +2,7 @@
 
 namespace App\Http\Requests;
 
+use App\Enums\ActionEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
 class StoreCourseRequest extends FormRequest
@@ -22,7 +23,8 @@ class StoreCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title' => 'required',
+            'title'  => 'required',
+            'action' => ['required', new ActionEnum],
         ];
     }
 }

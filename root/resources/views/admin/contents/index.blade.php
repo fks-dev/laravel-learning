@@ -5,11 +5,13 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- CSS --}}
     <link rel="stylesheet" href="/css/course.css">
-    @include('admin.courses.head')
+    @include('admin.head')
     <title>コンテンツ</title>
 </head>
 <body>
     <div class="mt-5 container">
+        @include('admin.logoutBtn')
+
         <div class="d-flex justify-content-between">
             <h2 class="col">コース名『{{ $courseTitle[0]['title'] }}』のコンテンツ</h2>
             <div class="col-auto me-2">
