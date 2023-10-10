@@ -1,0 +1,23 @@
+.bg-success-subtitle {
+  background-color: #cdeee0;
+}
+
+.bg-primary-subtitle {
+  background-color: #d3e6fd;
+}
+
+.bg-dark-subtitle {
+  background-color: #f6f6f6;
+}
+
+.link-underline {
+  text-decoration: none;
+}
+
+.link-underline:hover {
+  text-decoration: underline;
+}
+
+.none-underline {
+  text-decoration: none;
+}
