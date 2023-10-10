@@ -17,13 +17,10 @@ class DatabaseSeeder extends Seeder
             UserSeeder::class,
             GroupSeeder::class,
             ContentSeeder::class,
-<<<<<<< HEAD
             GroupsCourseSeeder::class,
             UsersGroupSeeder::class,
-=======
             UserMessageSeeder::class,
             AdminMessageSeeder::class,
->>>>>>> 55b996f1f4bd4d732cae686d8f566cba503725c7
         ]);
     }
 }

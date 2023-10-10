@@ -50,6 +50,7 @@ class User extends Authenticatable
         parent::boot();
         static::deleting(function ($user) {
             $user->usersCoursesTable()->delete();
+            $user->usersGroupsTable()->delete();
         });
     }
 
@@ -82,15 +83,6 @@ class User extends Authenticatable
     public function groups()
     {
         return $this->belongsToMany(Group::class, 'users_groups', 'user_id', 'group_id')->withTimestamps();
-    }
-
-    // ユーザーが削除された時に、IDに紐づく中間テーブルの値も削除される
-    protected static function boot()
-    {
-        parent::boot();
-        static::deleting(function ($user) {
-            $user->usersGroupsTable()->delete();
-        });
     }
 
     // users_groupsテーブルとのリレーション
