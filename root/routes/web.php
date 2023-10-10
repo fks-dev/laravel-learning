@@ -109,7 +109,9 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create-csv', 'createCsv')->name('.create-csv');
             Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
-        Route::prefix('messages')->name('admin.message')->controller(AdminMessageController::class)->group(function () {
+
+        //メッセージ機能
+        Route::prefix('messages')->name('.message')->controller(AdminMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
