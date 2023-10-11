@@ -56,4 +56,10 @@ class Group extends Model
     {
         return $this->hasMany(GroupsCourse::class, 'group_id', 'id');
     }
+
+    // groups_informationテーブルとのリレーション
+    public function groupsInformationTable()
+    {
+        return $this->hasMany(GroupInformation::class, 'group_id', 'id');
+    }
 }

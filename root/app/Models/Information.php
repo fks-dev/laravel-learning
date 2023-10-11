@@ -21,4 +21,9 @@ class Information extends Model
     {
         return $this->belongsToMany(Group::class, 'groups_information', 'information_id', 'group_id');
     }
+    // groups_informationテーブルとのリレーション
+    public function groupsInformationTable()
+    {
+        return $this->hasMany(GroupInformation::class, 'information_id', 'id');
+    }
 }
