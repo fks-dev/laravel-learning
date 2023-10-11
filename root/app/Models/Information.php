@@ -17,4 +17,8 @@ class Information extends Model
         'admin_id',
     ];
 
+    public function groups()
+    {
+        return $this->belongsToMany(Group::class, 'groups_information', 'information_id', 'group_id');
+    }
 }
