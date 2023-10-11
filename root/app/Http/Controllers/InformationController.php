@@ -59,7 +59,8 @@ class InformationController extends Controller
      */
     public function edit(Information $information)
     {
-        return view('admin.information.edit', compact('information'));
+        $groups = Group::orderByDesc('id')->get();
+        return view('admin.information.edit', compact('information','groups'));
     }
 
     /**
@@ -67,6 +68,9 @@ class InformationController extends Controller
      */
     public function update(UpdateInformationRequest $request, Information $information)
     {
+        $groups = $request->input('group', []);
+        $information->groups()->sync($groups);
+
         $information->update([
             'title' => $request->title,
             'text'  => $request->text,

@@ -34,10 +34,12 @@
                     <div class="row m-3">
                         <label class="col-sm-2 col-form-label fw-bold">対象グループ</label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="group" id="group">
-                                <option value="1">グループ1</option>
+                            <select class="form-select" name="group[]" id="group" multiple>
+                                @foreach($groups as $group)
+                                <option value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                @endforeach
                             </select>
-                            <input class="form-contorl btn btn-primary mt-3" type="submit" value="更新">
+                            <input class="form-control btn btn-primary mt-3" type="submit" value="登録">
                         </div>
                     </div>
 
