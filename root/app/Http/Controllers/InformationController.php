@@ -46,6 +46,7 @@ class InformationController extends Controller
         Information::create([
             'title' => $request->title,
             'text'  => $request->text,
+            'admin_id' => $admin_id
         ]);
         $information = Information::orderByDesc('id')->first();
         $information->groups()->attach(Group::findMany($groups));
