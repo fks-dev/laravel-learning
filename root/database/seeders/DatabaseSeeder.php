@@ -21,6 +21,8 @@ class DatabaseSeeder extends Seeder
             UsersGroupSeeder::class,
             UserMessageSeeder::class,
             AdminMessageSeeder::class,
+            InformationSeeder::class,
+            GroupInformationSeeder::class,
         ]);
     }
 }

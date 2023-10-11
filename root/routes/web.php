@@ -9,6 +9,7 @@ use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\InformationController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -127,6 +128,16 @@ Route::middleware('auth:admin')->group(function () {
             Route::patch('{message}', 'update')->name('.update');
             Route::delete('{message}', 'destroy')->name('.destroy');
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
+        });
+
+        //お知らせ画面一覧
+        Route::prefix('information')->name('.information')->controller(InformationController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{information}/edit', 'edit')->name('.edit');
+            Route::patch('{information}', 'update')->name('.update');
+            Route::delete('{information}', 'destroy')->name('.destroy');
         });
     });
 });
