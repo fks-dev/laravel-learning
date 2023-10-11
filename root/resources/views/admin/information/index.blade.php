@@ -47,7 +47,11 @@
                 @foreach ($informations as $information)
                 <tr data-id="{{ $information->id }}">
                     <td class="align-middle">{{ $information->title }}</td>
-                    <td class="align-middle text-center"></td>
+                    <td class="align-middle text-start">
+                        @foreach($information->groups as $group)
+                        {{ $group->group_name }}
+                        @endforeach
+                    </td>
                     <td class="align-middle text-center">{{ $information->created_at }}</td>
                     <td class="align-middle text-center">{{ $information->updated_at }}</td>
 
