@@ -5,6 +5,8 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreInformationRequest;
 use App\Http\Requests\UpdateInformationRequest;
 use App\Models\Information;
+use App\Models\Group;
+
 
 class InformationController extends Controller
 {
@@ -30,10 +32,14 @@ class InformationController extends Controller
      */
     public function store(StoreInformationRequest $request)
     {
+        $groups = $request->input('group',[]);
+
         Information::create([
             'title' => $request->title,
             'text'  => $request->text,
         ]);
+        $information = Information::orderByDesc('id')->first();
+        $information->groups()->attach(Group::findMany($groups));
 
         return redirect()->route('admin.information.index')->with('message', 'お知らせを登録しました');
     }
