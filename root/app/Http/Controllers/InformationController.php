@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\StoreInformationRequest;
 use App\Http\Requests\UpdateInformationRequest;
+use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
 use App\Models\Group;
 
@@ -13,9 +14,16 @@ class InformationController extends Controller
     /**
      * Display a listing of the resource.
      */
+
+    private function getAdminId()
+    {
+        return Auth::guard('admin')->user()->id;
+    }
+
     public function index()
     {
-        $informations = Information::orderByDesc('updated_at')->get();
+        $admin_id = $this->getAdminId();
+        $informations = Information::where('admin_id', $admin_id)->orderByDesc('updated_at')->get();
         return view('admin.information.index', compact('informations'));
     }
 
@@ -24,7 +32,8 @@ class InformationController extends Controller
      */
     public function create()
     {
-        return view('admin.information.create');
+        $groups = Group::orderByDesc('id')->get();
+        return view('admin.information.create', compact('groups'));
     }
 
     /**
@@ -32,8 +41,8 @@ class InformationController extends Controller
      */
     public function store(StoreInformationRequest $request)
     {
-        $groups = $request->input('group',[]);
-
+        $groups = $request->input('group', []);
+        $admin_id = $this->getAdminId();
         Information::create([
             'title' => $request->title,
             'text'  => $request->text,
@@ -62,7 +71,7 @@ class InformationController extends Controller
             'text'  => $request->text,
         ]);
 
-        return redirect()->route('admin.information.index')->with('message', $request->title.'を更新しました');
+        return redirect()->route('admin.information.index')->with('message', $request->title . 'を更新しました');
     }
 
     /**
