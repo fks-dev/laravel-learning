@@ -15,7 +15,7 @@
         </div>
         <div class="m-2">
             <p>{{$information->title}}</p>
-            <p>{{$information->text}}</p>
+            <p>{!! nl2br(e($information->text)) !!}</p>
         </div>
     </div>
 
