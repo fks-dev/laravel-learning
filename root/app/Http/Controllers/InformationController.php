@@ -6,6 +6,7 @@ use App\Http\Requests\StoreInformationRequest;
 use App\Http\Requests\UpdateInformationRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
+use App\Models\User;
 use App\Models\Group;
 
 
@@ -86,5 +87,19 @@ class InformationController extends Controller
     {
         $information->delete();
         return redirect()->route('admin.information.index')->with('danger', $information->title . 'を削除しました');
+    }
+
+    public function list(){ //ユーザーのお知らせ一覧画面
+        $user = User::find(Auth::guard('web')->user()->id);
+        $groups = $user->groups ?? collect();
+        $informations = collect();
+        foreach($groups as $group){
+            $informations = $informations->concat($group->informations);
+        }
+        $informations = $informations->unique('id')->sortByDesc('updated_at');
+        return view('users.informations.index', compact('informations'));
+    }
+    public function show(){
+
     }
 }

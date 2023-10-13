@@ -175,5 +175,10 @@ Route::middleware('auth:web')->group(function () {
             Route::delete('{message}', 'destroy')->name('.destroy');
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
+        //お知らせ閲覧機能
+        Route::prefix('infos')->name('infos')->controller(InformationController::class)->group(function(){
+            Route::get('', 'list')->name('.index');
+            Route::get('view/{info}', 'show')->name('.show');
+        });
     });
 });
