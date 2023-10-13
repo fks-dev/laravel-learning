@@ -99,7 +99,7 @@ class InformationController extends Controller
         $informations = $informations->unique('id')->sortByDesc('updated_at');
         return view('users.informations.index', compact('informations'));
     }
-    public function show(){
-
+    public function show(Information $information){
+        return view('users.informations.show', compact('information'));
     }
 }

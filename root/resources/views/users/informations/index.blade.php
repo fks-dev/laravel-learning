@@ -25,7 +25,7 @@
                     @foreach($informations as $information)
                     <tr>
                         <td>{{$information->created_at}}</td>
-                        <td><a href="#">{{$information->title}}</a></td>
+                        <td><a href="{{ route('users.infos.show', $information) }}">{{$information->title}}</a></td>
                     </tr>
                     @endforeach
                 </tbody>
