@@ -127,9 +127,10 @@ Route::delete('/users/login', [UserLoginController::class, 'logout'])->name('use
 
 // ユーザーログイン後のみアクセス可
 Route::middleware('auth:web')->group(function (){
-    Route::get('/users', [UserController::class, 'index'])->name('users.index');
 
     Route::prefix('users')->group(function () {
+        Route::get('', [UserController::class, 'index'])->name('users.index');
+
 
         Route::prefix('messages')->name('user.message')->controller(UserMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');

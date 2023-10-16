@@ -17,7 +17,7 @@
                 <ul class="nav me-2 text-white">
                     <li class="nav-item border-end p-1">ようこそ{{ $user->username }}さん</li>
                     <li class="nav-item border-end p-1"><a class="link-underline text-white" href="#">設定</a></li>
-                    <li class="nav-item p-1"><a class="link-underline text-white" href="#">ログアウト</a></li>
+                    <li class="nav-item p-1"><a class="link-underline text-white" href="{{ route('users.logout') }}">ログアウト</a></li>
                 </ul>
             </div>
         </nav>
@@ -64,45 +64,33 @@
                         <div class="card-body p-0">
                             <ul class="list-group">
                                 <li
-                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    class="list-group-item list-group-item-action">
+                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#">
                                     <div>
                                         <h6>おすすめ動画診断</h6>
                                         質問項目に回答いただくとおすすめ動画を提案させていただきます。
                                     </div>
-                                    <button class="btn btn-primary btn-sm" type="button">
+                                    <div class="badge bg-primary fs-6">
                                         全３-５問
-                                    </button>
+                                    </div>
+                                    </a>
                                 </li>
+                                @if(!empty($courses))
+                                @foreach ($courses as $courseItem)
                                 <li
-                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
+                                    class="list-group-item list-group-item-action">
+                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#" >
                                     <div>
-                                        <h5>サンプル01</h5>
+                                        <h5>{{ $courseItem->title }}</h5>
                                         学習開始日：2023/02/17　前回学習日：2023/10/06
                                     </div>
-                                    <button class="btn btn-danger btn-sm " type="button">
+                                    <div class="badge bg-danger fs-5">
                                         残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </button>
-                                </li>
-                                <li
-                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h5>サンプル02</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
                                     </div>
-                                    <button class="btn btn-danger btn-sm " type="button">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </button>
+                                    </a>
                                 </li>
-                                <li
-                                    class="list-group-item list-group-item-action d-flex justify-content-between align-items-center">
-                                    <div>
-                                        <h5>サンプル03</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
-                                    </div>
-                                    <button class="btn btn-danger btn-sm " type="button">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </button>
-                                </li>
+                                @endforeach
+                                @endif
                             </ul>
                         </div>
                     </div>
