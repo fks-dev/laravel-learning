@@ -164,5 +164,11 @@ Route::middleware('auth:web')->group(function () {
             Route::delete('{message}', 'destroy')->name('.destroy');
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
+
+        //コンテンツ表示画面
+        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
+            Route::get('', 'list')->name('.index');
+            Route::get('{content}', 'view')->name('.show');
+        });
     });
 });

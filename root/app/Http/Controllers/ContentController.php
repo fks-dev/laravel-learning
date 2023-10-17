@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 use App\Models\Content;
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Course;
 use App\Http\Requests\StoreContentRequest;
@@ -234,5 +235,12 @@ class ContentController extends Controller
         $content->delete();
         return redirect()->route('admin.content.index', compact('course'))
                          ->with('danger', $content->title . 'を削除しました');
+    }
+
+    public function list(){ //コンテンツ一覧画面
+        return;
+    }
+    public function view(){ //コンテンツ詳細画面
+        return;
     }
 }
