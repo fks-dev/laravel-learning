@@ -7,11 +7,10 @@ use App\Models\Course;
 
 class UserController extends Controller
 {
-    public function index(Request $request)
+    public function index()
     {
         $user = Auth::user();
-        $courses = Course::all();
 
-        return view('users.index', compact('user', 'courses'));
+        return view('users.index', compact('user'));
     }
 }
