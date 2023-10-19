@@ -167,8 +167,9 @@ Route::middleware('auth:web')->group(function () {
 
         //コンテンツ表示画面
         Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
-            Route::get('{course}', 'list')->name('.index');
+            Route::get('index/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
+            Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
     });
 });
