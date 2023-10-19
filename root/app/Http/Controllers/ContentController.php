@@ -5,6 +5,7 @@ use App\Models\Content;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Course;
+use App\Models\Record;
 use App\Http\Requests\StoreContentRequest;
 use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
@@ -237,10 +238,32 @@ class ContentController extends Controller
                          ->with('danger', $content->title . 'を削除しました');
     }
 
-    public function list(){ //コンテンツ一覧画面
-        return;
+    public function list(Course $course){ //コンテンツ一覧画面
+        $user = User::find(Auth::guard('web')->user()->id); //User情報を取得
+        $course_title = $course->title;
+        $contents = Content::where('id', $course->id)->get();
+
+
+        return view('users.contents.index', compact('contents','user','course_title'));
     }
-    public function view(){ //コンテンツ詳細画面
-        return;
+    public function view(Content $content){ //コンテンツ詳細画面
+        $user = User::find(Auth::guard('web')->user()->id); //User情報を取得
+        $title = $content->title;
+        return view('users.contents.show', compact('content','user','title'));
     }
+    public function record(Request $request, Content $content){
+        return view('users.index');
+
+
+        //recordsテーブルの関連付けをmoviesからcontentsに変更した場合の処理
+        $user = User::find(Auth::guard('web')->user()->id);
+        $content_id = $content->id;
+        $score = $request->score ?? null;
+        $record = Record::create([
+            'user_id'=>$user->id,
+            'content_id'=>$content_id
+        ]);
+        return redirect('users.contents.show');
+    }
+
 }
