@@ -7,6 +7,7 @@ use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\UserMessageController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
+use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\UserController;
 use Illuminate\Support\Facades\Route;
@@ -39,6 +40,17 @@ Route::prefix('admin')->name('admin')->controller(AdminLoginController::class)->
 // 管理ログイン後のみアクセス可
 Route::middleware('auth:admin')->group(function () {
     Route::prefix('admin')->name('admin')->group(function () {
+        // グループ
+        Route::prefix('groups')->name('.group')->controller(GroupController::class)->group(function () {
+            Route::get('', 'index')->name('.index');
+            Route::get('create', 'create')->name('.create');
+            Route::post('', 'store')->name('.store');
+            Route::get('{group}', 'show')->name('.show');
+            Route::get('{group}/edit', 'edit')->name('.edit');
+            Route::patch('{group}', 'update')->name('.update');
+            Route::delete('{group}', 'destroy')->name('.destroy');
+        });
+
         // コース
         Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
@@ -98,7 +110,9 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create-csv', 'createCsv')->name('.create-csv');
             Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
-        Route::prefix('messages')->name('admin.message')->controller(AdminMessageController::class)->group(function () {
+
+        //メッセージ機能
+        Route::prefix('messages')->name('.message')->controller(AdminMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
@@ -128,12 +142,13 @@ Route::delete('/users/login', [UserLoginController::class, 'logout'])->name('use
 // ユーザーログイン後のみアクセス可
 Route::middleware('auth:web')->group(function (){
 
-    Route::prefix('users')->group(function () {
+    Route::prefix('users')->name('users')->group(function () {
 
         // ユーザー側のトップページ
-        Route::get('/index', [UserController::class, 'index'])->name('users.index');
+        Route::get('/index', [UserController::class, 'index'])->name('.index');
 
-        Route::prefix('messages')->name('user.message')->controller(UserMessageController::class)->group(function () {
+        //メッセージ機能
+        Route::prefix('messages')->name('.message')->controller(UserMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み

@@ -15,7 +15,10 @@ class DatabaseSeeder extends Seeder
             CourseSeeder::class,
             AdminSeeder::class,
             UserSeeder::class,
+            GroupSeeder::class,
             ContentSeeder::class,
+            GroupsCourseSeeder::class,
+            UsersGroupSeeder::class,
             UserMessageSeeder::class,
             AdminMessageSeeder::class,
         ]);
