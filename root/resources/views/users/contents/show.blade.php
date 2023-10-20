@@ -39,9 +39,6 @@
         @case(5)
             <p>サイト内動画を再生</p>
             @break
-        @case(6)
-            <p>テストを開始</p>
-            @break
         @default
             <p>[エラー]コンテンツがありません</p>
     @endswitch
@@ -51,25 +48,12 @@
         <div class="container d-flex justify-content-between align-items-center p-4">
             <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
                 <input type="hidden" id="score" name="score" value="1">
-                <button type="submit" class="btn btn-primary">よく理解できた</button>
+                <button type="submit" class="btn btn-primary">終了</button>
             </form>
             <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
-                <input type="hidden" id="score" name="score" value="1">
-                <button type="submit" class="btn btn-primary">まあまあ理解できた</button>
-            </form>
-            <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
-                <input type="hidden" id="score" name="score" value="1">
-                <button type="submit" class="btn btn-primary">あまり理解できなかった</button>
-            </form>
-            <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
-                <input type="hidden" id="score" name="score" value="1">
-                <button type="submit" class="btn btn-primary">理解できなかった</button>
-            </form>
-            <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
-                <input type="hidden" id="score" name="score" value="1">
+                <input type="hidden" id="score" name="score" value="0">
                 <button type="submit" class="btn btn-danger">中断</button>
             </form>
-            <a href="{{ route('users.content.index', $content->course) }}" class="btn btn-success col">戻る</a>
         </div>
     </footer>
 </body>
