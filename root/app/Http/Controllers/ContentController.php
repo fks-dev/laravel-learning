@@ -241,7 +241,7 @@ class ContentController extends Controller
     public function list(Course $course){ //コンテンツ一覧画面
         $user = User::find(Auth::guard('web')->user()->id); //User情報を取得
         $course_title = $course->title;
-        $contents = Content::where('id', $course->id)->get();
+        $contents = Content::where('course_id', $course->id)->get();
 
 
         return view('users.contents.index', compact('contents','user','course_title'));
