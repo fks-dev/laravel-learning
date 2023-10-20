@@ -24,36 +24,44 @@
     </header>
     <main>
         <div class="container">
-    @switch($content->content_type)
-        @case(2)
-        <div class="ratio ratio-16x9">
-            <iframe src="https://www.youtube.com/embed/CN-Ja6jCweA"></iframe>
-        </div>
+            @switch($content->content_type)
+            @case(2)
+            <div class="ratio ratio-16x9">
+                <iframe src="https://www.youtube.com/embed/{{ $content->youtube_video_id }}"></iframe>
+            </div>
             @break
-        @case(3)
-            <p>資料{{ $content->document_file_path }}をダウンロード</p>
+            @case(3)
+            <div class="w-100 h-100 d-flex justify-content-center mt-4">
+                <a href="{{ $content->document_file_path }}" class="btn btn-success" download>資料をダウンロード</a>
+            </div>
             @break
-        @case(4)
-            <p>{{$content->text}}</p>
+            @case(4)
+            <div class="m-4">
+                {!! $content->text !!}
+            </div>
             @break
-        @case(5)
-            <p>サイト内動画を再生</p>
+            @case(5)
+            <div class="ratio ratio-16x9">
+                <iframe src="{{ $content->movie_file_path }}"></iframe>
+            </div>
             @break
-        @default
+            @default
             <p>[エラー]コンテンツがありません</p>
-    @endswitch
-    <div class="container">
+            @endswitch
+            <div class="container">
     </main>
     <footer class="">
-        <div class="container d-flex justify-content-between align-items-center p-4">
-            <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
-                <input type="hidden" id="score" name="score" value="1">
-                <button type="submit" class="btn btn-primary">終了</button>
-            </form>
-            <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
-                <input type="hidden" id="score" name="score" value="0">
-                <button type="submit" class="btn btn-danger">中断</button>
-            </form>
+        <div class="container d-flex justify-content-end align-items-center p-4">
+            <div class="row">
+                <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
+                    <input type="hidden" id="score" name="score" value="1">
+                    <button type="submit" class="btn btn-primary">終了</button>
+                </form>
+                <form action="{{ route('users.content.record', $content) }}" method="post" class="col">
+                    <input type="hidden" id="score" name="score" value="0">
+                    <button type="submit" class="btn btn-danger">中断</button>
+                </form>
+            </div>
         </div>
     </footer>
 </body>
