@@ -43,7 +43,7 @@
                         @foreach($contents as $content)
                         <tr>
                             <td><a href="{{ route('users.content.show', $content) }}">{{$content->title}}</a></td>
-                            <td><p>{{$content->content_type}}</p></td>
+                            <td><p>{{$content->displayType()}}</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>☑</p></td>

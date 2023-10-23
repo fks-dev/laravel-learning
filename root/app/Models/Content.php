@@ -68,4 +68,15 @@ class Content extends Model
         });
 
     }
+
+    public function displayType(){
+        $content_type = [
+            1 => 'ラベル',
+            2 => '動画',
+            3 => '配布資料',
+            4 => 'テキスト',
+            5 => '動画'
+        ];
+        return $content_type[$this->content_type];
+    }
 }
