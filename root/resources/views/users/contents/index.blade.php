@@ -36,9 +36,6 @@
                             <th>種別</th>
                             <th>学習開始日</th>
                             <th>前回学習日</th>
-                            <th>学習時間</th>
-                            <th>学習回数</th>
-                            <th>理解度</th>
                             <th>完了</th>
                         </tr>
                     </thead>
@@ -49,17 +46,11 @@
                             <td><p>{{$content->content_type}}</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>????/??/??</p></td>
-                            <td><p>??:??:??</p></td>
-                            <td><p>?</p></td>
-                            <td><p>?</p></td>
                             <td><p>☑</p></td>
                         </tr>
                         @endforeach
                     </tbody>
                 </table>
-                <div>
-                    <p class="text-center">ページ 1/1</p>
-                </div>
             </div>
         </div>
     </main>
