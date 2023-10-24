@@ -169,6 +169,7 @@ Route::middleware('auth:web')->group(function () {
         Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
             Route::get('index/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
+            Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
     });

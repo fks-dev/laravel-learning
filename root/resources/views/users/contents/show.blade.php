@@ -23,7 +23,7 @@
         </nav>
     </header>
     <main>
-        <div class="container">
+        <div class="container border py-2  my-2 rounded">
             @switch($content->content_type)
             @case(2)
             <div class="ratio ratio-16x9">
@@ -31,8 +31,8 @@
             </div>
             @break
             @case(3)
-            <div class="w-100 h-100 d-flex justify-content-center mt-4">
-                <a href="{{ $content->document_file_path }}" class="btn btn-success" download>資料をダウンロード</a>
+            <div class="w-100 d-flex justify-content-center my-4">
+                <a href="{{ route('users.content.handout', $content) }}" class="btn btn-success">資料をダウンロード</a>
             </div>
             @break
             @case(4)
@@ -48,7 +48,7 @@
             @default
             <p>[エラー]コンテンツがありません</p>
             @endswitch
-            <div class="container">
+        <div class="container">
     </main>
     <footer class="">
         <div class="container d-flex justify-content-end align-items-center p-4">
