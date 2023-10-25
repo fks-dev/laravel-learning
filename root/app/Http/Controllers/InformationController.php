@@ -44,13 +44,12 @@ class InformationController extends Controller
     {
         $groups = $request->input('group', []);
         $admin_id = $this->getAdminId();
-        Information::create([
+        $information = Information::create([
             'title' => $request->title,
             'text'  => $request->text,
             'admin_id' => $admin_id
         ]);
-        $information = Information::orderByDesc('id')->first();
-        $information->groups()->attach(Group::findMany($groups));
+        $information->groups()->attach($groups);
 
         return redirect()->route('admin.information.index')->with('message', 'お知らせを登録しました');
     }
