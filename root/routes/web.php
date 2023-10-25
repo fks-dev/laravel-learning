@@ -145,7 +145,7 @@ Route::middleware('auth:web')->group(function (){
     Route::prefix('users')->name('users')->group(function () {
 
         // ユーザー側のトップページ
-        Route::get('/index', [UserController::class, 'index'])->name('.index');
+        Route::get('/', [UserController::class, 'index'])->name('.index');
 
         //メッセージ機能
         Route::prefix('messages')->name('.message')->controller(UserMessageController::class)->group(function () {
