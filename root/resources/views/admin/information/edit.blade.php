@@ -36,7 +36,7 @@
                         <div class="col-sm-10">
                             <select class="form-select" name="group[]" id="group" multiple>
                                 @foreach($groups as $group)
-                                <option value="{{ $group->id }}">{{ $group->group_name }}</option>
+                                <option value="{{ $group->id }}" @if($info_groups->contains($group)) selected @endif>{{ $group->group_name }}</option>
                                 @endforeach
                             </select>
                             <input class="form-control btn btn-primary mt-3" type="submit" value="登録">

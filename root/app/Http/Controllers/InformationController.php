@@ -60,7 +60,8 @@ class InformationController extends Controller
     public function edit(Information $information)
     {
         $groups = Group::orderByDesc('id')->get();
-        return view('admin.information.edit', compact('information','groups'));
+        $info_groups = $information->groups;
+        return view('admin.information.edit', compact('information','groups','info_groups'));
     }
 
     /**
