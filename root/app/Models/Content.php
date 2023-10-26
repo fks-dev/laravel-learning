@@ -44,6 +44,11 @@ class Content extends Model
         return $this->belongsTo(Admin::class);
     }
 
+    public function contentsLogs()
+    {
+        return $this->hasMany(ContentsLog::class);
+    }
+
     protected static function boot()
     {
         parent::boot();
