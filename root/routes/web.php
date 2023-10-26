@@ -131,7 +131,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         //お知らせ画面一覧
-        Route::prefix('information')->name('.information')->controller(InformationController::class)->group(function () {
+        Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
@@ -176,7 +176,7 @@ Route::middleware('auth:web')->group(function () {
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
         //お知らせ閲覧機能
-        Route::prefix('information')->name('.information')->controller(InformationController::class)->group(function(){
+        Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
         });

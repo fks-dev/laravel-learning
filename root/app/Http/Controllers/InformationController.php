@@ -51,7 +51,7 @@ class InformationController extends Controller
         ]);
         $information->groups()->attach($groups);
 
-        return redirect()->route('admin.informations.index')->with('message', 'お知らせを登録しました');
+        return redirect()->route('admin.information.index')->with('message', 'お知らせを登録しました');
     }
 
     /**
@@ -77,7 +77,7 @@ class InformationController extends Controller
             'text'  => $request->text,
         ]);
 
-        return redirect()->route('admin.informations.index')->with('message', $request->title . 'を更新しました');
+        return redirect()->route('admin.information.index')->with('message', $request->title . 'を更新しました');
     }
 
     /**
@@ -86,7 +86,7 @@ class InformationController extends Controller
     public function destroy(Information $information)
     {
         $information->delete();
-        return redirect()->route('admin.informations.index')->with('danger', $information->title . 'を削除しました');
+        return redirect()->route('admin.information.index')->with('danger', $information->title . 'を削除しました');
     }
 
     public function list(){ //ユーザーのお知らせ一覧画面
