@@ -90,7 +90,7 @@ class InformationController extends Controller
     }
 
     public function list(){ //ユーザーのお知らせ一覧画面
-        $user = User::find(Auth::guard('web')->user()->id);
+        $user = Auth::user();
         $groups = $user->groups ?? collect();
         $informations = collect();
         foreach($groups as $group){
