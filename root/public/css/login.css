@@ -1,0 +1,30 @@
+.ib-theme-color
+{
+    background-color: #006888;
+    color: white;
+}
+
+.ib-logo a
+{
+    color: white;
+    text-decoration: none;
+}
+
+.ib-logo
+{
+    font-size:22px;
+    font-family: 'Ariel';
+    padding-left: 15px;
+    font-weight: bold;
+}
+
+@media only screen and (max-width: 800px)
+{
+}
+
+.ib-logo
+{
+    width: 100%;
+}
+
+
