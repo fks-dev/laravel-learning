@@ -176,9 +176,9 @@ Route::middleware('auth:web')->group(function () {
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
         //お知らせ閲覧機能
-        Route::prefix('infos')->name('.infos')->controller(InformationController::class)->group(function(){
-            Route::get('', 'list')->name('.index');
-            Route::get('view/{information}', 'show')->name('.show');
+        Route::prefix('information')->name('.information')->controller(InformationController::class)->group(function(){
+            Route::get('', 'list')->name('.list');
+            Route::get('{information}', 'show')->name('.show');
         });
     });
 });
