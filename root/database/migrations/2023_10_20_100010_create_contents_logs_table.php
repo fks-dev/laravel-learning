@@ -14,8 +14,8 @@ return new class extends Migration
         Schema::create('contents_logs', function (Blueprint $table) {
             $table->id();
             $table->datetimes();
-            $table->bigInteger('user_id');
-            $table->bigInteger('content_id');
+            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('content_id');
             $table->boolean('completed');
 
             //外部キー制約
