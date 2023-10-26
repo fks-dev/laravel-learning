@@ -251,21 +251,6 @@ class ContentController extends Controller
         $title = $content->title;
         return view('users.contents.show', compact('content','user','title'));
     }
-    public function record(Request $request, Content $content){
-        return view('users.index');
-
-
-        //recordsテーブルの関連付けをmoviesからcontentsに変更した場合の処理
-        $user = User::find(Auth::guard('web')->user()->id);
-        $content_id = $content->id;
-        $score = $request->score ?? null;
-        $record = Record::create([
-            'user_id'=>$user->id,
-            'content_id'=>$content_id
-        ]);
-        return redirect('users.contents.show');
-    }
-
     public function handout(Content $content){
         $info = pathinfo($content->document_file_path);
         $parts = explode('_', $info['filename'], 2);

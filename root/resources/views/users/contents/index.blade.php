@@ -33,7 +33,6 @@
                     <thead>
                         <tr>
                             <th>タイトル</th>
-                            <th>種別</th>
                             <th>学習開始日</th>
                             <th>前回学習日</th>
                             <th>完了</th>
@@ -43,7 +42,6 @@
                         @foreach($contents as $content)
                         <tr>
                             <td><a href="{{ route('users.content.show', $content) }}">{{$content->title}}</a></td>
-                            <td><p>{{$content->displayType()}}</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>☑</p></td>
