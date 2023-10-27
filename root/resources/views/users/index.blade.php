@@ -36,21 +36,18 @@
                     </div>
                     <table class="table table-striped table-hover">
                         <tbody>
+                            @foreach($informations as $information)
                             <tr>
                                 <th>
-                                    2022/11/11 &ensp; <a class="none-underline" href="#">新しいコースが追加されました</a>
+                                    {{ date_format($information->created_at, 'Y/m/d') }} &ensp; <a class="none-underline" href="{{ route('users.information.show', $information) }}">{{ $information->title}}</a>
                                 </th>
                             </tr>
-                            <tr>
-                                <th>
-                                    2022/11/11 &ensp; <a class="none-underline" href="#">サイトをオープンしました</a>
-                                </th>
-                            </tr>
+                            @endforeach
                         </tbody>
                     </table>
                 </div>
                 <div class="text-end pe-3 pb-1">
-                    <a class="none-underline" href="#">一覧を表示</a>
+                    <a class="none-underline" href="{{ route('users.information.list')}}">一覧を表示</a>
                 </div>
             </div>
         </div>
