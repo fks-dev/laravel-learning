@@ -6,11 +6,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.adminMgmt.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.admin-management.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">管理者編集</div>
 
-            <form action="{{ route('admin.adminMgmt.update', $admin) }}" method="post">
+            <form action="{{ route('admin.admin-management.update', $admin) }}" method="post">
                 @csrf
                 @method('patch')
                 <div class="mx-5 px-5">
@@ -33,7 +33,7 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-9">
-                            <a href="{{ route('admin.adminMgmt.password', $admin) }}" class="btn btn-success form-control">
+                            <a href="{{ route('admin.admin-management.password', $admin) }}" class="btn btn-success form-control">
                                 パスワードの変更
                             </a>
                         </div>

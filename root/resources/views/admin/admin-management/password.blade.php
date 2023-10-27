@@ -6,7 +6,7 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.adminMgmt.edit', $admin) }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.admin-management.edit', $admin) }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">パスワード変更</div>
 
@@ -22,7 +22,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.adminMgmt.changePassword', $admin) }}" method="post">
+            <form action="{{ route('admin.admin-management.changePassword', $admin) }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 

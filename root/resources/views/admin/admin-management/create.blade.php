@@ -6,11 +6,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.adminMgmt.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.admin-management.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規管理者登録</div>
 
-            <form action="{{ route('admin.adminMgmt.store') }}" method="post">
+            <form action="{{ route('admin.admin-management.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 
