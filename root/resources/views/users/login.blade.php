@@ -12,11 +12,16 @@
 
 <body>
     {{-- header --}}
-    <div class="header ib-theme-color">
-        <div class="ib-logo">
-            <a href="/users/login">イロハボード</a>
-        </div>
-    </div>
+    <header>
+        <nav class="navbar p-0 bg-primary  ">
+            <div class="d-flex justify-content-between align-items-center container-fluid">
+                <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learnig</h2>
+                <ul class="nav me-2 text-white">
+                </ul>
+            </div>
+        </nav>
+
+    </header>
 
     {{-- body --}}
     <body>
