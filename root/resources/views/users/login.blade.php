@@ -12,9 +12,10 @@
 
 <body>
     {{-- header --}}
-    @include('header', ['user' => $user])
+    @include('header')
 
     {{-- body --}}
+
     <body>
         <div id="container">
             <div id="content" class="row">
