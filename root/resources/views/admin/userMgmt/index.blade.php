@@ -14,7 +14,7 @@
         <div class="d-flex justify-content-between">
             <h2 class="me-4">ユーザー 一覧</h2>
             <div class="me-auto">
-                <a class="btn btn-info" href="{{ route('admin.adminMgmt.index') }}">⇆ 管理者一覧</a>
+                <a class="btn btn-info" href="{{ route('admin.admin-management.index') }}">⇆ 管理者一覧</a>
             </div>
             <div class="col-auto">
                 <form action="{{ route('admin.userMgmt.download-csv') }}" method="POST">
