@@ -12,16 +12,7 @@
 
 <body>
     {{-- header --}}
-    <header>
-        <nav class="navbar p-0 bg-primary  ">
-            <div class="d-flex justify-content-between align-items-center container-fluid">
-                <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learnig</h2>
-                <ul class="nav me-2 text-white">
-                </ul>
-            </div>
-        </nav>
-
-    </header>
+    @include('header', ['user' => $user])
 
     {{-- body --}}
     <body>
@@ -52,8 +43,6 @@
                                             <input type="password" name="password" id="password" class="form-control" required />
                                         </div>
                                     </div>
-                                    <input type="checkbox" id="remember_me" value="1" checked="checked">
-                                    ログイン状態を保持
                                 </div>
                                 <div class="submit">
                                     @error('failed')
@@ -65,9 +54,17 @@
                         </div>
                     </div>
                 </div>
-
             </div>
         </div>
     </body>
+
+    <footer>
+        <nav class="navbar fixed-bottom p-0 bg-primary  ">
+            <div class="d-flex align-items-center container-fluid justify-content-center">
+                <div class="navbar-brand ms-1 fs-3 text-white text-center">© 2023 エプコットソフトウェア</div>
+            </div>
+        </nav>
+
+    </footer>
 
 </html>

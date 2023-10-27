@@ -156,13 +156,3 @@ label
     margin-left: 10px;
 }
 
-input[type=checkbox]
-{
-    clear: left;
-    margin: 0 6px 7px 2px;
-    width: auto;
-    line-height: normal;
-    box-sizing: border-box;
-    padding: 0;
-}
-
