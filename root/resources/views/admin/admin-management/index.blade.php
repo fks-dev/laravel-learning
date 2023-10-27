@@ -15,20 +15,20 @@
         <div class="d-flex justify-content-between">
             <h2 class="me-4">管理者一覧</h2>
             <div class="me-auto">
-                <a class="btn btn-info" href="{{ route('admin.userMgmt.index') }}">⇆ ユーザー 一覧</a>
+                <a class="btn btn-info" href="{{ route('admin.user-management.index') }}">⇆ ユーザー 一覧</a>
             </div>
             <div class="col-auto">
-                <form action="{{ route('admin.adminMgmt.download-csv') }}" method="POST">
+                <form action="{{ route('admin.admin-management.download-csv') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">エクスポート</button>
                 </form>
             </div>
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.adminMgmt.create-csv') }}">インポート</a>
+                <a class="btn btn-primary" href="{{ route('admin.admin-management.create-csv') }}">インポート</a>
             </div>
 
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.adminMgmt.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.admin-management.create')}}">&plus;追加</a>
             </div>
 
         </div>
@@ -101,9 +101,9 @@
                             <td class="align-middle text-center">{{ $admin->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('admin.adminMgmt.edit', $admin->id) }}">編集</a>
+                                <a class="btn btn-success edit-btn" href="{{ route('admin.admin-management.edit', $admin->id) }}">編集</a>
 
-                                <form action="{{ route('admin.adminMgmt.destroy', $admin) }}" method="post" class="d-inline">
+                                <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
@@ -118,6 +118,6 @@
             </table>
     </div>
     @include('admin.sort')
-    @include('admin.adminMgmt.search')
+    @include('admin.admin-management.search')
 </body>
 </html>

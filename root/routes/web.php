@@ -1,7 +1,7 @@
 <?php
 
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\AdminMgmtController;
+use App\Http\Controllers\AdminManagementController;
 use App\Http\Controllers\UserMgmtController;
 use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\UserMessageController;
@@ -77,7 +77,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('{content}', 'destroy')->name('.destroy');
         });
         // 管理者一覧画面
-        Route::prefix('admin-mgmt')->name('.adminMgmt')->controller(AdminMgmtController::class)->group(function() {
+        Route::prefix('admin-management')->name('.admin-management')->controller(AdminManagementController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');

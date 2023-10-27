@@ -230,7 +230,7 @@ class UserMgmtController extends Controller
         $handle = fopen($file, 'r');
 
         if (!$handle) {
-            return redirect()->route('adminMgmt.index')->with('danger', 'CSVファイルを開けませんでした。');
+            return redirect()->route('admin-management.index')->with('danger', 'CSVファイルを開けませんでした。');
         }
 
         // ヘッダー部分の読み込み
