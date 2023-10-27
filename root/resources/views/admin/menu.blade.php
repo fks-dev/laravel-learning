@@ -12,5 +12,8 @@
         <li class="list-group-item">
             <a class="text-decoration-none" href="{{ route('admin.group.index') }}">グループ</a>
         </li>
+        <li class="list-group-item">
+            <a class="text-decoration-none" href="{{ route('admin.information.index') }}">お知らせ</a>
+        </li>
     </ul>
 </div>
