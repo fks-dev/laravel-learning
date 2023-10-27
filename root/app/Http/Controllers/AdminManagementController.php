@@ -11,7 +11,7 @@ use App\Models\AdminLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-class AdminMgmtController extends Controller
+class AdminManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
