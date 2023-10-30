@@ -183,7 +183,7 @@ Route::middleware('auth:web')->group(function (){
             Route::get('{information}', 'show')->name('.show');
         });
 
-        Route::prefix('select-courses')->name('.select-courses')->controller(InformationController::class)->group(function(){
+        Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function(){
             Route::get('', 'index')->name('.index');
         });
     });
