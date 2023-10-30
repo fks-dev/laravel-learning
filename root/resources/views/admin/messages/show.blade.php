@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.head')
+    @include('head')
     <title>メッセージ内容</title>
 </head>
 <body>

@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.head')
+    @include('head')
     <title>新規問い合わせ</title>
 </head>
 <body>

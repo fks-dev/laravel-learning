@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.head')
+    @include('head')
     {{-- CSRFトークン --}}
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- CSS --}}

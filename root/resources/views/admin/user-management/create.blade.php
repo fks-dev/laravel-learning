@@ -6,7 +6,7 @@
 
     <link rel="stylesheet" href="/css/select.css">
 
-    @include('admin.head')
+    @include('head')
     <title>ユーザー登録</title>
 
 </head>
