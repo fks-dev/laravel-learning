@@ -12,11 +12,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.userMgmt.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.user-management.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規ユーザー登録</div>
 
-            <form action="{{ route('admin.userMgmt.store') }}" method="post">
+            <form action="{{ route('admin.user-management.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 
@@ -76,6 +76,6 @@
             </form>
         </div>
     </div>
-    @include('admin.userMgmt.courseSelect')
+    @include('admin.user-management.courseSelect')
 </body>
 </html>

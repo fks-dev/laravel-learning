@@ -4,26 +4,24 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\PasswordRequest;
-use App\Http\Requests\StoreUserMgmtRequest;
-use App\Http\Requests\UpdateUserMgmtRequest;
-use App\Models\User;
-use App\Models\UserLogin;
-use App\Models\Course;
+use App\Http\Requests\StoreAdminRequest;
+use App\Http\Requests\UpdateAdminRequest;
+use App\Models\Admin;
+use App\Models\AdminLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 
-
-class UserMgmtController extends Controller
+class AdminManagementController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(Request $request)
     {
-        $users = User::all();
-        $logins = UserLogin::all();
+        $admins = Admin::all();
+        $logins = AdminLogin::all();
 
-        return view('admin.userMgmt.index', compact('users', 'logins'));
+        return view('admin.admin-management.index', compact('admins', 'logins'));
     }
 
     /**
@@ -33,10 +31,9 @@ class UserMgmtController extends Controller
     {
         $search = $request->input('name');
 
-        $results = User::leftJoin('user_logs', 'users.id', '=', 'user_logs.user_id')
-            ->where('users.username', 'LIKE', "%{$search}%")
-            ->select('users.*', 'user_logs.updated_at as login_at')
-            ->with('courses')
+        $results = Admin::leftJoin('admin_logs', 'admins.id', '=', 'admin_logs.admin_id')
+            ->where('admins.username', 'LIKE', "%{$search}%")
+            ->select('admins.*', 'admin_logs.updated_at as login_at')
             ->get();
 
         return response()->json($results);
@@ -47,101 +44,80 @@ class UserMgmtController extends Controller
      */
     public function create()
     {
-        $courses = Course::all();
-
-        return view('admin.userMgmt.create', compact('courses'));
+        return view('admin.admin-management.create');
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserMgmtRequest $request)
+    public function store(StoreAdminRequest $request)
     {
-        User::create([
+
+        Admin::create([
             'username'     => $request->username,
             'password'     => Hash::make($request->password),
             'mail_address' => $request->mail_address,
         ]);
 
-        $user = User::orderByDesc('id')->first();
-
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
-
-        return redirect()->route('admin.userMgmt.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('admin.admin-management.index')->with('message', $request->username.'を登録しました');
     }
 
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(Admin $admin)
     {
-        $users = User::with('courses')->find($user);
-        $courses = Course::all();
-        return view('admin.userMgmt.edit', compact('user', 'users', 'courses'));
+        return view('admin.admin-management.edit', compact('admin'));
     }
 
     /**
      * パスワードの変更
      */
-    public function password(User $user)
+    public function password(Admin $admin)
     {
-        return view('admin.userMgmt.password', compact('user'));
+        return view('admin.admin-management.password', compact('admin'));
     }
 
     /**
-     * Update the specified resource in storage.
+     * Show the form for editing the specified resource.
      */
-    public function update(UpdateUserMgmtRequest $request, User $user)
+    public function update(UpdateAdminRequest $request, Admin $admin)
     {
-        $user->Courses()->detach();
-
-        $user->update([
+        $admin->update([
             'username'     => $request->username,
             'mail_address' => $request->mail_address,
         ]);
 
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
-
-        return redirect()->route('admin.userMgmt.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.admin-management.index')->with('message', $request->username.'の情報を更新しました');
     }
 
     /**
      * パスワードの更新
      */
-    public function changeUserPassword(Request $request, User $user)
+    public function changeAdminPassword(Request $request, Admin $admin)
     {
         $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
-        if (!Hash::check($request->password, $user->password)) {
+        if (!Hash::check($request->password, $admin->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
         }elseif ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
-        $user->update([
+        $admin->update([
             'password' => Hash::make($request->new_password),
         ]);
 
-        return redirect()->route('admin.userMgmt.index')->with('message', 'パスワードが変更されました');
+        return redirect()->route('admin.admin-management.index')->with('message', 'パスワードが変更されました');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(Admin $admin)
     {
-        $user->delete();
-        return redirect()->route('admin.userMgmt.index')->with('danger', $user->username.'を削除しました');
+        $admin->delete();
+        return redirect()->route('admin.admin-management.index')->with('danger', $admin->username.'を削除しました');
     }
 
     /**
@@ -149,7 +125,7 @@ class UserMgmtController extends Controller
      */
     public function downloadCsv()
     {
-        $fileName = 'user.csv';
+        $fileName = 'admin.csv';
         $csvRecords = self::getAdminCsvRecords();
         return self::streamDownloadCsv($fileName, $csvRecords);
     }
@@ -157,30 +133,30 @@ class UserMgmtController extends Controller
     // レコード取得
     private static function getAdminCsvRecords():array
     {
-        $users = User::withTrashed()->get();
+        $admins = Admin::withTrashed()->get();
         $csvRecords = [
             ['ID', 'ユーザー名', 'メールアドレス', '削除日時', '作成日時', '更新日時'],
         ];
-        foreach ($users as $user) {
+        foreach ($admins as $admin) {
             $csvRecords[] = [
-                $user->id,
-                $user->username,
-                $user->mail_address,
-                $user->deleted_at,
-                $user->created_at,
-                $user->updated_at,
+                $admin->id,
+                $admin->username,
+                $admin->mail_address,
+                $admin->deleted_at,
+                $admin->created_at,
+                $admin->updated_at,
             ];
         }
         return $csvRecords;
     }
 
     // CSV or TSV
-    private static function determineContentType($separator)
+    private static function determineContentType(string $separator)
     {
         if ($separator === ',') {
-            'text/csv';
+           return 'text/csv';
         } elseif ($separator === "\t") {
-            'text/tab-separated-values';
+           return 'text/tab-separated-values';
         }
     }
 
@@ -210,7 +186,7 @@ class UserMgmtController extends Controller
      */
     public function createCsv()
     {
-        return view('admin.userMgmt.import');
+        return view('admin.admin-management.import');
     }
 
     /**
@@ -230,7 +206,7 @@ class UserMgmtController extends Controller
         $handle = fopen($file, 'r');
 
         if (!$handle) {
-            return redirect()->route('adminMgmt.index')->with('danger', 'CSVファイルを開けませんでした。');
+            return redirect()->route('admin-management.index')->with('danger', 'CSVファイルを開けませんでした。');
         }
 
         // ヘッダー部分の読み込み
@@ -239,17 +215,16 @@ class UserMgmtController extends Controller
 
         while (($data = fgetcsv($handle, $length, ',')) !== false) {
             $username = $data[1];
-            $password = Hash::make('test');
+            $password = Hash::make('admin');
             $mail_address = $data[2];
 
-            User::create([
+            Admin::create([
                 'username' => $username,
                 'password' => $password,
                 'mail_address' => $mail_address,
             ]);
         }
         fclose($handle);
-        return redirect()->route('admin.userMgmt.index')->with('message', 'CSVファイルをインポートしました。');
+        return redirect()->route('admin.admin-management.index')->with('message', 'CSVファイルをインポートしました。');
     }
-
 }
