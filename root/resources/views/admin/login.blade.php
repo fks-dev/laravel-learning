@@ -8,6 +8,7 @@
     <link rel="stylesheet" href="/css/login.css">
 
 </head>
+
 <body>
     <div class="mt-5 container">
         <h2>管理者ログイン画面</h2>
@@ -20,6 +21,10 @@
             <div>
                 <label for="password">パスワード：</label>
                 <input type="password" name="password" id="password" required />
+
+    {{-- header --}}
+    @include('header')
+
             </div>
             <div>
                 @error('failed')
