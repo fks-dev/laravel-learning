@@ -2,7 +2,7 @@
 
 use App\Http\Controllers\CourseController;
 use App\Http\Controllers\AdminManagementController;
-use App\Http\Controllers\UserMgmtController;
+use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\UserMessageController;
 use App\Http\Controllers\AdminLoginController;
@@ -95,7 +95,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // ユーザー　一覧画面
-        Route::prefix('user-mgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
+        Route::prefix('user-management')->name('.user-management')->controller(UserManagementController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');

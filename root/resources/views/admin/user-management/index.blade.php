@@ -17,17 +17,17 @@
                 <a class="btn btn-info" href="{{ route('admin.admin-management.index') }}">⇆ 管理者一覧</a>
             </div>
             <div class="col-auto">
-                <form action="{{ route('admin.userMgmt.download-csv') }}" method="POST">
+                <form action="{{ route('admin.user-management.download-csv') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">エクスポート</button>
                 </form>
             </div>
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.userMgmt.create-csv') }}">インポート</a>
+                <a class="btn btn-primary" href="{{ route('admin.user-management.create-csv') }}">インポート</a>
             </div>
 
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.userMgmt.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.user-management.create')}}">&plus;追加</a>
             </div>
 
         </div>
@@ -108,9 +108,9 @@
                             <td class="align-middle text-center">{{ $user->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('admin.userMgmt.edit', $user->id) }}">編集</a>
+                                <a class="btn btn-success edit-btn" href="{{ route('admin.user-management.edit', $user->id) }}">編集</a>
 
-                                <form action="{{ route('admin.userMgmt.destroy', $user) }}" method="post" class="d-inline">
+                                <form action="{{ route('admin.user-management.destroy', $user) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
@@ -125,6 +125,6 @@
             </table>
     </div>
     @include('admin.sort')
-    @include('admin.userMgmt.search')
+    @include('admin.user-management.search')
 </body>
 </html>
