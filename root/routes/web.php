@@ -11,6 +11,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\SelectCourseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -180,6 +181,10 @@ Route::middleware('auth:web')->group(function (){
         Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
+        });
+
+        Route::prefix('select-courses')->name('.select-courses')->controller(InformationController::class)->group(function(){
+            Route::get('', 'index')->name('.index');
         });
     });
 });
