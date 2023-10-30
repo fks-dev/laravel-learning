@@ -12,11 +12,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.userMgmt.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.user-management.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">ユーザー編集</div>
 
-            <form action="{{ route('admin.userMgmt.update', $user) }}" method="post">
+            <form action="{{ route('admin.user-management.update', $user) }}" method="post">
                 @csrf
                 @method('patch')
                 <div class="mx-5 px-5">
@@ -39,7 +39,7 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-9">
-                            <a href="{{ route('admin.userMgmt.password', $user) }}" class="btn btn-success form-control">
+                            <a href="{{ route('admin.user-management.password', $user) }}" class="btn btn-success form-control">
                                 パスワードの変更
                             </a>
                         </div>
@@ -83,6 +83,6 @@
             </form>
         </div>
     </div>
-    @include('admin.userMgmt.courseSelect')
+    @include('admin.user-management.courseSelect')
 </body>
 </html>

@@ -4,7 +4,7 @@
             <a class="text-decoration-none" href="{{ route('admin.admin-management.index') }}">管理者</a>
         </li>
         <li class="list-group-item">
-            <a class="text-decoration-none" href="{{ route('admin.userMgmt.index') }}">ユーザー</a>
+            <a class="text-decoration-none" href="{{ route('admin.user-management.index') }}">ユーザー</a>
         </li>
         <li class="list-group-item">
             <a class="text-decoration-none" href="{{ route('admin.course.index') }}">コース</a>
