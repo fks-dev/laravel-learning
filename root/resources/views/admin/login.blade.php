@@ -1,8 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
+
     @include('admin.head')
     <title>管理者ログイン画面</title>
+    <link rel="stylesheet" href="/css/login.css">
+
 </head>
 <body>
     <div class="mt-5 container">
