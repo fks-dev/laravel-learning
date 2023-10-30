@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     @include('admin.head')
+    <script type="text/javascript" src="https://code.jquery.com/jquery-3.6.0.min.js"></script>
     <link rel="stylesheet" href="/css/user_index.css">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>ユーザー画面</title>
@@ -11,7 +12,7 @@
 
 <body>
     @include('header')
-    <main>
+    <main >
         <div class="container-md mt-4">
             <div class="card ">
                 <div class="card-header bg-success-subtitle text-success shadow-sm ">
