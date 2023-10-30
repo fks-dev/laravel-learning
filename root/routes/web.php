@@ -181,5 +181,11 @@ Route::middleware('auth:web')->group(function (){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
         });
+
+         // パスワード変更機能
+         Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
+            Route::get('/', 'userIndex')->name('.index');
+            Route::post('/change/{user}', 'changeUserPassword')->name('.change');
+        });
     });
 });
