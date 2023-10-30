@@ -10,21 +10,86 @@
 </head>
 
 <body>
-    <div class="mt-5 container">
-        <h2>管理者ログイン画面</h2>
-        <form action="{{ route('admin.login') }}" method="POST">
-            @csrf
-            <div>
-                <label for="username">ユーザー名：</label>
-                <input type="text" name="username" id="username" required />
-            </div>
-            <div>
-                <label for="password">パスワード：</label>
-                <input type="password" name="password" id="password" required />
 
     {{-- header --}}
     @include('header')
 
+    {{-- body --}}
+    <body>
+
+        <div id="container">
+            <div id="content" class="row">
+
+                {{-- ログインフォーム --}}
+                <div class="users-login">
+                    <div class="panel panel-info form-signin">
+
+                        <div class="panel-heading text-bg-info p-3">
+                            管理者ログイン画面
+                        </div>
+
+                        <div class="panel-body text-bg-light p-3">
+
+                            <form action="{{ route('admin.login') }}"
+                             method="POST">
+
+                                @csrf
+                                <div class="form_group">
+
+                                    <div class="required">
+
+                                        <label for="username">ユーザー名</label>
+
+                                        <div class="input text required">
+                                            <input type="text"
+                                             name="username"
+                                             id="username"
+                                             class="form-control"
+                                             required/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="form_group">
+
+                                    <div class="required">
+
+                                        <label for="password">パスワード</label>
+
+                                        <div class="input password required">
+                                            <input type="password"
+                                             name="password"
+                                             id="password"
+                                             class="form-control"
+                                             required/>
+                                        </div>
+
+                                    </div>
+
+                                </div>
+
+                                <div class="submit">
+
+                                    @error('failed')
+                                    <p style="color:red">{{ $message }}</p>
+                                    @enderror
+
+                                    <button
+                                     class="btn btn-lg btn-primary btn-block"
+                                     type="submit">
+                                        ログイン
+                                    </button>
+
+                                </div>
+
+                            </form>
+
+                        </div>
+
+                    </div>
+                </div>
             </div>
             <div>
                 @error('failed')
