@@ -17,7 +17,8 @@ class UserController extends Controller
         foreach($groups as $group){
             $informations = $informations->concat($group->informations);
         }
-        $informations = $informations->unique('id')->sortByDesc('updated_at');
+        //重複を除外し、最新の5件のみ取得する
+        $informations = $informations->unique('id')->sortByDesc('updated_at')->take(5);
 
         return view('users.index', compact('user','informations'));
     }
