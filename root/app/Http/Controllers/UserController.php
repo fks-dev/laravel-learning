@@ -11,6 +11,14 @@ class UserController extends Controller
     {
         $user = Auth::user();
 
-        return view('users.index', compact('user'));
+        //ログイン中のユーザーに向けたお知らせを取得
+        $groups = $user->groups ?? collect();
+        $informations = collect();
+        foreach($groups as $group){
+            $informations = $informations->concat($group->informations);
+        }
+        $informations = $informations->unique('id')->sortByDesc('updated_at');
+
+        return view('users.index', compact('user','informations'));
     }
 }
