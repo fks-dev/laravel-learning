@@ -5,7 +5,7 @@
             <ul class="nav me-2 text-white">
                 @isset($user)
                 <li class="nav-item border-end p-1">ようこそ{{ $user->username }}さん</li>
-                <li class="nav-item border-end p-1"><a class="link-underline text-white" href="#">設定</a></li>
+                <li class="nav-item border-end p-1"><a class="link-underline text-white" href="{{ route('users.password.index') }}">設定</a></li>
                 <li class="nav-item p-1"><a class="link-underline text-white" href="{{ route('users.logout') }}">ログアウト</a></li>
                 @endisset
             </ul>
