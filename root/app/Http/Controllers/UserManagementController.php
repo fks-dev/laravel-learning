@@ -151,7 +151,7 @@ class UserManagementController extends Controller
         if($userRouteName == Route::currentRouteName()){
             $routeName = 'users.index';
         }else{
-            $routeName = 'admin.userMgmt.index';
+            $routeName = 'admin.user-management.index';
         }
 
         return redirect()->route($routeName)->with('message', 'パスワードが変更されました');
