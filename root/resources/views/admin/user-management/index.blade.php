@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.head')
+    @include('head')
     <link rel="stylesheet" href="/css/mgmt.css">
     <title>ユーザー 一覧画面</title>
 </head>

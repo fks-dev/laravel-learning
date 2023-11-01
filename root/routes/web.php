@@ -176,10 +176,24 @@ Route::middleware('auth:web')->group(function (){
             Route::delete('{message}', 'destroy')->name('.destroy');
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
+
+        //コンテンツ表示画面
+        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
+            Route::get('index/{course}', 'list')->name('.index');
+            Route::get('view/{content}', 'view')->name('.show');
+            Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード
+            Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
+        });
         //お知らせ閲覧機能
         Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
+        });
+
+         // パスワード変更機能
+         Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
+            Route::get('/', 'userIndex')->name('.index');
+            Route::post('/change/{user}', 'changeUserPassword')->name('.change');
         });
     });
 });

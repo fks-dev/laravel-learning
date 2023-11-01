@@ -44,6 +44,10 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'users_courses', 'user_id', 'course_id');
     }
 
+    public function records(){
+        return $this->hasMany(Record::class);
+    }
+
     // ユーザーが削除された時に、IDに紐づく中間テーブルの値も削除される
     protected static function boot()
     {

@@ -3,7 +3,8 @@
 
 <head>
 
-    @include('admin.head')
+    @include('head')
+
     <title>管理者ログイン画面</title>
     <link rel="stylesheet" href="/css/login.css">
 

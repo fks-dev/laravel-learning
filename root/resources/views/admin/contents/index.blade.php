@@ -5,7 +5,7 @@
     <meta name="csrf-token" content="{{ csrf_token() }}">
     {{-- CSS --}}
     <link rel="stylesheet" href="/css/course.css">
-    @include('admin.head')
+    @include('head')
     <title>コンテンツ</title>
 </head>
 <body>
