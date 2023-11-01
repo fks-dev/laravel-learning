@@ -11,6 +11,10 @@ use App\Models\UserLogin;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
+
 
 
 class UserManagementController extends Controller
@@ -25,6 +29,13 @@ class UserManagementController extends Controller
 
         return view('admin.user-management.index', compact('users', 'logins'));
     }
+
+      // ユーザ側のパスワード変更画面
+      public function userIndex()
+      {
+          $user = Auth::user();
+          return view('users.passwordChange.index', compact('user'));
+      }
 
     /**
      * 検索機能
@@ -120,6 +131,10 @@ class UserManagementController extends Controller
      */
     public function changeUserPassword(Request $request, User $user)
     {
+        // ユーザー側のパスワード変更ボタン押下時のルート名
+        $userRouteName = 'users.password.change';
+        // パスワード変更成功時のリダイレクト先
+        $routeName = null;
         $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
         if (!Hash::check($request->password, $user->password)) {
@@ -132,8 +147,16 @@ class UserManagementController extends Controller
             'password' => Hash::make($request->new_password),
         ]);
 
-        return redirect()->route('admin.user-management.index')->with('message', 'パスワードが変更されました');
+        //パスワード変更がユーザー側かシステム管理側かを判断
+        if($userRouteName == Route::currentRouteName()){
+            $routeName = 'users.index';
+        }else{
+            $routeName = 'admin.user-management.index';
+        }
+
+        return redirect()->route($routeName)->with('message', 'パスワードが変更されました');
     }
+
 
     /**
      * Remove the specified resource from storage.
