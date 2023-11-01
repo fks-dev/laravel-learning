@@ -6,9 +6,18 @@
 </head>
 
 <body>
-<p>N問目</p>
-<p>○○ですか？</p>
+<p>{{ $q['q_order']}}問目</p>
+<p>{{ $q['text'] }}</p>
 
-<a href="#" class="btn btn-primary">はい</a>
-<a href="#" class="btn btn-danger">いいえ</a>
+<form method="get" action="{{ route('users.select-courses.index') }}">
+    <input type="hidden" value="{{ $q['q_id'] }}" name="q_id">
+    <input type="hidden" value="yes" name="answer">
+    <input type="submit" value="はい" class="btn btn-primary">
+</form>
+
+<form method="get" action="{{ route('users.select-courses.index') }}">
+    <input type="hidden" value="{{ $q['q_id'] }}" name="q_id">
+    <input type="hidden" value="no" name="answer">
+    <input type="submit" value="いいえ" class="btn btn-danger">
+</form>
 </body>
