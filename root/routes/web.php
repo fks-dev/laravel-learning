@@ -1,14 +1,15 @@
 <?php
 
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\AdminMgmtController;
-use App\Http\Controllers\UserMgmtController;
+use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\UserMessageController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\UserLoginController;
 use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ContentController;
+use App\Http\Controllers\UserController;
 use App\Http\Controllers\InformationController;
 use Illuminate\Support\Facades\Route;
 
@@ -76,7 +77,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('{content}', 'destroy')->name('.destroy');
         });
         // 管理者一覧画面
-        Route::prefix('admin-mgmt')->name('.adminMgmt')->controller(AdminMgmtController::class)->group(function() {
+        Route::prefix('admin-management')->name('.admin-management')->controller(AdminManagementController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -94,7 +95,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // ユーザー　一覧画面
-        Route::prefix('user-mgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
+        Route::prefix('user-management')->name('.user-management')->controller(UserManagementController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -150,12 +151,12 @@ Route::post('/users/login', [UserLoginController::class, 'login'])->name('users.
 Route::delete('/users/login', [UserLoginController::class, 'logout'])->name('users.logout');
 
 // ユーザーログイン後のみアクセス可
-Route::middleware('auth:web')->group(function () {
-    Route::get('users', function () {
-        return view('users.index');
-    })->name('users.index');
+Route::middleware('auth:web')->group(function (){
 
     Route::prefix('users')->name('users')->group(function () {
+
+        // ユーザー側のトップページ
+        Route::get('/', [UserController::class, 'index'])->name('.index');
 
         //メッセージ機能
         Route::prefix('messages')->name('.message')->controller(UserMessageController::class)->group(function () {
@@ -187,6 +188,12 @@ Route::middleware('auth:web')->group(function () {
         Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
+        });
+
+         // パスワード変更機能
+         Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
+            Route::get('/', 'userIndex')->name('.index');
+            Route::post('/change/{user}', 'changeUserPassword')->name('.change');
         });
     });
 });

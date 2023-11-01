@@ -3,31 +3,32 @@
 <head>
     @include('admin.head')
     <link rel="stylesheet" href="/css/mgmt.css">
-    <title>ユーザー 一覧画面</title>
+    <title>管理者画面</title>
 </head>
 <body>
     <div class="mt-5 container">
+        <div class="mb-5">
 
         @include('admin.logoutBtn')
         @include('admin.menu')
 
         <div class="d-flex justify-content-between">
-            <h2 class="me-4">ユーザー 一覧</h2>
+            <h2 class="me-4">管理者一覧</h2>
             <div class="me-auto">
-                <a class="btn btn-info" href="{{ route('admin.adminMgmt.index') }}">⇆ 管理者一覧</a>
+                <a class="btn btn-info" href="{{ route('admin.user-management.index') }}">⇆ ユーザー 一覧</a>
             </div>
             <div class="col-auto">
-                <form action="{{ route('admin.userMgmt.download-csv') }}" method="POST">
+                <form action="{{ route('admin.admin-management.download-csv') }}" method="POST">
                     @csrf
                     <button type="submit" class="btn btn-primary">エクスポート</button>
                 </form>
             </div>
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.userMgmt.create-csv') }}">インポート</a>
+                <a class="btn btn-primary" href="{{ route('admin.admin-management.create-csv') }}">インポート</a>
             </div>
 
             <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.userMgmt.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.admin-management.create')}}">&plus;追加</a>
             </div>
 
         </div>
@@ -72,10 +73,9 @@
             <table class="table table-striped" id="sortable">
                 <thead>
                     <tr>
-                        <th class="col-1 sort" data-sort="asc">管理者ID</th>
+                        <th class="col-2 pe-auto sort" data-sort="asc">管理者ID</th>
                         <th class="col-2 sort" data-sort="asc">mail</th>
                         <th class="col-2">所属グループ</th>
-                        <th class="col-2">所属コース</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
                         <th class="col text-center">Actions</th>
@@ -83,34 +83,27 @@
                 </thead>
 
                 <tbody>
-                    @foreach ($users as $user)
-                        <tr  data-id="{{ $user->id }}">
-                            <td class="align-middle">{{ $user->username }}</td>
-                            <td class="align-middle text-center">{{ $user->mail_address }}</td>
+                    @foreach ($admins as $admin)
+                        <tr  data-id="{{ $admin->id }}">
+                            <td class="align-middle">{{ $admin->username }}</td>
+                            <td class="align-middle text-center">{{ $admin->mail_address }}</td>
                             <td class="align-middle text-center"></td>
-                            <td class="align-middle text-center">
-                                @foreach ($user->courses as $course)
-                                    {{ $course->title }}
-                                    @unless($loop->last)
-                                        ,
-                                    @endunless
-                                @endforeach
-                            </td>
+
                             <td class="align-middle text-center">
                                 @foreach ($logins as $login)
-                                    @if ($user->id == $login->user_id)
+                                    @if ($admin->id == $login->admin_id)
                                         {{ $login->updated_at }}
                                         @break
                                     @endif
                                 @endforeach
                             </td>
 
-                            <td class="align-middle text-center">{{ $user->created_at }}</td>
+                            <td class="align-middle text-center">{{ $admin->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('admin.userMgmt.edit', $user->id) }}">編集</a>
+                                <a class="btn btn-success edit-btn" href="{{ route('admin.admin-management.edit', $admin->id) }}">編集</a>
 
-                                <form action="{{ route('admin.userMgmt.destroy', $user) }}" method="post" class="d-inline">
+                                <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
@@ -125,6 +118,6 @@
             </table>
     </div>
     @include('admin.sort')
-    @include('admin.userMgmt.search')
+    @include('admin.admin-management.search')
 </body>
 </html>
