@@ -31,3 +31,14 @@
   text-decoration: none;
   color: inherit;
 }
+
+#setting-menu {
+  display: none;
+  list-style: none;
+  z-index: 1000;
+  background-color: whitesmoke;
+}
+
+.setting-item {
+  display: block;
+}

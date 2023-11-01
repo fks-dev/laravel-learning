@@ -2,30 +2,31 @@
 <html lang="ja">
 <head>
     <title>お知らせ一覧</title>
-    <meta charset="utf-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-9ndCyUaIbzAi2FUVXJi0CjmCapSmO7SnpJef0486qhLnuZ2cdeRhO02iuK6FUUVM" crossorigin="anonymous">
+    @include('head')
 </head>
 
 <body>
-    <a href="{{ route('users.index') }}">HOME</a>
+    @include('header')
+    <div class="mb-4 mt-2 p-3" style="background-color: #f5f5f5;">
+        <a class="text-decoration-none" href="{{ route('users.index') }}">HOME</a>
+    </div>
     <div class="border rounded m-2">
-        <div class="bg-success rounded-top p-2">
+        <div class="rounded-top p-2 card-header text-success shadow-sm" style="background-color: #cdeee0">
             <p>お知らせ一覧</p>
         </div>
         <div class="m-2">
-            <table class="table p-2 bg-prime">
+            <table class="table table-striped table-hover">
                 <thead>
                     <tr>
                         <th>日付</th>
                         <th>タイトル</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody class="fw-bold">
                     @foreach($informations as $information)
                     <tr>
                         <td>{{$information->created_at}}</td>
-                        <td><a href="{{ route('users.information.show', $information) }}">{{$information->title}}</a></td>
+                        <td><a class="none-underline" href="{{ route('users.information.show', $information) }}">{{$information->title}}</a></td>
                     </tr>
                     @endforeach
                 </tbody>

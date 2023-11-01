@@ -2,7 +2,7 @@
 <html lang="ja">
 
 <head>
-    @include('admin.head')
+    @include('head')
     @include('admin.sort')
     <link rel="stylesheet" href="/css/information.css">
     <title>お知らせ一覧</title>

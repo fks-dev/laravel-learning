@@ -1,12 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.head')
+    @include('head')
     <title>パスワード変更</title>
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.userMgmt.edit', $user) }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.admin-management.edit', $admin) }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">パスワード変更</div>
 
@@ -22,7 +22,7 @@
                 </div>
             @endif
 
-            <form action="{{ route('admin.userMgmt.changePassword', $user) }}" method="post">
+            <form action="{{ route('admin.admin-management.changePassword', $admin) }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 

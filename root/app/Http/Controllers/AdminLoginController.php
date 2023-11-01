@@ -43,7 +43,7 @@ class AdminLoginController extends Controller
                 $newLoginLog->save();
             }
         }
-        return redirect()->intended(route('admin.adminMgmt.index'));
+        return redirect()->intended(route('admin.admin-management.index'));
 
     }
 

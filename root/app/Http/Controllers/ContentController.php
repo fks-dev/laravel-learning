@@ -2,8 +2,10 @@
 
 namespace App\Http\Controllers;
 use App\Models\Content;
+use App\Models\User;
 use App\Models\Admin;
 use App\Models\Course;
+use App\Models\Record;
 use App\Http\Requests\StoreContentRequest;
 use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
@@ -235,4 +237,25 @@ class ContentController extends Controller
         return redirect()->route('admin.content.index', compact('course'))
                          ->with('danger', $content->title . 'を削除しました');
     }
+
+    public function list(Course $course){ //コンテンツ一覧画面
+        $user = Auth::user();
+        $course_title = $course->title;
+        $contents = Content::where('course_id', $course->id)->get();
+
+        return view('users.contents.index', compact('contents','user','course_title'));
+    }
+    public function view(Content $content){ //コンテンツ詳細画面
+        $user = Auth::user();
+        $title = $content->title;
+        return view('users.contents.show', compact('content','user','title'));
+    }
+    public function handout(Content $content){
+        $info = pathinfo($content->document_file_path);
+        $parts = explode('_', $info['filename'], 2);
+        $fileName = end($parts) . '.' . $info['extension'];
+
+        return Storage::download('public/' . $content->document_file_path, $fileName);
+    }
+
 }

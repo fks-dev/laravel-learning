@@ -1,8 +1,8 @@
 <?php
 
 use App\Http\Controllers\CourseController;
-use App\Http\Controllers\AdminMgmtController;
-use App\Http\Controllers\UserMgmtController;
+use App\Http\Controllers\AdminManagementController;
+use App\Http\Controllers\UserManagementController;
 use App\Http\Controllers\AdminMessageController;
 use App\Http\Controllers\UserMessageController;
 use App\Http\Controllers\AdminLoginController;
@@ -78,7 +78,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('{content}', 'destroy')->name('.destroy');
         });
         // 管理者一覧画面
-        Route::prefix('admin-mgmt')->name('.adminMgmt')->controller(AdminMgmtController::class)->group(function() {
+        Route::prefix('admin-management')->name('.admin-management')->controller(AdminManagementController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -96,7 +96,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // ユーザー　一覧画面
-        Route::prefix('user-mgmt')->name('.userMgmt')->controller(UserMgmtController::class)->group(function() {
+        Route::prefix('user-management')->name('.user-management')->controller(UserManagementController::class)->group(function() {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -177,6 +177,14 @@ Route::middleware('auth:web')->group(function (){
             Route::delete('{message}', 'destroy')->name('.destroy');
             Route::post('{message}/hidden', 'hidden')->name('.hidden'); //非表示
         });
+
+        //コンテンツ表示画面
+        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
+            Route::get('index/{course}', 'list')->name('.index');
+            Route::get('view/{content}', 'view')->name('.show');
+            Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード
+            Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
+        });
         //お知らせ閲覧機能
         Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
@@ -185,6 +193,10 @@ Route::middleware('auth:web')->group(function (){
 
         Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function(){
             Route::get('', 'index')->name('.index');
+         // パスワード変更機能
+         Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
+            Route::get('/', 'userIndex')->name('.index');
+            Route::post('/change/{user}', 'changeUserPassword')->name('.change');
         });
     });
 });
