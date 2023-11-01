@@ -15,6 +15,4 @@
             </ul>
         </div>
     </nav>
-        @include('admin.passwordChange')
-
 </header>
