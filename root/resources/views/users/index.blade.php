@@ -51,7 +51,7 @@
                             <ul class="list-group">
                                 <li
                                     class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#">
+                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.select-courses.index')}}">
                                     <div>
                                         <h6>おすすめ動画診断</h6>
                                         質問項目に回答いただくとおすすめ動画を提案させていただきます。
