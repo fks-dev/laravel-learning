@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Models\Course;
 
 class SelectCourseController extends Controller
 {
@@ -23,12 +24,20 @@ class SelectCourseController extends Controller
         if($next_q_id){
             $q = $this->question[$next_q_id];
             return view('users.recommend.index', compact('q'));
-        }elseif(True){
-            //次の質問が存在せず、診断結果が存在するなら結果を表示する
-            ###記述する###
         }
 
-        //次の質問か診断結果のどちらも存在しないエラーを表示する
+        if($answer=='yes'){
+            $course = Course::find($this->question[$q_id]['yes_course_id']) ?? null;
+        }
+        if($answer=='no'){
+            $course = Course::find($this->question[$q_id]['no_course_id']) ?? null;
+        }
+        if($course){ //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
+            return view('users.recommend.answer', compact('course'));
+        }
+
+        //まだreturnされていない場合はエラー
+
     }
 
     private $question = [
@@ -60,25 +69,33 @@ class SelectCourseController extends Controller
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
-            'no' => null
+            'no' => null,
+            'yes_course_id' =>1,
+            'no_course_id' =>2,
         ], [
             'q_id' => 4,
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
-            'no' => null
+            'no' => null,
+            'yes_course_id' =>1,
+            'no_course_id' =>2,
         ], [
             'q_id' => 5,
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
-            'no' => null
+            'no' => null,
+            'yes_course_id' =>1,
+            'no_course_id' =>2,
         ], [
             'q_id' => 6,
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
-            'no' => null
+            'no' => null,
+            'yes_course_id' =>1,
+            'no_course_id' =>2,
     ],
     ];
 }
