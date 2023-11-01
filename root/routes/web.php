@@ -191,12 +191,15 @@ Route::middleware('auth:web')->group(function (){
             Route::get('{information}', 'show')->name('.show');
         });
 
-        Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function(){
-            Route::get('', 'index')->name('.index');
          // パスワード変更機能
          Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
             Route::get('/', 'userIndex')->name('.index');
             Route::post('/change/{user}', 'changeUserPassword')->name('.change');
+        });
+
+        // おすすめ動画診断機能
+        Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function(){
+            Route::get('', 'index')->name('.index');
         });
     });
 });
