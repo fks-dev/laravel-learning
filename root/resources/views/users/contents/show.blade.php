@@ -2,10 +2,7 @@
 <html lang="ja">
 
 <head>
-    <meta charset="UTF-8">
-    @include('admin.head')
-    <link rel="stylesheet" href="/css/user_index.css">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    @include('head')
     <title>{{ $title }}</title>
 </head>
 
