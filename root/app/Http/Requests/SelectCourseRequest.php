@@ -12,7 +12,7 @@ class SelectCourseRequest extends FormRequest
      */
     public function authorize(): bool
     {
-        return false;
+        return true;
     }
 
     /**
@@ -23,8 +23,8 @@ class SelectCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'q_id' => ['filled', 'integer'],
-            'answer' => ['filled', ,'string', 'in:yes, no']
+            'q_id' => ['integer'],
+            'answer' => ['string', 'in:yes,no']
         ];
     }
 }
