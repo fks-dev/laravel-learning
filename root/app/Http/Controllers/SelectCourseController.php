@@ -3,36 +3,38 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
+use App\Http\Requests\SelectCourseRequest;
 use App\Models\Course;
 
 class SelectCourseController extends Controller
 {
-    public function index(Request $request)
+    public function index(SelectCourseRequest $request)
     {
-        if($request->input()){ //質問の回答入力を受け取っている場合
+        $input_check = $request->input('q_id') && $request->input('answer');
+        if ($input_check) {
             $q_id = $request->input('q_id');
             $answer = $request->input('answer');
-        }else{ //質問の回答入力を受け取っていない場合
+        } else {
             $q = $this->question[0]; //1問目の質問をviewに渡す
             return view('users.recommend.index', compact('q'));
         }
 
-        //次の質問を取得する。次の質問がなければnullを代入する
+
         $next_q_id = $this->question[$q_id][$answer] ?? null;
 
         //次の質問が存在するなら$qとしてviewに渡す
-        if($next_q_id){
+        if ($next_q_id) {
             $q = $this->question[$next_q_id];
             return view('users.recommend.index', compact('q'));
         }
 
-        if($answer=='yes'){
+        if ($answer == 'yes') {
             $course = Course::find($this->question[$q_id]['yes_course_id']) ?? null;
         }
-        if($answer=='no'){
+        if ($answer == 'no') {
             $course = Course::find($this->question[$q_id]['no_course_id']) ?? null;
         }
-        if($course){ //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
+        if ($course) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
             return view('users.recommend.answer', compact('course'));
         }
 
@@ -70,32 +72,32 @@ class SelectCourseController extends Controller
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
             'no' => null,
-            'yes_course_id' =>1,
-            'no_course_id' =>2,
+            'yes_course_id' => 1,
+            'no_course_id' => 2,
         ], [
             'q_id' => 4,
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
             'no' => null,
-            'yes_course_id' =>1,
-            'no_course_id' =>2,
+            'yes_course_id' => 1,
+            'no_course_id' => 2,
         ], [
             'q_id' => 5,
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
             'no' => null,
-            'yes_course_id' =>1,
-            'no_course_id' =>2,
+            'yes_course_id' => 1,
+            'no_course_id' => 2,
         ], [
             'q_id' => 6,
             'q_order' => 3,
             'text' => "3問目です。あなたは○○ですか？",
             'yes' => null,
             'no' => null,
-            'yes_course_id' =>1,
-            'no_course_id' =>2,
-    ],
+            'yes_course_id' => 1,
+            'no_course_id' => 2,
+        ],
     ];
 }
