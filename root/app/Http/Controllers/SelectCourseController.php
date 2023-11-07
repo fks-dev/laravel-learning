@@ -10,7 +10,7 @@ class SelectCourseController extends Controller
 {
     public function index(SelectCourseRequest $request)
     {
-        $input_check = $request->input('q_id') && $request->input('answer');
+        $input_check = $request->has('q_id') && $request->has('answer');
         if ($input_check) {
             $q_id = $request->input('q_id');
             $answer = $request->input('answer');
@@ -39,7 +39,7 @@ class SelectCourseController extends Controller
         }
 
         //まだreturnされていない場合はエラー
-
+        return to_route('users.index');
     }
 
     private $question = [
@@ -51,25 +51,25 @@ class SelectCourseController extends Controller
         [
             'q_id' => 0,
             'q_order' => 1,
-            'text' => "最初の質問です。○○ですか？",
+            'text' => "最初の質問です。0ですか？",
             'yes' => 1,
             'no' => 2
         ], [
             'q_id' => 1,
             'q_order' => 2,
-            'text' => "2問目です。○○ですか？",
+            'text' => "2問目です。1ですか？",
             'yes' => 3,
             'no' => 4
         ], [
             'q_id' => 2,
             'q_order' => 2,
-            'text' => "2問目です。○○ですか？",
+            'text' => "2問目です。2ですか？",
             'yes' => 5,
             'no' => 6
         ], [
             'q_id' => 3,
             'q_order' => 3,
-            'text' => "3問目です。あなたは○○ですか？",
+            'text' => "3問目です。3ですか？",
             'yes' => null,
             'no' => null,
             'yes_course_id' => 1,
@@ -77,7 +77,7 @@ class SelectCourseController extends Controller
         ], [
             'q_id' => 4,
             'q_order' => 3,
-            'text' => "3問目です。あなたは○○ですか？",
+            'text' => "3問目です。4ですか？",
             'yes' => null,
             'no' => null,
             'yes_course_id' => 1,
@@ -85,7 +85,7 @@ class SelectCourseController extends Controller
         ], [
             'q_id' => 5,
             'q_order' => 3,
-            'text' => "3問目です。あなたは○○ですか？",
+            'text' => "3問目です。5ですか？",
             'yes' => null,
             'no' => null,
             'yes_course_id' => 1,
@@ -93,7 +93,7 @@ class SelectCourseController extends Controller
         ], [
             'q_id' => 6,
             'q_order' => 3,
-            'text' => "3問目です。あなたは○○ですか？",
+            'text' => "3問目です。6ですか？",
             'yes' => null,
             'no' => null,
             'yes_course_id' => 1,
