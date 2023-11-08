@@ -8,41 +8,7 @@ use App\Models\Course;
 
 class SelectCourseController extends Controller
 {
-    public function index(SelectCourseRequest $request)
-    {
-        $input_check = $request->has('q_id') && $request->has('answer');
-        if ($input_check) {
-            $q_id = $request->input('q_id');
-            $answer = $request->input('answer');
-        } else {
-            $q = $this->question[0]; //1問目の質問をviewに渡す
-            return view('users.recommend.index', compact('q'));
-        }
-
-
-        $next_q_id = $this->question[$q_id][$answer] ?? null;
-
-        //次の質問が存在するなら$qとしてviewに渡す
-        if ($next_q_id) {
-            $q = $this->question[$next_q_id];
-            return view('users.recommend.index', compact('q'));
-        }
-
-        if ($answer == 'yes') {
-            $course = Course::find($this->question[$q_id]['yes_course_id']) ?? null;
-        }
-        if ($answer == 'no') {
-            $course = Course::find($this->question[$q_id]['no_course_id']) ?? null;
-        }
-        if ($course) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
-            return view('users.recommend.answer', compact('course'));
-        }
-
-        //まだreturnされていない場合はエラー
-        return to_route('users.index');
-    }
-
-    private $question = [
+        private const QUESTION = [
         # q_id 質問固有の番号
         # q_order 何問目の質問か
         # text 質問文
@@ -100,4 +66,37 @@ class SelectCourseController extends Controller
             'no_course_id' => 2,
         ],
     ];
+    public function index(SelectCourseRequest $request)
+    {
+        $input_check = $request->has('q_id') && $request->has('answer');
+        if ($input_check) {
+            $q_id = $request->input('q_id');
+            $answer = $request->input('answer');
+        } else {
+            $q = self::QUESTION[0]; //1問目の質問をviewに渡す
+            return view('users.recommend.index', compact('q'));
+        }
+
+
+        $next_q_id = self::QUESTION[$q_id][$answer] ?? null;
+
+        //次の質問が存在するなら$qとしてviewに渡す
+        if ($next_q_id) {
+            $q = self::QUESTION[$next_q_id];
+            return view('users.recommend.index', compact('q'));
+        }
+
+        if ($answer == 'yes') {
+            $course = Course::find(self::QUESTION[$q_id]['yes_course_id']) ?? null;
+        }
+        if ($answer == 'no') {
+            $course = Course::find(self::QUESTION[$q_id]['no_course_id']) ?? null;
+        }
+        if ($course) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
+            return view('users.recommend.answer', compact('course'));
+        }
+
+        //まだreturnされていない場合はエラー
+        return to_route('users.index');
+    }
 }
