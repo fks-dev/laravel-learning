@@ -8,7 +8,7 @@ use App\Models\Course;
 
 class SelectCourseController extends Controller
 {
-        private const QUESTION = [
+    private const QUESTION = [
         # q_id 質問固有の番号
         # q_order 何問目の質問か
         # text 質問文
@@ -77,6 +77,9 @@ class SelectCourseController extends Controller
             return view('users.recommend.index', compact('q'));
         }
 
+        if (!isset(self::QUESTION[$q_id])) {
+            abort(400);
+        }
 
         $next_q_id = self::QUESTION[$q_id][$answer] ?? null;
 
@@ -86,17 +89,17 @@ class SelectCourseController extends Controller
             return view('users.recommend.index', compact('q'));
         }
 
-        if ($answer == 'yes') {
+        $course = null;
+        if ($answer === 'yes') {
             $course = Course::find(self::QUESTION[$q_id]['yes_course_id']) ?? null;
         }
-        if ($answer == 'no') {
+        if ($answer === 'no') {
             $course = Course::find(self::QUESTION[$q_id]['no_course_id']) ?? null;
         }
-        if ($course) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
+        if (isset($course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
             return view('users.recommend.answer', compact('course'));
+        } else {
+            abort(400);
         }
-
-        //まだreturnされていない場合はエラー
-        return to_route('users.index');
     }
 }
