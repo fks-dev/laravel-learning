@@ -100,6 +100,7 @@ class InformationController extends Controller
         return view('users.informations.index', compact('informations', 'user'));
     }
     public function show(Information $information){
-        return view('users.informations.show', compact('information'));
+        $user = Auth::user();
+        return view('users.informations.show', compact('information', 'user'));
     }
 }
