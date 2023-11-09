@@ -65,7 +65,7 @@ Route::middleware('auth:admin')->group(function () {
 
         // コンテンツ
         Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function () {
-            Route::get('index/{course}', 'index')->name('.index');
+            Route::get('/{course}', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort'); //並べ替え
             Route::get('create/{course}', 'create')->name('.create');
             Route::post('index/{course}', 'store')->name('.store');
@@ -179,7 +179,7 @@ Route::middleware('auth:web')->group(function (){
 
         //コンテンツ表示画面
         Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
-            Route::get('index/{course}', 'list')->name('.index');
+            Route::get('/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
             Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
