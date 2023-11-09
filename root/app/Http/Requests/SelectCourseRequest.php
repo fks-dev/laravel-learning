@@ -3,6 +3,8 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
+use Illuminate\Http\Exceptions\HttpResponseException;
 use Ramsey\Uuid\Type\Integer;
 
 class SelectCourseRequest extends FormRequest
@@ -26,5 +28,10 @@ class SelectCourseRequest extends FormRequest
             'q_id' => ['integer'],
             'answer' => ['string', 'in:yes,no']
         ];
+    }
+
+    protected function failedValidation(Validator $validator)
+    {
+        throw new HttpResponseException(response("不正なパラメータが入力されています。", 400));
     }
 }
