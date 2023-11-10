@@ -8,6 +8,8 @@ use App\Models\Course;
 
 class SelectCourseController extends Controller
 {
+    const YES = 'yes';
+    const NO = 'no';
     private const QUESTION = [
         # q_id 質問固有の番号
         # q_order 何問目の質問か
@@ -18,50 +20,50 @@ class SelectCourseController extends Controller
             'q_id' => 0,
             'q_order' => 1,
             'text' => "最初の質問です。0ですか？",
-            'yes' => 1,
-            'no' => 2
+            self::YES => 1,
+            self::NO => 2
         ], [
             'q_id' => 1,
             'q_order' => 2,
             'text' => "2問目です。1ですか？",
-            'yes' => 3,
-            'no' => 4
+            self::YES => 3,
+            self::NO => 4
         ], [
             'q_id' => 2,
             'q_order' => 2,
             'text' => "2問目です。2ですか？",
-            'yes' => 5,
-            'no' => 6
+            self::YES => 5,
+            self::NO => 6
         ], [
             'q_id' => 3,
             'q_order' => 3,
             'text' => "3問目です。3ですか？",
-            'yes' => null,
-            'no' => null,
+            self::YES => null,
+            self::NO => null,
             'yes_course_id' => 1,
             'no_course_id' => 2,
         ], [
             'q_id' => 4,
             'q_order' => 3,
             'text' => "3問目です。4ですか？",
-            'yes' => null,
-            'no' => null,
+            self::YES => null,
+            self::NO => null,
             'yes_course_id' => 1,
             'no_course_id' => 2,
         ], [
             'q_id' => 5,
             'q_order' => 3,
             'text' => "3問目です。5ですか？",
-            'yes' => null,
-            'no' => null,
+            self::YES => null,
+            self::NO => null,
             'yes_course_id' => 1,
             'no_course_id' => 2,
         ], [
             'q_id' => 6,
             'q_order' => 3,
             'text' => "3問目です。6ですか？",
-            'yes' => null,
-            'no' => null,
+            self::YES => null,
+            self::NO => null,
             'yes_course_id' => 1,
             'no_course_id' => 2,
         ],
@@ -90,10 +92,10 @@ class SelectCourseController extends Controller
         }
 
         $course = null;
-        if ($answer === 'yes') {
+        if ($answer === self::YES) {
             $course = Course::find(self::QUESTION[$q_id]['yes_course_id']) ?? null;
         }
-        if ($answer === 'no') {
+        if ($answer === self::NO) {
             $course = Course::find(self::QUESTION[$q_id]['no_course_id']) ?? null;
         }
         if (isset($course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
