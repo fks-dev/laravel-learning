@@ -61,11 +61,12 @@
                                     </div>
                                     </a>
                                 </li>
+                                @foreach($courses as $course)
                                 <li
                                     class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#" >
+                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.content.index', $course) }}" >
                                     <div>
-                                        <h5>サンプルコース01</h5>
+                                        <h5>{{ $course->title }}</h5>
                                         学習開始日：2023/02/17　前回学習日：2023/10/06
                                     </div>
                                     <div class="badge bg-danger fs-5">
@@ -73,54 +74,7 @@
                                     </div>
                                     </a>
                                 </li>
-                                <li
-                                    class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#" >
-                                    <div>
-                                        <h5>サンプルコース02</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
-                                    </div>
-                                    <div class="badge bg-danger fs-5">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </div>
-                                    </a>
-                                </li>
-                                <li
-                                    class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#" >
-                                    <div>
-                                        <h5>サンプルコース03</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
-                                    </div>
-                                    <div class="badge bg-danger fs-5">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </div>
-                                    </a>
-                                </li>
-                                <li
-                                    class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#" >
-                                    <div>
-                                        <h5>サンプルコース04</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
-                                    </div>
-                                    <div class="badge bg-danger fs-5">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </div>
-                                    </a>
-                                </li>
-                                <li
-                                    class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="#" >
-                                    <div>
-                                        <h5>サンプルコース05</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
-                                    </div>
-                                    <div class="badge bg-danger fs-5">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
-                                    </div>
-                                    </a>
-                                </li>
+                                @endforeach
                             </ul>
                         </div>
                     </div>
