@@ -7,6 +7,7 @@
     <title>グループ登録</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
         @include('admin.logoutBtn')
         @include('admin.menu')

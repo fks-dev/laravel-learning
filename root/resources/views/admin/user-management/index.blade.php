@@ -6,6 +6,7 @@
     <title>ユーザー 一覧画面</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
 
         @include('admin.logoutBtn')

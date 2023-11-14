@@ -9,6 +9,7 @@
     <title>グループ登録</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
         <a href="{{ route('admin.group.index') }}">&lt;&lt;戻る</a>
         <div class="border">

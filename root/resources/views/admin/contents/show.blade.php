@@ -5,6 +5,7 @@
     <title>コンテンツ</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="container">
         <a href="{{ route('admin.content.index', $content->course_id) }}">&lt;&lt;戻る</a>
 

@@ -5,6 +5,7 @@
     <title>コース</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="container mt-3 border">
         <a href="{{ route('admin.group.index') }}">&lt;&lt;戻る</a>
         <h2 class="mt-3">{{ $group->group_name }}</h2>

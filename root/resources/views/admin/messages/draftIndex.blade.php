@@ -6,6 +6,7 @@
 </head>
 
 <body>
+@include('admin.header')
 <div class="mt-5 container">
     <div class="d-flex justify-content-between">
         <h2 class="col">下書き一覧</h2>

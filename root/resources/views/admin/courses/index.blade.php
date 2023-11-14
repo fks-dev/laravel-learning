@@ -9,6 +9,7 @@
     <title>コース一覧</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
 
         @include('admin.logoutBtn')

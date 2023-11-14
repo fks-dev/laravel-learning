@@ -4,7 +4,7 @@
     @include('head')
     <title>返信</title>
 </head>
-<body>
+@include('admin.header')
 <div class="mt-3 container">
     <a href="{{ route('admin.message.show', $message) }}">&lt;&lt;戻る</a>
     <div class="border">

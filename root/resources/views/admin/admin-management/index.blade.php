@@ -6,6 +6,7 @@
     <title>管理者画面</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
         <div class="mb-5">
 
