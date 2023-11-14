@@ -9,10 +9,7 @@
     @include('admin.header')
     <div class="mt-5 container">
         <div class="mb-5">
-
-        @include('admin.logoutBtn')
         @include('admin.menu')
-
         <div class="d-flex justify-content-between">
             <h2 class="me-4">管理者一覧</h2>
             <div class="me-auto">
