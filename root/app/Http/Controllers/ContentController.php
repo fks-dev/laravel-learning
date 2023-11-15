@@ -1,12 +1,14 @@
 <?php
 
 namespace App\Http\Controllers;
+
 use App\Models\Content;
 use App\Models\User;
 use App\Models\Admin;
 use App\Models\Course;
-use App\Models\Record;
+use App\Models\ContentsLog;
 use App\Http\Requests\StoreContentRequest;
+use App\Http\Requests\StoreContentLogRequest;
 use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -23,7 +25,7 @@ class ContentController extends Controller
     {
         $courseTitle = Course::select('title')->where('id', $course)->get();
         $contents = Content::where('course_id', $course)->orderby('position')->get();
-        return view('admin.contents.index', compact('contents','course','courseTitle'));
+        return view('admin.contents.index', compact('contents', 'course', 'courseTitle'));
     }
 
     /**
@@ -73,22 +75,18 @@ class ContentController extends Controller
 
             if ($content_type == 4) { //リッチテキスト
                 $data['text'] = $request->text;
-
             } elseif ($content_type == 5) { //動画ファイル
                 $movie         = $request->file('movie_file_path');
                 $movieName     = time() . '_' . $movie->getClientOriginalName();
                 $moviePath     = $movie->storeAs('movies', $movieName, 'public');
                 $data['movie_file_path'] = $moviePath;
-
             } elseif ($content_type == 2) { //URL埋め込み
                 $data['youtube_video_id'] = $request->youtube_video_id;
-
-            }elseif ($content_type == 3) { //配布資料
+            } elseif ($content_type == 3) { //配布資料
                 $file         = $request->file('document_file_path');
                 $fileName     = time() . '_' . $file->getClientOriginalName();
                 $filePath     = $file->storeAs('handout', $fileName, 'public');
                 $data['document_file_path'] = $filePath;
-
             } elseif ($content_type == 6) {
                 $data['time_limit_minutes'] = $request->time_limit_minutes;
                 $data['passing_score_rate'] = $request->passing_score_rate;
@@ -169,24 +167,20 @@ class ContentController extends Controller
 
             if ($content_type == 4) { //リッチテキスト
                 $data['text'] = $request->text;
-
             } elseif ($content_type == 5 && $request->movie_file_path != null) {  //動画ファイル
                 // 動画追加
                 $movie         = $request->file('movie_file_path');
                 $movieName     = time() . '_' . $movie->getClientOriginalName();
                 $moviePath     = $movie->storeAs('movies', $movieName, 'public');
                 $data['movie_file_path'] = $moviePath;
-
             } elseif ($content_type == 2) { //URL埋め込み
                 $data['youtube_video_id'] = $request->youtube_video_id;
-
-            }elseif ($content_type == 3 && $request->document_file_path != null) { //配布資料
+            } elseif ($content_type == 3 && $request->document_file_path != null) { //配布資料
                 // 配布資料追加
                 $file         = $request->file('document_file_path');
                 $fileName     =  time() . '_' . $file->getClientOriginalName();
                 $filePath     = $file->storeAs('handout', $fileName, 'public');
                 $data['document_file_path'] = $filePath;
-
             } elseif ($content_type == 6) { //テスト
                 $data['time_limit_minutes'] = $request->time_limit_minutes;
                 $data['passing_score_rate'] = $request->passing_score_rate;
@@ -235,22 +229,25 @@ class ContentController extends Controller
         $course = $content->course_id;
         $content->delete();
         return redirect()->route('admin.content.index', compact('course'))
-                         ->with('danger', $content->title . 'を削除しました');
+            ->with('danger', $content->title . 'を削除しました');
     }
 
-    public function list(Course $course){ //コンテンツ一覧画面
+    public function list(Course $course)
+    { //コンテンツ一覧画面
         $user = Auth::user();
         $course_title = $course->title;
         $contents = Content::where('course_id', $course->id)->get();
 
-        return view('users.contents.index', compact('contents','user','course_title'));
+        return view('users.contents.index', compact('contents', 'user', 'course_title'));
     }
-    public function view(Content $content){ //コンテンツ詳細画面
+    public function view(Content $content)
+    { //コンテンツ詳細画面
         $user = Auth::user();
         $title = $content->title;
-        return view('users.contents.show', compact('content','user','title'));
+        return view('users.contents.show', compact('content', 'user', 'title'));
     }
-    public function handout(Content $content){
+    public function handout(Content $content)
+    {
         $info = pathinfo($content->document_file_path);
         $parts = explode('_', $info['filename'], 2);
         $fileName = end($parts) . '.' . $info['extension'];
@@ -258,4 +255,16 @@ class ContentController extends Controller
         return Storage::download('public/' . $content->document_file_path, $fileName);
     }
 
+    public function record(StoreContentLogRequest $request, Content $content)
+    {
+        $user = Auth::user();
+        $completed = $request->input('log');
+        ContentsLog::create([
+            'user_id' => $user->id,
+            'content_id' => $content->id,
+            'completed' => $completed
+        ]);
+        $course = $content->course;
+        return to_route('users.content.index',$course);
+    }
 }
