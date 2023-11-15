@@ -11,6 +11,7 @@ use App\Http\Controllers\GroupController;
 use App\Http\Controllers\ContentController;
 use App\Http\Controllers\UserController;
 use App\Http\Controllers\InformationController;
+use App\Http\Controllers\SelectCourseController;
 use Illuminate\Support\Facades\Route;
 
 /*
@@ -194,6 +195,11 @@ Route::middleware('auth:web')->group(function (){
          Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
             Route::get('/', 'userIndex')->name('.index');
             Route::post('/change/{user}', 'changeUserPassword')->name('.change');
+        });
+
+        // おすすめ動画診断機能
+        Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function(){
+            Route::get('', 'index')->name('.index');
         });
     });
 });
