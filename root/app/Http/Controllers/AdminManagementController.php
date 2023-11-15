@@ -10,6 +10,7 @@ use App\Models\Admin;
 use App\Models\AdminLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
+use Illuminate\Support\Facades\Auth;
 
 class AdminManagementController extends Controller
 {
@@ -18,10 +19,11 @@ class AdminManagementController extends Controller
      */
     public function index(Request $request)
     {
+        $loggedInAdmin = Auth::user();
         $admins = Admin::all();
         $logins = AdminLogin::all();
 
-        return view('admin.admin-management.index', compact('admins', 'logins'));
+        return view('admin.admin-management.index', compact('loggedInAdmin','admins', 'logins'));
     }
 
     /**
@@ -44,7 +46,8 @@ class AdminManagementController extends Controller
      */
     public function create()
     {
-        return view('admin.admin-management.create');
+        $loggedInAdmin = Auth::user();
+        return view('admin.admin-management.create',compact('loggedInAdmin'));
     }
 
     /**
@@ -67,7 +70,8 @@ class AdminManagementController extends Controller
      */
     public function edit(Admin $admin)
     {
-        return view('admin.admin-management.edit', compact('admin'));
+        $loggedInAdmin = Auth::user();
+        return view('admin.admin-management.edit', compact('admin', 'loggedInAdmin'));
     }
 
     /**
@@ -75,7 +79,8 @@ class AdminManagementController extends Controller
      */
     public function password(Admin $admin)
     {
-        return view('admin.admin-management.password', compact('admin'));
+        $loggedInAdmin = Auth::user();
+        return view('admin.admin-management.password', compact('admin', 'loggedInAdmin'));
     }
 
     /**
@@ -186,7 +191,8 @@ class AdminManagementController extends Controller
      */
     public function createCsv()
     {
-        return view('admin.admin-management.import');
+        $loggedInAdmin = Auth::user();
+        return view('admin.admin-management.import', compact('loggedInAdmin'));
     }
 
     /**

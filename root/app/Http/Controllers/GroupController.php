@@ -8,6 +8,7 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Group;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 
 class GroupController extends Controller
 {
@@ -17,7 +18,8 @@ class GroupController extends Controller
     public function index()
     {
         $groups = Group::all();
-        return view('admin.groups.index', compact('groups'));
+        $loggedInAdmin = Auth::user();
+        return view('admin.groups.index', compact('groups', 'loggedInAdmin'));
     }
 
     /**
@@ -27,7 +29,8 @@ class GroupController extends Controller
     {
         $courses = Course::all();
         $users = User::all();
-        return view('admin.groups.create', compact('courses', 'users'));
+        $loggedInAdmin = Auth::user();
+        return view('admin.groups.create', compact('courses', 'users', 'loggedInAdmin'));
     }
 
     /**
@@ -55,7 +58,8 @@ class GroupController extends Controller
      */
     public function show(Group $group)
     {
-        return view('admin.groups.show', compact('group'));
+        $loggedInAdmin = Auth::user();
+        return view('admin.groups.show', compact('group', 'loggedInAdmin'));
     }
 
     /**
@@ -65,6 +69,7 @@ class GroupController extends Controller
     {
         $courses = Course::all();
         $users = User::all();
+        $loggedInAdmin = Auth::user();
         $show = $request->input('show');
 
         if ($show === 'show') {
@@ -73,7 +78,7 @@ class GroupController extends Controller
             $backBtn = route('admin.group.index');
         }
 
-        return view('admin.groups.edit', compact('courses', 'users', 'group', 'backBtn'));
+        return view('admin.groups.edit', compact('courses', 'users', 'loggedInAdmin', 'group', 'backBtn'));
     }
 
     /**
