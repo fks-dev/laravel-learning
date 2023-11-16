@@ -10,7 +10,7 @@
     <div class="border">
         <div class="p-2 bg-secondary text-white">受講者にメッセージを作成</div>
 
-        <form action="{{ route('admin.message.store') }}" method="post">
+        <form action="{{ route('admin.messages.store') }}" method="post">
             @csrf
             <div class="mx-5 px-5">
 

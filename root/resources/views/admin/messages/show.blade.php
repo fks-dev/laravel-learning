@@ -11,7 +11,7 @@
         </div>
         <div class="mb-2">
             @if ( $source == false )
-                <a class="btn btn-success" href="{{ route('admin.message.reply', $message) }}">返信</a>
+                <a class="btn btn-success" href="{{ route('admin.messages.reply', $message) }}">返信</a>
             @endif
         </div>
 

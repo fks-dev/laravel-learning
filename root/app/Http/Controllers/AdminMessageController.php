@@ -106,7 +106,7 @@ class AdminMessageController extends Controller
             $combinedMessages->count(),
             $ItemsPerPage,
             $page,
-            ['path' => route('admin.message.dust')]
+            ['path' => route('admin.messages.dust')]
         );
 
         return view('admin.messages.dust', compact('paginator', 'action'));
@@ -127,13 +127,13 @@ class AdminMessageController extends Controller
     {
         $source = $request->input('source');
         if ($source === 'draft') {
-            $backRoute = route('admin.message.draft');
+            $backRoute = route('admin.messages.draft');
         } elseif ($source === 'send') {
-            $backRoute = route('admin.message.sent');
+            $backRoute = route('admin.messages.sent');
         } elseif ($source === 'dust') {
-            $backRoute = route('admin.message.dust');
+            $backRoute = route('admin.messages.dust');
         } else {
-            $backRoute = route('admin.message.index');
+            $backRoute = route('admin.messages.index');
         }
         $users = $this->getUserAll();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
@@ -157,11 +157,11 @@ class AdminMessageController extends Controller
         if ($request->has(ActionEnum::SEND->value)) {
             $data['action'] = ActionEnum::SEND;
             AdminMessage::create($data);
-            return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
+            return redirect()->route('admin.messages.index')->with('message', 'メッセージを送信しました');
         } else {
             $data['action'] = ActionEnum::DRAFT;
             AdminMessage::create($data);
-            return redirect()->route('admin.message.draft')->with('message', '下書きを保存しました');
+            return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
         }
     }
 
@@ -173,10 +173,10 @@ class AdminMessageController extends Controller
         $source = $request->input('source');
         if ($source === 'dust') {
             $source = true;
-            $backRoute = route('admin.message.dust');
+            $backRoute = route('admin.messages.dust');
         } else {
             $source = false;
-            $backRoute = route('admin.message.index');
+            $backRoute = route('admin.messages.index');
         }
         $users = $this->getUserAll();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
@@ -189,7 +189,7 @@ class AdminMessageController extends Controller
     public function sentShow(AdminMessage $message, Request $request)
     {
         $source = true;
-        $backRoute = route('admin.message.sent');
+        $backRoute = route('admin.messages.sent');
         $users = $this->getUserAll();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('admin.messages.show', compact('message', 'source', 'users', 'currentPage', 'backRoute'));
@@ -222,7 +222,7 @@ class AdminMessageController extends Controller
         if ($request->has(ActionEnum::DRAFT->value)) {
             $data['action'] = ActionEnum::NO_REPLY;
             AdminMessage::create($data);
-            return redirect()->route('admin.message.index', compact('message'))->with('message', '下書きを保存しました');
+            return redirect()->route('admin.messages.index', compact('message'))->with('message', '下書きを保存しました');
         } else {
             $data['action'] = ActionEnum::SEND;
             AdminMessage::create($data);
@@ -230,7 +230,7 @@ class AdminMessageController extends Controller
             $userMessage = UserMessage::find($message);
             $userMessage->is_replied = true;
             $userMessage->save();
-            return redirect()->route('admin.message.index', compact('message'))->with('message', 'メッセージを返信しました');
+            return redirect()->route('admin.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
         }
     }
 
@@ -267,7 +267,7 @@ class AdminMessageController extends Controller
         if ($request->has(ActionEnum::DRAFT->value)) {
             $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
             $message->update($data);
-            return redirect()->route('admin.message.draft')->with('message', '下書きを保存しました');
+            return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
         }
 
         if ($message->action === ActionEnum::NO_REPLY) {
@@ -278,7 +278,7 @@ class AdminMessageController extends Controller
         }
         $data['action'] = ActionEnum::SEND;
         $message->update($data);
-        return redirect()->route('admin.message.index')->with('message', 'メッセージを送信しました');
+        return redirect()->route('admin.messages.index')->with('message', 'メッセージを送信しました');
     }
 
     /**
@@ -299,10 +299,10 @@ class AdminMessageController extends Controller
 
         if ($message->is_hidden) {
             $hidden->update(['is_hidden' => false]);
-            return redirect()->route('admin.message.dust')->with('success', $message->title . 'を復元しました');
+            return redirect()->route('admin.messages.dust')->with('success', $message->title . 'を復元しました');
         } else {
             $hidden->update(['is_hidden' => true]);
-            return redirect()->route('admin.message.index')->with('danger', $message->title . 'を削除しました');
+            return redirect()->route('admin.messages.index')->with('danger', $message->title . 'を削除しました');
         }
     }
 }

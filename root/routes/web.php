@@ -114,7 +114,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         //メッセージ機能
-        Route::prefix('messages')->name('.message')->controller(AdminMessageController::class)->group(function () {
+        Route::prefix('messages')->name('.messages')->controller(AdminMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
