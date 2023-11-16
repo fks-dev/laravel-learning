@@ -179,7 +179,7 @@ Route::middleware('auth:web')->group(function (){
         });
 
         //コンテンツ表示画面
-        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
+        Route::prefix('contents')->name('.contents')->controller(ContentController::class)->group(function(){
             Route::get('/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
             Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード

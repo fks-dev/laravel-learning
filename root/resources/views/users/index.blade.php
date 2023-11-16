@@ -64,7 +64,7 @@
                                 @foreach($courses as $course)
                                 <li
                                     class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.content.index', $course) }}" >
+                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.contents.index', $course) }}" >
                                     <div>
                                         <h5>{{ $course->title }}</h5>
                                         学習開始日：2023/02/17　前回学習日：2023/10/06

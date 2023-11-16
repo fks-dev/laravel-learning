@@ -29,7 +29,7 @@
             @break
             @case(3)
             <div class="w-100 d-flex justify-content-center my-4">
-                <a href="{{ route('users.content.handout', $content) }}" class="btn btn-success">資料をダウンロード</a>
+                <a href="{{ route('users.contents.handout', $content) }}" class="btn btn-success">資料をダウンロード</a>
             </div>
             @break
             @case(4)
