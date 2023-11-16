@@ -17,9 +17,9 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::orderby('position')->get();
-        $loggedInAdmin = Auth::user();
+        $adminUser = Auth::user();
 
-        return view('admin.courses.index', compact('courses', 'loggedInAdmin'));
+        return view('admin.courses.index', compact('courses', 'adminUser'));
     }
 
     public function sort(Request $request)
@@ -40,8 +40,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.courses.create', compact('loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.courses.create', compact('adminUser'));
     }
 
     /**
@@ -64,8 +64,8 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.courses.edit', compact('course', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.courses.edit', compact('course', 'adminUser'));
     }
 
     /**

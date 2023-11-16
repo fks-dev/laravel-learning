@@ -19,11 +19,11 @@ class AdminManagementController extends Controller
      */
     public function index(Request $request)
     {
-        $loggedInAdmin = Auth::user();
+        $adminUser = Auth::user();
         $admins = Admin::all();
         $logins = AdminLogin::all();
 
-        return view('admin.admin-management.index', compact('loggedInAdmin','admins', 'logins'));
+        return view('admin.admin-management.index', compact('adminUser','admins', 'logins'));
     }
 
     /**
@@ -46,8 +46,8 @@ class AdminManagementController extends Controller
      */
     public function create()
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.admin-management.create',compact('loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.admin-management.create',compact('adminUser'));
     }
 
     /**
@@ -70,8 +70,8 @@ class AdminManagementController extends Controller
      */
     public function edit(Admin $admin)
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.admin-management.edit', compact('admin', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.admin-management.edit', compact('admin', 'adminUser'));
     }
 
     /**
@@ -79,8 +79,8 @@ class AdminManagementController extends Controller
      */
     public function password(Admin $admin)
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.admin-management.password', compact('admin', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.admin-management.password', compact('admin', 'adminUser'));
     }
 
     /**
@@ -191,8 +191,8 @@ class AdminManagementController extends Controller
      */
     public function createCsv()
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.admin-management.import', compact('loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.admin-management.import', compact('adminUser'));
     }
 
     /**

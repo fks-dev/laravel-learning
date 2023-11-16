@@ -23,8 +23,8 @@ class ContentController extends Controller
     {
         $courseTitle = Course::select('title')->where('id', $course)->get();
         $contents = Content::where('course_id', $course)->orderby('position')->get();
-        $loggedInAdmin = Auth::user();
-        return view('admin.contents.index', compact('contents','course','courseTitle', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.contents.index', compact('contents','course','courseTitle', 'adminUser'));
     }
 
     /**
@@ -50,8 +50,8 @@ class ContentController extends Controller
     public function create($course)
     {
         $courses = Course::all();
-        $loggedInAdmin = Auth::user();
-        return view('admin.contents.create', compact('course', 'courses', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.contents.create', compact('course', 'courses', 'adminUser'));
     }
 
     /**
@@ -109,9 +109,9 @@ class ContentController extends Controller
     public function show(Content $content)
     {
         $admin = $content->admin;
-        $loggedInAdmin = Auth::user();
+        $adminUser = Auth::user();
 
-        return view('admin.contents.show', compact('content', 'admin', 'loggedInAdmin'));
+        return view('admin.contents.show', compact('content', 'admin', 'adminUser'));
     }
 
     /**
@@ -132,8 +132,8 @@ class ContentController extends Controller
     public function edit(Content $content)
     {
         $courses = Course::all();
-        $loggedInAdmin = Auth::user();
-        return view('admin.contents.edit', compact('content', 'courses', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.contents.edit', compact('content', 'courses', 'adminUser'));
     }
 
     /**

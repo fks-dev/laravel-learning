@@ -26,9 +26,9 @@ class UserManagementController extends Controller
     {
         $users = User::all();
         $logins = UserLogin::all();
-        $loggedInAdmin = Auth::user();
+        $adminUser = Auth::user();
 
-        return view('admin.user-management.index', compact('users', 'logins', 'loggedInAdmin'));
+        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
     }
 
       // ユーザ側のパスワード変更画面
@@ -60,9 +60,9 @@ class UserManagementController extends Controller
     public function create()
     {
         $courses = Course::all();
-        $loggedInAdmin = Auth::user();
+        $adminUser = Auth::user();
 
-        return view('admin.user-management.create', compact('courses', 'loggedInAdmin'));
+        return view('admin.user-management.create', compact('courses', 'adminUser'));
     }
 
     /**
@@ -95,8 +95,8 @@ class UserManagementController extends Controller
     {
         $users = User::with('courses')->find($user);
         $courses = Course::all();
-        $loggedInAdmin = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'adminUser'));
     }
 
     /**
@@ -104,8 +104,8 @@ class UserManagementController extends Controller
      */
     public function password(User $user)
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.user-management.password', compact('user', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.user-management.password', compact('user', 'adminUser'));
     }
 
     /**
@@ -237,8 +237,8 @@ class UserManagementController extends Controller
      */
     public function createCsv()
     {
-        $loggedInAdmin = Auth::user();
-        return view('admin.user-management.import', compact('loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.user-management.import', compact('adminUser'));
     }
 
     /**

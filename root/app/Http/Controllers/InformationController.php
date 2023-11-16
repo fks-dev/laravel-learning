@@ -25,8 +25,8 @@ class InformationController extends Controller
     {
         $admin_id = $this->getAdminId();
         $informations = Information::where('admin_id', $admin_id)->orderByDesc('updated_at')->get();
-        $loggedInAdmin = Auth::user();
-        return view('admin.informations.index', compact('informations', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.informations.index', compact('informations', 'adminUser'));
     }
 
     /**
@@ -35,8 +35,8 @@ class InformationController extends Controller
     public function create()
     {
         $groups = Group::orderByDesc('id')->get();
-        $loggedInAdmin = Auth::user();
-        return view('admin.informations.create', compact('groups', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.informations.create', compact('groups', 'adminUser'));
     }
 
     /**
@@ -63,8 +63,8 @@ class InformationController extends Controller
     {
         $groups = Group::orderByDesc('id')->get();
         $info_groups = $information->groups;
-        $loggedInAdmin = Auth::user();
-        return view('admin.informations.edit', compact('information','groups','info_groups', 'loggedInAdmin'));
+        $adminUser = Auth::user();
+        return view('admin.informations.edit', compact('information','groups','info_groups', 'adminUser'));
     }
 
     /**
