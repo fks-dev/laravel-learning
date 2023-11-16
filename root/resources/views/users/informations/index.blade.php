@@ -27,7 +27,7 @@
                         @foreach($informations as $information)
                         <tr>
                             <td>{{$information->created_at->format('Y/m/d')}}</td>
-                            <td><a class="none-underline" href="{{ route('users.information.show', $information) }}">{{$information->title}}</a></td>
+                            <td><a class="none-underline" href="{{ route('users.informations.show', $information) }}">{{$information->title}}</a></td>
                         </tr>
                         @endforeach
                     </tbody>

@@ -186,7 +186,7 @@ Route::middleware('auth:web')->group(function (){
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
         //お知らせ閲覧機能
-        Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
+        Route::prefix('informations')->name('.informations')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
         });

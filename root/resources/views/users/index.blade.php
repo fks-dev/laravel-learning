@@ -28,7 +28,7 @@
                             @foreach($informations as $information)
                             <tr>
                                 <th>
-                                    {{ date_format($information->created_at, 'Y/m/d') }} &ensp; <a class="none-underline" href="{{ route('users.information.show', $information) }}">{{ $information->title}}</a>
+                                    {{ date_format($information->created_at, 'Y/m/d') }} &ensp; <a class="none-underline" href="{{ route('users.informations.show', $information) }}">{{ $information->title}}</a>
                                 </th>
                             </tr>
                             @endforeach
@@ -36,7 +36,7 @@
                     </table>
                 </div>
                 <div class="text-end pe-3 pb-1">
-                    <a class="none-underline" href="{{ route('users.information.list')}}">一覧を表示</a>
+                    <a class="none-underline" href="{{ route('users.informations.list')}}">一覧を表示</a>
                 </div>
             </div>
         </div>
