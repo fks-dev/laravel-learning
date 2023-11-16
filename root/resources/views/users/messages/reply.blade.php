@@ -6,11 +6,11 @@
 </head>
 <body>
 <div class="mt-3 container">
-    <a href="{{ route('users.message.show', $message) }}">&lt;&lt;戻る</a>
+    <a href="{{ route('users.messages.show', $message) }}">&lt;&lt;戻る</a>
     <div class="border">
         <div class="p-2 bg-secondary text-white">返信</div>
 
-        <form action="{{ route('users.message.reply.store', $message) }}" method="post">
+        <form action="{{ route('users.messages.reply.store', $message) }}" method="post">
             @csrf
             <div class="mx-5 px-5">
 

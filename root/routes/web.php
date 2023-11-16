@@ -160,7 +160,7 @@ Route::middleware('auth:web')->group(function (){
         Route::get('/', [UserController::class, 'index'])->name('.index');
 
         //メッセージ機能
-        Route::prefix('messages')->name('.message')->controller(UserMessageController::class)->group(function () {
+        Route::prefix('messages')->name('.messages')->controller(UserMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
