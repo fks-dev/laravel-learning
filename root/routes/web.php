@@ -133,7 +133,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         //お知らせ画面一覧
-        Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function () {
+        Route::prefix('informations')->name('.informations')->controller(InformationController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');

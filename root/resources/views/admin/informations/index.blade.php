@@ -15,7 +15,7 @@
         <div class="d-flex justify-content-between">
             <h2 class="col">お知らせ一覧</h2>
             <div class="col-auto">
-                <a class="btn btn-primary" href="{{ route('admin.information.create')}}">&plus;追加</a>
+                <a class="btn btn-primary" href="{{ route('admin.informations.create')}}">&plus;追加</a>
             </div>
         </div>
         {{-- 登録・削除　メッセージ --}}
@@ -56,9 +56,9 @@
                     <td class="align-middle text-center">{{ $information->updated_at }}</td>
 
                     <td class="text-center">
-                        <a class="btn btn-success" href="{{ route('admin.information.edit', $information) }}">編集</a>
+                        <a class="btn btn-success" href="{{ route('admin.informations.edit', $information) }}">編集</a>
 
-                        <form action="{{ route('admin.information.destroy', $information) }}" method="post" class="d-inline">
+                        <form action="{{ route('admin.informations.destroy', $information) }}" method="post" class="d-inline">
                             @csrf
                             @method('delete')
                             <input class="btn btn-danger" type="submit" value="削除" onClick="return confirm('本当に削除しますか？');">

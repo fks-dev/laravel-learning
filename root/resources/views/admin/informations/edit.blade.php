@@ -6,11 +6,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.information.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.informations.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">お知らせ編集</div>
 
-            <form action="{{ route('admin.information.update', $information) }}" method="post">
+            <form action="{{ route('admin.informations.update', $information) }}" method="post">
                 @csrf
                 @method('patch')
                 <div class="mx-5 px-5">
