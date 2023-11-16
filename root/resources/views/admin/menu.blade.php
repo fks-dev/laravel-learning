@@ -10,7 +10,7 @@
             <a class="text-decoration-none" href="{{ route('admin.course.index') }}">コース</a>
         </li>
         <li class="list-group-item">
-            <a class="text-decoration-none" href="{{ route('admin.group.index') }}">グループ</a>
+            <a class="text-decoration-none" href="{{ route('admin.groups.index') }}">グループ</a>
         </li>
         <li class="list-group-item">
             <a class="text-decoration-none" href="{{ route('admin.informations.index') }}">お知らせ</a>

@@ -15,7 +15,7 @@
         <div class="border">
             <div class="p-2 bg-secondary text-white">グループ編集</div>
 
-            <form action="{{ route('admin.group.update', $group) }}" method="post">
+            <form action="{{ route('admin.groups.update', $group) }}" method="post">
                 @csrf
                 @method('patch')
                 <div class="mx-5 px-5">

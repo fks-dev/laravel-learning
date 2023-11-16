@@ -47,7 +47,7 @@ class GroupController extends Controller
         $group->courses()->attach(Course::findMany($courses));
         $group->users()->attach(User::findMany($users));
 
-        return redirect()->route('admin.group.index')->with('message', $request->group_name.'を登録しました');
+        return redirect()->route('admin.groups.index')->with('message', $request->group_name.'を登録しました');
     }
 
     /**
@@ -68,9 +68,9 @@ class GroupController extends Controller
         $show = $request->input('show');
 
         if ($show === 'show') {
-            $backBtn = route('admin.group.show', $group);
+            $backBtn = route('admin.groups.show', $group);
         }else {
-            $backBtn = route('admin.group.index');
+            $backBtn = route('admin.groups.index');
         }
 
         return view('admin.groups.edit', compact('courses', 'users', 'group', 'backBtn'));
@@ -92,7 +92,7 @@ class GroupController extends Controller
         $group->courses()->sync($courses);
         $group->users()->sync($users);
 
-        return redirect()->route('admin.group.index')->with('message', $request->group_name.'を編集しました');
+        return redirect()->route('admin.groups.index')->with('message', $request->group_name.'を編集しました');
 
     }
 
@@ -102,6 +102,6 @@ class GroupController extends Controller
     public function destroy(Group $group)
     {
         $group->delete();
-        return redirect()->route('admin.group.index')->with('danger', $group->group_name . 'を削除しました');
+        return redirect()->route('admin.groups.index')->with('danger', $group->group_name . 'を削除しました');
     }
 }
