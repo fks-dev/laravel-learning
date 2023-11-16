@@ -54,7 +54,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // コース
-        Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
+        Route::prefix('courses')->name('.courses')->controller(CourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort');
             Route::get('create', 'create')->name('.create');

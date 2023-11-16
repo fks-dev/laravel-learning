@@ -53,7 +53,7 @@ class CourseController extends Controller
             'remarks'      => $request->remarks,
         ]);
 
-        return redirect()->route('admin.course.index')->with('message', 'コースを登録しました');
+        return redirect()->route('admin.courses.index')->with('message', 'コースを登録しました');
     }
 
     /**
@@ -75,7 +75,7 @@ class CourseController extends Controller
             'remarks'      => $request->remarks,
         ]);
 
-        return redirect()->route('admin.course.index');
+        return redirect()->route('admin.courses.index');
     }
 
     /**
@@ -84,6 +84,6 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->delete();
-        return redirect()->route('admin.course.index')->with('danger', $course->title . 'を削除しました');
+        return redirect()->route('admin.courses.index')->with('danger', $course->title . 'を削除しました');
     }
 }

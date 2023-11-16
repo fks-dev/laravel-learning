@@ -6,11 +6,11 @@
 </head>
 <body>
     <div class="mt-3 container">
-        <a href="{{ route('admin.course.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.courses.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規コース登録</div>
 
-            <form action="{{ route('admin.course.store') }}" method="post">
+            <form action="{{ route('admin.courses.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 

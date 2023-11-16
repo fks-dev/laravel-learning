@@ -15,7 +15,7 @@
         <div class="d-flex justify-content-between">
             <h2 class="col">コース名『{{ $courseTitle[0]['title'] }}』のコンテンツ</h2>
             <div class="col-auto me-2">
-                <a class="btn btn-secondary" href="{{ route('admin.course.index')}}">戻る</a>
+                <a class="btn btn-secondary" href="{{ route('admin.courses.index')}}">戻る</a>
             </div>
             <div class="col-auto">
                 <a class="btn btn-primary" href="{{ route('admin.content.create', $course)}}">&plus;追加</a>

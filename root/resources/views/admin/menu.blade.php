@@ -7,7 +7,7 @@
             <a class="text-decoration-none" href="{{ route('admin.user-management.index') }}">ユーザー</a>
         </li>
         <li class="list-group-item">
-            <a class="text-decoration-none" href="{{ route('admin.course.index') }}">コース</a>
+            <a class="text-decoration-none" href="{{ route('admin.courses.index') }}">コース</a>
         </li>
         <li class="list-group-item">
             <a class="text-decoration-none" href="{{ route('admin.groups.index') }}">グループ</a>
