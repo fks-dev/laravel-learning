@@ -24,7 +24,6 @@ class StoreCourseRequest extends FormRequest
     {
         return [
             'title'  => 'required',
-            'action' => ['required', new ActionEnum],
         ];
     }
 }
