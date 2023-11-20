@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('groups_information', function (Blueprint $table) {
             $table->id();
-            $table->bigInteger('group_id');
-            $table->bigInteger('information_id');
+            $table->bigInteger('group_id')->comment('対象グループ');
+            $table->bigInteger('information_id')->comment('お知らせID');
             $table->softDeletesDatetime();
             $table->timestamps();
         });

@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('admin_messages', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('admin_id');
-            $table->unsignedBigInteger('user_id');
+            $table->unsignedBigInteger('admin_id')->comment('管理者ID');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
             $table->string('title')->comment('件名');
             $table->text('text')->nullable()->comment('本文');
             $table->integer('action')->default(0)->comment('状態:0:下書き 1:送信 2:未返信');

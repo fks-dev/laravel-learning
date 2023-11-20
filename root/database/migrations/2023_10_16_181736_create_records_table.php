@@ -13,9 +13,9 @@ return new class extends Migration
     {
         Schema::create('records', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('movie_id');
-            $table->unsignedBigInteger('score_id');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+            $table->unsignedBigInteger('movie_id')->comment('動画ID');
+            $table->unsignedBigInteger('score_id')->comment('評価ID');
             $table->timestamps();
 
             //外部キー制約

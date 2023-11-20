@@ -13,8 +13,8 @@ return new class extends Migration
     {
         Schema::create('users_groups', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('group_id');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+            $table->unsignedBigInteger('group_id')->comment('グループID');
             $table->softDeletesDatetime();
             $table->datetimes();
 

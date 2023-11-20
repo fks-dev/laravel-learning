@@ -13,12 +13,12 @@ return new class extends Migration
     {
         Schema::create('movies', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('course_id');
-            $table->unsignedBigInteger('user_id');
-            $table->Integer('view');
-            $table->string('title');
-            $table->string('url');
-            $table->boolean('public')->default(true);
+            $table->unsignedBigInteger('course_id')->comment('コースID');
+            $table->unsignedBigInteger('user_id')->comment('アップロードユーザー');
+            $table->Integer('view')->comment('視聴回数');
+            $table->string('title')->comment('タイトル');
+            $table->string('url')->comment('URL');
+            $table->boolean('public')->default(true)->comment('公開・非公開');
             $table->softDeletes();
             $table->timestamps();
 

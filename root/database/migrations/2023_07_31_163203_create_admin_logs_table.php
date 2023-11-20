@@ -13,7 +13,7 @@ return new class extends Migration
     {
         Schema::create('admin_logs', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('admin_id');
+            $table->unsignedBigInteger('admin_id')->comment('管理者ID');
             $table->datetimes();
 
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
