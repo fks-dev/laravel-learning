@@ -20,7 +20,7 @@ return new class extends Migration
             $table->string('url')->comment('URL');
             $table->boolean('public')->default(true)->comment('公開・非公開');
             $table->softDeletes();
-            $table->timestamps();
+            $table->datetimes();
 
             //外部キー制約
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');

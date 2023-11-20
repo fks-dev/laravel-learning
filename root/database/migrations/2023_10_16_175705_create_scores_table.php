@@ -15,7 +15,7 @@ return new class extends Migration
             $table->id();
             $table->integer('score')->comment('評価点');
             $table->softDeletes();
-            $table->timestamps();
+            $table->datetimes();
         });
     }
 
