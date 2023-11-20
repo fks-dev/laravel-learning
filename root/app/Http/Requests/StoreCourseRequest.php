@@ -24,6 +24,8 @@ class StoreCourseRequest extends FormRequest
     {
         return [
             'title'  => 'required',
+            'introduction' => 'nullable|string',
+            'remarks' => 'nullable|string',
         ];
     }
 }
