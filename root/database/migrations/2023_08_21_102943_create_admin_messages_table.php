@@ -20,7 +20,7 @@ return new class extends Migration
             $table->integer('action')->default(0)->comment('状態:0:下書き 1:送信 2:未返信');
             $table->boolean('is_hidden')->default(0)->comment('表示・非表示');
             $table->boolean('is_replied')->default(0)->comment('返信の有・無');
-            $table->integer('reply_message_id')->nullable()->comment('返信するメッセージのID');
+            $table->unsignedBigInteger('reply_message_id')->nullable()->comment('返信するメッセージのID');
             $table->softDeletesDatetime();
             $table->datetimes();
 
