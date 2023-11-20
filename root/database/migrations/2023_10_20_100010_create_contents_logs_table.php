@@ -16,6 +16,7 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->comment('ユーザーID');
             $table->unsignedBigInteger('content_id')->comment('コンテンツID');
             $table->boolean('completed')->comment('完了・中断');
+            $table->softDeletesDatetime();
             $table->datetimes();
 
             //外部キー制約

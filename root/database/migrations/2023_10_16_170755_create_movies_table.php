@@ -15,11 +15,11 @@ return new class extends Migration
             $table->id();
             $table->unsignedBigInteger('course_id')->comment('コースID');
             $table->unsignedBigInteger('user_id')->comment('アップロードユーザー');
-            $table->Integer('view')->comment('視聴回数');
+            $table->integer('view')->comment('視聴回数');
             $table->string('title')->comment('タイトル');
             $table->string('url')->comment('URL');
             $table->boolean('public')->default(true)->comment('公開・非公開');
-            $table->softDeletes();
+            $table->softDeletesDatetime();
             $table->datetimes();
 
             //外部キー制約

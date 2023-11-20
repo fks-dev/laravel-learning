@@ -16,7 +16,8 @@ return new class extends Migration
             $table->unsignedBigInteger('user_id')->comment('ユーザーID');
             $table->unsignedBigInteger('movie_id')->comment('動画ID');
             $table->unsignedBigInteger('score_id')->comment('評価ID');
-            $table->timestamps();
+            $table->softDeletesDatetime();
+            $table->datetimes();
 
             //外部キー制約
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
