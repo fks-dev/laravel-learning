@@ -84,4 +84,8 @@ class Content extends Model
         ];
         return $content_type[$this->content_type];
     }
+    public function getLog($user){
+        $content_id = $this->id;
+        return ContentsLog::where('user_id',$user->id)->where('content_id',$content_id)->get();
+    }
 }
