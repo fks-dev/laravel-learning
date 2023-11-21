@@ -12,15 +12,15 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('course_id');
-            $table->unsignedBigInteger('user_id');
-            $table->Integer('view');
-            $table->string('title');
-            $table->string('url');
-            $table->boolean('public')->default(true);
-            $table->softDeletes();
-            $table->timestamps();
+            $table->id()->comment('ID');
+            $table->unsignedBigInteger('course_id')->comment('コースID');
+            $table->unsignedBigInteger('user_id')->comment('アップロードユーザー');
+            $table->integer('view')->comment('視聴回数');
+            $table->string('title')->comment('タイトル');
+            $table->string('url')->comment('URL');
+            $table->boolean('public')->default(true)->comment('公開・非公開');
+            $table->softDeletesDatetime();
+            $table->datetimes();
 
             //外部キー制約
             $table->foreign('course_id')->references('id')->on('courses')->onDelete('cascade');
