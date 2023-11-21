@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('contents_logs', function (Blueprint $table) {
-            $table->id();
+            $table->id()->comment('ID');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+            $table->unsignedBigInteger('content_id')->comment('コンテンツID');
+            $table->boolean('completed')->comment('完了・中断');
+            $table->softDeletesDatetime();
             $table->datetimes();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('content_id');
-            $table->boolean('completed');
 
             //外部キー制約
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');

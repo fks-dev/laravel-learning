@@ -12,11 +12,12 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('records', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('user_id');
-            $table->unsignedBigInteger('movie_id');
-            $table->unsignedBigInteger('score_id');
-            $table->timestamps();
+            $table->id()->comment('ID');
+            $table->unsignedBigInteger('user_id')->comment('ユーザーID');
+            $table->unsignedBigInteger('movie_id')->comment('動画ID');
+            $table->unsignedBigInteger('score_id')->comment('評価ID');
+            $table->softDeletesDatetime();
+            $table->datetimes();
 
             //外部キー制約
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
