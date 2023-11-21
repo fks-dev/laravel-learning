@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_logs', function (Blueprint $table) {
-            $table->id();
+            $table->id()->comment('ID');
             $table->unsignedBigInteger('user_id')->comment('ユーザーID');
             $table->datetimes();
 

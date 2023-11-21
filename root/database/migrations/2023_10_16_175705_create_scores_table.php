@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('scores', function (Blueprint $table) {
-            $table->id();
+            $table->id()->comment('ID');
             $table->integer('score')->comment('評価点');
             $table->softDeletesDatetime();
             $table->datetimes();

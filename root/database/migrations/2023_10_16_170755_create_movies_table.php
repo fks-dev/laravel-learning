@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('movies', function (Blueprint $table) {
-            $table->id();
+            $table->id()->comment('ID');
             $table->unsignedBigInteger('course_id')->comment('コースID');
             $table->unsignedBigInteger('user_id')->comment('アップロードユーザー');
             $table->integer('view')->comment('視聴回数');

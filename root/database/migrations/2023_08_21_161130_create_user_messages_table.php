@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('user_messages', function (Blueprint $table) {
-            $table->id();
+            $table->id()->comment('ID');
             $table->unsignedBigInteger('admin_id')->comment('管理者ID');
             $table->unsignedBigInteger('user_id')->comment('ユーザーID');
             $table->string('title')->comment('件名');

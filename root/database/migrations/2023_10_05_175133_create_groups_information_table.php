@@ -12,7 +12,7 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('groups_information', function (Blueprint $table) {
-            $table->id();
+            $table->id()->comment('ID');
             $table->bigInteger('group_id')->comment('対象グループ');
             $table->bigInteger('information_id')->comment('お知らせID');
             $table->softDeletesDatetime();
