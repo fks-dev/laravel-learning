@@ -8,6 +8,7 @@
     <title>コンテンツ編集</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
         <a href="{{ route('admin.content.index', $content->course_id) }}">&lt;&lt;戻る</a>
         <div class="border">

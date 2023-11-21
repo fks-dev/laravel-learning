@@ -5,6 +5,7 @@
     <title>新規メッセージ</title>
 </head>
 <body>
+@include('admin.header')
 <div class="mt-3 container">
     <a href="{{ $backRoute }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
     <div class="border">

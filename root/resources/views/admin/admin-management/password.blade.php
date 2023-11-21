@@ -5,6 +5,7 @@
     <title>パスワード変更</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
         <a href="{{ route('admin.admin-management.edit', $admin) }}">&lt;&lt;戻る</a>
         <div class="border">

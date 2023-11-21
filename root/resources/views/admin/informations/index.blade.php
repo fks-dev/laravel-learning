@@ -9,8 +9,8 @@
 </head>
 
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
-        @include('admin.logoutBtn')
         @include('admin.menu')
         <div class="d-flex justify-content-between">
             <h2 class="col">お知らせ一覧</h2>

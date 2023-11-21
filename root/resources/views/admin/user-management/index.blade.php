@@ -6,11 +6,9 @@
     <title>ユーザー 一覧画面</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
-
-        @include('admin.logoutBtn')
         @include('admin.menu')
-
         <div class="d-flex justify-content-between">
             <h2 class="me-4">ユーザー 一覧</h2>
             <div class="me-auto">

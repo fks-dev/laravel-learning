@@ -10,7 +10,7 @@
 </head>
 
 <body>
-    @include('header')
+    @include('users.header')
     <main>
         <a class="ms-3 mt-3" href="{{ route('users.index') }}">&lt;&lt;戻る</a>
         <div class="container-md mt-4">

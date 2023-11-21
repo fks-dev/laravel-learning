@@ -5,6 +5,7 @@
     <title>メッセージ内容</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-5 container">
         <div class="mb-2">
             <a class="btn btn-secondary" href="{{ $backRoute }}?page={{$currentPage}}">戻る</a>

@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCourseRequest;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -16,8 +17,9 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::orderby('position')->get();
+        $adminUser = Auth::user();
 
-        return view('admin.courses.index', compact('courses'));
+        return view('admin.courses.index', compact('courses', 'adminUser'));
     }
 
     public function sort(Request $request)
@@ -38,7 +40,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('admin.courses.create');
+        $adminUser = Auth::user();
+        return view('admin.courses.create', compact('adminUser'));
     }
 
     /**
@@ -61,7 +64,8 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        return view('admin.courses.edit', compact('course'));
+        $adminUser = Auth::user();
+        return view('admin.courses.edit', compact('course', 'adminUser'));
     }
 
     /**

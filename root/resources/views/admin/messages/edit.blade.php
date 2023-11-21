@@ -5,6 +5,7 @@
     <title>編集</title>
 </head>
 <body>
+@include('admin.header')
 <div class="mt-3 container">
     <a href="{{ route('admin.message.draft') }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
     <div class="border">

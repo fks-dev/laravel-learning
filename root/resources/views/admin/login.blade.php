@@ -13,7 +13,7 @@
 <body>
 
     {{-- header --}}
-    @include('header')
+    @include('admin.header')
 
     {{-- body --}}
     <body>

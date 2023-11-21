@@ -5,6 +5,7 @@
     <title>ユーザーインポート</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
         <a href="{{ route('admin.user-management.index') }}">&lt;&lt;戻る</a>
         <div class="border">
