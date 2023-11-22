@@ -97,15 +97,12 @@
                             <td class="align-middle text-center">{{ $admin->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('admin.admin-management.edit', $admin->id) }}">編集</a>
-
                                 <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
                                     onClick="return confirm('本当に削除しますか？');">
                                 </form>
-
                             </td>
                         </tr>
                     @endforeach
