@@ -114,61 +114,15 @@ class ContentController extends Controller
     public function update(UpdateContentRequest $request, Content $content)
     {
         $course = $content->course_id;
-        $content_type = $request->input('content_type');
-
-        if ($content->movie_file_path != null) {
-            // 古い動画を削除
-            Storage::disk('public')->delete($content->movie_file_path);
-        } elseif ($content->document_file_path != null) {
-            // 古い資料を削除
-            Storage::disk('public')->delete($content->document_file_path);
-        }
 
         $data = [
             'course_id'          => $request->course_id,
             'admin_id'           => Auth()->user()->id,
             'title'              => $request->title,
-            'content_type'       => $content_type,
-            'text'               => null,
-            'youtube_video_id'   => null,
-            'movie_file_path'    => null,
-            'document_file_path' => null,
-            'time_limit_minutes' => null,
-            'passing_score_rate' => null,
-            'amount_questions'   => null,
-            'remarks'            => null,
+            'youtube_video_id'   => $request->youtube_video_id,
+            'remarks'            => $request->remarks,
             'is_public'          => $request->is_public,
         ];
-
-        if ($content_type != 1) {
-            $data['remarks'] = $request->remarks;
-
-            if ($content_type == 4) { //リッチテキスト
-                $data['text'] = $request->text;
-
-            } elseif ($content_type == 5 && $request->movie_file_path != null) {  //動画ファイル
-                // 動画追加
-                $movie         = $request->file('movie_file_path');
-                $movieName     = time() . '_' . $movie->getClientOriginalName();
-                $moviePath     = $movie->storeAs('movies', $movieName, 'public');
-                $data['movie_file_path'] = $moviePath;
-
-            } elseif ($content_type == 2) { //URL埋め込み
-                $data['youtube_video_id'] = $request->youtube_video_id;
-
-            }elseif ($content_type == 3 && $request->document_file_path != null) { //配布資料
-                // 配布資料追加
-                $file         = $request->file('document_file_path');
-                $fileName     =  time() . '_' . $file->getClientOriginalName();
-                $filePath     = $file->storeAs('handout', $fileName, 'public');
-                $data['document_file_path'] = $filePath;
-
-            } elseif ($content_type == 6) { //テスト
-                $data['time_limit_minutes'] = $request->time_limit_minutes;
-                $data['passing_score_rate'] = $request->passing_score_rate;
-                $data['amount_questions']   = $request->amount_questions;
-            }
-        }
 
         $content->update($data);
 
