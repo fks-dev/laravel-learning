@@ -133,18 +133,15 @@ class UserManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeUserPassword(Request $request, User $user)
+    public function changeUserPassword(PasswordRequest $request, User $user)
     {
         // ユーザー側のパスワード変更ボタン押下時のルート名
         $userRouteName = 'users.password.change';
         // パスワード変更成功時のリダイレクト先
         $routeName = null;
-        $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
-        }elseif ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user->update([

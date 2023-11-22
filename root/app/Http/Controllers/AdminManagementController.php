@@ -99,14 +99,11 @@ class AdminManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeAdminPassword(Request $request, Admin $admin)
+    public function changeAdminPassword(PasswordRequest $request, Admin $admin)
     {
-        $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
         if (!Hash::check($request->password, $admin->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
-        }elseif ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $admin->update([
