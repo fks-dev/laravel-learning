@@ -85,14 +85,21 @@
                         <tr  data-id="{{ $user->id }}">
                             <td class="align-middle">{{ $user->username }}</td>
                             <td class="align-middle text-center">{{ $user->mail_address }}</td>
-                            <td class="align-middle text-center"></td>
-                            <td class="align-middle text-center">
-                                @foreach ($user->courses as $course)
+                            <td class="align-middle text-start">
+                            @foreach ($user->groups as $group)
+                                    {{ $group->group_name }}
+                                    @unless($loop->last)
+                                        ,
+                                    @endunless
+                            @endforeach
+                            </td>
+                            <td class="align-middle text-start">
+                            @foreach ($user->groups()->with('courses')->get()->pluck('courses')->flatten()->unique('id') as $course)
                                     {{ $course->title }}
                                     @unless($loop->last)
                                         ,
                                     @endunless
-                                @endforeach
+                            @endforeach
                             </td>
                             <td class="align-middle text-center">
                                 @foreach ($logins as $login)
