@@ -73,7 +73,6 @@
                     <tr>
                         <th class="col-2 pe-auto sort" data-sort="asc">管理者ID</th>
                         <th class="col-2 sort" data-sort="asc">mail</th>
-                        <th class="col-2">所属グループ</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
                         <th class="col text-center">Actions</th>
@@ -85,7 +84,6 @@
                         <tr  data-id="{{ $admin->id }}">
                             <td class="align-middle">{{ $admin->username }}</td>
                             <td class="align-middle text-center">{{ $admin->mail_address }}</td>
-                            <td class="align-middle text-center"></td>
 
                             <td class="align-middle text-center">
                                 @foreach ($logins as $login)
