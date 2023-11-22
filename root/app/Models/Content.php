@@ -17,20 +17,13 @@ class Content extends Model
         'course_id',
         'admin_id',
         'title',
-        'content_type',
         'text',
         'youtube_video_id',
-        'movie_file_path',
-        'document_file_path',
         'remarks',
         'is_public',
-        'time_limit_minutes',
-        'passing_score_rate',
-        'amount_questions',
     ];
 
     protected $casts = [
-        'content_type' => 'integer',
         'is_public'    => 'boolean',
     ];
 
