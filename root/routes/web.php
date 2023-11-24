@@ -71,7 +71,6 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create/{course}', 'create')->name('.create');
             Route::post('index/{course}', 'store')->name('.store');
             Route::get('{content}/show', 'show')->name('.show');
-            Route::get('{content}/download', 'download')->name('.download'); //ダウンロード
             Route::get('{content}/edit', 'edit')->name('.edit');
             Route::patch('{content}', 'update')->name('.update');
             Route::post('{content}/duplicate', 'duplicate')->name('.duplicate'); //複製
@@ -182,7 +181,6 @@ Route::middleware('auth:web')->group(function (){
         Route::prefix('contents')->name('.contents')->controller(ContentController::class)->group(function(){
             Route::get('/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
-            Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
         //お知らせ閲覧機能
