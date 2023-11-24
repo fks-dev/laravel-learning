@@ -4,13 +4,13 @@
     @include('head')
     <title>返信</title>
 </head>
-<body>
+@include('admin.header')
 <div class="mt-3 container">
-    <a href="{{ route('admin.message.show', $message) }}">&lt;&lt;戻る</a>
+    <a href="{{ route('admin.messages.show', $message) }}">&lt;&lt;戻る</a>
     <div class="border">
         <div class="p-2 bg-secondary text-white">返信</div>
 
-        <form action="{{ route('admin.message.reply.store', $message) }}" method="post">
+        <form action="{{ route('admin.messages.reply.store', $message) }}" method="post">
             @csrf
             <div class="mx-5 px-5">
 

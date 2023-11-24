@@ -12,9 +12,9 @@ return new class extends Migration
     public function up(): void
     {
         Schema::create('groups_courses', function (Blueprint $table) {
-            $table->id();
-            $table->unsignedBigInteger('group_id');
-            $table->unsignedBigInteger('course_id');
+            $table->id()->comment('ID');
+            $table->unsignedBigInteger('group_id')->comment('グループID');
+            $table->unsignedBigInteger('course_id')->comment('コースID');
             $table->softDeletesDatetime();
             $table->datetimes();
 

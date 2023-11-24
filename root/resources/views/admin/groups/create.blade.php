@@ -9,12 +9,13 @@
     <title>グループ登録</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
-        <a href="{{ route('admin.group.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.groups.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規グループ登録</div>
 
-            <form action="{{ route('admin.group.store') }}" method="post">
+            <form action="{{ route('admin.groups.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 

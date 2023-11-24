@@ -26,8 +26,9 @@ class UserManagementController extends Controller
     {
         $users = User::all();
         $logins = UserLogin::all();
+        $adminUser = Auth::user();
 
-        return view('admin.user-management.index', compact('users', 'logins'));
+        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
     }
 
       // ユーザ側のパスワード変更画面
@@ -59,8 +60,9 @@ class UserManagementController extends Controller
     public function create()
     {
         $courses = Course::all();
+        $adminUser = Auth::user();
 
-        return view('admin.user-management.create', compact('courses'));
+        return view('admin.user-management.create', compact('courses', 'adminUser'));
     }
 
     /**
@@ -93,7 +95,8 @@ class UserManagementController extends Controller
     {
         $users = User::with('courses')->find($user);
         $courses = Course::all();
-        return view('admin.user-management.edit', compact('user', 'users', 'courses'));
+        $adminUser = Auth::user();
+        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'adminUser'));
     }
 
     /**
@@ -101,7 +104,8 @@ class UserManagementController extends Controller
      */
     public function password(User $user)
     {
-        return view('admin.user-management.password', compact('user'));
+        $adminUser = Auth::user();
+        return view('admin.user-management.password', compact('user', 'adminUser'));
     }
 
     /**
@@ -129,18 +133,15 @@ class UserManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeUserPassword(Request $request, User $user)
+    public function changeUserPassword(PasswordRequest $request, User $user)
     {
         // ユーザー側のパスワード変更ボタン押下時のルート名
         $userRouteName = 'users.password.change';
         // パスワード変更成功時のリダイレクト先
         $routeName = null;
-        $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
-        }elseif ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user->update([
@@ -233,7 +234,8 @@ class UserManagementController extends Controller
      */
     public function createCsv()
     {
-        return view('admin.user-management.import');
+        $adminUser = Auth::user();
+        return view('admin.user-management.import', compact('adminUser'));
     }
 
     /**

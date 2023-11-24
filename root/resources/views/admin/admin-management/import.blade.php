@@ -5,6 +5,7 @@
     <title>管理者編集</title>
 </head>
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
         <a href="{{ route('admin.admin-management.index') }}">&lt;&lt;戻る</a>
         <div class="border">

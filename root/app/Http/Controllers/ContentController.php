@@ -25,7 +25,12 @@ class ContentController extends Controller
     {
         $courseTitle = Course::select('title')->where('id', $course)->get();
         $contents = Content::where('course_id', $course)->orderby('position')->get();
+<<<<<<< HEAD
         return view('admin.contents.index', compact('contents', 'course', 'courseTitle'));
+=======
+        $adminUser = Auth::user();
+        return view('admin.contents.index', compact('contents','course','courseTitle', 'adminUser'));
+>>>>>>> daf4ca98db80952a9c76be5f293fcc6cc194910c
     }
 
     /**
@@ -51,7 +56,8 @@ class ContentController extends Controller
     public function create($course)
     {
         $courses = Course::all();
-        return view('admin.contents.create', compact('course', 'courses'));
+        $adminUser = Auth::user();
+        return view('admin.contents.create', compact('course', 'courses', 'adminUser'));
     }
 
     /**
@@ -96,7 +102,7 @@ class ContentController extends Controller
 
         Content::create($data);
 
-        return redirect()->route('admin.content.index', compact('course'))->with('message', 'コンテンツを登録しました');
+        return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを登録しました');
     }
 
     /**
@@ -105,8 +111,9 @@ class ContentController extends Controller
     public function show(Content $content)
     {
         $admin = $content->admin;
+        $adminUser = Auth::user();
 
-        return view('admin.contents.show', compact('content', 'admin'));
+        return view('admin.contents.show', compact('content', 'admin', 'adminUser'));
     }
 
     /**
@@ -127,7 +134,8 @@ class ContentController extends Controller
     public function edit(Content $content)
     {
         $courses = Course::all();
-        return view('admin.contents.edit', compact('content', 'courses'));
+        $adminUser = Auth::user();
+        return view('admin.contents.edit', compact('content', 'courses', 'adminUser'));
     }
 
     /**
@@ -190,7 +198,7 @@ class ContentController extends Controller
 
         $content->update($data);
 
-        return redirect()->route('admin.content.index', compact('course'))->with('message', 'コンテンツを変更しました');
+        return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを変更しました');
     }
 
     /**
@@ -218,7 +226,7 @@ class ContentController extends Controller
 
         $course = $newContent->course_id;
 
-        return redirect()->route('admin.content.index', compact('course'))->with('message', 'コンテンツを複製しました。');
+        return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを複製しました。');
     }
 
     /**
@@ -228,8 +236,13 @@ class ContentController extends Controller
     {
         $course = $content->course_id;
         $content->delete();
+<<<<<<< HEAD
         return redirect()->route('admin.content.index', compact('course'))
             ->with('danger', $content->title . 'を削除しました');
+=======
+        return redirect()->route('admin.contents.index', compact('course'))
+                         ->with('danger', $content->title . 'を削除しました');
+>>>>>>> daf4ca98db80952a9c76be5f293fcc6cc194910c
     }
 
     public function list(Course $course)

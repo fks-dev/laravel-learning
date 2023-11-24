@@ -5,12 +5,13 @@
     <title>編集</title>
 </head>
 <body>
+@include('admin.header')
 <div class="mt-3 container">
-    <a href="{{ route('admin.message.draft') }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
+    <a href="{{ route('admin.messages.draft') }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
     <div class="border">
         <div class="p-2 bg-secondary text-white">先生にメッセージを作成</div>
 
-        <form action="{{ route('admin.message.update', $message) }}" method="post">
+        <form action="{{ route('admin.messages.update', $message) }}" method="post">
             @csrf
             @method('patch')
             <div class="mx-5 px-5">

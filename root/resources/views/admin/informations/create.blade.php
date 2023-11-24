@@ -7,12 +7,13 @@
 </head>
 
 <body>
+    @include('admin.header')
     <div class="mt-3 container">
-        <a href="{{ route('admin.information.index') }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.informations.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規お知らせ登録</div>
 
-            <form action="{{ route('admin.information.store') }}" method="post">
+            <form action="{{ route('admin.informations.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
 

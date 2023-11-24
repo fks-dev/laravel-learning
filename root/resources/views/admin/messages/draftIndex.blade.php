@@ -6,14 +6,15 @@
 </head>
 
 <body>
+@include('admin.header')
 <div class="mt-5 container">
     <div class="d-flex justify-content-between">
         <h2 class="col">下書き一覧</h2>
         <div class="col-auto">
-            <a class="btn btn-primary" href="{{ route('admin.message.create', ['source' => 'draft'])}}">&plus;追加</a>
-            <a class="btn btn-info" href="{{ route('admin.message.index')}}">受信</a>
-            <a class="btn btn-secondary" href="{{ route('admin.message.sent')}}">送信済み</a>
-            <a class="btn btn-danger" href="{{ route('admin.message.dust')}}">ゴミ箱</a>
+            <a class="btn btn-primary" href="{{ route('admin.messages.create', ['source' => 'draft'])}}">&plus;追加</a>
+            <a class="btn btn-info" href="{{ route('admin.messages.index')}}">受信</a>
+            <a class="btn btn-secondary" href="{{ route('admin.messages.sent')}}">送信済み</a>
+            <a class="btn btn-danger" href="{{ route('admin.messages.dust')}}">ゴミ箱</a>
         </div>
     </div>
 
@@ -35,7 +36,7 @@
             @foreach ($messages as $message)
                 <tr data-id="{{ $message->id }}">
                     <td class="align-middle">
-                        <a href="{{ route('admin.message.edit', $message) }}">
+                        <a href="{{ route('admin.messages.edit', $message) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
                     </td>
@@ -48,7 +49,7 @@
                     <td class="align-middle text-center">{{ $message->updated_at }}</td>
 
                     <td class="text-center">
-                        <form action="{{ route('admin.message.destroy', $message) }}" method="post" class="d-inline">
+                        <form action="{{ route('admin.messages.destroy', $message) }}" method="post" class="d-inline">
                             @csrf
                             @method('delete')
                             <input class="btn btn-danger" type="submit" value="削除"

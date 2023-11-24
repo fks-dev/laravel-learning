@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateCourseRequest;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Auth;
 
 class CourseController extends Controller
 {
@@ -16,8 +17,9 @@ class CourseController extends Controller
     public function index()
     {
         $courses = Course::orderby('position')->get();
+        $adminUser = Auth::user();
 
-        return view('admin.courses.index', compact('courses'));
+        return view('admin.courses.index', compact('courses', 'adminUser'));
     }
 
     public function sort(Request $request)
@@ -38,7 +40,8 @@ class CourseController extends Controller
      */
     public function create()
     {
-        return view('admin.courses.create');
+        $adminUser = Auth::user();
+        return view('admin.courses.create', compact('adminUser'));
     }
 
     /**
@@ -53,7 +56,7 @@ class CourseController extends Controller
             'remarks'      => $request->remarks,
         ]);
 
-        return redirect()->route('admin.course.index')->with('message', 'コースを登録しました');
+        return redirect()->route('admin.courses.index')->with('message', 'コースを登録しました');
     }
 
     /**
@@ -61,7 +64,8 @@ class CourseController extends Controller
      */
     public function edit(Course $course)
     {
-        return view('admin.courses.edit', compact('course'));
+        $adminUser = Auth::user();
+        return view('admin.courses.edit', compact('course', 'adminUser'));
     }
 
     /**
@@ -75,7 +79,7 @@ class CourseController extends Controller
             'remarks'      => $request->remarks,
         ]);
 
-        return redirect()->route('admin.course.index');
+        return redirect()->route('admin.courses.index');
     }
 
     /**
@@ -84,6 +88,6 @@ class CourseController extends Controller
     public function destroy(Course $course)
     {
         $course->delete();
-        return redirect()->route('admin.course.index')->with('danger', $course->title . 'を削除しました');
+        return redirect()->route('admin.courses.index')->with('danger', $course->title . 'を削除しました');
     }
 }

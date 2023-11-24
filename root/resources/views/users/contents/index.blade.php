@@ -38,6 +38,7 @@
                     <tbody>
                         @foreach($contents as $content)
                         <tr>
+<<<<<<< HEAD
                             <td><a href="{{ route('users.content.show', $content) }}">{{$content->title}}</a></td>
                             @if($content->getLog($user))
                             <td><p>{{ $content->getLog($user)->created_at }}</p></td>
@@ -48,6 +49,12 @@
                             <td><p>-</p></td>
                             <td><p></p></td>
                             @endif
+=======
+                            <td><a href="{{ route('users.contents.show', $content) }}">{{$content->title}}</a></td>
+                            <td><p>????/??/??</p></td>
+                            <td><p>????/??/??</p></td>
+                            <td><p>☑</p></td>
+>>>>>>> daf4ca98db80952a9c76be5f293fcc6cc194910c
                         </tr>
                         @endforeach
                     </tbody>

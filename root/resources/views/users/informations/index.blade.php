@@ -6,7 +6,7 @@
 </head>
 
 <body>
-    @include('header')
+    @include('users.header')
     <div class="container-md mt-4">
         <div class="mb-4 p-3 border rounded" style="background-color: #f5f5f5;">
             <a class="text-decoration-none" href="{{ route('users.index') }}">HOME</a>
@@ -27,7 +27,7 @@
                         @foreach($informations as $information)
                         <tr>
                             <td>{{$information->created_at->format('Y/m/d')}}</td>
-                            <td><a class="none-underline" href="{{ route('users.information.show', $information) }}">{{$information->title}}</a></td>
+                            <td><a class="none-underline" href="{{ route('users.informations.show', $information) }}">{{$information->title}}</a></td>
                         </tr>
                         @endforeach
                     </tbody>
