@@ -53,10 +53,6 @@
                         </div>
                     </div>
 
-
-                    {{-- コンテンツ種別 --}}
-                    @include('admin.contents.kinds')
-
                     {{-- コンテンツ入力内容 --}}
                     @include('admin.contents.input')
 
@@ -83,8 +79,5 @@
             </form>
         </div>
     </div>
-    {{-- JS --}}
-    @include('admin.contents.richText')
-    @include('admin.contents.radioBtn')
 </body>
 </html>
