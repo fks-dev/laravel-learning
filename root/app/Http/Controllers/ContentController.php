@@ -168,12 +168,5 @@ class ContentController extends Controller
         $title = $content->title;
         return view('users.contents.show', compact('content','user','title'));
     }
-    public function handout(Content $content){
-        $info = pathinfo($content->document_file_path);
-        $parts = explode('_', $info['filename'], 2);
-        $fileName = end($parts) . '.' . $info['extension'];
-
-        return Storage::download('public/' . $content->document_file_path, $fileName);
-    }
 
 }
