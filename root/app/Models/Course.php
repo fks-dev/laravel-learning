@@ -90,4 +90,18 @@ class Course extends Model
             return '-';
         }
     }
+    public function getResidue($user)
+    {
+        $contentsQuantity = 0;
+        $contents = $this->contents;
+        foreach ($contents as $content) {
+            if ($content->getLog($user)) {
+                if ($content->getLog($user)->completed) {
+                    continue;
+                }
+            }
+            $contentsQuantity++;
+        }
+        return $contentsQuantity;
+    }
 }
