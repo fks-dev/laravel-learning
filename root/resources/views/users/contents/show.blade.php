@@ -21,31 +21,10 @@
     </header>
     <main>
         <div class="container border py-2  my-2 rounded">
-            @switch($content->content_type)
-            @case(2)
             <div class="ratio ratio-16x9">
                 <iframe src="https://www.youtube.com/embed/{{ $content->youtube_video_id }}"></iframe>
             </div>
-            @break
-            @case(3)
-            <div class="w-100 d-flex justify-content-center my-4">
-                <a href="{{ route('users.contents.handout', $content) }}" class="btn btn-success">資料をダウンロード</a>
-            </div>
-            @break
-            @case(4)
-            <div class="m-4">
-                {!! $content->text !!}
-            </div>
-            @break
-            @case(5)
-            <div class="ratio ratio-16x9">
-                <iframe src="{{ $content->movie_file_path }}"></iframe>
-            </div>
-            @break
-            @default
-            <p>[エラー]コンテンツがありません</p>
-            @endswitch
-        <div class="container">
+        </div>
     </main>
     <footer class="invisible">
         <div class="container d-flex justify-content-end align-items-center p-4">
