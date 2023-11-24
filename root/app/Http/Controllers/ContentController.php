@@ -259,11 +259,22 @@ class ContentController extends Controller
     {
         $user = Auth::user();
         $completed = $request->input('log');
-        ContentsLog::create([
-            'user_id' => $user->id,
-            'content_id' => $content->id,
-            'completed' => $completed
-        ]);
+        $checkExists = ContentsLog::where('user_id',$user->id)->where('content_id',$content->id)->exists();
+        if($checkExists){
+            $contentsLog = ContentsLog::where('user_id',$user->id)->where('content_id',$content->id)->first();
+            $contentsLog->update([
+                'completed'=>$completed,
+                'updated_at'=>now()
+            ]);
+            $contentsLog->touch();
+        }else{
+            ContentsLog::create([
+                'user_id' => $user->id,
+                'content_id' => $content->id,
+                'completed' => $completed
+            ]);
+        }
+
         $course = $content->course;
         return to_route('users.content.index',$course);
     }
