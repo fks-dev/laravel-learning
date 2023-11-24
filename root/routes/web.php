@@ -71,7 +71,6 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('create/{course}', 'create')->name('.create');
             Route::post('index/{course}', 'store')->name('.store');
             Route::get('{content}/show', 'show')->name('.show');
-            Route::get('{content}/download', 'download')->name('.download'); //ダウンロード
             Route::get('{content}/edit', 'edit')->name('.edit');
             Route::patch('{content}', 'update')->name('.update');
             Route::post('{content}/duplicate', 'duplicate')->name('.duplicate'); //複製

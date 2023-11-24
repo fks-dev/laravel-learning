@@ -87,18 +87,6 @@ class ContentController extends Controller
     }
 
     /**
-     * ファイルダウンロード
-     */
-    public function download(Content $content)
-    {
-        $info = pathinfo($content->document_file_path);
-        $parts = explode('_', $info['filename'], 2);
-        $fileName = end($parts) . '.' . $info['extension'];
-
-        return Storage::download('public/' . $content->document_file_path, $fileName);
-    }
-
-    /**
      * Show the form for editing the specified resource.
      */
     public function edit(Content $content)
