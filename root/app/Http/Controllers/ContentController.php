@@ -126,20 +126,6 @@ class ContentController extends Controller
         $newContent = new Content();
         $newContent->fill($original->toArray())->save();
 
-        if ($original->movie_file_path != null) {
-            $info = pathinfo($original->movie_file_path);
-            $parts = explode('_', $info['filename'], 2);
-            $movieName = time() . '_' . end($parts) . '.' . $info['extension'];
-            Storage::disk('public')->copy($original->movie_file_path, 'movies/' . $movieName);
-            $newContent->update(['movie_file_path' => 'movies/' . $movieName]);
-        } elseif ($original->document_file_path != null) {
-            $info = pathinfo($original->document_file_path);
-            $parts = explode('_', $info['filename'], 2);
-            $fileName = time() . '_' . end($parts) . '.' . $info['extension'];
-            Storage::disk('public')->copy($original->document_file_path, 'handout/' . $fileName);
-            $newContent->update(['document_file_path' => 'handout/' . $fileName]);
-        }
-
         $course = $newContent->course_id;
 
         return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを複製しました。');
