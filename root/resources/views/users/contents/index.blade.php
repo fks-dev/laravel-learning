@@ -39,9 +39,15 @@
                         @foreach($contents as $content)
                         <tr>
                             <td><a href="{{ route('users.content.show', $content) }}">{{$content->title}}</a></td>
-                            <td><p>????/??/??</p></td>
-                            <td><p>????/??/??</p></td>
-                            <td><p>☑</p></td>
+                            @if($content->getLog($user))
+                            <td><p>{{ $content->getLog($user)->created_at }}</p></td>
+                            <td><p>{{ $content->getLog($user)->updated_at }}</p></td>
+                            <td><p>@if($content->getLog($user)->completed)☑@endif</p></td>
+                            @else
+                            <td><p>-</p></td>
+                            <td><p>-</p></td>
+                            <td><p></p></td>
+                            @endif
                         </tr>
                         @endforeach
                     </tbody>
