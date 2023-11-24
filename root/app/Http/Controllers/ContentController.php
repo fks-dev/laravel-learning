@@ -100,7 +100,7 @@ class ContentController extends Controller
 
         Content::create($data);
 
-        return redirect()->route('admin.content.index', compact('course'))->with('message', 'コンテンツを登録しました');
+        return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを登録しました');
     }
 
     /**
@@ -200,7 +200,7 @@ class ContentController extends Controller
 
         $content->update($data);
 
-        return redirect()->route('admin.content.index', compact('course'))->with('message', 'コンテンツを変更しました');
+        return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを変更しました');
     }
 
     /**
@@ -228,7 +228,7 @@ class ContentController extends Controller
 
         $course = $newContent->course_id;
 
-        return redirect()->route('admin.content.index', compact('course'))->with('message', 'コンテンツを複製しました。');
+        return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを複製しました。');
     }
 
     /**
@@ -238,7 +238,7 @@ class ContentController extends Controller
     {
         $course = $content->course_id;
         $content->delete();
-        return redirect()->route('admin.content.index', compact('course'))
+        return redirect()->route('admin.contents.index', compact('course'))
                          ->with('danger', $content->title . 'を削除しました');
     }
 

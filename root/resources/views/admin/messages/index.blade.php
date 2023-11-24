@@ -11,10 +11,10 @@
     <div class="d-flex justify-content-between">
         <h2 class="col">受信一覧</h2>
         <div class="col-auto">
-            <a class="btn btn-primary" href="{{ route('admin.message.create')}}">&plus;追加</a>
-            <a class="btn btn-success" href="{{ route('admin.message.draft')}}">下書き</a>
-            <a class="btn btn-secondary" href="{{ route('admin.message.sent')}}">送信済み</a>
-            <a class="btn btn-danger" href="{{ route('admin.message.dust')}}">ゴミ箱</a>
+            <a class="btn btn-primary" href="{{ route('admin.messages.create')}}">&plus;追加</a>
+            <a class="btn btn-success" href="{{ route('admin.messages.draft')}}">下書き</a>
+            <a class="btn btn-secondary" href="{{ route('admin.messages.sent')}}">送信済み</a>
+            <a class="btn btn-danger" href="{{ route('admin.messages.dust')}}">ゴミ箱</a>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
             @foreach ($messages as $message)
                 <tr data-id="{{ $message->id }}">
                     <td class="align-middle">
-                        <a href="{{ route('admin.message.show', $message) }}">
+                        <a href="{{ route('admin.messages.show', $message) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
                         @if ($message->is_replied == 1) &#9166; @endif
@@ -50,7 +50,7 @@
                     <td class="align-middle text-center">{{ $message->created_at }}</td>
 
                     <td class="text-center">
-                        <form action="{{ route('admin.message.hidden', $message) }}" method="post" class="d-inline">
+                        <form action="{{ route('admin.messages.hidden', $message) }}" method="post" class="d-inline">
                             @csrf
                             <input class="btn btn-danger" name="action" type="submit" value="削除"
                             onClick="return confirm('本当に削除しますか？');">
