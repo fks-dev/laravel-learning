@@ -56,6 +56,11 @@ class InformationController extends Controller
         return redirect()->route('admin.informations.index')->with('message', 'お知らせを登録しました');
     }
 
+    public function adminShow(Information $information){
+        $adminUser = Auth::user();
+        return view('admin.informations.show',compact('adminUser','information'));
+    }
+
     /**
      * Show the form for editing the specified resource.
      */
