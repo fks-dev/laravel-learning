@@ -24,7 +24,7 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('groups')->get();
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
