@@ -28,7 +28,18 @@ class UserManagementController extends Controller
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
-        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
+        $courses = collect();
+        foreach($users as $user){
+            if($user->groups->isEmpty()){
+                continue; //ユーザーの対象グループがないなら今回のループをスキップする
+            }
+            $groupIds = $user->groups->pluck('id');
+            $courses[$user->id] = Course::whereHas('groups', function ($q) use ($groupIds) {
+                $q->whereIn('group_id', $groupIds);
+            })->get();
+        }
+
+        return view('admin.user-management.index', compact('users','courses', 'logins', 'adminUser'));
     }
 
       // ユーザ側のパスワード変更画面
