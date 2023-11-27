@@ -82,7 +82,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
-            Route::get('{admin}/edit', 'edit')->name('.edit');
+            Route::get('edit', 'edit')->name('.edit');
             Route::get('{admin}/password', 'password')->name('.password');
             Route::post('{admin}/password', 'changeAdminPassword')->name('.changePassword');
             Route::patch('{admin}', 'update')->name('.update');
