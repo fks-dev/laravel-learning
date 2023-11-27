@@ -1,10 +1,12 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     @include('head')
     <link rel="stylesheet" href="/css/mgmt.css">
     <title>ユーザー 一覧画面</title>
 </head>
+
 <body>
     @include('admin.header')
     <div class="mt-5 container">
@@ -30,106 +32,110 @@
 
         </div>
 
-            {{-- 検索 --}}
-            <form id="searchForm" method="GET">
-                @csrf
-                <div class="d-flex justify-content-start">
-                    <div class="p-2">
-                        <label class="col-form-label" for="group">グループ:</label>
-                    </div>
-                    <div class="p-2">
-                        <select class="form-control" name="group" id="group">
-                            <option value="1">グループ１</option>
-                        </select>
-                    </div>
-                    <div class="p-2">
-                        <label class="col-form-label" for="name">管理者ID</label>
-                    </div>
-                    <div class="p-2">
-                        <input class="form-control" type="text" name="name" id="name">
-                    </div>
-                    <div class="p-2">
-                        <input class="form-control btn btn-info" type="submit" value="検索">
-                    </div>
+        {{-- 検索 --}}
+        <form id="searchForm" method="GET">
+            @csrf
+            <div class="d-flex justify-content-start">
+                <div class="p-2">
+                    <label class="col-form-label" for="group">グループ:</label>
                 </div>
-            </form>
-
-            <div id="searchResults"></div>
-
-    {{-- 登録・削除　メッセージ --}}
-            @if (session('message'))
-                <div class="alert alert-success">
-                {{ session('message') }}
+                <div class="p-2">
+                    <select class="form-control" name="group" id="group">
+                        <option value="1">グループ１</option>
+                    </select>
                 </div>
-            @elseif (session('danger'))
-            <div class="alert alert-danger">
-                {{ session('danger') }}
+                <div class="p-2">
+                    <label class="col-form-label" for="name">管理者ID</label>
                 </div>
-            @endif
+                <div class="p-2">
+                    <input class="form-control" type="text" name="name" id="name">
+                </div>
+                <div class="p-2">
+                    <input class="form-control btn btn-info" type="submit" value="検索">
+                </div>
+            </div>
+        </form>
 
-            <table class="table table-striped" id="sortable">
-                <thead>
-                    <tr>
-                        <th class="col-1 sort" data-sort="asc">管理者ID</th>
-                        <th class="col-2 sort" data-sort="asc">mail</th>
-                        <th class="col-2">所属グループ</th>
-                        <th class="col-2">所属コース</th>
-                        <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
-                        <th class="col text-center sort" data-sort="asc">作成日時</th>
-                        <th class="col text-center">Actions</th>
-                        </tr>
-                </thead>
+        <div id="searchResults"></div>
 
-                <tbody>
-                    @foreach ($users as $user)
-                        <tr  data-id="{{ $user->id }}">
-                            <td class="align-middle">{{ $user->username }}</td>
-                            <td class="align-middle text-center">{{ $user->mail_address }}</td>
-                            <td class="align-middle text-start">
-                            @foreach ($user->groups as $group)
-                                    {{ $group->group_name }}
-                                    @unless($loop->last)
-                                        ,
-                                    @endunless
-                            @endforeach
-                            </td>
-                            <td class="align-middle text-start">
-                            @foreach ($user->groups()->with('courses')->get()->pluck('courses')->flatten()->unique('id') as $course)
-                                    {{ $course->title }}
-                                    @unless($loop->last)
-                                        ,
-                                    @endunless
-                            @endforeach
-                            </td>
-                            <td class="align-middle text-center">
-                                @foreach ($logins as $login)
-                                    @if ($user->id == $login->user_id)
-                                        {{ $login->updated_at }}
-                                        @break
-                                    @endif
-                                @endforeach
-                            </td>
+        {{-- 登録・削除　メッセージ --}}
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @elseif (session('danger'))
+        <div class="alert alert-danger">
+            {{ session('danger') }}
+        </div>
+        @endif
 
-                            <td class="align-middle text-center">{{ $user->created_at }}</td>
+        <table class="table table-striped" id="sortable">
+            <thead>
+                <tr>
+                    <th class="col-1 sort" data-sort="asc">管理者ID</th>
+                    <th class="col-2 sort" data-sort="asc">mail</th>
+                    <th class="col-2">所属グループ</th>
+                    <th class="col-2">所属コース</th>
+                    <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
+                    <th class="col text-center sort" data-sort="asc">作成日時</th>
+                    <th class="col text-center">Actions</th>
+                </tr>
+            </thead>
 
-                            <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('admin.user-management.edit', $user->id) }}">編集</a>
+            <tbody>
+                @foreach ($users as $user)
+                <tr data-id="{{ $user->id }}">
+                    <td class="align-middle">{{ $user->username }}</td>
+                    <td class="align-middle text-center">{{ $user->mail_address }}</td>
+                    <td class="align-middle text-start">
+                        @foreach ($user->groups as $group)
+                        {{ $group->group_name }}
+                        @unless($loop->last)
+                        ,
+                        @endunless
+                        @endforeach
+                    </td>
+                    <td class="align-middle text-start">
+                        @if(isset($courses[$user->id]))
 
-                                <form action="{{ route('admin.user-management.destroy', $user) }}" method="post" class="d-inline">
-                                    @csrf
-                                    @method('delete')
-                                    <input class="btn btn-danger" type="submit" value="削除"
-                                    onClick="return confirm('本当に削除しますか？');">
-                                </form>
+                        @foreach ($courses[$user->id] as $course)
+                        {{ $course->title }}
+                        @unless($loop->last)
+                        ,
+                        @endunless
+                        @endforeach
 
-                            </td>
-                        </tr>
-                    @endforeach
-                </tbody>
+                        @endif
+                    </td>
+                    <td class="align-middle text-center">
+                        @foreach ($logins as $login)
+                        @if ($user->id == $login->user_id)
+                        {{ $login->updated_at }}
+                        @break
+                        @endif
+                        @endforeach
+                    </td>
 
-            </table>
+                    <td class="align-middle text-center">{{ $user->created_at }}</td>
+
+                    <td class="text-center">
+                        <a class="btn btn-success edit-btn" href="{{ route('admin.user-management.edit', $user->id) }}">編集</a>
+
+                        <form action="{{ route('admin.user-management.destroy', $user) }}" method="post" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <input class="btn btn-danger" type="submit" value="削除" onClick="return confirm('本当に削除しますか？');">
+                        </form>
+
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+
+        </table>
     </div>
     @include('admin.sort')
     @include('admin.user-management.search')
 </body>
+
 </html>
