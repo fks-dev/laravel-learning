@@ -136,6 +136,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
+            Route::get('{information}','adminShow')->name('.show');
             Route::get('{information}/edit', 'edit')->name('.edit');
             Route::patch('{information}', 'update')->name('.update');
             Route::delete('{information}', 'destroy')->name('.destroy');
