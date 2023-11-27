@@ -38,7 +38,7 @@
                     <tbody>
                         @foreach($contents as $content)
                         <tr>
-                            <td><a href="{{ route('users.content.show', $content) }}">{{$content->title}}</a></td>
+                            <td><a href="{{ route('users.contents.show', $content) }}">{{$content->title}}</a></td>
                             <td><p>????/??/??</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>☑</p></td>

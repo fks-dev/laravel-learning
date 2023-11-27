@@ -73,7 +73,6 @@
                     <tr>
                         <th class="col-2 pe-auto sort" data-sort="asc">管理者ID</th>
                         <th class="col-2 sort" data-sort="asc">mail</th>
-                        <th class="col-2">所属グループ</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
                         <th class="col text-center">Actions</th>
@@ -85,7 +84,6 @@
                         <tr  data-id="{{ $admin->id }}">
                             <td class="align-middle">{{ $admin->username }}</td>
                             <td class="align-middle text-center">{{ $admin->mail_address }}</td>
-                            <td class="align-middle text-center"></td>
 
                             <td class="align-middle text-center">
                                 @foreach ($logins as $login)
@@ -99,15 +97,12 @@
                             <td class="align-middle text-center">{{ $admin->created_at }}</td>
 
                             <td class="text-center">
-                                <a class="btn btn-success edit-btn" href="{{ route('admin.admin-management.edit', $admin->id) }}">編集</a>
-
                                 <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
                                     @csrf
                                     @method('delete')
                                     <input class="btn btn-danger" type="submit" value="削除"
                                     onClick="return confirm('本当に削除しますか？');">
                                 </form>
-
                             </td>
                         </tr>
                     @endforeach

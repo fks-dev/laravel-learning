@@ -5,7 +5,7 @@ namespace App\Http\Requests;
 use Illuminate\Foundation\Http\FormRequest;
 use Illuminate\Support\Facades\Hash;
 
-class PasswordRequest extends FormRequest
+class AdminPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -23,7 +23,7 @@ class PasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required',
+            'password' => 'required|current_password',
             'new_password' => 'required|confirmed',
         ];
     }
