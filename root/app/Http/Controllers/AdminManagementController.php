@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\AdminPasswordRequest;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
@@ -99,7 +99,7 @@ class AdminManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeAdminPassword(PasswordRequest $request, Admin $admin)
+    public function changeAdminPassword(AdminPasswordRequest $request, Admin $admin)
     {
 
         if (!Hash::check($request->password, $admin->password)) {

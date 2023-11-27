@@ -65,17 +65,18 @@ class ContentController extends Controller
      */
     public function store(StoreContentRequest $request, $course)
     {
-        $content_type = $request->input('content_type');
-        $user = Auth::guard('admin')->user();
+        $user = Auth::user();
 
         $data = [
-            'course_id'    => $request->course_id,
-            'admin_id'     => $user->id,
-            'title'        => $request->title,
-            'content_type' => $content_type,
-            'is_public'    => $request->is_public,
+            'course_id'        => $request->course_id,
+            'admin_id'         => $user->id,
+            'title'            => $request->title,
+            'youtube_video_id' => $request->youtube_video_id,
+            'remarks'          => $request->remarks,
+            'is_public'        => $request->is_public,
         ];
 
+<<<<<<< HEAD
         if ($content_type != 1) {
             $data['remarks'] = $request->remarks;
 
@@ -100,6 +101,8 @@ class ContentController extends Controller
             }
         }
 
+=======
+>>>>>>> 348cbd84cbc4ca3874f852b9c59cc526f7ba97f8
         Content::create($data);
 
         return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを登録しました');
@@ -114,18 +117,6 @@ class ContentController extends Controller
         $adminUser = Auth::user();
 
         return view('admin.contents.show', compact('content', 'admin', 'adminUser'));
-    }
-
-    /**
-     * ファイルダウンロード
-     */
-    public function download(Content $content)
-    {
-        $info = pathinfo($content->document_file_path);
-        $parts = explode('_', $info['filename'], 2);
-        $fileName = end($parts) . '.' . $info['extension'];
-
-        return Storage::download('public/' . $content->document_file_path, $fileName);
     }
 
     /**
@@ -144,32 +135,17 @@ class ContentController extends Controller
     public function update(UpdateContentRequest $request, Content $content)
     {
         $course = $content->course_id;
-        $content_type = $request->input('content_type');
-
-        if ($content->movie_file_path != null) {
-            // 古い動画を削除
-            Storage::disk('public')->delete($content->movie_file_path);
-        } elseif ($content->document_file_path != null) {
-            // 古い資料を削除
-            Storage::disk('public')->delete($content->document_file_path);
-        }
 
         $data = [
             'course_id'          => $request->course_id,
             'admin_id'           => Auth()->user()->id,
             'title'              => $request->title,
-            'content_type'       => $content_type,
-            'text'               => null,
-            'youtube_video_id'   => null,
-            'movie_file_path'    => null,
-            'document_file_path' => null,
-            'time_limit_minutes' => null,
-            'passing_score_rate' => null,
-            'amount_questions'   => null,
-            'remarks'            => null,
+            'youtube_video_id'   => $request->youtube_video_id,
+            'remarks'            => $request->remarks,
             'is_public'          => $request->is_public,
         ];
 
+<<<<<<< HEAD
         if ($content_type != 1) {
             $data['remarks'] = $request->remarks;
 
@@ -196,6 +172,8 @@ class ContentController extends Controller
             }
         }
 
+=======
+>>>>>>> 348cbd84cbc4ca3874f852b9c59cc526f7ba97f8
         $content->update($data);
 
         return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを変更しました');
@@ -209,20 +187,6 @@ class ContentController extends Controller
         $original = Content::findOrFail($content);
         $newContent = new Content();
         $newContent->fill($original->toArray())->save();
-
-        if ($original->movie_file_path != null) {
-            $info = pathinfo($original->movie_file_path);
-            $parts = explode('_', $info['filename'], 2);
-            $movieName = time() . '_' . end($parts) . '.' . $info['extension'];
-            Storage::disk('public')->copy($original->movie_file_path, 'movies/' . $movieName);
-            $newContent->update(['movie_file_path' => 'movies/' . $movieName]);
-        } elseif ($original->document_file_path != null) {
-            $info = pathinfo($original->document_file_path);
-            $parts = explode('_', $info['filename'], 2);
-            $fileName = time() . '_' . end($parts) . '.' . $info['extension'];
-            Storage::disk('public')->copy($original->document_file_path, 'handout/' . $fileName);
-            $newContent->update(['document_file_path' => 'handout/' . $fileName]);
-        }
 
         $course = $newContent->course_id;
 
@@ -258,14 +222,6 @@ class ContentController extends Controller
         $user = Auth::user();
         $title = $content->title;
         return view('users.contents.show', compact('content', 'user', 'title'));
-    }
-    public function handout(Content $content)
-    {
-        $info = pathinfo($content->document_file_path);
-        $parts = explode('_', $info['filename'], 2);
-        $fileName = end($parts) . '.' . $info['extension'];
-
-        return Storage::download('public/' . $content->document_file_path, $fileName);
     }
 
     public function record(StoreContentLogRequest $request, Content $content)
