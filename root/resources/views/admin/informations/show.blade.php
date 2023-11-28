@@ -1,6 +1,6 @@
 <html lang="ja">
 <head>
-@include('admin.informations.head')
+@include('head')
 <title>お知らせ</title>
 </head>
 <body>
