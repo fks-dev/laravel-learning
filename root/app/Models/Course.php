@@ -31,7 +31,6 @@ class Course extends Model
             $course->usersCoursesTable()->delete();
             $course->groupsCoursesTable()->delete();
         });
-
     }
 
     public function users()
@@ -61,4 +60,48 @@ class Course extends Model
         return $this->hasMany(GroupsCourse::class, 'course_id', 'id');
     }
 
+    public function getLogFirst($user)
+    {
+        $contents = $this->contents;
+        $logs = [];
+        foreach ($contents as $content) {
+            if ($content->getLog($user)) {
+                $logs[] = $content->getLog($user)->created_at;
+            }
+        }
+        if ($logs) {
+            return min($logs);
+        } else {
+            return '-';
+        }
+    }
+    public function getLogLast($user)
+    {
+        $contents = $this->contents;
+        $logs = [];
+        foreach ($contents as $content) {
+            if ($content->getLog($user)) {
+                $logs[] = $content->getLog($user)->updated_at;
+            }
+        }
+        if ($logs) {
+            return max($logs);
+        } else {
+            return '-';
+        }
+    }
+    public function getResidue($user)
+    {
+        $contentsQuantity = 0;
+        $contents = $this->contents;
+        foreach ($contents as $content) {
+            if ($content->getLog($user)) {
+                if ($content->getLog($user)->completed) {
+                    continue;
+                }
+            }
+            $contentsQuantity++;
+        }
+        return $contentsQuantity;
+    }
 }
