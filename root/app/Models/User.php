@@ -58,11 +58,6 @@ class User extends Authenticatable
         });
     }
 
-    // users_coursesテーブルとのリレーション
-    public function usersCoursesTable()
-    {
-        return $this->hasMany(UsersCourse::class, 'user_id', 'id');
-    }
 
     /**
      * The attributes that should be hidden for serialization.
