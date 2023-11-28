@@ -24,7 +24,7 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::with('groups')->get();
+        $users = User::with('groups.courses')->get();
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
@@ -33,10 +33,7 @@ class UserManagementController extends Controller
             if($user->groups->isEmpty()){
                 continue; //ユーザーの対象グループがないなら今回のループをスキップする
             }
-            $groupIds = $user->groups->pluck('id');
-            $courses[$user->id] = Course::whereHas('groups', function ($q) use ($groupIds) {
-                $q->whereIn('group_id', $groupIds);
-            })->get();
+            $courses[$user->id] = $user->groups->flatMap->courses->unique('id');
         }
 
         return view('admin.user-management.index', compact('users','courses', 'logins', 'adminUser'));
