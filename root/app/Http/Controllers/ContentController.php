@@ -25,12 +25,8 @@ class ContentController extends Controller
     {
         $courseTitle = Course::select('title')->where('id', $course)->get();
         $contents = Content::where('course_id', $course)->orderby('position')->get();
-<<<<<<< HEAD
-        return view('admin.contents.index', compact('contents', 'course', 'courseTitle'));
-=======
         $adminUser = Auth::user();
         return view('admin.contents.index', compact('contents','course','courseTitle', 'adminUser'));
->>>>>>> daf4ca98db80952a9c76be5f293fcc6cc194910c
     }
 
     /**
@@ -76,33 +72,6 @@ class ContentController extends Controller
             'is_public'        => $request->is_public,
         ];
 
-<<<<<<< HEAD
-        if ($content_type != 1) {
-            $data['remarks'] = $request->remarks;
-
-            if ($content_type == 4) { //リッチテキスト
-                $data['text'] = $request->text;
-            } elseif ($content_type == 5) { //動画ファイル
-                $movie         = $request->file('movie_file_path');
-                $movieName     = time() . '_' . $movie->getClientOriginalName();
-                $moviePath     = $movie->storeAs('movies', $movieName, 'public');
-                $data['movie_file_path'] = $moviePath;
-            } elseif ($content_type == 2) { //URL埋め込み
-                $data['youtube_video_id'] = $request->youtube_video_id;
-            } elseif ($content_type == 3) { //配布資料
-                $file         = $request->file('document_file_path');
-                $fileName     = time() . '_' . $file->getClientOriginalName();
-                $filePath     = $file->storeAs('handout', $fileName, 'public');
-                $data['document_file_path'] = $filePath;
-            } elseif ($content_type == 6) {
-                $data['time_limit_minutes'] = $request->time_limit_minutes;
-                $data['passing_score_rate'] = $request->passing_score_rate;
-                $data['amount_questions']   = $request->amount_questions;
-            }
-        }
-
-=======
->>>>>>> 348cbd84cbc4ca3874f852b9c59cc526f7ba97f8
         Content::create($data);
 
         return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを登録しました');
@@ -145,35 +114,6 @@ class ContentController extends Controller
             'is_public'          => $request->is_public,
         ];
 
-<<<<<<< HEAD
-        if ($content_type != 1) {
-            $data['remarks'] = $request->remarks;
-
-            if ($content_type == 4) { //リッチテキスト
-                $data['text'] = $request->text;
-            } elseif ($content_type == 5 && $request->movie_file_path != null) {  //動画ファイル
-                // 動画追加
-                $movie         = $request->file('movie_file_path');
-                $movieName     = time() . '_' . $movie->getClientOriginalName();
-                $moviePath     = $movie->storeAs('movies', $movieName, 'public');
-                $data['movie_file_path'] = $moviePath;
-            } elseif ($content_type == 2) { //URL埋め込み
-                $data['youtube_video_id'] = $request->youtube_video_id;
-            } elseif ($content_type == 3 && $request->document_file_path != null) { //配布資料
-                // 配布資料追加
-                $file         = $request->file('document_file_path');
-                $fileName     =  time() . '_' . $file->getClientOriginalName();
-                $filePath     = $file->storeAs('handout', $fileName, 'public');
-                $data['document_file_path'] = $filePath;
-            } elseif ($content_type == 6) { //テスト
-                $data['time_limit_minutes'] = $request->time_limit_minutes;
-                $data['passing_score_rate'] = $request->passing_score_rate;
-                $data['amount_questions']   = $request->amount_questions;
-            }
-        }
-
-=======
->>>>>>> 348cbd84cbc4ca3874f852b9c59cc526f7ba97f8
         $content->update($data);
 
         return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを変更しました');
@@ -200,13 +140,8 @@ class ContentController extends Controller
     {
         $course = $content->course_id;
         $content->delete();
-<<<<<<< HEAD
-        return redirect()->route('admin.content.index', compact('course'))
-            ->with('danger', $content->title . 'を削除しました');
-=======
         return redirect()->route('admin.contents.index', compact('course'))
                          ->with('danger', $content->title . 'を削除しました');
->>>>>>> daf4ca98db80952a9c76be5f293fcc6cc194910c
     }
 
     public function list(Course $course)
