@@ -46,7 +46,7 @@
 
                 @foreach ($informations as $information)
                 <tr data-id="{{ $information->id }}">
-                    <td class="align-middle">{{ $information->title }}</td>
+                    <td class="align-middle"><a href="{{ route('admin.informations.show', $information) }}">{{ $information->title }}</td>
                     <td class="align-middle text-start">
                         @foreach($information->groups as $group)
                         {{ $group->group_name }}
