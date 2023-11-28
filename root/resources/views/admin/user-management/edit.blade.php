@@ -64,17 +64,8 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-3 col-form-label fw-bold">所属コース</label>
+                        <label class="col-sm-3 col-form-label fw-bold">　</label>
                         <div class="col-sm-9">
-                            <select class="form-select" name="course[]" id="course" multiple>
-                                <option disabled>コースを選んでください</option>
-                                @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}"
-                                       @if ($user->courses->contains($course->id)) selected @endif>
-                                       {{ $course->title }}
-                                    </option>
-                                @endforeach
-                            </select>
                             {{-- 登録ボタン --}}
                             <input class="form-contorl btn btn-primary" type="submit" value="更新">
                         </div>
