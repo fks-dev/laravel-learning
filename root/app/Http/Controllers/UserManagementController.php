@@ -31,12 +31,12 @@ class UserManagementController extends Controller
         return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
     }
 
-      // ユーザ側のパスワード変更画面
-      public function userIndex()
-      {
-          $user = Auth::user();
-          return view('users.passwordChange.index', compact('user'));
-      }
+    // ユーザ側のパスワード変更画面
+    public function userIndex()
+    {
+        $user = Auth::user();
+        return view('users.passwordChange.index', compact('user'));
+    }
 
     /**
      * 検索機能
@@ -85,7 +85,7 @@ class UserManagementController extends Controller
             $user->Courses()->attach($course);
         }
 
-        return redirect()->route('admin.user-management.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('admin.user-management.index')->with('message', $request->username . 'を登録しました');
     }
 
     /**
@@ -113,21 +113,14 @@ class UserManagementController extends Controller
      */
     public function update(UpdateUserMgmtRequest $request, User $user)
     {
-        $user->Courses()->detach();
+
 
         $user->update([
             'username'     => $request->username,
             'mail_address' => $request->mail_address,
         ]);
 
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
-
-        return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.user-management.index')->with('message', $request->username . 'の情報を更新しました');
     }
 
     /**
@@ -143,7 +136,7 @@ class UserManagementController extends Controller
 
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
-        }elseif ($validator->fails()) {
+        } elseif ($validator->fails()) {
             return redirect()->back()->withErrors($validator)->withInput();
         }
 
@@ -152,9 +145,9 @@ class UserManagementController extends Controller
         ]);
 
         //パスワード変更がユーザー側かシステム管理側かを判断
-        if($userRouteName == Route::currentRouteName()){
+        if ($userRouteName == Route::currentRouteName()) {
             $routeName = 'users.index';
-        }else{
+        } else {
             $routeName = 'admin.user-management.index';
         }
 
@@ -168,7 +161,7 @@ class UserManagementController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.user-management.index')->with('danger', $user->username.'を削除しました');
+        return redirect()->route('admin.user-management.index')->with('danger', $user->username . 'を削除しました');
     }
 
     /**
@@ -182,7 +175,7 @@ class UserManagementController extends Controller
     }
 
     // レコード取得
-    private static function getAdminCsvRecords():array
+    private static function getAdminCsvRecords(): array
     {
         $users = User::withTrashed()->get();
         $csvRecords = [
@@ -279,5 +272,4 @@ class UserManagementController extends Controller
         fclose($handle);
         return redirect()->route('admin.user-management.index')->with('message', 'CSVファイルをインポートしました。');
     }
-
 }
