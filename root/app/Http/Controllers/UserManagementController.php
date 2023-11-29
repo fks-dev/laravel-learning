@@ -102,9 +102,8 @@ class UserManagementController extends Controller
     public function edit(User $user)
     {
         $users = User::with('courses')->find($user);
-        $courses = Course::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'users', 'adminUser'));
     }
 
     /**
