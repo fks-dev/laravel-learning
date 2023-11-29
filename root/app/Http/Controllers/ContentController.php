@@ -180,6 +180,6 @@ class ContentController extends Controller
         }
 
         $course = $content->course;
-        return to_route('users.content.index',$course);
+        return to_route('users.contents.index',$course);
     }
 }
