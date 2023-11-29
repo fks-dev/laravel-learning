@@ -7,19 +7,7 @@
 </head>
 
 <body>
-    <header>
-        <nav class="navbar p-0 bg-primary  ">
-            <div class="d-flex justify-content-between align-items-center container-fluid">
-                <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learnig</h2>
-                <ul class="nav me-2 text-white">
-                    <li class="nav-item border-end p-1">ようこそ{{ $user->username }}さん</li>
-                    <li class="nav-item border-end p-1"><a class="link-underline text-white" href="#">設定</a></li>
-                    <li class="nav-item p-1"><a class="link-underline text-white" href="#">ログアウト</a></li>
-                </ul>
-            </div>
-        </nav>
-
-    </header>
+    @include('users.header')
     <main>
         <div class="border rounded m-2">
             <div class="rounded-top p-2">
@@ -38,10 +26,23 @@
                     <tbody>
                         @foreach($contents as $content)
                         <tr>
+<<<<<<< HEAD
+                            <td><a href="{{ route('users.content.show', $content) }}">{{$content->title}}</a></td>
+                            @if($content->getLog($user))
+                            <td><p>{{ $content->getLog($user)->created_at }}</p></td>
+                            <td><p>{{ $content->getLog($user)->updated_at }}</p></td>
+                            <td><p>@if($content->getLog($user)->completed)☑@endif</p></td>
+                            @else
+                            <td><p>-</p></td>
+                            <td><p>-</p></td>
+                            <td><p></p></td>
+                            @endif
+=======
                             <td><a href="{{ route('users.contents.show', $content) }}">{{$content->title}}</a></td>
                             <td><p>????/??/??</p></td>
                             <td><p>????/??/??</p></td>
                             <td><p>☑</p></td>
+>>>>>>> daf4ca98db80952a9c76be5f293fcc6cc194910c
                         </tr>
                         @endforeach
                     </tbody>
