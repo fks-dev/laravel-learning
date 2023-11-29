@@ -18,12 +18,12 @@
     <footer>
         <div class="container d-flex justify-content-end align-items-center p-4">
             <div class="row">
-                <form action="{{route('users.content.record',$content)}}" method="post" class="col">
+                <form action="{{route('users.contents.record',$content)}}" method="post" class="col">
                     @csrf
                     <input type="hidden" id="log" name="log" value="1">
                     <button type="submit" class="btn btn-primary">終了</button>
                 </form>
-                <form action="{{route('users.content.record',$content)}}" method="post" class="col">
+                <form action="{{route('users.contents.record',$content)}}" method="post" class="col">
                     @csrf
                     <input type="hidden" id="log" name="log" value="0">
                     <button type="submit" class="btn btn-danger">中断</button>
