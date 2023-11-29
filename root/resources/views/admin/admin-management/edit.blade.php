@@ -56,6 +56,12 @@
                             <input class="form-control" type="email" name="group" id="group">
                             {{-- 登録ボタン --}}
                             <input class="form-contorl btn btn-primary mt-3" type="submit" value="更新">
+                            <form action="{{ route('admin.admin-management.destroy', $adminUser) }}" method="post" class="d-inline">
+                                @csrf
+                                @method('delete')
+                                <input class="btn btn-danger mt-3" type="submit" value="削除"
+                                onClick="return confirm('本当に削除しますか？');">
+                            </form>
                         </div>
                     </div>
 
