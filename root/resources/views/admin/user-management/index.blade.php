@@ -96,9 +96,9 @@
                         @endforeach
                     </td>
                     <td class="align-middle text-start">
-                        @if(isset($courses[$user->id]))
+                        @if(isset($userCourses[$user->id]))
 
-                        @foreach ($courses[$user->id] as $course)
+                        @foreach ($userCourses[$user->id] as $course)
                         {{ $course->title }}
                         @unless($loop->last)
                         ,

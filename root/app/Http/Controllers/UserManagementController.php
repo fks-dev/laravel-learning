@@ -28,15 +28,15 @@ class UserManagementController extends Controller
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
-        $courses = collect();
+        $userCourses = collect();
         foreach($users as $user){
             if($user->groups->isEmpty()){
                 continue; //ユーザーの対象グループがないなら今回のループをスキップする
             }
-            $courses[$user->id] = $user->groups->flatMap->courses->unique('id');
+            $userCourses[$user->id] = $user->groups->flatMap->courses->unique('id');
         }
 
-        return view('admin.user-management.index', compact('users','courses', 'logins', 'adminUser'));
+        return view('admin.user-management.index', compact('users','userCourses', 'logins', 'adminUser'));
     }
 
       // ユーザ側のパスワード変更画面
