@@ -7,26 +7,26 @@
     @include('admin.header')
     <div class="container mt-3 border">
         <a href="{{ route('admin.informations.index') }}" >&lt;&lt;戻る</a>
-        <h1 class="mt-3">{{ $information->title }}</h1>
+        <h3 class="rounded-top p-2 card-header text-success shadow-sm" style="background-color :#cdeee0">{{ $information->title }}</h3>
         <div class="d-flex">
             <div class="p-3">
-                <h2>本文</h2>
+                <h4>本文</h4>
                 <div>
-                    <ul>
-                        <li class="align-items-center">{{ $information->text }}</li>
+                    <ul class="text-center" style="padding-left:0px !important;">
+                        <li class="list-unstyled">{{ $information->text }}</li>
                     </ul>
                 </div>
             </div>
-            <div class="p-3">
-                <div class="mt-2">
+            <div class="d-flex">
+                <div class="mt-2 p-2">
                     <div class="fw-bold fs-5">作成日時</div>
                     <div>{{ $information->created_at }}</div>
                 </div>
-                <div class="mt-2">
+                <div class="mt-2 p-2">
                     <div class="fw-bold fs-5">更新日時</div>
                     <div>{{ $information->updated_at }}</div>
                 </div>
-                <div class="mt-2">
+                <div class="mt-2 p-2">
                 <div class="fw-bold fs-5">Action</div>
                     <div class="action-btn">
                         <a class="btn btn-success" href="{{ route('admin.informations.edit', ['information' => $information->id]) }}">編集</a>
