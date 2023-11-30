@@ -7,39 +7,41 @@
 <body>
     @include('admin.header')
     <div class="container mt-3 border">
-        <a href="{{ route('admin.groups.index') }}">&lt;&lt;戻る</a>
-        <h2 class="mt-3">{{ $group->group_name }}</h2>
+        <div class="mb-4 p-3 border rounded" style="background-color: #f5f5f5;">
+            <a class="text-decoration-none" href="{{ route('admin.groups.index') }}">グループ一覧</a>
+        </div>
+        <h3 class="rounded-top p-2 card-header text-success shadow-sm" style="background-color: #cdeee0">{{ $group->group_name }}</h3>
         <div class="d-flex">
             <div class="p-3">
-                <h3>所属コース</h3>
+                <h4>所属コース</h4>
                 <div>
                     <ul>
                         @foreach ($group->courses as $course)
-                            <li class="align-items-center">{{ $course->title }}</li>
+                            <li class="align-items-center list-unstyled">{{ $course->title }}</li>
                         @endforeach
                     </ul>
                 </div>
             </div>
             <div class="p-3">
-                <h3>所属ユーザー</h3>
+                <h4>所属ユーザー</h4>
                 <div>
                     <ul>
                         @foreach ($group->users as $user)
-                            <li class="align-items-center">{{ $user->username }}</li>
+                            <li class="align-items-center list-unstyled">{{ $user->username }}</li>
                         @endforeach
                     </ul>
                 </div>
             </div>
-            <div class="p-3">
-                <div class="mt-2">
+            <div class="d-flex">
+                <div class="mt-2 p-3">
                     <div class="fw-bold fs-5">作成日時</div>
                     <div>{{ $group->created_at }}</div>
                 </div>
-                <div class="mt-2">
+                <div class="mt-2 p-3">
                     <div class="fw-bold fs-5">更新日時</div>
                     <div>{{ $group->updated_at }}</div>
                 </div>
-                <div class="mt-2">
+                <div class="mt-2 p-3">
                     <div class="fw-bold fs-5">Action</div>
                     <div class="action-btn">
                         <a class="btn btn-success" href="{{ route('admin.groups.edit', ['group' => $group, 'show' => 'show']) }}">編集</a>
