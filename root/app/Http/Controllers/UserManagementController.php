@@ -96,9 +96,8 @@ class UserManagementController extends Controller
     {
         $users = User::with('groups')->find($user);
         $groups = Group::all();
-        $courses = Course::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'groups','courses', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
     }
 
     /**
@@ -115,7 +114,7 @@ class UserManagementController extends Controller
      */
     public function update(UpdateUserMgmtRequest $request, User $user)
     {
-        $user->Courses()->detach();
+
 
         $user->update([
             'username'     => $request->username,
@@ -126,12 +125,6 @@ class UserManagementController extends Controller
         $groupIds = $request->input('groups', []);
         $user->groups()->sync($groupIds);
 
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
 
         return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
     }
