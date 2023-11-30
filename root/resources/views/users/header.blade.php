@@ -1,12 +1,20 @@
 <header>
-    <nav class="navbar p-0 bg-primary  ">
+    <nav class="navbar p-0 bg-primary">
         <div class="d-flex justify-content-between align-items-center container-fluid">
-            <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learnig</h2>
+            <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learning</h2>
             <ul class="nav me-2 text-white">
                 @isset($user)
-                <li class="nav-item border-end p-1">ようこそ{{ $user->username }}さん</li>
-                <li id="setting" class="nav-item border-end p-1" ><a class="link-underline text-white" href="{{ route('users.password.index') }}">パスワード変更</a></li>
-                <li class="nav-item p-1"><a class="link-underline text-white" href="{{ route('users.logout') }}">ログアウト</a></li>
+                <li class="nav-item border-end p-1 d-flex align-items-center">ようこそ{{ $user->username }}さん</li>
+                <li id="setting" class="nav-item border-end p-1 d-flex align-items-center">
+                    <a class="btn btn-primary" href="{{ route('users.password.index') }}">パスワード変更</a>
+                </li>
+                <li class="nav-item p-1 d-flex align-items-center">
+                    <form method="POST" action="{{ route('users.logout') }}">
+                        @method('DELETE')
+                        @csrf
+                        <button class="btn btn-primary text-white" type="submit">ログアウト</button>
+                    </form>
+                </li>
                 @endisset
             </ul>
         </div>
