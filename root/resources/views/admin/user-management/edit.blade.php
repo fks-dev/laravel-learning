@@ -57,9 +57,17 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-3 col-form-label fw-bold" for="group">所属グループ</label>
-                        <div class="col-sm-9">
-                            <input class="form-control" type="text" name="group" id="group">
+                    <label class="col-sm-3 col-form-label fw-bold">所属グループ</label>
+                    <div class="col-sm-9">
+                        <select class="form-select" name="groups[]" id="group" multiple>
+                                <option disabled>グループを選んでください</option>
+                                @foreach ($groups as $group)
+                                    <option value="{{ $group->id }}"
+                                       @if ($user->groups->contains($group->id)) selected @endif>
+                                       {{ $group->group_name }}
+                                    </option>
+                                @endforeach
+                        </select>
                         </div>
                     </div>
 
