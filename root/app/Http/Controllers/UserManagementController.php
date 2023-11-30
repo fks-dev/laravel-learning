@@ -8,6 +8,7 @@ use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\UserLogin;
+use App\Models\Group;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -93,10 +94,11 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $users = User::with('courses')->find($user);
+        $users = User::with('groups')->find($user);
+        $groups = Group::all();
         $courses = Course::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'users', 'groups','courses', 'adminUser'));
     }
 
     /**
