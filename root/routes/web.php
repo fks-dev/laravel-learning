@@ -29,9 +29,18 @@ Route::get('/', function () {
     return view('welcome');
 });
 
-Route::prefix('admin')->name('admin')->controller(AdminLoginController::class)->group(function () {
+Route::prefix('admin/login')->name('admin.login')->controller(AdminLoginController::class)->group(function () {
     // 管理ログイン画面
-    Route::get('', 'index')->name('');
+    Route::get('', 'index')->name('.index');
+    // 管理ログイン
+    Route::post('', 'login')->name('.login');
+    // 管理ログアウト
+    Route::delete('', 'logout')->name('.logout');
+});
+
+Route::prefix('users/login')->name('users.login')->controller(UserLoginController::class)->group(function () {
+    // 管理ログイン画面
+    Route::get('', 'index')->name('.index');
     // 管理ログイン
     Route::post('', 'login')->name('.login');
     // 管理ログアウト
@@ -144,12 +153,6 @@ Route::middleware('auth:admin')->group(function () {
     });
 });
 
-// ユーザーログイン画面
-Route::get('/users/login', [UserLoginController::class, 'index'])->name('users.login.index');
-// ユーザーログイン
-Route::post('/users/login', [UserLoginController::class, 'login'])->name('users.login');
-// ユーザーログアウト
-Route::delete('/users/login', [UserLoginController::class, 'logout'])->name('users.logout');
 
 // ユーザーログイン後のみアクセス可
 Route::middleware('auth:web')->group(function (){

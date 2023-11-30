@@ -9,7 +9,7 @@
                     <a class="btn btn-primary" href="{{ route('users.password.index') }}">パスワード変更</a>
                 </li>
                 <li class="nav-item p-1 d-flex align-items-center">
-                    <form method="POST" action="{{ route('users.logout') }}">
+                    <form method="POST" action="{{ route('users.login.logout') }}">
                         @method('DELETE')
                         @csrf
                         <button class="btn btn-primary text-white" type="submit">ログアウト</button>
