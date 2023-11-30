@@ -8,7 +8,11 @@
 
 <body>
     @include('users.header')
-    <main>
+    <main class="container-md mt-4">
+        <div class="mb-4 p-3 border rounded" style="background-color: #f5f5f5;">
+            <a class="text-decoration-none" href="{{ route('users.index') }}">HOME</a> /
+            <a class="text-decoration-none" href="{{ route('users.contents.index', ['course' => $content->course_id]) }}">コンテンツ一覧</a>
+        </div>
         <div class="container border py-2  my-2 rounded">
             <div class="ratio ratio-16x9">
                 <iframe src="https://www.youtube.com/embed/{{ $content->youtube_video_id }}"></iframe>
