@@ -9,7 +9,7 @@
                     <a class="btn btn-primary" href="{{ route('admin.admin-management.edit') }}">アカウント設定</a>
                 </li>
                 <li class="nav-item p-1 d-flex align-items-center">
-                    <form method="POST" action="{{ route('admin.logout') }}">
+                    <form method="POST" action="{{ route('admin.login.logout') }}">
                         @method('DELETE')
                         @csrf
                         <button class="btn btn-primary text-white" type="submit">ログアウト</button>
