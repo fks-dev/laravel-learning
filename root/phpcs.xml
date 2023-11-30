@@ -13,6 +13,8 @@
 
     <!-- 除外ディレクトリ -->
     <exclude-pattern>/bootstrap/</exclude-pattern>
+    <exclude-pattern>/database/migrations</exclude-pattern>
+    <exclude-pattern>/database/seeders</exclude-pattern>
     <exclude-pattern>/public/</exclude-pattern>
     <exclude-pattern>/resources/</exclude-pattern>
     <exclude-pattern>/storage/</exclude-pattern>
