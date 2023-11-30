@@ -122,6 +122,10 @@ class UserManagementController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
+
+        $groupIds = $request->input('groups', []);
+        $user->groups()->sync($groupIds);
+
         $courses = $request->input('course', []);
 
         foreach ($courses as $courseId) {
