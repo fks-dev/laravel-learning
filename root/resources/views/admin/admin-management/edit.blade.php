@@ -61,6 +61,20 @@
 
                 </div>
             </form>
+            <div class="mx-5 px-5">
+                <div class="row m-3">
+                    <div class="col-sm-3 col-form-label fw-bold" for="group"></div>
+                    <div class="col-sm-9">
+                        {{-- 削除ボタン --}}
+                        <form action="{{ route('admin.admin-management.destroy', $adminUser) }}" method="post" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <input class="btn btn-danger mt-3" type="submit" value="削除"
+                            onClick="return confirm('本当に削除しますか？');">
+                        </form>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </body>
