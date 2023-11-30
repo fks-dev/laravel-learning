@@ -72,7 +72,7 @@
                 <thead>
                     <tr>
                         <th class="col-2 pe-auto sort" data-sort="asc">管理者ID</th>
-                        <th class="col-2 sort" data-sort="asc">mail</th>
+                        <th class="col-2 text-center sort" data-sort="asc">mail</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
                         </tr>
