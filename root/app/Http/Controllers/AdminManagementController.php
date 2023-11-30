@@ -68,10 +68,10 @@ class AdminManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Admin $admin)
+    public function edit()
     {
         $adminUser = Auth::user();
-        return view('admin.admin-management.edit', compact('admin', 'adminUser'));
+        return view('admin.admin-management.edit', compact('adminUser'));
     }
 
     /**

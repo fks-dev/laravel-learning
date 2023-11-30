@@ -11,7 +11,7 @@
         <div class="border">
             <div class="p-2 bg-secondary text-white">管理者編集</div>
 
-            <form action="{{ route('admin.admin-management.update', $admin) }}" method="post">
+            <form action="{{ route('admin.admin-management.update', $adminUser) }}" method="post">
                 @csrf
                 @method('patch')
                 <div class="mx-5 px-5">
@@ -22,7 +22,7 @@
                         </label>
                         <div class="col-sm-9">
                             <input class="form-control @error('username') is-invalid @enderror" type="text" name="username" id="username"
-                                value="{{ $admin->username }}" required>
+                                value="{{ $adminUser->username }}" required>
                             @error('username')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -34,7 +34,7 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-9">
-                            <a href="{{ route('admin.admin-management.password', $admin) }}" class="btn btn-success form-control">
+                            <a href="{{ route('admin.admin-management.password', $adminUser) }}" class="btn btn-success form-control">
                                 パスワードの変更
                             </a>
                         </div>
@@ -46,7 +46,7 @@
                         </label>
                         <div class="col-sm-9">
                             <input class="form-control" type="email" name="mail_address" id="mail_address"
-                                value="{{ $admin->mail_address }}" required>
+                                value="{{ $adminUser->mail_address }}" required>
                         </div>
                     </div>
 
