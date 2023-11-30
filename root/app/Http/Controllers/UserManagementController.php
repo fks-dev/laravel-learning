@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
@@ -125,18 +125,15 @@ class UserManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeUserPassword(Request $request, User $user)
+    public function changeUserPassword(UserPasswordRequest $request, User $user)
     {
         // ユーザー側のパスワード変更ボタン押下時のルート名
         $userRouteName = 'users.password.change';
         // パスワード変更成功時のリダイレクト先
         $routeName = null;
-        $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
-        } elseif ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user->update([

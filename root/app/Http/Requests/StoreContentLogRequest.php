@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Contracts\Validation\Validator;
 
-class UpdateContentRequest extends FormRequest
+class StoreContentLogRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +22,13 @@ class UpdateContentRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'course_id'          => 'required',
-            'title'              => 'required',
-            'is_public'          => 'required',
+        return [
+            'log' => ['integer'],
         ];
+    }
 
-        return $rules;
+    protected function failedValidation(Validator $validator)
+    {
+        abort(400);
     }
 }

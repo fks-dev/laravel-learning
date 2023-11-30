@@ -11,10 +11,10 @@
     <div class="d-flex justify-content-between">
         <h2 class="col">ゴミ箱</h2>
         <div class="col-auto">
-            <a class="btn btn-primary" href="{{ route('admin.message.create', ['source' => 'dust'])}}">&plus;追加</a>
-            <a class="btn btn-info" href="{{ route('admin.message.index')}}">受信</a>
-            <a class="btn btn-success" href="{{ route('admin.message.draft')}}">下書き</a>
-            <a class="btn btn-secondary" href="{{ route('admin.message.sent')}}">送信済み</a>
+            <a class="btn btn-primary" href="{{ route('admin.messages.create', ['source' => 'dust'])}}">&plus;追加</a>
+            <a class="btn btn-info" href="{{ route('admin.messages.index')}}">受信</a>
+            <a class="btn btn-success" href="{{ route('admin.messages.draft')}}">下書き</a>
+            <a class="btn btn-secondary" href="{{ route('admin.messages.sent')}}">送信済み</a>
         </div>
     </div>
 
@@ -36,7 +36,7 @@
             @foreach ($paginator as $message)
                 <tr data-id="{{ $message }}">
                     <td class="align-middle">
-                        <a href="{{ route('admin.message.show', ['message' => $message, 'source' => 'dust']) }}">
+                        <a href="{{ route('admin.messages.show', ['message' => $message, 'source' => 'dust']) }}">
                             {{ Str::limit($message->title, $limit = 28, $end = '...') }}
                         </a>
                     </td>
@@ -58,7 +58,7 @@
                     <td class="text-center">
                         <form
                         action="{{ $message->is_hidden == 0 && $message->deleted_at != null ?
-                        route('admin.message.restore', $message) :route('admin.message.hidden', $message) }}"
+                        route('admin.messages.restore', $message) :route('admin.messages.hidden', $message) }}"
                         method="post" class="d-inline">
                             @csrf
                             <input class="btn btn-danger" name='action' type="submit" value="復元"

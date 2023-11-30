@@ -3,8 +3,9 @@
 namespace App\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
+use Illuminate\Support\Facades\Hash;
 
-class UpdateContentRequest extends FormRequest
+class UserPasswordRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -21,12 +22,9 @@ class UpdateContentRequest extends FormRequest
      */
     public function rules(): array
     {
-        $rules = [
-            'course_id'          => 'required',
-            'title'              => 'required',
-            'is_public'          => 'required',
+        return [
+            'password' => 'required',
+            'new_password' => 'required|confirmed',
         ];
-
-        return $rules;
     }
 }

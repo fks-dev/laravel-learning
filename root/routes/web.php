@@ -43,7 +43,7 @@ Route::prefix('admin')->name('admin')->controller(AdminLoginController::class)->
 Route::middleware('auth:admin')->group(function () {
     Route::prefix('admin')->name('admin')->group(function () {
         // グループ
-        Route::prefix('groups')->name('.group')->controller(GroupController::class)->group(function () {
+        Route::prefix('groups')->name('.groups')->controller(GroupController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
@@ -54,7 +54,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // コース
-        Route::prefix('courses')->name('.course')->controller(CourseController::class)->group(function () {
+        Route::prefix('courses')->name('.courses')->controller(CourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort');
             Route::get('create', 'create')->name('.create');
@@ -65,13 +65,12 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // コンテンツ
-        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function () {
+        Route::prefix('contents')->name('.contents')->controller(ContentController::class)->group(function () {
             Route::get('/{course}', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort'); //並べ替え
             Route::get('create/{course}', 'create')->name('.create');
             Route::post('index/{course}', 'store')->name('.store');
             Route::get('{content}/show', 'show')->name('.show');
-            Route::get('{content}/download', 'download')->name('.download'); //ダウンロード
             Route::get('{content}/edit', 'edit')->name('.edit');
             Route::patch('{content}', 'update')->name('.update');
             Route::post('{content}/duplicate', 'duplicate')->name('.duplicate'); //複製
@@ -83,7 +82,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
-            Route::get('{admin}/edit', 'edit')->name('.edit');
+            Route::get('edit', 'edit')->name('.edit');
             Route::get('{admin}/password', 'password')->name('.password');
             Route::post('{admin}/password', 'changeAdminPassword')->name('.changePassword');
             Route::patch('{admin}', 'update')->name('.update');
@@ -114,7 +113,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         //メッセージ機能
-        Route::prefix('messages')->name('.message')->controller(AdminMessageController::class)->group(function () {
+        Route::prefix('messages')->name('.messages')->controller(AdminMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
@@ -133,10 +132,11 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         //お知らせ画面一覧
-        Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function () {
+        Route::prefix('informations')->name('.informations')->controller(InformationController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
+            Route::get('{information}','adminShow')->name('.show');
             Route::get('{information}/edit', 'edit')->name('.edit');
             Route::patch('{information}', 'update')->name('.update');
             Route::delete('{information}', 'destroy')->name('.destroy');
@@ -160,7 +160,7 @@ Route::middleware('auth:web')->group(function (){
         Route::get('/', [UserController::class, 'index'])->name('.index');
 
         //メッセージ機能
-        Route::prefix('messages')->name('.message')->controller(UserMessageController::class)->group(function () {
+        Route::prefix('messages')->name('.messages')->controller(UserMessageController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('draft', 'draft')->name('.draft'); //下書き
             Route::get('sent', 'sent')->name('.sent'); //送信済み
@@ -179,14 +179,13 @@ Route::middleware('auth:web')->group(function (){
         });
 
         //コンテンツ表示画面
-        Route::prefix('contents')->name('.content')->controller(ContentController::class)->group(function(){
+        Route::prefix('contents')->name('.contents')->controller(ContentController::class)->group(function(){
             Route::get('/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
-            Route::get('view/{content}/download', 'handout')->name('.handout'); //配布資料ダウンロード
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
         //お知らせ閲覧機能
-        Route::prefix('informations')->name('.information')->controller(InformationController::class)->group(function(){
+        Route::prefix('informations')->name('.informations')->controller(InformationController::class)->group(function(){
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
         });

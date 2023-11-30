@@ -28,7 +28,7 @@
                             @foreach($informations as $information)
                             <tr>
                                 <th>
-                                    {{ date_format($information->created_at, 'Y/m/d') }} &ensp; <a class="none-underline" href="{{ route('users.information.show', $information) }}">{{ $information->title}}</a>
+                                    {{ date_format($information->created_at, 'Y/m/d') }} &ensp; <a class="none-underline" href="{{ route('users.informations.show', $information) }}">{{ $information->title}}</a>
                                 </th>
                             </tr>
                             @endforeach
@@ -36,7 +36,7 @@
                     </table>
                 </div>
                 <div class="text-end pe-3 pb-1">
-                    <a class="none-underline" href="{{ route('users.information.list')}}">一覧を表示</a>
+                    <a class="none-underline" href="{{ route('users.informations.list')}}">一覧を表示</a>
                 </div>
             </div>
         </div>
@@ -64,13 +64,14 @@
                                 @foreach($courses as $course)
                                 <li
                                     class="list-group-item list-group-item-action">
-                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.content.index', $course) }}" >
+                                    <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.contents.index', $course) }}" >
                                     <div>
                                         <h5>{{ $course->title }}</h5>
-                                        学習開始日：2023/02/17　前回学習日：2023/10/06
+                                        学習開始日：{{ $course->getLogFirst($user)}}
+                                        最終学習日：{{ $course->getLogLast($user)}}
                                     </div>
                                     <div class="badge bg-danger fs-5">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">00</span>
+                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">{{ $course->getResidue($user) }}</span>
                                     </div>
                                     </a>
                                 </li>
