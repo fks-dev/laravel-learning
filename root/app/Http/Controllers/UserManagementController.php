@@ -15,9 +15,6 @@ use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
-
-
-
 class UserManagementController extends Controller
 {
     /**
@@ -30,14 +27,14 @@ class UserManagementController extends Controller
         $adminUser = Auth::user();
 
         $userCourses = collect();
-        foreach($users as $user){
-            if($user->groups->isEmpty()){
+        foreach ($users as $user) {
+            if ($user->groups->isEmpty()) {
                 continue; //ユーザーの対象グループがないなら今回のループをスキップする
             }
             $userCourses[$user->id] = $user->groups->flatMap->courses->unique('id');
         }
 
-        return view('admin.user-management.index', compact('users','userCourses', 'logins', 'adminUser'));
+        return view('admin.user-management.index', compact('users', 'userCourses', 'logins', 'adminUser'));
     }
 
     // ユーザ側のパスワード変更画面
@@ -134,7 +131,7 @@ class UserManagementController extends Controller
         $user->groups()->sync($groupIds);
 
 
-        return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.user-management.index')->with('message', $request->username . 'の情報を更新しました');
     }
 
     /**

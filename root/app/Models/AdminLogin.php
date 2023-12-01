@@ -15,5 +15,4 @@ class AdminLogin extends Model
     }
 
     protected $table = 'admin_logs';
-
 }

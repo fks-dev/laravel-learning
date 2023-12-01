@@ -15,5 +15,4 @@ class UserLogin extends Model
     }
 
     protected $table = 'user_logs';
-
 }

@@ -15,7 +15,6 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
-
 class ContentController extends Controller
 {
     /**
@@ -26,7 +25,7 @@ class ContentController extends Controller
         $courseTitle = Course::select('title')->where('id', $course)->get();
         $contents = Content::where('course_id', $course)->orderby('position')->get();
         $adminUser = Auth::user();
-        return view('admin.contents.index', compact('contents','course','courseTitle', 'adminUser'));
+        return view('admin.contents.index', compact('contents', 'course', 'courseTitle', 'adminUser'));
     }
 
     /**
@@ -145,7 +144,8 @@ class ContentController extends Controller
     }
 
     public function list(Course $course)
-    { //コンテンツ一覧画面
+    {
+ //コンテンツ一覧画面
         $user = Auth::user();
         $course_title = $course->title;
         $contents = Content::where('course_id', $course->id)->get();
@@ -153,7 +153,8 @@ class ContentController extends Controller
         return view('users.contents.index', compact('contents', 'user', 'course_title'));
     }
     public function view(Content $content)
-    { //コンテンツ詳細画面
+    {
+ //コンテンツ詳細画面
         $user = Auth::user();
         $title = $content->title;
         return view('users.contents.show', compact('content', 'user', 'title'));
@@ -163,15 +164,15 @@ class ContentController extends Controller
     {
         $user = Auth::user();
         $completed = $request->input('log');
-        $checkExists = ContentsLog::where('user_id',$user->id)->where('content_id',$content->id)->exists();
-        if($checkExists){
-            $contentsLog = ContentsLog::where('user_id',$user->id)->where('content_id',$content->id)->first();
+        $checkExists = ContentsLog::where('user_id', $user->id)->where('content_id', $content->id)->exists();
+        if ($checkExists) {
+            $contentsLog = ContentsLog::where('user_id', $user->id)->where('content_id', $content->id)->first();
             $contentsLog->update([
-                'completed'=>$completed,
-                'updated_at'=>now()
+                'completed' => $completed,
+                'updated_at' => now()
             ]);
             $contentsLog->touch();
-        }else{
+        } else {
             ContentsLog::create([
                 'user_id' => $user->id,
                 'content_id' => $content->id,
@@ -180,6 +181,6 @@ class ContentController extends Controller
         }
 
         $course = $content->course;
-        return to_route('users.contents.index',$course);
+        return to_route('users.contents.index', $course);
     }
 }

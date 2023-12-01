@@ -9,7 +9,6 @@ use App\Models\Information;
 use App\Models\User;
 use App\Models\Group;
 
-
 class InformationController extends Controller
 {
     /**
@@ -56,9 +55,10 @@ class InformationController extends Controller
         return redirect()->route('admin.informations.index')->with('message', 'お知らせを登録しました');
     }
 
-    public function adminShow(Information $information){
+    public function adminShow(Information $information)
+    {
         $adminUser = Auth::user();
-        return view('admin.informations.show',compact('adminUser','information'));
+        return view('admin.informations.show', compact('adminUser', 'information'));
     }
 
     /**
@@ -69,7 +69,7 @@ class InformationController extends Controller
         $groups = Group::orderByDesc('id')->get();
         $info_groups = $information->groups;
         $adminUser = Auth::user();
-        return view('admin.informations.edit', compact('information','groups','info_groups', 'adminUser'));
+        return view('admin.informations.edit', compact('information', 'groups', 'info_groups', 'adminUser'));
     }
 
     /**
@@ -97,17 +97,20 @@ class InformationController extends Controller
         return redirect()->route('admin.informations.index')->with('danger', $information->title . 'を削除しました');
     }
 
-    public function list(){ //ユーザーのお知らせ一覧画面
+    public function list()
+    {
+ //ユーザーのお知らせ一覧画面
         $user = Auth::user();
         $groups = $user->groups ?? collect();
         $informations = collect();
-        foreach($groups as $group){
+        foreach ($groups as $group) {
             $informations = $informations->concat($group->informations);
         }
         $informations = $informations->unique('id')->sortByDesc('updated_at');
         return view('users.informations.index', compact('informations', 'user'));
     }
-    public function show(Information $information){
+    public function show(Information $information)
+    {
         $user = Auth::user();
         return view('users.informations.show', compact('information', 'user'));
     }

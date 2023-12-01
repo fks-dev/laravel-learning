@@ -10,7 +10,7 @@ enum ActionEnum: int
 
     public function label(): string
     {
-        return match($this) {
+        return match ($this) {
             self::DRAFT    => '下書き',
             self::SEND     => '送信',
             self::NO_REPLY => '未返信',

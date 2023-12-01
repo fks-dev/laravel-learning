@@ -86,7 +86,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::delete('{content}', 'destroy')->name('.destroy');
         });
         // 管理者一覧画面
-        Route::prefix('admin-management')->name('.admin-management')->controller(AdminManagementController::class)->group(function() {
+        Route::prefix('admin-management')->name('.admin-management')->controller(AdminManagementController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -104,7 +104,7 @@ Route::middleware('auth:admin')->group(function () {
         });
 
         // ユーザー　一覧画面
-        Route::prefix('user-management')->name('.user-management')->controller(UserManagementController::class)->group(function() {
+        Route::prefix('user-management')->name('.user-management')->controller(UserManagementController::class)->group(function () {
             Route::get('', 'index')->name('.index');
             Route::post('search', 'search')->name('.search');
             Route::get('create', 'create')->name('.create');
@@ -145,7 +145,7 @@ Route::middleware('auth:admin')->group(function () {
             Route::get('', 'index')->name('.index');
             Route::get('create', 'create')->name('.create');
             Route::post('', 'store')->name('.store');
-            Route::get('{information}','adminShow')->name('.show');
+            Route::get('{information}', 'adminShow')->name('.show');
             Route::get('{information}/edit', 'edit')->name('.edit');
             Route::patch('{information}', 'update')->name('.update');
             Route::delete('{information}', 'destroy')->name('.destroy');
@@ -155,7 +155,7 @@ Route::middleware('auth:admin')->group(function () {
 
 
 // ユーザーログイン後のみアクセス可
-Route::middleware('auth:web')->group(function (){
+Route::middleware('auth:web')->group(function () {
 
     Route::prefix('users')->name('users')->group(function () {
 
@@ -182,25 +182,25 @@ Route::middleware('auth:web')->group(function (){
         });
 
         //コンテンツ表示画面
-        Route::prefix('contents')->name('.contents')->controller(ContentController::class)->group(function(){
+        Route::prefix('contents')->name('.contents')->controller(ContentController::class)->group(function () {
             Route::get('/{course}', 'list')->name('.index');
             Route::get('view/{content}', 'view')->name('.show');
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
         //お知らせ閲覧機能
-        Route::prefix('informations')->name('.informations')->controller(InformationController::class)->group(function(){
+        Route::prefix('informations')->name('.informations')->controller(InformationController::class)->group(function () {
             Route::get('', 'list')->name('.list');
             Route::get('{information}', 'show')->name('.show');
         });
 
          // パスワード変更機能
-         Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function(){
+         Route::prefix('password')->name('.password')->controller(UserManagementController::class)->group(function () {
             Route::get('/', 'userIndex')->name('.index');
             Route::post('/change/{user}', 'changeUserPassword')->name('.change');
-        });
+         });
 
         // おすすめ動画診断機能
-        Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function(){
+        Route::prefix('select-courses')->name('.select-courses')->controller(SelectCourseController::class)->group(function () {
             Route::get('', 'index')->name('.index');
         });
     });
