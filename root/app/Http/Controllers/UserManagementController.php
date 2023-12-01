@@ -8,6 +8,7 @@ use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\UserLogin;
+use App\Models\Group;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -101,10 +102,10 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $users = User::with('courses')->find($user);
-        $courses = Course::all();
+        $users = User::with('groups')->find($user);
+        $groups = Group::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
     }
 
     /**
@@ -121,19 +122,17 @@ class UserManagementController extends Controller
      */
     public function update(UpdateUserMgmtRequest $request, User $user)
     {
-        $user->Courses()->detach();
+
 
         $user->update([
             'username'     => $request->username,
             'mail_address' => $request->mail_address,
         ]);
 
-        $courses = $request->input('course', []);
 
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
+        $groupIds = $request->input('groups', []);
+        $user->groups()->sync($groupIds);
+
 
         return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
     }
