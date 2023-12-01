@@ -1,16 +1,13 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    <!-- Quill CDN -->
-    <link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
-
     @include('head')
     <title>新規コンテンツ登録</title>
 </head>
 <body>
     @include('admin.header')
     <div class="mt-3 container">
-        <a href="{{ route('admin.content.index', $course) }}">&lt;&lt;戻る</a>
+        <a href="{{ route('admin.contents.index', $course) }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規コンテンツ登録</div>
 
@@ -25,7 +22,7 @@
             @endif
 
             {{-- フォーム --}}
-            <form action="{{ route('admin.content.store', $course) }}" method="post" enctype="multipart/form-data">
+            <form action="{{ route('admin.contents.store', $course) }}" method="post" enctype="multipart/form-data">
                 @csrf
                 <div class="mx-5 px-5">
                     {{-- コンテンツ名 --}}
@@ -56,10 +53,6 @@
                         </div>
                     </div>
 
-
-                    {{-- コンテンツ種別 --}}
-                    @include('admin.contents.kinds')
-
                     {{-- コンテンツ入力内容 --}}
                     @include('admin.contents.input')
 
@@ -86,8 +79,5 @@
             </form>
         </div>
     </div>
-    {{-- JS --}}
-    @include('admin.contents.richText')
-    @include('admin.contents.radioBtn')
 </body>
 </html>

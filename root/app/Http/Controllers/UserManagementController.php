@@ -3,11 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
-use App\Http\Requests\PasswordRequest;
+use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\UserLogin;
+use App\Models\Group;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,11 +25,19 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('groups.courses')->get();
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
-        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
+        $userCourses = collect();
+        foreach($users as $user){
+            if($user->groups->isEmpty()){
+                continue; //ユーザーの対象グループがないなら今回のループをスキップする
+            }
+            $userCourses[$user->id] = $user->groups->flatMap->courses->unique('id');
+        }
+
+        return view('admin.user-management.index', compact('users','userCourses', 'logins', 'adminUser'));
     }
 
       // ユーザ側のパスワード変更画面
@@ -93,10 +102,10 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $users = User::with('courses')->find($user);
-        $courses = Course::all();
+        $users = User::with('groups')->find($user);
+        $groups = Group::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'courses', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
     }
 
     /**
@@ -113,19 +122,17 @@ class UserManagementController extends Controller
      */
     public function update(UpdateUserMgmtRequest $request, User $user)
     {
-        $user->Courses()->detach();
+
 
         $user->update([
             'username'     => $request->username,
             'mail_address' => $request->mail_address,
         ]);
 
-        $courses = $request->input('course', []);
 
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
+        $groupIds = $request->input('groups', []);
+        $user->groups()->sync($groupIds);
+
 
         return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
     }
@@ -133,18 +140,15 @@ class UserManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeUserPassword(Request $request, User $user)
+    public function changeUserPassword(UserPasswordRequest $request, User $user)
     {
         // ユーザー側のパスワード変更ボタン押下時のルート名
         $userRouteName = 'users.password.change';
         // パスワード変更成功時のリダイレクト先
         $routeName = null;
-        $validator = Validator::make($request->all(), (new PasswordRequest())->rules());
 
         if (!Hash::check($request->password, $user->password)) {
             return redirect()->back()->with('error_message', '現在のパスワードが正しくありません');
-        }elseif ($validator->fails()) {
-            return redirect()->back()->withErrors($validator)->withInput();
         }
 
         $user->update([
