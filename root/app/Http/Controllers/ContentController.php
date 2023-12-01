@@ -3,8 +3,6 @@
 namespace App\Http\Controllers;
 
 use App\Models\Content;
-use App\Models\User;
-use App\Models\Admin;
 use App\Models\Course;
 use App\Models\ContentsLog;
 use App\Http\Requests\StoreContentRequest;
@@ -12,7 +10,6 @@ use App\Http\Requests\StoreContentLogRequest;
 use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
-use Illuminate\Support\Facades\Storage;
 use Illuminate\Support\Facades\DB;
 
 class ContentController extends Controller

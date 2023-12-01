@@ -6,7 +6,6 @@ use App\Http\Requests\StoreInformationRequest;
 use App\Http\Requests\UpdateInformationRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
-use App\Models\User;
 use App\Models\Group;
 
 class InformationController extends Controller
