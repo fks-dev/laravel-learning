@@ -38,11 +38,6 @@ class Course extends Model
         return $this->belongsToMany(User::class, 'users_courses', 'course_id', 'user_id');
     }
 
-    // users_coursesテーブルとのリレーション
-    public function usersCoursesTable()
-    {
-        return $this->hasMany(UsersCourse::class, 'course_id', 'id');
-    }
 
     public function contents()
     {
