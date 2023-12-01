@@ -185,7 +185,17 @@ class AdminMessageController extends Controller
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('admin.messages.show', compact('message', 'source', 'users', 'adminUser', 'currentPage', 'backRoute'));
+        return view(
+            'admin.messages.show',
+            compact(
+                'message',
+                'source',
+                'users',
+                'adminUser',
+                'currentPage',
+                'backRoute'
+            )
+        );
     }
 
     /**
@@ -198,7 +208,17 @@ class AdminMessageController extends Controller
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('admin.messages.show', compact('message', 'source', 'users', 'adminUser', 'currentPage', 'backRoute'));
+        return view(
+            'admin.messages.show',
+            compact(
+                'message',
+                'source',
+                'users',
+                'adminUser',
+                'currentPage',
+                'backRoute'
+            )
+        );
     }
 
     /**

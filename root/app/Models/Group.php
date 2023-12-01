@@ -29,7 +29,8 @@ class Group extends Model
 
     public function informations()
     {
-        return $this->belongsToMany(Information::class, 'groups_information', 'group_id', 'information_id')->withTimestamps();
+        return $this->belongsToMany(Information::class, 'groups_information', 'group_id', 'information_id')
+        ->withTimestamps();
     }
 
     // ユーザーが削除された時に、IDに紐づく中間テーブルの値も削除される
