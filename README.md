@@ -111,3 +111,14 @@ php artisan migrate --seed
     - ユーザーID: `root`
     - パスワード: `root`  ～  `DB_ROOT_PASSWORD` 参照
     - ポート番号: `3306`  ～  `PORT_DB` 参照
+
+### PHP_CodeSnifferの使用
+
+コミット・プッシュ前にPHP_CodeSnifferを活用してコーディング規約違反がないかチェックすること。
+```bash
+# ■ Webサーバーで入力
+# 全体チェック
+composer sniffer ./
+# 単一ファイルチェック(例としてAdminLoginControllerをチェックする場合)
+composer sniffer ./app/Http/Controllers/AdminLoginController.php
+```
