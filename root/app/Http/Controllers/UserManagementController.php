@@ -24,11 +24,19 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('groups.courses')->get();
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
-        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
+        $userCourses = collect();
+        foreach($users as $user){
+            if($user->groups->isEmpty()){
+                continue; //ユーザーの対象グループがないなら今回のループをスキップする
+            }
+            $userCourses[$user->id] = $user->groups->flatMap->courses->unique('id');
+        }
+
+        return view('admin.user-management.index', compact('users','userCourses', 'logins', 'adminUser'));
     }
 
       // ユーザ側のパスワード変更画面
