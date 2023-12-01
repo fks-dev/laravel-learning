@@ -31,7 +31,7 @@
 
                         <div class="panel-body text-bg-light p-3">
 
-                            <form action="{{ route('admin.login') }}"
+                            <form action="{{ route('admin.login.login') }}"
                              method="POST">
 
                                 @csrf

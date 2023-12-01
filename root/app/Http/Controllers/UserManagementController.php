@@ -8,6 +8,7 @@ use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\UserLogin;
+use App\Models\Group;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
@@ -24,11 +25,19 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::all();
+        $users = User::with('groups.courses')->get();
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
-        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
+        $userCourses = collect();
+        foreach($users as $user){
+            if($user->groups->isEmpty()){
+                continue; //ユーザーの対象グループがないなら今回のループをスキップする
+            }
+            $userCourses[$user->id] = $user->groups->flatMap->courses->unique('id');
+        }
+
+        return view('admin.user-management.index', compact('users','userCourses', 'logins', 'adminUser'));
     }
 
     // ユーザ側のパスワード変更画面
@@ -93,9 +102,16 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
+<<<<<<< HEAD
         $users = User::with('courses')->find($user);
         $adminUser = Auth::user();
         return view('admin.user-management.edit', compact('user', 'users', 'adminUser'));
+=======
+        $users = User::with('groups')->find($user);
+        $groups = Group::all();
+        $adminUser = Auth::user();
+        return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
+>>>>>>> d1401c0ddb1fc12252ad36c0d7b4a04dabe9a775
     }
 
     /**
@@ -119,7 +135,12 @@ class UserManagementController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('admin.user-management.index')->with('message', $request->username . 'の情報を更新しました');
+
+        $groupIds = $request->input('groups', []);
+        $user->groups()->sync($groupIds);
+
+
+        return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
     }
 
     /**

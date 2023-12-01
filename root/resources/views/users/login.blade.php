@@ -23,7 +23,7 @@
                     <div class="panel panel-info form-signin">
                         <div class="panel-heading text-bg-info p-3">ユーザーログイン画面</div>
                         <div class="panel-body text-bg-light p-3">
-                            <form action="{{ route('users.login') }}" method="POST">
+                            <form action="{{ route('users.login.login') }}" method="POST">
                                 @csrf
                                 <div class="form-group">
                                     <div class="required">
