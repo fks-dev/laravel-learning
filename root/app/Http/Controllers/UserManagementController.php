@@ -92,10 +92,8 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $users = User::with('groups')->find($user);
-        $groups = Group::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'adminUser'));
     }
 
     /**
@@ -113,16 +111,10 @@ class UserManagementController extends Controller
     public function update(UpdateUserMgmtRequest $request, User $user)
     {
 
-
         $user->update([
             'username'     => $request->username,
             'mail_address' => $request->mail_address,
         ]);
-
-
-        $groupIds = $request->input('groups', []);
-        $user->groups()->sync($groupIds);
-
 
         return redirect()->route('admin.user-management.index')->with('message', $request->username . 'の情報を更新しました');
     }
