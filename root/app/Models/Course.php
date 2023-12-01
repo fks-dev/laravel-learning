@@ -28,7 +28,6 @@ class Course extends Model
         // コースが削除された時に、IDに紐づく中間テーブルの値も削除される
         parent::boot();
         static::deleting(function ($course) {
-            $course->usersCoursesTable()->delete();
             $course->groupsCoursesTable()->delete();
         });
     }
