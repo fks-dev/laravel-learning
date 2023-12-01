@@ -102,16 +102,10 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-<<<<<<< HEAD
-        $users = User::with('courses')->find($user);
-        $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'adminUser'));
-=======
         $users = User::with('groups')->find($user);
         $groups = Group::all();
         $adminUser = Auth::user();
         return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
->>>>>>> d1401c0ddb1fc12252ad36c0d7b4a04dabe9a775
     }
 
     /**
