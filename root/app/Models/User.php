@@ -53,7 +53,6 @@ class User extends Authenticatable
     {
         parent::boot();
         static::deleting(function ($user) {
-            $user->usersCoursesTable()->delete();
             $user->usersGroupsTable()->delete();
         });
     }
