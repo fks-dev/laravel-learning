@@ -16,15 +16,6 @@
             <div class="me-auto">
                 <a class="btn btn-info" href="{{ route('admin.admin-management.index') }}">⇆ 管理者一覧</a>
             </div>
-            <div class="col-auto">
-                <form action="{{ route('admin.user-management.download-csv') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">エクスポート</button>
-                </form>
-            </div>
-            <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.user-management.create-csv') }}">インポート</a>
-            </div>
 
             <div class="col-auto  ms-2">
                 <a class="btn btn-primary" href="{{ route('admin.user-management.create')}}">&plus;追加</a>
