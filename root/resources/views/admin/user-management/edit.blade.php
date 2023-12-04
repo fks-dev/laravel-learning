@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <!-- Choices.jsのCSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -10,6 +11,7 @@
     @include('head')
     <title>ユーザー編集</title>
 </head>
+
 <body>
     @include('admin.header')
     <div class="mt-3 container">
@@ -27,8 +29,7 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-9">
-                            <input class="form-control @error('username') is-invalid @enderror" type="text" name="username" id="username"
-                            value="{{ $user->username }}" required>
+                            <input class="form-control @error('username') is-invalid @enderror" type="text" name="username" id="username" value="{{ $user->username }}" required>
                             @error('username')
                             <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
@@ -51,23 +52,13 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="email" name="mail_address" id="mail_address"
-                            value="{{ $user->mail_address }}" required>
+                            <input class="form-control" type="email" name="mail_address" id="mail_address" value="{{ $user->mail_address }}" required>
                         </div>
                     </div>
 
                     <div class="row m-3">
-                    <label class="col-sm-3 col-form-label fw-bold">所属グループ</label>
-                    <div class="col-sm-9">
-                        <select class="form-select" name="groups[]" id="group" multiple>
-                                <option disabled>グループを選んでください</option>
-                                @foreach ($groups as $group)
-                                    <option value="{{ $group->id }}"
-                                       @if ($user->groups->contains($group->id)) selected @endif>
-                                       {{ $group->group_name }}
-                                    </option>
-                                @endforeach
-                            </select>
+                        <label class="col-sm-3 col-form-label fw-bold"> </label>
+                        <div class="col-sm-9">
                             {{-- 登録ボタン --}}
                             <input class="form-contorl btn btn-primary" type="submit" value="更新">
                         </div>
@@ -79,4 +70,5 @@
     </div>
     @include('admin.user-management.courseSelect')
 </body>
+
 </html>
