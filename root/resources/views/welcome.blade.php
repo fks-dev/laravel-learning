@@ -6,13 +6,13 @@
   <link href="/css/welcome.css" rel="stylesheet">
 </head>
 
-<body class="d-flex h-100 text-center text-bg-dark">
+<body class="d-flex h-100 text-center text-bg-light">
   <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
     <main class="px-3">
-      <h1>Cover your page.</h1>
-      <p class="lead">Cover is a one-page template for building simple and beautiful home pages. Download, edit the text, and add your own fullscreen background photo to make it your own.</p>
+      <h1>Laravel-learing</h1>
+      <p class="lead">Laravel-learningのデフォルトページです。</p>
       <p class="lead">
-        <a href="{{ route('admin.login.index') }}" class="btn btn-lg btn-light fw-bold border-white bg-white">Learn more</a>
+        <a href="{{ route('admin.login.index') }}" class="btn btn-primary">ログイン画面へ</a>
       </p>
     </main>
   </div>
