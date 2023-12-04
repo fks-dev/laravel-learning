@@ -102,11 +102,6 @@ Route::middleware('auth:admin')->group(function () {
             Route::post('{admin}/password', 'changeAdminPassword')->name('.changePassword');
             Route::patch('{admin}', 'update')->name('.update');
             Route::delete('{admin}', 'destroy')->name('.destroy');
-            // CSVエクスポート
-            Route::post('download-csv', 'downloadCsv')->name('.download-csv');
-            // CSVインポート
-            Route::get('create-csv', 'createCsv')->name('.create-csv');
-            Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
 
         // ユーザー　一覧画面
@@ -121,11 +116,6 @@ Route::middleware('auth:admin')->group(function () {
             Route::post('{user}/password', 'changeUserPassword')->name('.changePassword');
             Route::patch('{user}', 'update')->name('.update');
             Route::delete('{user}', 'destroy')->name('.destroy');
-            // CSVエクスポート
-            Route::post('download-csv', 'downloadCsv')->name('.download-csv');
-            // CSVインポート
-            Route::get('create-csv', 'createCsv')->name('.create-csv');
-            Route::post('store-csv', 'storeCsv')->name('.store-csv');
         });
 
         //メッセージ機能
