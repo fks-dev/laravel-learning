@@ -1,14 +1,13 @@
 <!DOCTYPE html>
-<html lang="ja" class="h-100" data-bs-theme="auto">
+<html lang="ja">
 
 <head>
   @include('head')
-  <link href="/css/welcome.css" rel="stylesheet">
 </head>
 
-<body class="d-flex h-100 text-center text-bg-light">
-  <div class="cover-container d-flex w-100 h-100 p-3 mx-auto flex-column">
-    <main class="px-3">
+<body class="d-flex text-center text-bg-light">
+  <div class="p-3 mx-auto">
+    <main>
       <h1>Laravel-learing</h1>
       <p class="lead">Laravel-learningのデフォルトページです。</p>
       <p class="lead">
@@ -16,7 +15,6 @@
       </p>
     </main>
   </div>
-  <script src="../assets/dist/js/bootstrap.bundle.min.js"></script>
 </body>
 
 </html>
