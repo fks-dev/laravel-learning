@@ -8,15 +8,10 @@ use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\UserLogin;
-use App\Models\Group;
 use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
-use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-
-
-
 
 class UserManagementController extends Controller
 {
@@ -25,27 +20,20 @@ class UserManagementController extends Controller
      */
     public function index()
     {
-        $users = User::with('groups.courses')->get();
+        $users = User::with('groups')->get();
         $logins = UserLogin::all();
         $adminUser = Auth::user();
 
-        $userCourses = collect();
-        foreach($users as $user){
-            if($user->groups->isEmpty()){
-                continue; //ユーザーの対象グループがないなら今回のループをスキップする
-            }
-            $userCourses[$user->id] = $user->groups->flatMap->courses->unique('id');
-        }
 
-        return view('admin.user-management.index', compact('users','userCourses', 'logins', 'adminUser'));
+        return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
     }
 
-      // ユーザ側のパスワード変更画面
-      public function userIndex()
-      {
-          $user = Auth::user();
-          return view('users.passwordChange.index', compact('user'));
-      }
+    // ユーザ側のパスワード変更画面
+    public function userIndex()
+    {
+        $user = Auth::user();
+        return view('users.passwordChange.index', compact('user'));
+    }
 
     /**
      * 検索機能
@@ -94,7 +82,7 @@ class UserManagementController extends Controller
             $user->Courses()->attach($course);
         }
 
-        return redirect()->route('admin.user-management.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('admin.user-management.index')->with('message', $request->username . 'を登録しました');
     }
 
     /**
@@ -102,10 +90,8 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $users = User::with('groups')->find($user);
-        $groups = Group::all();
         $adminUser = Auth::user();
-        return view('admin.user-management.edit', compact('user', 'users', 'groups', 'adminUser'));
+        return view('admin.user-management.edit', compact('user', 'adminUser'));
     }
 
     /**
@@ -123,18 +109,12 @@ class UserManagementController extends Controller
     public function update(UpdateUserMgmtRequest $request, User $user)
     {
 
-
         $user->update([
             'username'     => $request->username,
             'mail_address' => $request->mail_address,
         ]);
 
-
-        $groupIds = $request->input('groups', []);
-        $user->groups()->sync($groupIds);
-
-
-        return redirect()->route('admin.user-management.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.user-management.index')->with('message', $request->username . 'の情報を更新しました');
     }
 
     /**
@@ -156,9 +136,9 @@ class UserManagementController extends Controller
         ]);
 
         //パスワード変更がユーザー側かシステム管理側かを判断
-        if($userRouteName == Route::currentRouteName()){
+        if ($userRouteName == Route::currentRouteName()) {
             $routeName = 'users.index';
-        }else{
+        } else {
             $routeName = 'admin.user-management.index';
         }
 
@@ -172,116 +152,6 @@ class UserManagementController extends Controller
     public function destroy(User $user)
     {
         $user->delete();
-        return redirect()->route('admin.user-management.index')->with('danger', $user->username.'を削除しました');
+        return redirect()->route('admin.user-management.index')->with('danger', $user->username . 'を削除しました');
     }
-
-    /**
-     * CSVファイルダウンロード
-     */
-    public function downloadCsv()
-    {
-        $fileName = 'user.csv';
-        $csvRecords = self::getAdminCsvRecords();
-        return self::streamDownloadCsv($fileName, $csvRecords);
-    }
-
-    // レコード取得
-    private static function getAdminCsvRecords():array
-    {
-        $users = User::withTrashed()->get();
-        $csvRecords = [
-            ['ID', 'ユーザー名', 'メールアドレス', '削除日時', '作成日時', '更新日時'],
-        ];
-        foreach ($users as $user) {
-            $csvRecords[] = [
-                $user->id,
-                $user->username,
-                $user->mail_address,
-                $user->deleted_at,
-                $user->created_at,
-                $user->updated_at,
-            ];
-        }
-        return $csvRecords;
-    }
-
-    // CSV or TSV
-    private static function determineContentType($separator)
-    {
-        if ($separator === ',') {
-            'text/csv';
-        } elseif ($separator === "\t") {
-            'text/tab-separated-values';
-        }
-    }
-
-    // CSVストリームダウンロード
-    private static function streamDownloadCsv(
-        string $name,
-        iterable $fieldList,
-        string $separator = ',',
-        string $enclosure = '"',
-        string $escape = "\\",
-        string $eol = "\r\n",
-    ) {
-        $contentType = self::determineContentType($separator);
-        $headers = ['Content-Type' => $contentType];
-
-        return response()->streamDownload(function () use ($fieldList, $separator, $enclosure, $escape, $eol) {
-            $stream = fopen('php://output', 'w');
-            foreach ($fieldList as $fields) {
-                fputcsv($stream, $fields, $separator, $enclosure, $escape, $eol);
-            }
-            fclose($stream);
-        }, $name, $headers);
-    }
-
-    /**
-     * CSVインポート画面
-     */
-    public function createCsv()
-    {
-        $adminUser = Auth::user();
-        return view('admin.user-management.import', compact('adminUser'));
-    }
-
-    /**
-     * CSVインポート
-     */
-    public function storeCsv(Request $request)
-    {
-        $validator = Validator::make($request->all(), [
-            'csv_file' => 'required | mimes:csv,txt',
-        ]);
-
-        if ($validator->fails()) {
-            return back()->withErrors($validator);
-        }
-
-        $file = $request->file('csv_file');
-        $handle = fopen($file, 'r');
-
-        if (!$handle) {
-            return redirect()->route('admin-management.index')->with('danger', 'CSVファイルを開けませんでした。');
-        }
-
-        // ヘッダー部分の読み込み
-        $length = 1000;
-        $header = fgetcsv($handle, $length, ',');
-
-        while (($data = fgetcsv($handle, $length, ',')) !== false) {
-            $username = $data[1];
-            $password = Hash::make('test');
-            $mail_address = $data[2];
-
-            User::create([
-                'username' => $username,
-                'password' => $password,
-                'mail_address' => $mail_address,
-            ]);
-        }
-        fclose($handle);
-        return redirect()->route('admin.user-management.index')->with('message', 'CSVファイルをインポートしました。');
-    }
-
 }

@@ -36,6 +36,6 @@ class AdminMessage extends Model
     protected $casts = [
         'action'    => ActionEnum::class,
         'is_hidden' => 'boolean',
-        'is_replied'=> 'boolean',
+        'is_replied' => 'boolean',
     ];
 }

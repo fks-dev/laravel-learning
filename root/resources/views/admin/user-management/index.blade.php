@@ -16,15 +16,6 @@
             <div class="me-auto">
                 <a class="btn btn-info" href="{{ route('admin.admin-management.index') }}">⇆ 管理者一覧</a>
             </div>
-            <div class="col-auto">
-                <form action="{{ route('admin.user-management.download-csv') }}" method="POST">
-                    @csrf
-                    <button type="submit" class="btn btn-primary">エクスポート</button>
-                </form>
-            </div>
-            <div class="col-auto  ms-2">
-                <a class="btn btn-primary" href="{{ route('admin.user-management.create-csv') }}">インポート</a>
-            </div>
 
             <div class="col-auto  ms-2">
                 <a class="btn btn-primary" href="{{ route('admin.user-management.create')}}">&plus;追加</a>
@@ -75,7 +66,6 @@
                     <th class="col-1 sort" data-sort="asc">管理者ID</th>
                     <th class="col-2 sort" data-sort="asc">mail</th>
                     <th class="col-2">所属グループ</th>
-                    <th class="col-2">所属コース</th>
                     <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                     <th class="col text-center sort" data-sort="asc">作成日時</th>
                     <th class="col text-center">Actions</th>
@@ -94,18 +84,6 @@
                         ,
                         @endunless
                         @endforeach
-                    </td>
-                    <td class="align-middle text-start">
-                        @if(isset($userCourses[$user->id]))
-
-                        @foreach ($userCourses[$user->id] as $course)
-                        {{ $course->title }}
-                        @unless($loop->last)
-                        ,
-                        @endunless
-                        @endforeach
-
-                        @endif
                     </td>
                     <td class="align-middle text-center">
                         @foreach ($logins as $login)

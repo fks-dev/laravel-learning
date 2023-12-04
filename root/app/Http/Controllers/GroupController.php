@@ -50,7 +50,7 @@ class GroupController extends Controller
         $group->courses()->attach(Course::findMany($courses));
         $group->users()->attach(User::findMany($users));
 
-        return redirect()->route('admin.groups.index')->with('message', $request->group_name.'を登録しました');
+        return redirect()->route('admin.groups.index')->with('message', $request->group_name . 'を登録しました');
     }
 
     /**
@@ -74,7 +74,7 @@ class GroupController extends Controller
 
         if ($show === 'show') {
             $backBtn = route('admin.groups.show', $group);
-        }else {
+        } else {
             $backBtn = route('admin.groups.index');
         }
 
@@ -97,8 +97,7 @@ class GroupController extends Controller
         $group->courses()->sync($courses);
         $group->users()->sync($users);
 
-        return redirect()->route('admin.groups.index')->with('message', $request->group_name.'を編集しました');
-
+        return redirect()->route('admin.groups.index')->with('message', $request->group_name . 'を編集しました');
     }
 
     /**

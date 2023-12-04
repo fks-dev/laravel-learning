@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
     use SoftDeletes;
 
     public function adminMessages()
@@ -44,7 +46,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'users_courses', 'user_id', 'course_id');
     }
 
-    public function records(){
+    public function records()
+    {
         return $this->hasMany(Record::class);
     }
 
@@ -53,16 +56,10 @@ class User extends Authenticatable
     {
         parent::boot();
         static::deleting(function ($user) {
-            $user->usersCoursesTable()->delete();
             $user->usersGroupsTable()->delete();
         });
     }
 
-    // users_coursesテーブルとのリレーション
-    public function usersCoursesTable()
-    {
-        return $this->hasMany(UsersCourse::class, 'user_id', 'id');
-    }
 
     /**
      * The attributes that should be hidden for serialization.

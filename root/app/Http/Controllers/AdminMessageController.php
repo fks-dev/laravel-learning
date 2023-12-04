@@ -16,7 +16,6 @@ use App\Models\User;
 
 class AdminMessageController extends Controller
 {
-
     private const DEFAULT_PAGE_NUMBER = 1;
 
     /**
@@ -113,7 +112,7 @@ class AdminMessageController extends Controller
             ['path' => route('admin.messages.dust')]
         );
 
-        return view('admin.messages.dust', compact('adminUser','paginator', 'action'));
+        return view('admin.messages.dust', compact('adminUser', 'paginator', 'action'));
     }
 
     // 復元
@@ -121,7 +120,7 @@ class AdminMessageController extends Controller
     {
         $record = AdminMessage::withTrashed()->find($message);
         $record->restore();
-        return redirect()->back()->with('success', $record->title.'を復元しました。');
+        return redirect()->back()->with('success', $record->title . 'を復元しました。');
     }
 
     /**
@@ -142,7 +141,7 @@ class AdminMessageController extends Controller
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('admin.messages.create', compact('users','adminUser', 'currentPage', 'backRoute'));
+        return view('admin.messages.create', compact('users', 'adminUser', 'currentPage', 'backRoute'));
     }
 
     /**
@@ -186,7 +185,17 @@ class AdminMessageController extends Controller
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('admin.messages.show', compact('message', 'source', 'users', 'adminUser', 'currentPage', 'backRoute'));
+        return view(
+            'admin.messages.show',
+            compact(
+                'message',
+                'source',
+                'users',
+                'adminUser',
+                'currentPage',
+                'backRoute'
+            )
+        );
     }
 
     /**
@@ -199,7 +208,17 @@ class AdminMessageController extends Controller
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('admin.messages.show', compact('message', 'source', 'users', 'adminUser', 'currentPage', 'backRoute'));
+        return view(
+            'admin.messages.show',
+            compact(
+                'message',
+                'source',
+                'users',
+                'adminUser',
+                'currentPage',
+                'backRoute'
+            )
+        );
     }
 
     /**
