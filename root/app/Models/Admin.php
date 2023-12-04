@@ -36,5 +36,4 @@ class Admin extends Authenticatable
     {
         return $this->hasMany(UserMessage::class);
     }
-
 }

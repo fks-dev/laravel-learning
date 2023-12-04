@@ -16,7 +16,6 @@ use App\Models\Admin;
 
 class UserMessageController extends Controller
 {
-
     private const DEFAULT_PAGE_NUMBER = 1;
 
     /**
@@ -117,7 +116,7 @@ class UserMessageController extends Controller
     {
         $record = UserMessage::withTrashed()->find($message);
         $record->restore();
-        return redirect()->back()->with('success', $record->title.'を復元しました。');
+        return redirect()->back()->with('success', $record->title . 'を復元しました。');
     }
 
     /**
@@ -246,7 +245,6 @@ class UserMessageController extends Controller
         }
 
         return view('users.messages.edit', compact('message', 'admins', 'reply', 'currentPage'));
-
     }
 
     /**

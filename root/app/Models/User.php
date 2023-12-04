@@ -10,7 +10,9 @@ use Illuminate\Database\Eloquent\SoftDeletes;
 
 class User extends Authenticatable
 {
-    use HasApiTokens, HasFactory, Notifiable;
+    use HasApiTokens;
+    use HasFactory;
+    use Notifiable;
     use SoftDeletes;
 
     public function adminMessages()
@@ -44,7 +46,8 @@ class User extends Authenticatable
         return $this->belongsToMany(Course::class, 'users_courses', 'user_id', 'course_id');
     }
 
-    public function records(){
+    public function records()
+    {
         return $this->hasMany(Record::class);
     }
 

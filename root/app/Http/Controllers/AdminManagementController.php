@@ -23,7 +23,7 @@ class AdminManagementController extends Controller
         $admins = Admin::all();
         $logins = AdminLogin::all();
 
-        return view('admin.admin-management.index', compact('adminUser','admins', 'logins'));
+        return view('admin.admin-management.index', compact('adminUser', 'admins', 'logins'));
     }
 
     /**
@@ -47,7 +47,7 @@ class AdminManagementController extends Controller
     public function create()
     {
         $adminUser = Auth::user();
-        return view('admin.admin-management.create',compact('adminUser'));
+        return view('admin.admin-management.create', compact('adminUser'));
     }
 
     /**
@@ -62,7 +62,7 @@ class AdminManagementController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('admin.admin-management.index')->with('message', $request->username.'を登録しました');
+        return redirect()->route('admin.admin-management.index')->with('message', $request->username . 'を登録しました');
     }
 
     /**
@@ -93,7 +93,7 @@ class AdminManagementController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        return redirect()->route('admin.admin-management.index')->with('message', $request->username.'の情報を更新しました');
+        return redirect()->route('admin.admin-management.index')->with('message', $request->username . 'の情報を更新しました');
     }
 
     /**
@@ -119,7 +119,7 @@ class AdminManagementController extends Controller
     public function destroy(Admin $admin)
     {
         $admin->delete();
-        return redirect()->route('admin.admin-management.index')->with('danger', $admin->username.'を削除しました');
+        return redirect()->route('admin.admin-management.index')->with('danger', $admin->username . 'を削除しました');
     }
 
     /**
@@ -133,7 +133,7 @@ class AdminManagementController extends Controller
     }
 
     // レコード取得
-    private static function getAdminCsvRecords():array
+    private static function getAdminCsvRecords(): array
     {
         $admins = Admin::withTrashed()->get();
         $csvRecords = [
@@ -156,9 +156,9 @@ class AdminManagementController extends Controller
     private static function determineContentType(string $separator)
     {
         if ($separator === ',') {
-           return 'text/csv';
+            return 'text/csv';
         } elseif ($separator === "\t") {
-           return 'text/tab-separated-values';
+            return 'text/tab-separated-values';
         }
     }
 
