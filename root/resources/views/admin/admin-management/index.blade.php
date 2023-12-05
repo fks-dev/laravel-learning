@@ -18,10 +18,11 @@
                     <a class="btn btn-info" href="{{ route('admin.user-management.index') }}">⇆ ユーザー 一覧</a>
                 </div>
 
+                @if(Auth::user()->id === 1)
                 <div class="col-auto  ms-2">
                     <a class="btn btn-primary" href="{{ route('admin.admin-management.create')}}">&plus;追加</a>
                 </div>
-
+                @endif
             </div>
 
             {{-- 検索 --}}
@@ -68,6 +69,7 @@
                         <th class="col-2 text-center sort" data-sort="asc">mail</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
+                        <th class="col text-center sort" data-sort="asc"></th>
                     </tr>
                 </thead>
 
@@ -87,6 +89,16 @@
                         </td>
 
                         <td class="align-middle text-center">{{ $admin->created_at }}</td>
+                        <td class="text-center">
+                        @if(Auth::user()->id === 1 && $admin->id !== 1)
+                            <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
+                                @csrf
+                                @method('delete')
+                                <input class="btn btn-danger" type="submit" value="削除"
+                                onClick="return confirm('本当に削除しますか？');">
+                            </form>
+                        @endif
+                        </td>
                     </tr>
                     @endforeach
                 </tbody>
