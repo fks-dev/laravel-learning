@@ -62,6 +62,5 @@
             </form>
         </div>
     </div>
-    @include('admin.user-management.courseSelect')
 </body>
 </html>
