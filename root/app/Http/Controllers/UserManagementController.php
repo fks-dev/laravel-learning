@@ -72,15 +72,6 @@ class UserManagementController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        $user = User::orderByDesc('id')->first();
-
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
-
         return redirect()->route('admin.user-management.index')->with('message', $request->username . 'を登録しました');
     }
 
