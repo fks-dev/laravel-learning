@@ -15,6 +15,16 @@ class AdminSeeder extends Seeder
     public function run(): void
     {
         if (app()->isLocal()) {
+            Admin::create(
+                [
+                    'username' => 'root',
+                    'password' => Hash::make('admin'),
+                    'mail_address' => 'root@admin',
+                    'deleted_at' => null,
+                    'created_at' => '2023-06-01 01:23:47',
+                    'updated_at' => '2023-06-30 21:58:59',
+                ]
+            );
             Admin::factory()
                 ->count(10)
                 ->sequence(function ($sequence) {
