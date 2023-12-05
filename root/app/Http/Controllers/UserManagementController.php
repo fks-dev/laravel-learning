@@ -56,10 +56,9 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        $courses = Course::all();
         $adminUser = Auth::user();
 
-        return view('admin.user-management.create', compact('courses', 'adminUser'));
+        return view('admin.user-management.create', compact('adminUser'));
     }
 
     /**
@@ -72,15 +71,6 @@ class UserManagementController extends Controller
             'password'     => Hash::make($request->password),
             'mail_address' => $request->mail_address,
         ]);
-
-        $user = User::orderByDesc('id')->first();
-
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
 
         return redirect()->route('admin.user-management.index')->with('message', $request->username . 'を登録しました');
     }
