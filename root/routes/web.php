@@ -80,7 +80,7 @@ Route::middleware('auth:admin')->group(function () {
         // コンテンツ
         Route::prefix('contents')->name('.contents')
         ->controller(ContentController::class)->group(function () {
-            Route::get('/{course}', 'index')->name('.index');
+            Route::get('{course}', 'index')->name('.index');
             Route::post('sort', 'sort')->name('.sort'); //並べ替え
             Route::get('create/{course}', 'create')->name('.create');
             Route::post('{course}', 'store')->name('.store');
