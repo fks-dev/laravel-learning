@@ -46,10 +46,7 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-3 col-form-label fw-bold" for="group">所属グループ</label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="text" name="group" id="group">
-
                             {{-- 登録ボタン --}}
                             <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
                         </div>
