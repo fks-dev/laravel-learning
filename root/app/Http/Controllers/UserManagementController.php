@@ -56,10 +56,9 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        $courses = Course::all();
         $adminUser = Auth::user();
 
-        return view('admin.user-management.create', compact('courses', 'adminUser'));
+        return view('admin.user-management.create', compact('adminUser'));
     }
 
     /**

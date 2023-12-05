@@ -52,22 +52,7 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-3 col-form-label fw-bold" for="group">所属グループ</label>
                         <div class="col-sm-9">
-                            <input class="form-control" type="text" name="group" id="group">
-                        </div>
-                    </div>
-
-                    <div class="row m-3">
-                        <label class="col-sm-3 col-form-label fw-bold">所属コース</label>
-                        <div class="col-sm-9">
-                            <select class="form-select" name="course[]" id="course" multiple>
-                                <option disabled>コースを選んでください</option>
-                                @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}">{{ $course->title }}</option>
-                                @endforeach
-                            </select>
-
                             {{-- 登録ボタン --}}
                             <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
                         </div>
