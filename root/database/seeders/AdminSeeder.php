@@ -29,17 +29,5 @@ class AdminSeeder extends Seeder
                 })
                 ->create();
         }
-
-        // テスト環境でのテスト用アカウント生成
-        if (app()->environment('testing')) {
-            Admin::create([
-                'username' => 'testAdmin',
-                'password' => Hash::make('testAdmin'),
-                'mail_address' => 'testAdmin@admin',
-                'deleted_at' => null,
-                'created_at' => now(),
-                'updated_at' => now(),
-            ]);
-        }
     }
 }
