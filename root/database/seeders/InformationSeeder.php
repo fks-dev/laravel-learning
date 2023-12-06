@@ -20,7 +20,7 @@ class InformationSeeder extends Seeder
                 ->sequence(function ($sequence) {
                     return [
                         'title' => sprintf('お知らせ_%02d', $sequence->index + 1),
-                        'text' => Str::random(20),
+                        'text' => sprintf('お知らせ_%02d', $sequence->index + 1),
                         'admin_id' => 1,
                         'deleted_at' => null,
                         'created_at' => '2023-06-01 01:23:45',
