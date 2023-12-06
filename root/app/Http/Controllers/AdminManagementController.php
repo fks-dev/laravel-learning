@@ -14,6 +14,14 @@ use Illuminate\Support\Facades\Auth;
 class AdminManagementController extends Controller
 {
     /**
+     * Get the authenticated admin user.
+     */
+    private function getAdminUser()
+    {
+        return Auth::user();
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
@@ -119,13 +127,5 @@ class AdminManagementController extends Controller
     {
         $admin->delete();
         return redirect()->route('admin.admin-management.index')->with('danger', $admin->username . 'を削除しました');
-    }
-
-    /**
-     * Get the authenticated admin user.
-     */
-    protected function getAdminUser()
-    {
-        return Auth::user();
     }
 }
