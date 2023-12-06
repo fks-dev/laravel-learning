@@ -15,6 +15,7 @@ class Admin extends Authenticatable
         'username',
         'password',
         'mail_address',
+        'is_system_admin'
     ];
 
     public function loginLogs()
