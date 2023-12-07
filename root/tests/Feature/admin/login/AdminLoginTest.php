@@ -42,7 +42,7 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログイン画面にアクセスできる()
+    public function test_admin_login_get_ok()
     {
         $response = $this->get('/admin/login');
         $response->assertOk();
@@ -51,7 +51,7 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログイン成功後に管理者管理画面にリダイレクトする()
+    public function test_admin_login_post_ok_redirect()
     {
         $response = $this->login();
 
@@ -62,7 +62,7 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログイン成功時に認証されたユーザーが期待するユーザー名を持っている()
+    public function test_admin_login_post_ok_authenticated_as_expected_user()
     {
         $this->login();
 
@@ -73,7 +73,7 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログイン成功時にセッションが再生成される()
+    public function test_admin_login_post_ok_session_regenerated()
     {
         // セッションIDの保持
         $sessionIDBeforeLogin = session()->getId();
@@ -88,7 +88,7 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログイン成功時にログインログが記録される()
+    public function test_admin_login_post_ok_admin_log()
     {
         $this->login();
 
@@ -100,14 +100,11 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログアウト処理が正常に行われる()
+    public function test_admin_login_delete_ok()
     {
         $this->login();
+        $this->logout();
 
-        $response = $this->logout();
-
-        //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
         //ユーザーがゲスト状態（ログアウト状態）であるか確認
         $this->assertGuest('admin');
     }
@@ -115,7 +112,19 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログアウト後にセッションデータが破棄される()
+    public function test_admin_login_delete_ok_redirect()
+    {
+        $this->login();
+        $response = $this->logout();
+
+        //ログイン画面にリダイレクトされるか確認
+        $response->assertRedirect(route('admin.login.index'));
+    }
+
+    /**
+     * @test
+     */
+    public function test_admin_login_delete_ok_session_invalidated()
     {
         $this->login();
 
@@ -131,7 +140,7 @@ class AdminLoginTest extends TestCase
     /**
      * @test
      */
-    public function ログアウト後にセッショントークンが再生成される()
+    public function test_admin_login_delete_ok_session_regenerate()
     {
         $this->login();
 
