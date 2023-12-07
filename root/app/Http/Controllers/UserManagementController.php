@@ -8,13 +8,18 @@ use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\UserLogin;
-use App\Models\Course;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 
 class UserManagementController extends Controller
 {
+
+    private function getLoginUser()
+    {
+        return Auth::user();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -22,7 +27,7 @@ class UserManagementController extends Controller
     {
         $users = User::with('groups')->get();
         $logins = UserLogin::all();
-        $adminUser = Auth::user();
+        $adminUser = $this->getLoginUser();
 
 
         return view('admin.user-management.index', compact('users', 'logins', 'adminUser'));
@@ -31,7 +36,7 @@ class UserManagementController extends Controller
     // ユーザ側のパスワード変更画面
     public function userIndex()
     {
-        $user = Auth::user();
+        $user = $this->getLoginUser();
         return view('users.passwordChange.index', compact('user'));
     }
 
@@ -56,10 +61,9 @@ class UserManagementController extends Controller
      */
     public function create()
     {
-        $courses = Course::all();
-        $adminUser = Auth::user();
+        $adminUser = $this->getLoginUser();
 
-        return view('admin.user-management.create', compact('courses', 'adminUser'));
+        return view('admin.user-management.create', compact('adminUser'));
     }
 
     /**
@@ -73,15 +77,6 @@ class UserManagementController extends Controller
             'mail_address' => $request->mail_address,
         ]);
 
-        $user = User::orderByDesc('id')->first();
-
-        $courses = $request->input('course', []);
-
-        foreach ($courses as $courseId) {
-            $course = Course::find($courseId);
-            $user->Courses()->attach($course);
-        }
-
         return redirect()->route('admin.user-management.index')->with('message', $request->username . 'を登録しました');
     }
 
@@ -90,7 +85,7 @@ class UserManagementController extends Controller
      */
     public function edit(User $user)
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getLoginUser();
         return view('admin.user-management.edit', compact('user', 'adminUser'));
     }
 
@@ -99,7 +94,7 @@ class UserManagementController extends Controller
      */
     public function password(User $user)
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getLoginUser();
         return view('admin.user-management.password', compact('user', 'adminUser'));
     }
 

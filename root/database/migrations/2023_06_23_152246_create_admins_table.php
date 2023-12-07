@@ -16,6 +16,7 @@ return new class extends Migration
             $table->string('username')->unique('admins_username_unique')->comment('ユーザー名');
             $table->string('password')->comment('パスワード');
             $table->string('mail_address')->comment('メールアドレス');
+            $table->boolean('is_system_admin')->default(False)->comment('システム管理者権限');
             $table->softDeletesDatetime();
             $table->datetimes();
         });
