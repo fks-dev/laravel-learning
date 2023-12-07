@@ -7,7 +7,7 @@ use Illuminate\Http\RedirectResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use App\Models\AdminLogin;
+use App\Models\AdminLogs;
 
 class AdminLoginController extends Controller
 {
@@ -31,13 +31,13 @@ class AdminLoginController extends Controller
             $user = Auth::guard('admin')->user();
 
             // 過去ログを確認
-            $loginLog = AdminLogin::where('admin_id', $user->id)->first();
+            $loginLog = AdminLogs::where('admin_id', $user->id)->first();
 
             if ($loginLog) {
                 $loginLog->updated_at = now();
                 $loginLog->save();
             } else {
-                $newLoginLog = new AdminLogin();
+                $newLoginLog = new AdminLogs();
                 $newLoginLog->admin_id = $user->id;
                 $newLoginLog->updated_at = now();
                 $newLoginLog->save();
