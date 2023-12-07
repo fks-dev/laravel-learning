@@ -37,6 +37,12 @@ class AdminLoginTest extends TestCase
         return $response;
     }
 
+    private function logout()
+    {
+        $response = $this->delete('/admin/login');
+        return $response;
+    }
+
     /**
      * @test
      */
@@ -52,7 +58,6 @@ class AdminLoginTest extends TestCase
      */
     public function ログイン成功後に管理者管理画面にリダイレクトする()
     {
-        // ログイン処理
         $response = $this->login();
 
         // リダイレクトの確認
@@ -64,7 +69,6 @@ class AdminLoginTest extends TestCase
      */
     public function ログイン成功時に認証されたユーザーが期待するユーザー名を持っている()
     {
-        // ログイン処理
         $this->login();
 
         // 認証されたユーザーが期待するユーザー名を持っているか確認
@@ -80,12 +84,11 @@ class AdminLoginTest extends TestCase
         // セッションIDの保持
         $sessionIDBeforeLogin = session()->getId();
 
-        // ログイン処理
         $this->login();
 
         // セッションIDの変化を確認
         $sessionIDAfterLogin = session()->getId();
-        $this->assertNotEquals($sessionIDBeforeLogin, $sessionIDAfterLogin);
+        $this->assertNotSame($sessionIDBeforeLogin, $sessionIDAfterLogin);
     }
 
     /**
@@ -93,7 +96,6 @@ class AdminLoginTest extends TestCase
      */
     public function ログイン成功時にログインログが記録される()
     {
-        // ログイン処理
         $this->login();
 
         // ログが記録されているか確認
@@ -101,5 +103,53 @@ class AdminLoginTest extends TestCase
         $loginLog = AdminLogin::where('admin_id', $loginUser->id)->first();
         $this->assertNotNull($loginLog);
         $this->assertSame($loginUser->id, $loginLog->admin_id);
+    }
+
+    /**
+     * @test
+     */
+    public function ログアウト処理が正常に行われる()
+    {
+        $this->login();
+
+        $response = $this->logout();
+
+        //ログイン画面にリダイレクトされるか確認
+        $response->assertRedirect(route('admin.login.index'));
+        //ユーザーがゲスト状態（ログアウト状態）であるか確認
+        $this->assertGuest('admin');
+    }
+
+    /**
+     * @test
+     */
+    public function ログアウト後にセッションデータが破棄される()
+    {
+        $this->login();
+
+        //セッションに値を設定
+        $this->withSession(['key' => 'value']);
+
+        $response = $this->logout();
+
+        // セッションデータが破棄されていることを確認
+        $response->assertSessionMissing('key');
+    }
+
+    /**
+     * @test
+     */
+    public function ログアウト後にセッショントークンが再生成される()
+    {
+        $this->login();
+
+        // セッショントークンの取得
+        $tokenBeforeLogout = session('_token');
+
+        $this->logout();
+
+        // セッショントークンが再生成されていることを確認
+        $tokenAfterLogout = session('_token');
+        $this->assertNotSame($tokenBeforeLogout, $tokenAfterLogout);
     }
 }
