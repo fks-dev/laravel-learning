@@ -7,7 +7,6 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
-use App\Models\AdminLogin;
 
 class AdminLoginTest extends TestCase
 {
@@ -17,13 +16,10 @@ class AdminLoginTest extends TestCase
     {
         parent::setUp();
 
-        Admin::create([
+        Admin::factory()->create([
             'username' => 'testAdmin',
             'password' => Hash::make('testAdmin'),
             'mail_address' => 'testAdmin@admin.com',
-            'deleted_at' => null,
-            'created_at' => now(),
-            'updated_at' => now(),
         ]);
     }
 
@@ -48,7 +44,6 @@ class AdminLoginTest extends TestCase
      */
     public function ログイン画面にアクセスできる()
     {
-        // ログインページにアクセス
         $response = $this->get('/admin/login');
         $response->assertOk();
     }
@@ -72,8 +67,7 @@ class AdminLoginTest extends TestCase
         $this->login();
 
         // 認証されたユーザーが期待するユーザー名を持っているか確認
-        $loginUser = Auth::guard('admin')->user();
-        $this->assertSame('testAdmin', $loginUser->username);
+        $this->assertAuthenticatedAs(Admin::where('username', 'testAdmin')->first(), 'admin');
     }
 
     /**
@@ -86,7 +80,7 @@ class AdminLoginTest extends TestCase
 
         $this->login();
 
-        // セッションIDの変化を確認
+        // セッションIDを再取得し、変化を確認
         $sessionIDAfterLogin = session()->getId();
         $this->assertNotSame($sessionIDBeforeLogin, $sessionIDAfterLogin);
     }
@@ -100,9 +94,7 @@ class AdminLoginTest extends TestCase
 
         // ログが記録されているか確認
         $loginUser = Auth::guard('admin')->user();
-        $loginLog = AdminLogin::where('admin_id', $loginUser->id)->first();
-        $this->assertNotNull($loginLog);
-        $this->assertSame($loginUser->id, $loginLog->admin_id);
+        $this->assertDatabaseHas('admin_logs', ['admin_id' => $loginUser->id]);
     }
 
     /**
