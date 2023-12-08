@@ -20,8 +20,8 @@ class CourseSeeder extends Seeder
                 ->sequence(function($sequence) {
                     return [
                         'title' => sprintf('タイトル%d', $sequence->index + 1),
-                        'introduction' => Str::random(20),
-                        'remarks' => Str::random(20),
+                        'introduction' => sprintf('タイトル%d', $sequence->index + 1),
+                        'remarks' => sprintf('タイトル%d', $sequence->index + 1),
                         'position' => $sequence->index + 1,
                         'created_at' => now(),
                         'updated_at' => now(),
