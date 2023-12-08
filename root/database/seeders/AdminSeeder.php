@@ -14,17 +14,18 @@ class AdminSeeder extends Seeder
      */
     public function run(): void
     {
+        Admin::create(
+            [
+                'username' => config('rootuser.root_admin.name'),
+                'password' => Hash::make(config('rootuser.root_admin.password')),
+                'mail_address' => config('rootuser.root_admin.email'),
+                'is_system_admin' => true,
+                'deleted_at' => null,
+                'created_at' => '2023-06-01 01:23:47',
+                'updated_at' => '2023-06-30 21:58:59',
+            ]
+        );
         if (app()->isLocal()) {
-            Admin::create(
-                [
-                    'username' => 'root',
-                    'password' => Hash::make('admin'),
-                    'mail_address' => 'root@admin',
-                    'deleted_at' => null,
-                    'created_at' => '2023-06-01 01:23:47',
-                    'updated_at' => '2023-06-30 21:58:59',
-                ]
-            );
             Admin::factory()
                 ->count(10)
                 ->sequence(function ($sequence) {
