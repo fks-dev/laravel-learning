@@ -69,7 +69,7 @@
                         <th class="col-2 text-center sort" data-sort="asc">mail</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
-                        @can('is_root',Auth::user())
+                        @can('is_system_admin',Auth::user())
                         <th class="col text-center sort" data-sort="asc"></th>
                         @endcan
                     </tr>
@@ -91,7 +91,7 @@
                         </td>
 
                         <td class="align-middle text-center">{{ $admin->created_at }}</td>
-                        @can('is_root',Auth::user())
+                        @can('is_system_admin',Auth::user())
                         <td class="text-center">
                             @if(!($admin->is_system_admin))
                             <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
