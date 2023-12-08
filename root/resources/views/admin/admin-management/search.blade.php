@@ -31,18 +31,20 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     <td class="align-middle text-center">
                         ${result.login_at ? result.login_at : ''}
                     </td>
-                    <td class="align-middle text-center">${formatDate}</td>
-
+                    <td class="align-middle text-center">${formatDate} </td>
                     <td class="text-center">
-                        <a class="btn btn-success edit-btn" href="admin-management/${result.id}/edit">編集</a>
-
-                        <form action="admin-management/${result.id}" method="post" class="d-inline">
-                            @csrf
-                            @method('delete')
-                            <input class="btn btn-danger" type="submit" value="削除"
-                            onClick="return confirm('本当に削除しますか？');">
-                        </form>
+                    @can('is_system_admin',Auth::user())
+                    ${!result.is_system_admin ? `
+                <form action="admin-management/${result.id}" method="post" class="d-inline">
+                    @csrf
+                    @method('delete')
+                    <input class="btn btn-danger" type="submit" value="削除"
+                    onClick="return confirm('本当に削除しますか？');">
+                </form>
+            ` : ''}
+                    @endcan
                     </td>
+
                 `;
                 tbody.appendChild(row);
             });
