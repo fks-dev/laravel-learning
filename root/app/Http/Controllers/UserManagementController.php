@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 class UserManagementController extends Controller
 {
-
     private function getLoginUser()
     {
         return Auth::user();
