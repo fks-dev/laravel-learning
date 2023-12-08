@@ -23,7 +23,7 @@ class UserMessageSeeder extends Seeder
                         'admin_id' => 1,
                         'user_id' => 1,
                         'title' => sprintf('受講者からのメッセージ%d', $sequence->index + 1),
-                        'text' => Str::random(20),
+                        'text' => sprintf('受講者からのメッセージ%d', $sequence->index + 1),
                         'action' => random_int(0,1),
                         'is_hidden' => 0,
                         'is_replied' => 0,
