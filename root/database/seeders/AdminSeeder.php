@@ -16,9 +16,9 @@ class AdminSeeder extends Seeder
     {
         Admin::create(
             [
-                'username' => config('rootuser.root_admin.name'),
-                'password' => Hash::make(config('rootuser.root_admin.password')),
-                'mail_address' => config('rootuser.root_admin.email'),
+                'username' => config('systemadmin.system_admin.name'),
+                'password' => Hash::make(config('systemadmin.system_admin.password')),
+                'mail_address' => config('systemadmin.system_admin.email'),
                 'is_system_admin' => true,
                 'deleted_at' => null,
                 'created_at' => '2023-06-01 01:23:47',
