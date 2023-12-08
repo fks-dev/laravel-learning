@@ -69,7 +69,9 @@
                         <th class="col-2 text-center sort" data-sort="asc">mail</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
+                        @can('is_root',Auth::user())
                         <th class="col text-center sort" data-sort="asc"></th>
+                        @endcan
                     </tr>
                 </thead>
 
@@ -89,16 +91,18 @@
                         </td>
 
                         <td class="align-middle text-center">{{ $admin->created_at }}</td>
+                        @can('is_root',Auth::user())
                         <td class="text-center">
-                        @if(Auth::user()->id === 1 && $admin->id !== 1)
+                            @if(!($admin->is_system_admin))
                             <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
                                 @csrf
                                 @method('delete')
                                 <input class="btn btn-danger" type="submit" value="削除"
                                 onClick="return confirm('本当に削除しますか？');">
                             </form>
-                        @endif
+                            @endif
                         </td>
+                        @endcan
                     </tr>
                     @endforeach
                 </tbody>
