@@ -7,7 +7,7 @@ use App\Http\Requests\AdminPasswordRequest;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
-use App\Models\AdminLogin;
+use App\Models\AdminLogs;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
@@ -28,7 +28,7 @@ class AdminManagementController extends Controller
     {
         $adminUser = $this->getAdminUser();
         $admins = Admin::all();
-        $logins = AdminLogin::all();
+        $logins = AdminLogs::all();
 
         return view('admin.admin-management.index', compact('adminUser', 'admins', 'logins'));
     }
