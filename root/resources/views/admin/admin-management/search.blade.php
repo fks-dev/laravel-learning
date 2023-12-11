@@ -25,7 +25,6 @@
                     row.innerHTML = `
                     <td class="align-middle">${result.username}</td>
                     <td class="align-middle text-center">${result.mail_address}</td>
-                    <td class="align-middle text-center"></td>
                     <td class="align-middle text-center">
                         ${result.login_at ? result.login_at : ''}
                     </td>
