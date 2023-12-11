@@ -72,6 +72,8 @@
 
         </table>
     </div>
+    {{-- footer --}}
+    @include('footer')
 </body>
 
 </html>

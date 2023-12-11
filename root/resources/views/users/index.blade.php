@@ -83,9 +83,8 @@
             </div>
         </div>
     </main>
-    <footer>
-
-    </footer>
+    {{-- footer --}}
+    @include('footer')
 </body>
 
 </html>

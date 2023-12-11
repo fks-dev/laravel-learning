@@ -20,4 +20,6 @@
     <input type="hidden" value="no" name="answer">
     <input type="submit" value="いいえ" class="btn btn-danger">
 </form>
+{{-- footer --}}
+@include('footer')
 </body>

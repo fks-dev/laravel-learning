@@ -83,5 +83,8 @@
     </div>
 
     @include('admin.groups.sort')
+
+    {{-- footer --}}
+    @include('footer')
 </body>
 </html>

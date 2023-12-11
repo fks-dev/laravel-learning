@@ -13,6 +13,8 @@
             <a href="{{ route('admin.login.index') }}" class="btn btn-primary">ログイン画面へ</a>
         </main>
     </div>
+    {{-- footer --}}
+    @include('footer')
 </body>
 
 </html>

@@ -63,5 +63,7 @@
     </table>
     {{ $messages->links('pagination::bootstrap-5') }}
 </div>
+{{-- footer --}}
+@include('footer')
 </body>
 </html>

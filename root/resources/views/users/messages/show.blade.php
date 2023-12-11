@@ -30,5 +30,7 @@
             {!! nl2br(htmlspecialchars($message->text)) !!}
         </div>
     </div>
+    {{-- footer --}}
+    @include('footer')
 </body>
 </html>

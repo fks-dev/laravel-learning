@@ -69,6 +69,9 @@
         </div>
     </div>
     @include('admin.user-management.courseSelect')
+
+    {{-- footer --}}
+    @include('footer')
 </body>
 
 </html>

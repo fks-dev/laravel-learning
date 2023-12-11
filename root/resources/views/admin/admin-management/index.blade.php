@@ -95,6 +95,9 @@
         </div>
         @include('admin.sort')
         @include('admin.admin-management.search')
-</body>
+
+        {{-- footer --}}
+        @include('footer')
+    </body>
 
 </html>

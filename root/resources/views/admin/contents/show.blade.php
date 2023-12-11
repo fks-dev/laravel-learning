@@ -28,5 +28,7 @@
             <p class="p-1">{{ $content->remarks }}</p>
         </div>
     </div>
+    {{-- footer --}}
+    @include('footer')
 </body>
 </html>
