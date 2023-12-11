@@ -25,6 +25,7 @@ class UpdateContentRequest extends FormRequest
             'course_id'          => 'required',
             'title'              => 'required',
             'is_public'          => 'required',
+            'youtube_video_id'   => 'required',
         ];
 
         return $rules;
