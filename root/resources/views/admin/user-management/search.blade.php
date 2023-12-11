@@ -22,13 +22,13 @@ document.addEventListener("DOMContentLoaded", (event) => {
                 const row = document.createElement('tr');
                 let date = new Date(result.created_at);
                 let formatDate = date.getFullYear() + "-" + ("0" + (date.getMonth() + 1)).slice(-2) + "-" + ("0" + date.getDate()).slice(-2) + " " + ("0" + date.getHours()).slice(-2) + ":" + ("0" + date.getMinutes()).slice(-2) + ":" + ("0" + date.getSeconds()).slice(-2);
-                const courses = result.courses.map(course => course.title).join(',');
+                const groups = result.groups.map(group => group.group_name).join(',');
                 console.log(result);
                 row.innerHTML = `
                     <td class="align-middle">${result.username}</td>
                     <td class="align-middle text-center">${result.mail_address}</td>
                     <td class="align-middle text-center"></td>
-                    <td class="align-middle text-center">${courses}</td>
+                    <td class="align-middle text-center">${groups}</td>
                     <td class="align-middle text-center">
                         ${result.login_at ? result.login_at : ''}
                     </td>
