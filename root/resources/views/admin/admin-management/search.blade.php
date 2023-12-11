@@ -33,7 +33,7 @@ document.addEventListener("DOMContentLoaded", (event) => {
                     </td>
                     <td class="align-middle text-center">${formatDate} </td>
                     <td class="text-center">
-                    @can('is_system_admin',Auth::user())
+                    @can('is_system_admin',$adminUser)
                     ${!result.is_system_admin ? `
                 <form action="admin-management/${result.id}" method="post" class="d-inline">
                     @csrf

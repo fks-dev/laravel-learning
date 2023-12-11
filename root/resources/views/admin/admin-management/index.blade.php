@@ -18,11 +18,11 @@
                     <a class="btn btn-info" href="{{ route('admin.user-management.index') }}">⇆ ユーザー 一覧</a>
                 </div>
 
-                @if(Auth::user()->id === 1)
+                @can('is_system_admin',$adminUser)
                 <div class="col-auto  ms-2">
                     <a class="btn btn-primary" href="{{ route('admin.admin-management.create')}}">&plus;追加</a>
                 </div>
-                @endif
+                @endcan
             </div>
 
             {{-- 検索 --}}
@@ -69,7 +69,7 @@
                         <th class="col-2 text-center sort" data-sort="asc">mail</th>
                         <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                         <th class="col text-center sort" data-sort="asc">作成日時</th>
-                        @can('is_system_admin',Auth::user())
+                        @can('is_system_admin',$adminUser)
                         <th class="col text-center sort" data-sort="asc"></th>
                         @endcan
                     </tr>
@@ -91,7 +91,7 @@
                         </td>
 
                         <td class="align-middle text-center">{{ $admin->created_at }}</td>
-                        @can('is_system_admin',Auth::user())
+                        @can('is_system_admin',$adminUser)
                         <td class="text-center">
                             @if(!($admin->is_system_admin))
                             <form action="{{ route('admin.admin-management.destroy', $admin) }}" method="post" class="d-inline">
