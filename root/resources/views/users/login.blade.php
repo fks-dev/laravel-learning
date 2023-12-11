@@ -16,6 +16,7 @@
     <body>
         <div id="container">
             <div id="content" class="row">
+                {{-- ログインフォーム --}}
                 <div class="users-login">
                     <div class="panel panel-info form-signin">
                         <div class="panel-heading text-bg-info p-3">ユーザーログイン画面</div>
@@ -56,6 +57,7 @@
         </div>
     </body>
 
+    {{-- footer --}}
     <footer>
         <nav class="navbar fixed-bottom p-0 bg-primary  ">
             <div class="d-flex align-items-center container-fluid justify-content-center">
