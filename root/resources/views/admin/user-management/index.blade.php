@@ -28,14 +28,6 @@
             @csrf
             <div class="d-flex justify-content-start">
                 <div class="p-2">
-                    <label class="col-form-label" for="group">グループ:</label>
-                </div>
-                <div class="p-2">
-                    <select class="form-control" name="group" id="group">
-                        <option value="1">グループ１</option>
-                    </select>
-                </div>
-                <div class="p-2">
                     <label class="col-form-label" for="name">管理者ID</label>
                 </div>
                 <div class="p-2">

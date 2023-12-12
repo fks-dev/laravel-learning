@@ -15,11 +15,12 @@ class Admin extends Authenticatable
         'username',
         'password',
         'mail_address',
+        'is_system_admin'
     ];
 
     public function loginLogs()
     {
-        return $this->hasMany(AdminLogin::class);
+        return $this->hasMany(AdminLogs::class);
     }
 
     public function contents()

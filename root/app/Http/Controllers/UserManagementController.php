@@ -14,7 +14,6 @@ use Illuminate\Support\Facades\Route;
 
 class UserManagementController extends Controller
 {
-
     private function getLoginUser()
     {
         return Auth::user();
@@ -50,7 +49,7 @@ class UserManagementController extends Controller
         $results = User::leftJoin('user_logs', 'users.id', '=', 'user_logs.user_id')
             ->where('users.username', 'LIKE', "%{$search}%")
             ->select('users.*', 'user_logs.updated_at as login_at')
-            ->with('courses')
+            ->with('groups')
             ->get();
 
         return response()->json($results);

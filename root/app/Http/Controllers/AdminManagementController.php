@@ -7,20 +7,28 @@ use App\Http\Requests\AdminPasswordRequest;
 use App\Http\Requests\StoreAdminRequest;
 use App\Http\Requests\UpdateAdminRequest;
 use App\Models\Admin;
-use App\Models\AdminLogin;
+use App\Models\AdminLogs;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 
 class AdminManagementController extends Controller
 {
     /**
+     * Get the authenticated admin user.
+     */
+    private function getAdminUser()
+    {
+        return Auth::user();
+    }
+
+    /**
      * Display a listing of the resource.
      */
     public function index(Request $request)
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getAdminUser();
         $admins = Admin::all();
-        $logins = AdminLogin::all();
+        $logins = AdminLogs::all();
 
         return view('admin.admin-management.index', compact('adminUser', 'admins', 'logins'));
     }
@@ -45,7 +53,7 @@ class AdminManagementController extends Controller
      */
     public function create()
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getAdminUser();
         return view('admin.admin-management.create', compact('adminUser'));
     }
 
@@ -69,7 +77,7 @@ class AdminManagementController extends Controller
      */
     public function edit()
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getAdminUser();
         return view('admin.admin-management.edit', compact('adminUser'));
     }
 
@@ -78,7 +86,7 @@ class AdminManagementController extends Controller
      */
     public function password(Admin $admin)
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getAdminUser();
         return view('admin.admin-management.password', compact('admin', 'adminUser'));
     }
 

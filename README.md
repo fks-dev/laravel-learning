@@ -122,3 +122,18 @@ composer sniffer ./
 # 単一ファイルチェック(例としてAdminLoginControllerをチェックする場合)
 composer sniffer ./app/Http/Controllers/AdminLoginController.php
 ```
+
+### PHPunit
+#### テストの実施
+```bash
+# ■ Webサーバーで入力
+# 全体チェック
+php artisan test
+# 単一ファイルチェック(例としてAdminLoginTest.phpを実施する場合)
+php artisan test --filter AdminLoginTest
+```
+#### 運用ルール
+* メソッド名はキャメルケースで`'test' ＋ URI ＋ HTTPメソッド ＋ok(正常系) or error(異常系) ＋ テスト観点`
+    * 例） test_admin_login_delete_ok_session_regenerate()
+* URI毎にテストファイルを作成する
+* 1ケース1メソッドを意識してテストを作成する（1メソッドにテストをまとめない）

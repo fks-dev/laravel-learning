@@ -1,7 +1,7 @@
 <html lang="ja">
 <head>
-@include('head')
-<title>お知らせ</title>
+    @include('head')
+    <title>お知らせ</title>
 </head>
 <body>
     @include('admin.header')
