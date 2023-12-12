@@ -160,7 +160,7 @@ return [
         'courses' => 190001,
         'contents' => 200001,
         'contents_logs' => 210001,
-        'password_access_tokens' => 220001,
+        'personal_access_tokens' => 220001,
         'password_reset_tokens' => 230001,
         'failed_jobs' => 240001,
         'user_groups' => 250001,
