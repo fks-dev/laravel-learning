@@ -44,5 +44,8 @@
             </form>
         </div>
     </div>
+    {{-- footer --}}
+    @include('footer')
+
 </body>
 </html>

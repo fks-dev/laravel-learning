@@ -74,5 +74,8 @@
     </div>
 @include('admin.groups.courseSelect')
 @include('admin.groups.userSelect')
+
+{{-- footer --}}
+@include('footer')
 </body>
 </html>

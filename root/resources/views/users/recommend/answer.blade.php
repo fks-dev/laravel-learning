@@ -10,4 +10,7 @@
 
 <p>あなたへのおすすめ動画は{{ $course->title }}です。</p>
 <a href="{{ route('users.contents.index', $course) }}">おすすめ動画に進む</a>
+
+{{-- footer --}}
+@include('footer')
 </body>

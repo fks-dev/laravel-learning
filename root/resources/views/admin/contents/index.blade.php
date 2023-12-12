@@ -81,7 +81,9 @@
             </tbody>
         </table>
     </div>
-
     @include('admin.contents.sort')
+
+    {{-- footer --}}
+    @include('footer')
 </body>
 </html>

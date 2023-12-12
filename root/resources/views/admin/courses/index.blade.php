@@ -75,8 +75,9 @@
 
         </table>
     </div>
-
     @include('admin.courses.sort')
 
+    {{-- footer --}}
+    @include('footer')
 </body>
 </html>

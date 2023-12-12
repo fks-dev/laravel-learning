@@ -46,6 +46,8 @@
             </div>
         </div>
     </main>
+    {{-- footer --}}
+    @include('footer')
 </body>
 
 </html>
