@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->softDeletesDatetime();
             $table->datetimes();
         });
+        DB::statement('ALTER TABLE admins AUTO_INCREMENT = '.config('database.auto_increment.admins'));
     }
 
     /**
