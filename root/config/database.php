@@ -148,4 +148,22 @@ return [
 
     ],
 
+    'auto_increment' => [
+        'users' => 110001,
+        'admins' => 120001,
+        'user_logs' => 130001,
+        'admin_logs' => 140001,
+        'user_messages' => 150001,
+        'admin_messages' => 160001,
+        'informations' => 170001,
+        'groups' => 180001,
+        'courses' => 190001,
+        'contents' => 200001,
+        'contents_logs' => 210001,
+        'password_access_tokens' => 220001,
+        'password_reset_tokens' => 230001,
+        'failed_jobs' => 240001,
+        'user_groups' => 250001,
+        'groups_courses' => 260001,
+    ],
 ];
