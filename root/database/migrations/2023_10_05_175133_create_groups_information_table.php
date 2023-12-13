@@ -19,7 +19,7 @@ return new class extends Migration
             $table->softDeletesDatetime();
             $table->datetimes();
         });
-        DB::statement('ALTER TABLE groups_informations AUTO_INCREMENT = '.config('database.auto_increment.groups_informations'));
+        DB::statement('ALTER TABLE groups_information AUTO_INCREMENT = '.config('database.auto_increment.groups_information'));
     }
 
     /**
