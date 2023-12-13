@@ -1,11 +1,11 @@
 <footer>
 
-    <nav class="navbar fixed-bottom p-0 bg-primary">
+    <nav class="navbar absolute-bottom p-0 bg-primary" style="height: 35px; width: 100%;">
 
         <div class="d-flex align-items-center container-fluid
-    justify-content-center">
+    justify-content-center h-100">
 
-            <div class="navbar-brand ms-1 fs-3 text-white text-center">
+            <div class="navbar-brand ms-1 fs-5 text-white text-center">
                 © 2023 エプコットソフトウェア
             </div>
 
