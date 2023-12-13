@@ -9,22 +9,32 @@ class UserHomeController extends Controller
     public function index()
     {
         $user = Auth::user();
-
-        //ログイン中のユーザーに向けたお知らせを取得
-        $groups = $user->groups ?? collect();
-        $informations = collect();
-        foreach ($groups as $group) {
-            $informations = $informations->concat($group->informations);
-        }
-        //重複を除外し、最新の5件のみ取得する
-        $informations = $informations->unique('id')->sortByDesc('updated_at')->take(5);
-
-        //ログイン中のユーザーに向けたコースを取得
-        $courses = collect();
-        foreach ($groups as $group) {
-            $courses = $courses->concat($group->courses);
-        }
-        $courses = $courses->unique('id')->sortBy('id');
+        $informations = $this->getUserInformations($user);
+        $courses = $this->getUserCourses($user);
         return view('users.index', compact('user', 'informations', 'courses'));
+    }
+    // コースの取得
+    private function getUserCourses($user)
+    {
+        return $user->groups()
+            ->with('courses')
+            ->get()
+            ->pluck('courses')
+            ->collapse()
+            ->unique('id')
+            ->sortBy('id');
+    }
+
+    // お知らせ5件の取得(重複は除外)
+    private function getUserInformations($user)
+    {
+        return $user->groups()
+            ->with('informations')
+            ->get()
+            ->pluck('informations')
+            ->collapse()
+            ->unique('id')
+            ->sortByDesc('updated_at')
+            ->take(5);
     }
 }
