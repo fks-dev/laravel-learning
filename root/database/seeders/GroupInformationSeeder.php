@@ -18,8 +18,8 @@ class GroupInformationSeeder extends Seeder
                 ->count(10)
                 ->sequence(function ($sequence) {
                     return [
-                        'group_id' => 1,
-                        'information_id' => $sequence->index + 1,
+                        'group_id' => 180001,
+                        'information_id' => $sequence->index + 170001,
                     ];
                 })
                 ->create();

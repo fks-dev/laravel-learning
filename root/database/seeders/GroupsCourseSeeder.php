@@ -18,8 +18,8 @@ class GroupsCourseSeeder extends Seeder
                 ->count(10)
                 ->sequence(function($sequence) {
                     return [
-                        'group_id'   => $sequence->index + 1,
-                        'course_id'  => $sequence->index + 1,
+                        'group_id'   => $sequence->index + 180001,
+                        'course_id'  => $sequence->index + 190001,
                         'deleted_at' => null,
                         'created_at' => now(),
                         'updated_at' => now(),

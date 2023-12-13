@@ -18,8 +18,8 @@ class UsersGroupSeeder extends Seeder
                 ->count(10)
                 ->sequence(function($sequence) {
                     return [
-                        'group_id'   => $sequence->index + 1,
-                        'user_id'    => $sequence->index + 1,
+                        'group_id'   => $sequence->index + 180001,
+                        'user_id'    => $sequence->index + 110001,
                         'deleted_at' => null,
                         'created_at' => now(),
                         'updated_at' => now(),
