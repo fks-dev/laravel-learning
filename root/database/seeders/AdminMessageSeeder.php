@@ -20,8 +20,8 @@ class AdminMessageSeeder extends Seeder
                 ->count(30)
                 ->sequence(function($sequence) {
                     return [
-                        'admin_id' => 1,
-                        'user_id' => 1,
+                        'admin_id' => config('database.auto_increment.admins'),
+                        'user_id' => config('database.auto_increment.users'),
                         'title' => sprintf('管理者からのメッセージ%d', $sequence->index + 1),
                         'text' => Str::random(20),
                         'action' => random_int(0,1),
