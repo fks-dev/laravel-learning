@@ -101,6 +101,7 @@
 
             </table>
         </div>
+    </div>
         @include('admin.sort')
         @include('admin.admin-management.search')
 
