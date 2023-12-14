@@ -1,4 +1,4 @@
-<footer>
+<footer style="margin-top: 20px;">
 
     <nav class="navbar absolute-bottom p-0 bg-primary" style="height: 35px; width: 100%;">
 
