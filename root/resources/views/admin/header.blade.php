@@ -5,6 +5,9 @@
             <ul class="nav me-2 text-white">
                 @isset($adminUser)
                 <li class="nav-item border-end p-1 d-flex align-items-center">ようこそ{{ $adminUser->username }}さん</li>
+                <li class="nav-item border-end p-1 d-flex align-items-center">
+                    <a class="btn btn-primary" href="{{ route('admin.messages.index') }}">メッセージ</a>
+                </li>
                 <li id="setting" class="nav-item border-end p-1 d-flex align-items-center">
                     <a class="btn btn-primary" href="{{ route('admin.admin-management.edit') }}">アカウント設定</a>
                 </li>
