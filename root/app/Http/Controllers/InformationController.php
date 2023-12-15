@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInformationRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
 use App\Models\Group;
+use App\Models\User;
 
 class InformationController extends Controller
 {
@@ -19,11 +20,16 @@ class InformationController extends Controller
         return Auth::guard('admin')->user()->id;
     }
 
+    private function getCurrentUser(): User
+    {
+        return Auth::user();
+    }
+
     public function index()
     {
         $admin_id = $this->getAdminId();
         $informations = Information::where('admin_id', $admin_id)->orderByDesc('updated_at')->get();
-        $adminUser = Auth::user();
+        $adminUser = $this->getCurrentUser();
         return view('admin.informations.index', compact('informations', 'adminUser'));
     }
 
@@ -33,7 +39,7 @@ class InformationController extends Controller
     public function create()
     {
         $groups = Group::orderByDesc('id')->get();
-        $adminUser = Auth::user();
+        $adminUser = $this->getCurrentUser();
         return view('admin.informations.create', compact('groups', 'adminUser'));
     }
 
@@ -56,7 +62,7 @@ class InformationController extends Controller
 
     public function adminShow(Information $information)
     {
-        $adminUser = Auth::user();
+        $adminUser = $this->getCurrentUser();
         return view('admin.informations.show', compact('adminUser', 'information'));
     }
 
@@ -67,7 +73,7 @@ class InformationController extends Controller
     {
         $groups = Group::orderByDesc('id')->get();
         $info_groups = $information->groups;
-        $adminUser = Auth::user();
+        $adminUser = $this->getCurrentUser();
         return view('admin.informations.edit', compact('information', 'groups', 'info_groups', 'adminUser'));
     }
 
@@ -99,7 +105,7 @@ class InformationController extends Controller
     public function list()
     {
  //ユーザーのお知らせ一覧画面
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         $groups = $user->groups ?? collect();
         $informations = collect();
         foreach ($groups as $group) {
@@ -110,7 +116,7 @@ class InformationController extends Controller
     }
     public function show(Information $information)
     {
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         return view('users.informations.show', compact('information', 'user'));
     }
 }
