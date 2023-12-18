@@ -8,13 +8,16 @@ use Illuminate\Http\Request;
 use App\Models\Course;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class CourseController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $courses = Course::orderby('position')->get();
         $adminUser = Auth::user();
@@ -22,13 +25,13 @@ class CourseController extends Controller
         return view('admin.courses.index', compact('courses', 'adminUser'));
     }
 
-    public function sort(Request $request)
+    public function sort(Request $request): JsonResponse
     {
         $positions = $request->input('positions');
 
         DB::transaction(function () use ($positions) {
             foreach ($positions as $index => $id) {
-                Course::where('id', $id)->update(['position' => $index + 1]);
+                Course::find($id)->update(['position' => $index + 1]);
             }
         });
 
@@ -38,7 +41,7 @@ class CourseController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $adminUser = Auth::user();
         return view('admin.courses.create', compact('adminUser'));
@@ -47,7 +50,7 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request)
+    public function store(StoreCourseRequest $request): RedirectResponse
     {
 
         Course::create([
@@ -62,7 +65,7 @@ class CourseController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Course $course)
+    public function edit(Course $course): View
     {
         $adminUser = Auth::user();
         return view('admin.courses.edit', compact('course', 'adminUser'));
@@ -71,7 +74,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, Course $course)
+    public function update(UpdateCourseRequest $request, Course $course): RedirectResponse
     {
         $course->update([
             'title'       => $request->title,
@@ -85,7 +88,7 @@ class CourseController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Course $course)
+    public function destroy(Course $course): RedirectResponse
     {
         $course->delete();
         return redirect()->route('admin.courses.index')->with('danger', $course->title . 'を削除しました');
