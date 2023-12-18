@@ -11,6 +11,12 @@ class UserHomeController extends Controller
         $user = Auth::user();
         $informations = $this->getUserInformations($user);
         $courses = $this->getUserCourses($user);
+
+        foreach ($courses as $course) {
+            $course->residue = $course->getResidue($user);
+            $course->logFirst = $course->getLogFirst($user);
+            $course->logLast = $course->getLogLast($user);
+        }
         return view('users.index', compact('user', 'informations', 'courses'));
     }
     // コースの取得
