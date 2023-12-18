@@ -13,6 +13,10 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\User;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Support\Collection;
+
 
 class AdminMessageController extends Controller
 {
@@ -21,7 +25,7 @@ class AdminMessageController extends Controller
     /**
      * ログインユーザーのIDを取得
      */
-    private function getAdminId()
+    private function getAdminId():int
     {
         return Auth::guard('admin')->user()->id;
     }
@@ -29,7 +33,7 @@ class AdminMessageController extends Controller
     /**
      * ユーザー情報取得
      */
-    private function getUserAll()
+    private function getUserAll():Collection
     {
         return User::all();
     }
@@ -37,7 +41,7 @@ class AdminMessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request):View
     {
         $adminId = $this->getAdminId();
         $messages = UserMessage::withTrashed()
@@ -55,7 +59,7 @@ class AdminMessageController extends Controller
     /**
      * 下書き一覧
      */
-    public function draft(Request $request)
+    public function draft(Request $request):View
     {
         $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
@@ -71,7 +75,7 @@ class AdminMessageController extends Controller
     /**
      * 送信済み一覧
      */
-    public function sent(Request $request)
+    public function sent(Request $request):View
     {
         $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
@@ -87,12 +91,12 @@ class AdminMessageController extends Controller
     /**
      * ゴミ箱
      */
-    public function dust(Request $request)
+    public function dust(Request $request):View
     {
         $adminUser = Auth::user();
         $adminId = $this->getAdminId();
         $adminMessages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
-        $messages = $adminMessages->map(function ($item) {
+        $messages = $adminMessages->map(function (bool $item):bool {
             $item->is_hidden = false;
             return $item;
         });
@@ -116,7 +120,7 @@ class AdminMessageController extends Controller
     }
 
     // 復元
-    public function restore($message)
+    public function restore(int $message):RedirectResponse
     {
         $record = AdminMessage::withTrashed()->find($message);
         $record->restore();
@@ -126,7 +130,7 @@ class AdminMessageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(Request $request):View
     {
         $source = $request->input('source');
         if ($source === 'draft') {
@@ -147,7 +151,7 @@ class AdminMessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMessageRequest $request)
+    public function store(StoreMessageRequest $request):RedirectResponse
     {
         $adminId = $this->getAdminId();
 
