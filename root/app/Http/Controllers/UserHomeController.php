@@ -3,10 +3,12 @@
 namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Database\Eloquent\Collection;
 
 class UserHomeController extends Controller
 {
-    public function index()
+    public function index(): View
     {
         $user = Auth::user();
         $informations = $this->getUserInformations($user);
@@ -14,7 +16,7 @@ class UserHomeController extends Controller
         return view('users.index', compact('user', 'informations', 'courses'));
     }
     // コースの取得
-    private function getUserCourses($user)
+    private function getUserCourses($user): Collection
     {
         return $user->groups()
             ->with('courses')
@@ -26,7 +28,7 @@ class UserHomeController extends Controller
     }
 
     // お知らせ5件の取得(重複は除外)
-    private function getUserInformations($user)
+    private function getUserInformations($user): Collection
     {
         return $user->groups()
             ->with('informations')
