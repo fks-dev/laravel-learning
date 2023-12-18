@@ -14,31 +14,55 @@ class UsersTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $user;
+    private $groups;
+    private $informations;
+    private $courses;
+
     public function setUp(): void
     {
         parent::setUp();
 
+        $this->user = $this->createTestUser();
+        $this->groups = $this->createTestGroups();
+        $this->informations = $this->createTestInformations();
+        $this->courses = $this->createTestCourses();
+
+        $this->attachGroupsToUser();
+        $this->attachInformationsToGroups();
+        $this->attachCoursesToGroups();
+    }
+
+    private function createTestUser()
+    {
         // ユーザーのテストデータを作成
-        $user = User::factory()->create([
+        return User::factory()->create([
             'id' => 110001,
             'username' => 'testUser',
             'password' => Hash::make('testUser'),
             'mail_address' => 'testUsers@User.com'
         ]);
+    }
 
+    private function createTestGroups()
+    {
         // グループのテストデータを作成
-        $groups = [];
+        $groupInstances = [];
 
         for ($i = 1; $i <= 2; $i++) {
-            $group = Group::factory()->create([
+            $Group = Group::factory()->create([
                 'id' => 180000 + $i,
                 'group_name' => "testGroup_$i"
             ]);
-            $groups[] = $group;
+            $groupInstances[] = $Group;
         }
+        return $groupInstances;
+    }
 
+    private function createTestInformations()
+    {
         // お知らせのテストデータを作成
-        $informations = [];
+        $infoInstances = [];
 
         for ($i = 1; $i <= 6; $i++) {
             $info = Information::factory()->create([
@@ -48,11 +72,15 @@ class UsersTest extends TestCase
                 'admin_id' => 120001,
                 'updated_at' => now()->subDays($i),
             ]);
-            $informations[] = $info;
+            $infoInstances[] = $info;
         }
+        return $infoInstances;
+    }
 
+    private function createTestCourses()
+    {
         // コースのテストデータを作成
-        $Courses = [];
+        $CourseInstances = [];
 
         for ($i = 1; $i <= 3; $i++) {
             $course = Course::factory()->create([
@@ -61,23 +89,33 @@ class UsersTest extends TestCase
                 'introduction' => "testCourse_$i",
                 'remarks' => "testCourse_$i"
             ]);
-            $courses[] = $course;
+            $CourseInstances[] = $course;
         }
+        return $CourseInstances;
+    }
 
-        // コースをグループにアタッチ
-        foreach ($groups as $group) {
-            $group->courses()->attach(collect($courses)->pluck('id'));
-        }
-        // お知らせをグループにアタッチ
-        foreach ($groups as $group) {
-            $group->informations()->attach(collect($informations)->pluck('id'));
-        }
+    private function attachGroupsToUser()
+    {
         // グループをユーザーにアタッチ
-        foreach ($groups as $group) {
-            $user->groups()->attach($group);
+        foreach ($this->groups as $group) {
+            $this->user->groups()->attach($group);
         }
-        // ログインしたように振る舞う
-        $this->actingAs($user);
+    }
+
+    private function attachInformationsToGroups()
+    {
+        // お知らせをグループにアタッチ
+        foreach ($this->groups as $group) {
+            $group->informations()->attach(collect($this->informations)->pluck('id'));
+        }
+    }
+
+    private function attachCoursesToGroups()
+    {
+        // コースをグループにアタッチ
+        foreach ($this->groups as $group) {
+            $group->courses()->attach(collect($this->courses)->pluck('id'));
+        }
     }
 
     /**
@@ -86,7 +124,6 @@ class UsersTest extends TestCase
     public function test_users_get_ok_redirect_without_login()
     {
         // 未ログイン時のリダイレクトの確認
-        auth()->logout();
         $response = $this->get('/users');
         $response->assertRedirect('/users/login');
     }
@@ -97,6 +134,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_top_page_view()
     {
         // ログイン状態での、ユーザーページへのアクセスの確認
+        $this->actingAs($this->user);
         $response = $this->get('/users');
         $response->assertViewIs('users.index');
     }
@@ -107,6 +145,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_select_courses_view()
     {
         // おすすめ動画診断への画面遷移の確認
+        $this->actingAs($this->user);
         $response = $this->get('/users/select-courses');
         $response->assertViewIs('users.recommend.index');
     }
@@ -117,6 +156,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_informations_view()
     {
         // お知らせ一覧への画面遷移の確認
+        $this->actingAs($this->user);
         $response = $this->get('/users/informations');
         $response->assertViewIs('users.informations.index');
     }
@@ -127,6 +167,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_information_detailed_view()
     {
         // お知らせ詳細への画面遷移の確認
+        $this->actingAs($this->user);
         for ($i = 1; $i <= 5; $i++) {
             $response = $this->get("/users/informations/" . 170000 + $i);
             $response->assertSee("testInfo_$i");
@@ -139,6 +180,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_informations_display_limited_to_five()
     {
         // ５つまでお知らせが表示されているか確認
+        $this->actingAs($this->user);
         $response = $this->get('/users');
         for ($i = 1; $i <= 5; $i++) {
             $response->assertSee("testInfo_$i");
@@ -151,6 +193,7 @@ class UsersTest extends TestCase
     public function test_users_get_informations_sixth_not_displayed()
     {
         // ６つ目以降のお知らせが表示されていないか確認
+        $this->actingAs($this->user);
         $response = $this->get('/users');
         $response->assertDontSee('testInfo_6');
     }
@@ -161,6 +204,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_informations_display_without_duplicates()
     {
         // お知らせの表示に重複がないか確認
+        $this->actingAs($this->user);
         $response = $this->get('/users');
         $contents = $response->getContent();
         for ($i = 1; $i <= 5; $i++) {
@@ -175,6 +219,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_informations_sorted_by_updated_at_desc()
     {
         // お知らせが降順でソートされているか確認
+        $this->actingAs($this->user);
         for ($i = 1; $i <= 5; $i++) {
             $expectedInfoTitles[$i] = "testInfo_$i";
         }
@@ -188,6 +233,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_courses_display()
     {
         // コース一覧にコースが表示されているか確認
+        $this->actingAs($this->user);
         $response = $this->get('/users');
         for ($i = 1; $i <= 3; $i++) {
             $response->assertSee("testCourse_$i");
@@ -200,6 +246,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_courses_detailed_view()
     {
         // コース詳細への画面遷移の確認
+        $this->actingAs($this->user);
         for ($i = 1; $i <= 3; $i++) {
             $response = $this->get("/users/contents/" . 190000 + $i);
             $response->assertSee("testCourse_$i");
@@ -212,6 +259,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_courses_display_without_duplicates()
     {
         // コース一覧に重複がないか確認
+        $this->actingAs($this->user);
         $response = $this->get('/users');
         $contents = $response->getContent();
         for ($i = 1; $i <= 3; $i++) {
@@ -226,6 +274,7 @@ class UsersTest extends TestCase
     public function test_users_get_ok_courses_sorted_by_updated_at_desc()
     {
         // コースが昇順でソートされているか確認
+        $this->actingAs($this->user);
         for ($i = 1; $i <= 3; $i++) {
             $expectedInfoTitles[$i] = "testCourse_$i";
         }
