@@ -7,6 +7,7 @@ use App\Http\Requests\UpdateInformationRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
 use App\Models\Group;
+use Illuminate\View\View;
 use App\Models\User;
 
 class InformationController extends Controller
@@ -15,7 +16,7 @@ class InformationController extends Controller
      * Display a listing of the resource.
      */
 
-    private function getAdminId()
+    private function getAdminId() :int
     {
         return Auth::guard('admin')->user()->id;
     }
@@ -25,7 +26,7 @@ class InformationController extends Controller
         return Auth::user();
     }
 
-    public function index()
+    public function index(): View
     {
         $admin_id = $this->getAdminId();
         $informations = Information::where('admin_id', $admin_id)->orderByDesc('updated_at')->get();
@@ -36,7 +37,7 @@ class InformationController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $groups = Group::orderByDesc('id')->get();
         $adminUser = $this->getCurrentUser();
@@ -60,7 +61,7 @@ class InformationController extends Controller
         return redirect()->route('admin.informations.index')->with('message', 'お知らせを登録しました');
     }
 
-    public function adminShow(Information $information)
+    public function adminShow(Information $information): View
     {
         $adminUser = $this->getCurrentUser();
         return view('admin.informations.show', compact('adminUser', 'information'));
@@ -69,7 +70,7 @@ class InformationController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Information $information)
+    public function edit(Information $information): View
     {
         $groups = Group::orderByDesc('id')->get();
         $info_groups = $information->groups;
@@ -102,19 +103,20 @@ class InformationController extends Controller
         return redirect()->route('admin.informations.index')->with('danger', $information->title . 'を削除しました');
     }
 
-    public function list()
-    {
- //ユーザーのお知らせ一覧画面
-        $user = $this->getCurrentUser();
-        $groups = $user->groups ?? collect();
-        $informations = collect();
-        foreach ($groups as $group) {
-            $informations = $informations->concat($group->informations);
-        }
-        $informations = $informations->unique('id')->sortByDesc('updated_at');
-        return view('users.informations.index', compact('informations', 'user'));
-    }
-    public function show(Information $information)
+public function list(): View
+{
+    $user = $this->getCurrentUser();
+
+    $informations = $user->groups()->with('informations')->get()
+        ->pluck('informations')
+        ->flatten()
+        ->unique('id')
+        ->sortByDesc('updated_at');
+
+    return view('users.informations.index', compact('informations', 'user'));
+}
+
+    public function show(Information $information): View
     {
         $user = $this->getCurrentUser();
         return view('users.informations.show', compact('information', 'user'));
