@@ -10,13 +10,19 @@ use App\Models\Admin;
 use App\Models\AdminLogs;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
+
+
+
 
 class AdminManagementController extends Controller
 {
     /**
      * Get the authenticated admin user.
      */
-    private function getAdminUser()
+    private function getAdminUser(): ?Admin
     {
         return Auth::user();
     }
@@ -24,7 +30,7 @@ class AdminManagementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): View
     {
         $adminUser = $this->getAdminUser();
         $admins = Admin::all();
@@ -36,7 +42,7 @@ class AdminManagementController extends Controller
     /**
      * 検索機能
      */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $search = $request->input('name');
 
@@ -51,7 +57,7 @@ class AdminManagementController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): view
     {
         $adminUser = $this->getAdminUser();
         return view('admin.admin-management.create', compact('adminUser'));
@@ -60,7 +66,7 @@ class AdminManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreAdminRequest $request)
+    public function store(StoreAdminRequest $request): RedirectResponse
     {
 
         Admin::create([
@@ -75,7 +81,7 @@ class AdminManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit()
+    public function edit(): View
     {
         $adminUser = $this->getAdminUser();
         return view('admin.admin-management.edit', compact('adminUser'));
@@ -84,7 +90,7 @@ class AdminManagementController extends Controller
     /**
      * パスワードの変更
      */
-    public function password(Admin $admin)
+    public function password(Admin $admin): View
     {
         $adminUser = $this->getAdminUser();
         return view('admin.admin-management.password', compact('admin', 'adminUser'));
@@ -93,7 +99,7 @@ class AdminManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function update(UpdateAdminRequest $request, Admin $admin)
+    public function update(UpdateAdminRequest $request, Admin $admin): RedirectResponse
     {
         $admin->update([
             'username'     => $request->username,
@@ -106,7 +112,7 @@ class AdminManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeAdminPassword(AdminPasswordRequest $request, Admin $admin)
+    public function changeAdminPassword(AdminPasswordRequest $request, Admin $admin): RedirectResponse
     {
 
         if (!Hash::check($request->password, $admin->password)) {
@@ -123,7 +129,7 @@ class AdminManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Admin $admin)
+    public function destroy(Admin $admin): RedirectResponse
     {
         $admin->delete();
         return redirect()->route('admin.admin-management.index')->with('danger', $admin->username . 'を削除しました');
