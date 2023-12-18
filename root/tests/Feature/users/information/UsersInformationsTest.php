@@ -4,7 +4,6 @@ namespace Tests\Feature\Users\Information;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Group;
@@ -22,9 +21,9 @@ class UsersInformationsTest extends TestCase
         parent::setUp();
 
         $this->user = User::factory()->create([
-            'username' => 'testUser',
-            'password' => Hash::make('testUser'),
-            'mail_address' => 'testUser@user.com',
+            'username' => 'testInfo',
+            'password' => Hash::make('testInfo'),
+            'mail_address' => 'testInfo@test.com',
         ]);
     }
 
@@ -33,6 +32,7 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok()
     {
+        // ユーザーがログインして一覧を取得するリクエストを作成
         $response = $this->actingAs($this->user)->get(route('users.informations.list'));
 
         $response->assertStatus(200);
@@ -43,10 +43,10 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_unauthenticated()
     {
-        Auth::logout();
-
+        // ユーザーがゲスト状態（ログアウトの状態）で一覧を取得する
         $response = $this->get(route('users.informations.list'));
 
+        // ログイン画面にリダイレクトされるか確認
         $response->assertStatus(302)->assertRedirect(route('users.login.index'));
     }
 
@@ -55,26 +55,20 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_get_informations()
     {
-        $user = User::factory()->create([
-            'username' => 'testInfo',
-            'password' => 'testInfo',
-            'mail_address' => 'testInfo@test.com',
-        ]);
+        // テスト用のグループを作成し、ユーザーと関連付ける
+        $group = Group::factory()->create(['group_name' => 'testGroup' ]);
+        $this->user->groups()->attach($group);
 
-        $group = Group::factory()->create(['group_name' => 'testInfo', ]);
-
+        // テスト用のお知らせを作成し、グループと関連付ける
         $information = Information::factory()->create([
             'title' => 'testInfo',
             'text' => 'testInfo',
-            'admin_id' => 1,
+            'admin_id' => 120001,
         ]);
-
         $group->informations()->attach($information);
 
-        Auth::login($user);
-
-        $response = $this->get(route('users.informations.list'));
-
+        // お知らせの一覧を取得し、特定のお知らせが表示されていることを確認する
+        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
         $response->assertStatus(200)->assertSee('testInfo');
     }
 
@@ -83,38 +77,25 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_sort()
     {
-        $user = User::factory()->create([
-            'username' => 'testInfo',
-            'password' => Hash::make('testInfo'),
-            'mail_address' => 'testInfo@test.com',
-        ]);
+        // テスト用のグループを作成し、ユーザーと関連付ける
+        $group = Group::factory()->create(['group_name' => 'testGroup']);
+        $this->user->groups()->attach($group);
 
-        Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 1,
-            'updated_at' => now()->subDays(3),
-        ]);
+         // 3つのお知らせを作成し、更新日時を設定してグループと関連付ける
+        for ($i = 1; $i <= 3; $i++)
+        {
+            $information = Information::factory()->create([
+                'title' => 'Information' . $i,
+                'text' => 'InformationText',
+                'admin_id' => 120001,
+                'updated_at' => now()->subDays($i),
+            ]);
+            $group->informations()->attach($information->id);
+        }
 
-        Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 1,
-            'updated_at' => now()->subDays(2),
-        ]);
-
-        Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 1,
-            'updated_at' => now()->subDays(1),
-        ]);
-
-        Auth::login($user);
-
-        $response = $this->get(route('users.informations.list', ['sort' => 'updated_at']));
-
-        $response->assertStatus(200)->assertSeeInOrder(['testInfo']);
+        // お知らせの一覧を取得し、更新日時の順にお知らせが並んでいるか確認
+        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
+        $response->assertSeeInOrder(['Information1', 'Information2' ,'Information3']);
     }
 
     /**
@@ -122,32 +103,25 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_no_duplicates()
     {
-        Information::factory()->create([
-            'title' => 'testInfo1',
-            'text' => 'testInfo1',
-            'admin_id' => 1,
-        ]);
+        // 2つのグループを作成し、ユーザーをそれぞれに関連付ける
+        for ($i = 1; $i <= 2; $i++)
+        {
+            $group = Group::factory()->create(['group_name' => 'testGroup' . $i]);
+            $this->user->groups()->attach($group->id);
 
-        Information::factory()->create([
-            'title' => 'testInfo2',
-            'text' => 'testInfo2',
-            'admin_id' => 1,
-        ]);
+            // お知らせを作成し、各グループに関連付ける
+            $information = Information::factory()->create([
+                'title' => 'Information',
+                'text' => 'InformationText',
+                'admin_id' => 120001,
+            ]);
+            $group->informations()->attach($information->id);
+        }
 
-        Information::factory()->create([
-            'title' => 'testInfo3',
-            'text' => 'testInfo3',
-            'admin_id' => 1,
-        ]);
-
-        Auth::login($this->user);
-
-        $response = $this->get(route('users.informations.list'));
-
-        $response->assertStatus(200)
-            ->assertDontSee('testInfo1')
-            ->assertDontSee('testInfo2')
-            ->assertDontSee('testInfo3');
+        // お知らせの一覧を取得し、同じお知らせが重複しないことを確認
+        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
+        $response->assertSee('Information');
+        $this->assertEquals(2, substr_count($response->getContent(), 'Information'));
     }
 
 
@@ -155,23 +129,15 @@ class UsersInformationsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_informations_show_get_ok()
+    public function test_users_informations_show_get_ok_()
     {
-        $user = User::factory()->create([
-            'username' => 'testInfo',
-            'password' => Hash::make('testInfo'),
-            'mail_address' => 'testInfo@test.com',
-        ]);
-
         $information = Information::factory()->create([
             'title' => 'testInfo',
             'text' => 'testInfo',
-            'admin_id' => $user->id,
+            'admin_id' => 1,
         ]);
 
-        Auth::login($user);
-
-        $response = $this->get(route('users.informations.show', $information));
+        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information));
 
         //レスポンスが成功し、指定したテキストを含むことを確認
         $response->assertStatus(200)->assertSee('testInfo');
