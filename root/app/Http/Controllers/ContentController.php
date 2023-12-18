@@ -11,13 +11,16 @@ use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\View\View;
+use Illuminate\Http\JsonResponse;
+use Illuminate\Http\RedirectResponse;
 
 class ContentController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index($course)
+    public function index(int $course): View
     {
         $courseTitle = Course::select('title')->where('id', $course)->get();
         $contents = Content::where('course_id', $course)->orderby('position')->get();
@@ -28,7 +31,7 @@ class ContentController extends Controller
     /**
      * 並び替え
      */
-    public function sort(Request $request)
+    public function sort(Request $request): JsonResponse
     {
         $positions = $request->input('positions');
 
@@ -45,7 +48,7 @@ class ContentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create($course)
+    public function create(int $course): View
     {
         $courses = Course::all();
         $adminUser = Auth::user();
@@ -55,7 +58,7 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContentRequest $request, $course)
+    public function store(StoreContentRequest $request, int $course): RedirectResponse
     {
         $user = Auth::user();
 
@@ -76,7 +79,7 @@ class ContentController extends Controller
     /**
      * show
      */
-    public function show(Content $content)
+    public function show(Content $content):View
     {
         $admin = $content->admin;
         $adminUser = Auth::user();
@@ -87,7 +90,7 @@ class ContentController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Content $content)
+    public function edit(Content $content): View
     {
         $courses = Course::all();
         $adminUser = Auth::user();
@@ -97,7 +100,7 @@ class ContentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateContentRequest $request, Content $content)
+    public function update(UpdateContentRequest $request, Content $content): RedirectResponse
     {
         $course = $content->course_id;
 
@@ -118,7 +121,7 @@ class ContentController extends Controller
     /**
      * 複製
      */
-    public function duplicate($content)
+    public function duplicate(int $content): RedirectResponse
     {
         $original = Content::findOrFail($content);
         $newContent = new Content();
@@ -132,7 +135,7 @@ class ContentController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Content $content)
+    public function destroy(Content $content): RedirectResponse
     {
         $course = $content->course_id;
         $content->delete();
@@ -140,7 +143,7 @@ class ContentController extends Controller
                          ->with('danger', $content->title . 'を削除しました');
     }
 
-    public function list(Course $course)
+    public function list(Course $course): View
     {
  //コンテンツ一覧画面
         $user = Auth::user();
@@ -149,7 +152,7 @@ class ContentController extends Controller
 
         return view('users.contents.index', compact('contents', 'user', 'course_title'));
     }
-    public function view(Content $content)
+    public function view(Content $content): View
     {
  //コンテンツ詳細画面
         $user = Auth::user();
@@ -157,7 +160,7 @@ class ContentController extends Controller
         return view('users.contents.show', compact('content', 'user', 'title'));
     }
 
-    public function record(StoreContentLogRequest $request, Content $content)
+    public function record(StoreContentLogRequest $request, Content $content): RedirectResponse
     {
         $user = Auth::user();
         $completed = $request->input('log');
