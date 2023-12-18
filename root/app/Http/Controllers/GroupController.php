@@ -9,13 +9,15 @@ use App\Models\Course;
 use App\Models\Group;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class GroupController extends Controller
 {
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $groups = Group::all();
         $adminUser = Auth::user();
@@ -25,7 +27,7 @@ class GroupController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $courses = Course::all();
         $users = User::all();
@@ -36,7 +38,7 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGroupRequest $request)
+    public function store(StoreGroupRequest $request): RedirectResponse
     {
         Group::create([
             'group_name' => $request->group_name,
@@ -56,7 +58,7 @@ class GroupController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(Group $group)
+    public function show(Group $group): View
     {
         $adminUser = Auth::user();
         return view('admin.groups.show', compact('group', 'adminUser'));
@@ -65,7 +67,7 @@ class GroupController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(Group $group, Request $request)
+    public function edit(Group $group, Request $request): View
     {
         $courses = Course::all();
         $users = User::all();
@@ -84,7 +86,7 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGroupRequest $request, Group $group)
+    public function update(UpdateGroupRequest $request, Group $group): RedirectResponse
     {
         $group->update([
             'group_name' => $request->group_name,
@@ -103,7 +105,7 @@ class GroupController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Group $group)
+    public function destroy(Group $group): RedirectResponse
     {
         $group->delete();
         return redirect()->route('admin.groups.index')->with('danger', $group->group_name . 'を削除しました');
