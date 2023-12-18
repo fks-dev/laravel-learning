@@ -32,7 +32,7 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok()
     {
-        // ユーザーがログインして一覧を取得するリクエストを作成
+        // ユーザーがログインして一覧を取得する
         $response = $this->actingAs($this->user)->get(route('users.informations.list'));
 
         $response->assertStatus(200);
@@ -56,7 +56,7 @@ class UsersInformationsTest extends TestCase
     public function test_users_informations_get_ok_get_informations()
     {
         // テスト用のグループを作成し、ユーザーと関連付ける
-        $group = Group::factory()->create(['group_name' => 'testGroup' ]);
+        $group = Group::factory()->create(['group_name' => 'testGroup']);
         $this->user->groups()->attach($group);
 
         // テスト用のお知らせを作成し、グループと関連付ける
@@ -103,25 +103,24 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_no_duplicates()
     {
-        // 2つのグループを作成し、ユーザーをそれぞれに関連付ける
+        //テスト用のお知らせを作成
+        $information = Information::factory()->create([
+            'title' => 'Information',
+            'text' => 'InformationText',
+            'admin_id' => 120001,
+        ]);
+
+        // 2つのグループを作成し、ユーザー・グループに関連付ける
         for ($i = 1; $i <= 2; $i++)
         {
             $group = Group::factory()->create(['group_name' => 'testGroup' . $i]);
             $this->user->groups()->attach($group->id);
-
-            // お知らせを作成し、各グループに関連付ける
-            $information = Information::factory()->create([
-                'title' => 'Information',
-                'text' => 'InformationText',
-                'admin_id' => 120001,
-            ]);
-            $group->informations()->attach($information->id);
+            $group->informations()->syncWithoutDetaching([$information->id]);
         }
 
-        // お知らせの一覧を取得し、同じお知らせが重複しないことを確認
+        // お知らせの一覧を取得し、重複しないことを確認
         $response = $this->actingAs($this->user)->get(route('users.informations.list'));
-        $response->assertSee('Information');
-        $this->assertEquals(2, substr_count($response->getContent(), 'Information'));
+        $this->assertEquals(1, substr_count($response->getContent(), 'Information'));
     }
 
 
