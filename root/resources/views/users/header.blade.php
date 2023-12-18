@@ -5,6 +5,9 @@
             <ul class="nav me-2 text-white">
                 @isset($user)
                 <li class="nav-item border-end p-1 d-flex align-items-center">ようこそ{{ $user->username }}さん</li>
+                <li class="nav-item border-end p-1 d-flex align-items-center">
+                    <a class="btn btn-primary" href="{{ route('users.messages.index') }}">メッセージ</a>
+                </li>
                 <li id="setting" class="nav-item border-end p-1 d-flex align-items-center">
                     <a class="btn btn-primary" href="{{ route('users.password.index') }}">パスワード変更</a>
                 </li>

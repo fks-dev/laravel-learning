@@ -3,6 +3,7 @@
 use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\DB;
 
 return new class extends Migration
 {
@@ -20,6 +21,7 @@ return new class extends Migration
             $table->longText('exception');
             $table->datetime('failed_at')->useCurrent();
         });
+        DB::statement('ALTER TABLE failed_jobs AUTO_INCREMENT = '.config('database.auto_increment.failed_jobs'));
     }
 
     /**
