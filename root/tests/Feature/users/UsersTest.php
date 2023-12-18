@@ -20,6 +20,7 @@ class UsersTest extends TestCase
 
         // ユーザーのテストデータを作成
         $user = User::factory()->create([
+            'id' => 110001,
             'username' => 'testUser',
             'password' => Hash::make('testUser'),
             'mail_address' => 'testUsers@User.com'
@@ -30,6 +31,7 @@ class UsersTest extends TestCase
 
         for ($i = 1; $i <= 2; $i++) {
             $group = Group::factory()->create([
+                'id' => 180000 + $i,
                 'group_name' => "testGroup_$i"
             ]);
             $groups[] = $group;
@@ -40,6 +42,7 @@ class UsersTest extends TestCase
 
         for ($i = 1; $i <= 6; $i++) {
             $info = Information::factory()->create([
+                'id' => 170000 + $i,
                 'title' => "testInfo_$i",
                 'text' => "testInfo_$i",
                 'admin_id' => 120001,
@@ -53,6 +56,7 @@ class UsersTest extends TestCase
 
         for ($i = 1; $i <= 3; $i++) {
             $course = Course::factory()->create([
+                'id' => 190000 + $i,
                 'title' => "testCourse_$i",
                 'introduction' => "testCourse_$i",
                 'remarks' => "testCourse_$i"
@@ -124,7 +128,7 @@ class UsersTest extends TestCase
     {
         // お知らせ詳細への画面遷移の確認
         for ($i = 1; $i <= 5; $i++) {
-            $response = $this->get("/users/informations/$i");
+            $response = $this->get("/users/informations/" . 170000 + $i);
             $response->assertSee("testInfo_$i");
         }
     }
@@ -197,7 +201,7 @@ class UsersTest extends TestCase
     {
         // コース詳細への画面遷移の確認
         for ($i = 1; $i <= 3; $i++) {
-            $response = $this->get("/users/contents/$i");
+            $response = $this->get("/users/contents/" . 190000 + $i);
             $response->assertSee("testCourse_$i");
         }
     }
