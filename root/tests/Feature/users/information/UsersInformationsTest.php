@@ -27,6 +27,16 @@ class UsersInformationsTest extends TestCase
         ]);
     }
 
+    // お知らせのテストデータを作成
+    private function createTestInformations()
+    {
+        return Information::factory()->create([
+            'title' => 'testInfo',
+            'text' => 'testInfo',
+            'admin_id' => 120001,
+        ]);
+    }
+
     /**
      * @test
      */
@@ -59,12 +69,8 @@ class UsersInformationsTest extends TestCase
         $group = Group::factory()->create(['group_name' => 'testGroup']);
         $this->user->groups()->attach($group);
 
-        // テスト用のお知らせを作成し、グループと関連付ける
-        $information = Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 120001,
-        ]);
+        // お知らせとグループを関連付ける
+        $information = $this->createTestInformations();
         $group->informations()->attach($information);
 
         // お知らせの一覧を取得し、特定のお知らせが表示されていることを確認する
@@ -132,12 +138,8 @@ class UsersInformationsTest extends TestCase
         $group = Group::factory()->create(['group_name' => 'testGroup']);
         $this->user->groups()->attach($group);
 
-        // テスト用のお知らせを作成し、グループと関連付ける
-        $information = Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 120001,
-        ]);
+        // お知らせとグループを関連付ける
+        $information = $this->createTestInformations();
         $group->informations()->attach($information);
 
         // ユーザーがログインして詳細を取得する
@@ -145,22 +147,19 @@ class UsersInformationsTest extends TestCase
 
         $response->assertStatus(200);
     }
+
     /**
      * @test
      */
     public function test_users_informations_get_ok_informations_details()
     {
-         // テスト用のグループを作成し、ユーザーと関連付ける
-         $group = Group::factory()->create(['group_name' => 'testGroup']);
-         $this->user->groups()->attach($group);
+        // テスト用のグループを作成し、ユーザーと関連付ける
+        $group = Group::factory()->create(['group_name' => 'testGroup']);
+        $this->user->groups()->attach($group);
 
-         // テスト用のお知らせを作成し、グループと関連付ける
-         $information = Information::factory()->create([
-             'title' => 'testInfo',
-             'text' => 'testInfo',
-             'admin_id' => 120001,
-         ]);
-         $group->informations()->attach($information);
+        // お知らせとグループを関連付ける
+        $information = $this->createTestInformations();
+        $group->informations()->attach($information);
 
         // お知らせの詳細を取得し、特定のお知らせが表示されていることを確認する
         $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
@@ -176,12 +175,8 @@ class UsersInformationsTest extends TestCase
         $group = Group::factory()->create(['group_name' => 'testGroup']);
         $this->user->groups()->attach($group);
 
-        // テスト用のお知らせを作成し、グループと関連付ける
-        $information = Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 120001,
-        ]);
+        // お知らせとグループを関連付ける
+        $information = $this->createTestInformations();
         $group->informations()->attach($information);
 
         // ユーザーがゲスト状態（ログアウトの状態）で詳細を取得する
@@ -200,12 +195,8 @@ class UsersInformationsTest extends TestCase
         $group = Group::factory()->create(['group_name' => 'testGroup']);
         $this->user->groups()->attach($group);
 
-        // テスト用のお知らせを作成し、グループと関連付ける
-        $information = Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
-            'admin_id' => 120001,
-        ]);
+        // お知らせとグループを関連付ける
+        $information = $this->createTestInformations();
         $group->informations()->attach($information);
 
         // お知らせの詳細を取得し、viewが正しく表示されることを確認する
