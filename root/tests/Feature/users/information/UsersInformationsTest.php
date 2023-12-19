@@ -31,8 +31,8 @@ class UsersInformationsTest extends TestCase
     private function createTestInformations()
     {
         return Information::factory()->create([
-            'title' => 'testInfo',
-            'text' => 'testInfo',
+            'title' => 'Information',
+            'text' => 'InformationText',
             'admin_id' => 120001,
         ]);
     }
@@ -75,7 +75,7 @@ class UsersInformationsTest extends TestCase
 
         // お知らせの一覧を取得し、特定のお知らせが表示されていることを確認する
         $response = $this->actingAs($this->user)->get(route('users.informations.list'));
-        $response->assertStatus(200)->assertSee('testInfo');
+        $response->assertStatus(200)->assertSee('Information');
     }
 
     /**
@@ -109,14 +109,9 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_no_duplicates()
     {
-        // テスト用のお知らせを作成
-        $information = Information::factory()->create([
-            'title' => 'Information',
-            'text' => 'InformationText',
-            'admin_id' => 120001,
-        ]);
+        $information = $this->createTestInformations();
 
-        // 2つのグループを作成し、ユーザー・グループに関連付ける
+        // 2つのグループを作成し、ユーザー・お知らせに関連付ける
         for ($i = 1; $i <= 2; $i++)
         {
             $group = Group::factory()->create(['group_name' => 'testGroup' . $i]);
@@ -163,7 +158,7 @@ class UsersInformationsTest extends TestCase
 
         // お知らせの詳細を取得し、特定のお知らせが表示されていることを確認する
         $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
-        $response->assertSee('testInfo');
+        $response->assertSee(['Information', 'InformationText']);
     }
 
     /**
@@ -201,7 +196,7 @@ class UsersInformationsTest extends TestCase
 
         // お知らせの詳細を取得し、viewが正しく表示されることを確認する
         $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
-        $response->assertViewIs('users.informations.show')->assertSee('testInfo');
+        $response->assertViewIs('users.informations.show')->assertSee(['Information', 'InformationText']);
     }
 
 }
