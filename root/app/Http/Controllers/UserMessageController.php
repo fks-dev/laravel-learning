@@ -13,6 +13,8 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\Admin;
+use Illuminate\Contracts\View\View;
+use Illuminate\Http\RedirectResponse;
 
 class UserMessageController extends Controller
 {
@@ -21,7 +23,7 @@ class UserMessageController extends Controller
     /**
      * ログインユーザーのIDを取得
      */
-    private function getUserId()
+    private function getUserId(): int
     {
         return Auth::guard('web')->user()->id;
     }
@@ -37,7 +39,7 @@ class UserMessageController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(Request $request)
+    public function index(Request $request): view
     {
         $userId = $this->getUserId();
         $messages = AdminMessage::withTrashed()
@@ -54,7 +56,7 @@ class UserMessageController extends Controller
     /**
      * 下書き一覧
      */
-    public function draft(Request $request)
+    public function draft(Request $request): view
     {
         $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
@@ -69,7 +71,7 @@ class UserMessageController extends Controller
     /**
      * 送信済み一覧
      */
-    public function sent(Request $request)
+    public function sent(Request $request): view
     {
         $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
@@ -84,7 +86,7 @@ class UserMessageController extends Controller
     /**
      * ゴミ箱
      */
-    public function dust(Request $request)
+    public function dust(Request $request): view
     {
         $userId = $this->getUserId();
         $userMessages = UserMessage::onlyTrashed()->where('user_id', $userId)->get();
@@ -112,7 +114,7 @@ class UserMessageController extends Controller
     }
 
     // 復元
-    public function restore($message)
+    public function restore(int $message): RedirectResponse
     {
         $record = UserMessage::withTrashed()->find($message);
         $record->restore();
@@ -122,7 +124,7 @@ class UserMessageController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(Request $request)
+    public function create(Request $request): view
     {
         $source = $request->input('source');
         if ($source === 'draft') {
@@ -140,9 +142,9 @@ class UserMessageController extends Controller
     }
 
     /**
-     * Store a newly created resource in storage.
+     * Store a newly created resource in storage.f
      */
-    public function store(StoreMessageRequest $request)
+    public function store(StoreMessageRequest $request): RedirectResponse
     {
         $userId = $this->getUserId();
 
@@ -167,7 +169,7 @@ class UserMessageController extends Controller
     /**
      * Display the specified resource.
      */
-    public function show(AdminMessage $message, Request $request)
+    public function show(AdminMessage $message, Request $request): view
     {
         $source = $request->input('source');
         if ($source === 'dust') {
@@ -182,7 +184,7 @@ class UserMessageController extends Controller
         return view('users.messages.show', compact('message', 'admins', 'source', 'currentPage', 'backRoute'));
     }
 
-    public function sentShow(UserMessage $message, Request $request)
+    public function sentShow(UserMessage $message, Request $request): view
     {
         $source = true;
         $backRoute = route('users.messages.sent');
@@ -194,7 +196,7 @@ class UserMessageController extends Controller
     /**
      * 返信画面
      */
-    public function reply(AdminMessage $message)
+    public function reply(AdminMessage $message): view
     {
         $admin = $message->admin;
         return view('users.messages.reply', compact('message', 'admin'));
@@ -203,7 +205,7 @@ class UserMessageController extends Controller
     /**
      * 返信登録
      */
-    public function replyStore(StoreMessageRequest $request, $message)
+    public function replyStore(StoreMessageRequest $request, $message): RedirectResponse
     {
         $userId = $this->getUserId();
 
@@ -233,7 +235,7 @@ class UserMessageController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(UserMessage $message)
+    public function edit(UserMessage $message): view
     {
         $admins = $this->getAdminAll();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
@@ -250,7 +252,7 @@ class UserMessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMessageRequest $request, UserMessage $message)
+    public function update(UpdateMessageRequest $request, UserMessage $message): RedirectResponse
     {
         $userId = $this->getUserId();
 
@@ -281,7 +283,7 @@ class UserMessageController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(UserMessage $message)
+    public function destroy(UserMessage $message): RedirectResponse
     {
         $message->delete();
         return Redirect::back()->with('danger', $message->title . 'を削除しました');
@@ -290,7 +292,7 @@ class UserMessageController extends Controller
     /**
      * 非表示
      */
-    public function hidden(AdminMessage $message)
+    public function hidden(AdminMessage $message): RedirectResponse
     {
         $hidden = AdminMessage::find($message->id);
 
