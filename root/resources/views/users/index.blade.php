@@ -65,11 +65,11 @@
                                     <a class="course-link course-link-hover d-flex justify-content-between align-items-center container-fluid" href="{{ route('users.contents.index', $course) }}" >
                                     <div>
                                         <h5>{{ $course->title }}</h5>
-                                        学習開始日：{{ $course->getLogFirst($user)}}
-                                        最終学習日：{{ $course->getLogLast($user)}}
+                                        学習開始日：{{ $course->logFirst }}
+                                        最終学習日：{{ $course->logLast }}
                                     </div>
                                     <div class="badge bg-danger fs-5">
-                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">{{ $course->getResidue($user) }}</span>
+                                        残り <span class="bg-white text-danger  rounded-pill px-2 fs-6">{{ $course->residue }}</span>
                                     </div>
                                     </a>
                                 </li>
