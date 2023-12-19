@@ -7,8 +7,8 @@ use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
+use App\Models\Admin;
 use App\Models\UserLogin;
-use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -18,7 +18,7 @@ use Illuminate\Http\JsonResponse;
 
 class UserManagementController extends Controller
 {
-    private function getLoginUser(): AuthUser
+    private function getLoginUser(): User|Admin
     {
         return Auth::user();
     }
