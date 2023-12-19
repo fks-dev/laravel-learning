@@ -103,7 +103,7 @@ class UsersInformationsTest extends TestCase
      */
     public function test_users_informations_get_ok_no_duplicates()
     {
-        //テスト用のお知らせを作成
+        // テスト用のお知らせを作成
         $information = Information::factory()->create([
             'title' => 'Information',
             'text' => 'InformationText',
@@ -123,22 +123,94 @@ class UsersInformationsTest extends TestCase
         $this->assertEquals(1, substr_count($response->getContent(), 'Information'));
     }
 
+    /**
+     * @test
+     */
+    public function test_users_informations_get_ok_details()
+    {
+        // テスト用のグループを作成し、ユーザーと関連付ける
+        $group = Group::factory()->create(['group_name' => 'testGroup']);
+        $this->user->groups()->attach($group);
 
+        // テスト用のお知らせを作成し、グループと関連付ける
+        $information = Information::factory()->create([
+            'title' => 'testInfo',
+            'text' => 'testInfo',
+            'admin_id' => 120001,
+        ]);
+        $group->informations()->attach($information);
+
+        // ユーザーがログインして詳細を取得する
+        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
+
+        $response->assertStatus(200);
+    }
+    /**
+     * @test
+     */
+    public function test_users_informations_get_ok_informations_details()
+    {
+         // テスト用のグループを作成し、ユーザーと関連付ける
+         $group = Group::factory()->create(['group_name' => 'testGroup']);
+         $this->user->groups()->attach($group);
+
+         // テスト用のお知らせを作成し、グループと関連付ける
+         $information = Information::factory()->create([
+             'title' => 'testInfo',
+             'text' => 'testInfo',
+             'admin_id' => 120001,
+         ]);
+         $group->informations()->attach($information);
+
+        // お知らせの詳細を取得し、特定のお知らせが表示されていることを確認する
+        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
+        $response->assertSee('testInfo');
+    }
 
     /**
      * @test
      */
-    public function test_users_informations_show_get_ok_()
+    public function test_users_informations_get_ok_unauthenticated_details()
     {
+        // テスト用のグループを作成し、ユーザーと関連付ける
+        $group = Group::factory()->create(['group_name' => 'testGroup']);
+        $this->user->groups()->attach($group);
+
+        // テスト用のお知らせを作成し、グループと関連付ける
         $information = Information::factory()->create([
             'title' => 'testInfo',
             'text' => 'testInfo',
-            'admin_id' => 1,
+            'admin_id' => 120001,
         ]);
+        $group->informations()->attach($information);
 
-        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information));
+        // ユーザーがゲスト状態（ログアウトの状態）で詳細を取得する
+        $response = $this->get(route('users.informations.show', $information->id));
 
-        //レスポンスが成功し、指定したテキストを含むことを確認
-        $response->assertStatus(200)->assertSee('testInfo');
+        // ログイン画面にリダイレクトされるか確認
+        $response->assertStatus(302)->assertRedirect(route('users.login.index'));
     }
+
+    /**
+     * @test
+     */
+    public function test_users_informations_get_ok_information_detailed_view()
+    {
+        // テスト用のグループを作成し、ユーザーと関連付ける
+        $group = Group::factory()->create(['group_name' => 'testGroup']);
+        $this->user->groups()->attach($group);
+
+        // テスト用のお知らせを作成し、グループと関連付ける
+        $information = Information::factory()->create([
+            'title' => 'testInfo',
+            'text' => 'testInfo',
+            'admin_id' => 120001,
+        ]);
+        $group->informations()->attach($information);
+
+        // お知らせの詳細を取得し、viewが正しく表示されることを確認する
+        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
+        $response->assertViewIs('users.informations.show')->assertSee('testInfo');
+    }
+
 }
