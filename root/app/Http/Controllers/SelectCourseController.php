@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SelectCourseRequest;
 use App\Models\Course;
+use Illuminate\Contracts\View\View;
 
 class SelectCourseController extends Controller
 {
@@ -67,22 +68,26 @@ class SelectCourseController extends Controller
             'no_course_id' => 2,
         ],
     ];
-    public function index(SelectCourseRequest $request)
+
+    private int $q_id;
+    private string $answer;
+
+    public function index(SelectCourseRequest $request):view
     {
         $input_check = $request->has('q_id') && $request->has('answer');
         if ($input_check) {
-            $q_id = $request->input('q_id');
-            $answer = $request->input('answer');
+            $this->q_id = (int)$request->input('q_id');
+            $this->answer = (string)$request->input('answer');
         } else {
             $q = self::QUESTION[0]; //1問目の質問をviewに渡す
             return view('users.recommend.index', compact('q'));
         }
 
-        if (!isset(self::QUESTION[$q_id])) {
+        if (!isset(self::QUESTION[$this->q_id])) {
             abort(400);
         }
 
-        $next_q_id = self::QUESTION[$q_id][$answer] ?? null;
+        $next_q_id = (int)(self::QUESTION[$this->q_id][$this->answer] ?? null);
 
         //次の質問が存在するなら$qとしてviewに渡す
         if ($next_q_id) {
@@ -91,11 +96,11 @@ class SelectCourseController extends Controller
         }
 
         $course = null;
-        if ($answer === self::YES) {
-            $course = Course::find(self::QUESTION[$q_id]['yes_course_id']) ?? null;
+        if ($this->answer === self::YES) {
+            $course = Course::find((int)self::QUESTION[$this->q_id]['yes_course_id']) ?? null;
         }
-        if ($answer === self::NO) {
-            $course = Course::find(self::QUESTION[$q_id]['no_course_id']) ?? null;
+        if ($this->answer === self::NO) {
+            $course = Course::find((int)self::QUESTION[$this->q_id]['no_course_id']) ?? null;
         }
         if (isset($course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
             return view('users.recommend.answer', compact('course'));
