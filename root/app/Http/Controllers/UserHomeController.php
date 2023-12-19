@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\View\View;
-use Illuminate\Database\Eloquent\Collection;
+use Illuminate\Support\Collection;
 
 class UserHomeController extends Controller
 {
