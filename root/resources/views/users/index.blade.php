@@ -11,6 +11,12 @@
 <body>
     @include('users.header')
     <main >
+        @if (session('message'))
+        <div class="alert alert-success">
+            {{ session('message') }}
+        </div>
+        @endif
+
         <div class="container-md mt-4">
             <div class="card ">
                 <div class="card-header bg-success-subtitle text-success shadow-sm ">
