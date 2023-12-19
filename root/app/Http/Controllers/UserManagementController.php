@@ -7,14 +7,18 @@ use App\Http\Requests\UserPasswordRequest;
 use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
+use App\Models\Admin;
 use App\Models\UserLogin;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use Illuminate\View\View;
+use Illuminate\Http\RedirectResponse;
+use Illuminate\Http\JsonResponse;
 
 class UserManagementController extends Controller
 {
-    private function getLoginUser()
+    private function getLoginUser(): User|Admin
     {
         return Auth::user();
     }
@@ -22,7 +26,7 @@ class UserManagementController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index()
+    public function index(): View
     {
         $users = User::with('groups')->get();
         $logins = UserLogin::all();
@@ -33,7 +37,7 @@ class UserManagementController extends Controller
     }
 
     // ユーザ側のパスワード変更画面
-    public function userIndex()
+    public function userIndex(): View
     {
         $user = $this->getLoginUser();
         return view('users.passwordChange.index', compact('user'));
@@ -42,7 +46,7 @@ class UserManagementController extends Controller
     /**
      * 検索機能
      */
-    public function search(Request $request)
+    public function search(Request $request): JsonResponse
     {
         $search = $request->input('name');
 
@@ -58,7 +62,7 @@ class UserManagementController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create()
+    public function create(): View
     {
         $adminUser = $this->getLoginUser();
 
@@ -68,7 +72,7 @@ class UserManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUserMgmtRequest $request)
+    public function store(StoreUserMgmtRequest $request): RedirectResponse
     {
         User::create([
             'username'     => $request->username,
@@ -82,7 +86,7 @@ class UserManagementController extends Controller
     /**
      * Show the form for editing the specified resource.
      */
-    public function edit(User $user)
+    public function edit(User $user): View
     {
         $adminUser = $this->getLoginUser();
         return view('admin.user-management.edit', compact('user', 'adminUser'));
@@ -91,7 +95,7 @@ class UserManagementController extends Controller
     /**
      * パスワードの変更
      */
-    public function password(User $user)
+    public function password(User $user): View
     {
         $adminUser = $this->getLoginUser();
         return view('admin.user-management.password', compact('user', 'adminUser'));
@@ -100,7 +104,7 @@ class UserManagementController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateUserMgmtRequest $request, User $user)
+    public function update(UpdateUserMgmtRequest $request, User $user): RedirectResponse
     {
 
         $user->update([
@@ -114,7 +118,7 @@ class UserManagementController extends Controller
     /**
      * パスワードの更新
      */
-    public function changeUserPassword(UserPasswordRequest $request, User $user)
+    public function changeUserPassword(UserPasswordRequest $request, User $user): RedirectResponse
     {
         // ユーザー側のパスワード変更ボタン押下時のルート名
         $userRouteName = 'users.password.change';
@@ -143,7 +147,7 @@ class UserManagementController extends Controller
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(User $user)
+    public function destroy(User $user): RedirectResponse
     {
         $user->delete();
         return redirect()->route('admin.user-management.index')->with('danger', $user->username . 'を削除しました');
