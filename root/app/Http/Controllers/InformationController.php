@@ -8,6 +8,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
 use App\Models\Group;
 use Illuminate\View\View;
+use App\Models\Admin;
 use App\Models\User;
 
 class InformationController extends Controller
@@ -21,7 +22,7 @@ class InformationController extends Controller
         return Auth::guard('admin')->user()->id;
     }
 
-    private function getCurrentUser(): User
+    private function getCurrentUser(): Admin|User
     {
         return Auth::user();
     }
