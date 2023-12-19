@@ -188,6 +188,7 @@ Route::middleware('auth:web')->group(function () {
             Route::get('view/{content}', 'view')->name('.show');
             Route::post('view/{content}', 'record')->name('.record'); //閲覧履歴の記録
         });
+
         //お知らせ閲覧機能
         Route::prefix('informations')->name('.informations')
         ->controller(InformationController::class)->group(function () {
@@ -199,7 +200,7 @@ Route::middleware('auth:web')->group(function () {
         Route::prefix('password')->name('.password')
         ->controller(UserManagementController::class)->group(function () {
             Route::get('/', 'userIndex')->name('.index');
-            Route::post('/change/{user}', 'changeUserPassword')->name('.change');
+            Route::post('/{user}', 'changeUserPassword')->name('.change');
         });
 
         // おすすめ動画診断機能
