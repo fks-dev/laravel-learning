@@ -14,15 +14,12 @@ use Illuminate\View\View;
 use Illuminate\Http\JsonResponse;
 use Illuminate\Http\RedirectResponse;
 
-
-
-
 class AdminManagementController extends Controller
 {
     /**
      * Get the authenticated admin user.
      */
-    private function getAdminUser(): ?Admin
+    private function getAdminUser(): Admin
     {
         return Auth::user();
     }
