@@ -74,7 +74,7 @@ class SelectCourseController extends Controller
     private ?int $next_q_id = null;
     private ?Course $course = null;
 
-    public function index(SelectCourseRequest $request):view
+    public function index(SelectCourseRequest $request): view
     {
         $input_check = $request->has('q_id') && $request->has('answer');
         if ($input_check) {
@@ -89,7 +89,7 @@ class SelectCourseController extends Controller
             abort(400);
         }
 
-        $this->next_q_id = (int)(self::QUESTION[$this->q_id][$this->answer] ?? null);
+        $this->next_q_id = (self::QUESTION[$this->q_id][$this->answer] ?? null);
 
         //次の質問が存在するなら$qとしてviewに渡す
         if ($this->next_q_id) {
@@ -99,10 +99,10 @@ class SelectCourseController extends Controller
 
         $this->course = null;
         if ($this->answer === self::YES) {
-            $this->course = Course::find((int)self::QUESTION[$this->q_id]['yes_course_id']) ?? null;
+            $this->course = Course::find(self::QUESTION[$this->q_id]['yes_course_id']) ?? null;
         }
         if ($this->answer === self::NO) {
-            $this->course = Course::find((int)self::QUESTION[$this->q_id]['no_course_id']) ?? null;
+            $this->course = Course::find(self::QUESTION[$this->q_id]['no_course_id']) ?? null;
         }
         if (isset($this->course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
             return view('users.recommend.answer', compact('course'));
