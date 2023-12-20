@@ -105,7 +105,7 @@ class SelectCourseController extends Controller
             $this->course = Course::find(self::QUESTION[$this->q_id]['no_course_id']) ?? null;
         }
         if (isset($this->course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
-            return view('users.recommend.answer', compact('course'));
+            return view('users.recommend.answer', ['course' => $this->course]);
         } else {
             abort(400);
         }
