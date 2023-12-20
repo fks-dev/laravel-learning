@@ -10,7 +10,7 @@
 
 <body>
     @include('users.header')
-    <main >
+    <main>
         @if (session('message'))
         <div class="alert alert-success">
             {{ session('message') }}
