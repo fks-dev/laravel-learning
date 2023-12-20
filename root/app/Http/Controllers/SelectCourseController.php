@@ -89,7 +89,7 @@ class SelectCourseController extends Controller
             abort(400);
         }
 
-        $this->next_q_id = (self::QUESTION[$this->q_id][$this->answer] ?? null);
+        $this->next_q_id = self::QUESTION[$this->q_id][$this->answer] ?? null;
 
         //次の質問が存在するなら$qとしてviewに渡す
         if ($this->next_q_id) {
