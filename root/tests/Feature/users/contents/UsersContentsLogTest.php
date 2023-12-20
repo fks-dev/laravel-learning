@@ -72,7 +72,7 @@ class UsersContentsLogTest extends TestCase
         $response->assertRedirect(route('users.contents.index',190001));
     }
     //保存された閲覧記録が表示されている
-    public function test_users_contents_view_post_ok_display_created_log()
+    public function test_users_contents_view_get_display_created_log()
     {
         $this->login();
         $this->post('/users/contents/view/200001',[
@@ -101,7 +101,7 @@ class UsersContentsLogTest extends TestCase
         $this->assertTrue($log->created_at < $log->updated_at);
     }
     //更新された閲覧記録が表示されている
-    public function test_users_contents_view_post_ok_display_updated_log()
+    public function test_users_contents_view_get_ok_display_updated_log()
     {
         ContentsLog::create([
             'user_id' => 110001,

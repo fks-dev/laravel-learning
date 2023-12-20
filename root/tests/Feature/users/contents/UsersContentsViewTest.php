@@ -33,7 +33,7 @@ class UsersContentsViewTest extends TestCase
     }
 
     // users/contents/view/{content}にアクセスできる
-    public function test_users_contents_view_post_ok()
+    public function test_users_contents_view_get_ok()
     {
         $this->login();
         $response = $this->get('/users/contents/view/200001');
