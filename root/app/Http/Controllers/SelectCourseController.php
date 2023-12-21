@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Http\Requests\SelectCourseRequest;
 use App\Models\Course;
+use Illuminate\Contracts\View\View;
 
 class SelectCourseController extends Controller
 {
@@ -39,66 +40,72 @@ class SelectCourseController extends Controller
             'text' => "3問目です。3ですか？",
             self::YES => null,
             self::NO => null,
-            'yes_course_id' => 1,
-            'no_course_id' => 2,
+            'yes_course_id' => 190001,
+            'no_course_id' => 190002,
         ], [
             'q_id' => 4,
             'q_order' => 3,
             'text' => "3問目です。4ですか？",
             self::YES => null,
             self::NO => null,
-            'yes_course_id' => 1,
-            'no_course_id' => 2,
+            'yes_course_id' => 190001,
+            'no_course_id' => 190002,
         ], [
             'q_id' => 5,
             'q_order' => 3,
             'text' => "3問目です。5ですか？",
             self::YES => null,
             self::NO => null,
-            'yes_course_id' => 1,
-            'no_course_id' => 2,
+            'yes_course_id' => 190001,
+            'no_course_id' => 190002,
         ], [
             'q_id' => 6,
             'q_order' => 3,
             'text' => "3問目です。6ですか？",
             self::YES => null,
             self::NO => null,
-            'yes_course_id' => 1,
-            'no_course_id' => 2,
+            'yes_course_id' => 190001,
+            'no_course_id' => 190002,
         ],
     ];
-    public function index(SelectCourseRequest $request)
+
+    private int $q_id;
+    private string $answer;
+    private ?int $next_q_id = null;
+    private ?Course $course = null;
+
+    public function index(SelectCourseRequest $request): view
     {
         $input_check = $request->has('q_id') && $request->has('answer');
         if ($input_check) {
-            $q_id = $request->input('q_id');
-            $answer = $request->input('answer');
+            $this->q_id = (int)$request->input('q_id');
+            $this->answer = (string)$request->input('answer');
         } else {
             $q = self::QUESTION[0]; //1問目の質問をviewに渡す
             return view('users.recommend.index', compact('q'));
         }
 
-        if (!isset(self::QUESTION[$q_id])) {
+        if (!isset(self::QUESTION[$this->q_id])) {
             abort(400);
         }
 
-        $next_q_id = self::QUESTION[$q_id][$answer] ?? null;
+        $this->next_q_id = self::QUESTION[$this->q_id][$this->answer] ?? null;
 
         //次の質問が存在するなら$qとしてviewに渡す
-        if ($next_q_id) {
-            $q = self::QUESTION[$next_q_id];
+        if ($this->next_q_id) {
+            $q = self::QUESTION[$this->next_q_id];
             return view('users.recommend.index', compact('q'));
         }
 
-        $course = null;
-        if ($answer === self::YES) {
-            $course = Course::find(self::QUESTION[$q_id]['yes_course_id']) ?? null;
+        $this->course = null;
+        if ($this->answer === self::YES) {
+            $this->course = Course::find(self::QUESTION[$this->q_id]['yes_course_id']) ?? null;
         }
-        if ($answer === self::NO) {
-            $course = Course::find(self::QUESTION[$q_id]['no_course_id']) ?? null;
+        if ($this->answer === self::NO) {
+            $this->course = Course::find(self::QUESTION[$this->q_id]['no_course_id']) ?? null;
         }
-        if (isset($course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
-            return view('users.recommend.answer', compact('course'));
+        if (isset($this->course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
+            return view('users.recommend.answer', ['course' => $this->course]);
         } else {
             abort(400);
         }
