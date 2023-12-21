@@ -55,9 +55,9 @@ class UsersPasswordTest extends TestCase
     /**
      * @test
      */
-    public function test_users_password_post_ok_view()
+    public function test_users_password_post_ok_Redirect()
     {
-        // パスワード変更の動作確認
+        // パスワード変更後のリダイレクト先の確認
         $this->actingAs($this->user);
         $response = $this->post("/users/password/{$this->user->id}", [
             'password' => 'testUser',
@@ -65,5 +65,35 @@ class UsersPasswordTest extends TestCase
             'new_password_confirmation' => 'new_testUser',
         ]);
         $response->assertRedirect('/users');
+    }
+
+    /**
+     * @test
+     */
+    public function test_users_password_post_ok_change_success()
+    {
+        // パスワードが正しく変更されたか確認
+        $this->actingAs($this->user);
+        $response = $this->post("/users/password/{$this->user->id}", [
+            'password' => 'testUser',
+            'new_password' => 'new_testUser',
+            'new_password_confirmation' => 'new_testUser',
+        ]);
+        $this->assertTrue(Hash::check('new_testUser', $this->user->fresh()->password));
+    }
+
+    /**
+     * @test
+     */
+    public function test_users_password_post_ok_display_success_message()
+    {
+        // 「パスワードが変更されました」が表示されるか確認
+        $this->actingAs($this->user);
+        $response = $this->post("/users/password/{$this->user->id}", [
+            'password' => 'testUser',
+            'new_password' => 'new_testUser',
+            'new_password_confirmation' => 'new_testUser',
+        ]);
+        $response->assertSessionHas('message', 'パスワードが変更されました');
     }
 }
