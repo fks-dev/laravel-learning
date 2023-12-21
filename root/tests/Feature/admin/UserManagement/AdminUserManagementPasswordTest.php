@@ -11,6 +11,7 @@ use App\Models\User;
 class AdminUserManagementPasswordTest extends TestCase
 {
     use RefreshDatabase;
+
     private $user;
 
     public function setUp(): void
@@ -25,23 +26,31 @@ class AdminUserManagementPasswordTest extends TestCase
 
         $this->user = User::factory()->create([
             'username' => 'testUser',
-            'password' => Hash::make('password1'),
+            'password' => Hash::make('old_password'),
             'mail_address' => 'testUser1@user.com',
         ]);
     }
 
+    /**
+     * ログインメソッド
+     */
     private function login(): void
     {
-        $response = $this->post('/admin/login', [
+        $this->post('/admin/login', [
             'username' => 'testAdmin',
             'password' => 'testAdmin',
         ]);
     }
 
-    private function changePassword(): void
+    /**
+     * パスワード変更メソッド
+     */
+    private function changePassword()
     {
-        $this->user->update([
-            'password' => Hash::make('password2'),
+        return $this->post(route('admin.user-management.password', ['user' => $this->user->id]), [
+            'password' => 'old_password',
+            'new_password' => 'new_password',
+            'new_password_confirmation' => 'new_password',
         ]);
     }
 
@@ -70,8 +79,33 @@ class AdminUserManagementPasswordTest extends TestCase
 
         $this->changePassword();
 
-        // 変更後のパスワードを再取得し、変化を確認
-        $userPasswordAfterChange = $this->user->password;
+        // 変更後のパスワードを取得し、変化を確認
+        $userPasswordAfterChange = $this->user->fresh()->password;
         $this->assertNotSame($userPasswordBeforeChange, $userPasswordAfterChange);
+    }
+
+    /**
+     * @test
+     * パスワード変更処理が完了するとユーザー管理画面へとリダイレクトすることを確認する
+     */
+    public function test_admin_user_management_password_post_ok_redirect()
+    {
+        $this->login();
+        $response = $this->changePassword();
+
+        $response->assertRedirect(route('admin.user-management.index'));
+    }
+
+    /**
+     * @test
+     * リダイレクト先のユーザー管理画面で「パスワードが変更されました」の表示が出力されることを確認する
+     */
+    public function test_admin_user_management_password_post_ok_redirect_message()
+    {
+        $this->login();
+        $this->changePassword();
+
+        $response = $this->get(route('admin.user-management.index'));
+        $response->assertSee('パスワードが変更されました');
     }
 }
