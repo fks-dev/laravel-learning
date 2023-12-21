@@ -58,24 +58,34 @@ class UsersContentsTest extends TestCase
         }
     }
 
-    // users/contents/{course}にアクセスできる
+    /**
+     * @test
+     */
     public function test_users_contents_get_ok()
     {
+        // users/contents/{course}にアクセスできる
         $this->actingAs($this->user);
         $response = $this->get('/users/contents/190001');
         $response->assertOk();
     }
 
-    // users/contents/{course}にアクセス時、ログアウト中ならログインページにリダイレクトする
+    /**
+     * @test
+     */
     public function test_users_contents_get_ok_unauthenticated()
     {
+        // users/contents/{course}にアクセス時、ログアウト中ならログインページにリダイレクトする
         $response = $this->get('/users/contents/190001');
 
         $response->assertRedirect(route('users.login.index'));
     }
-    // 対応している公開コンテンツのタイトルがすべて表示されている
+
+    /**
+     * @test
+     */
     public function test_users_contents_get_ok_all_title()
     {
+        // 対応している公開コンテンツのタイトルがすべて表示されている
         $this->actingAs($this->user);
         $response = $this->get('/users/contents/190001');
         $course = Course::find(190001);
@@ -85,9 +95,13 @@ class UsersContentsTest extends TestCase
             $response->assertSee($title);
         }
     }
-    // 非公開コンテンツが表示されていない
+
+    /**
+     * @test
+     */
     public function test_users_contents_get_ok_hidden()
     {
+        // 非公開コンテンツが表示されていない
         $this->actingAs($this->user);
         $course = Course::find(190001);
         $content = $course->contents->first();
@@ -99,9 +113,13 @@ class UsersContentsTest extends TestCase
         $response = $this->get('/users/contents/190001');
         $response->assertDontSee($content->title);
     }
-    // 各ソート番号(positionカラムの値)に適した順に表示されている
+
+    /**
+     * @test
+     */
     public function test_users_contents_get_ok_sorted()
     {
+        // 各ソート番号(positionカラムの値)に適した順に表示されている
         $course = Course::find(190001);
         $content = Content::find(200003);
         $content->update(
@@ -115,23 +133,33 @@ class UsersContentsTest extends TestCase
         $response->assertSeeInOrder($contents->pluck('title')->toArray());
     }
 
-    // users/contents/view/{content}にアクセスできる
+    /**
+     * @test
+     */
     public function test_users_contents_view_get_ok()
     {
+        // users/contents/view/{content}にアクセスできる
         $this->actingAs($this->user);
         $response = $this->get('/users/contents/view/200001');
         $response->assertOk();
     }
 
-    // users/contents/view/{content}にアクセス時、ログアウト中ならログインページにリダイレクトする
+    /**
+     * @test
+     */
     public function test_users_contents_view_get_ok_unauthenticated()
     {
+        // users/contents/view/{content}にアクセス時、ログアウト中ならログインページにリダイレクトする
         $response = $this->get('/users/contents/view/200001');
         $response->assertRedirect(route('users.login.index'));
     }
-    // 非公開コンテンツへのアクセス時、ユーザートップ画面にリダイレクトする
+
+    /**
+     * @test
+     */
     public function test_users_contents_view_get_ok_hidden()
     {
+        // 非公開コンテンツへのアクセス時、ユーザートップ画面にリダイレクトする
         $content = Content::find(200001);
         $content->update(
             [
