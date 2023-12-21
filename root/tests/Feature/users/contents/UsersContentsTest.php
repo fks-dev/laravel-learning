@@ -114,4 +114,32 @@ class UsersContentsTest extends TestCase
         $response = $this->get('/users/contents/190001');
         $response->assertSeeInOrder($contents->pluck('title')->toArray());
     }
+
+    // users/contents/view/{content}にアクセスできる
+    public function test_users_contents_view_get_ok()
+    {
+        $this->actingAs($this->user);
+        $response = $this->get('/users/contents/view/200001');
+        $response->assertOk();
+    }
+
+    // users/contents/view/{content}にアクセス時、ログアウト中ならログインページにリダイレクトする
+    public function test_users_contents_view_get_ok_unauthenticated()
+    {
+        $response = $this->get('/users/contents/view/200001');
+        $response->assertRedirect(route('users.login.index'));
+    }
+    // 非公開コンテンツへのアクセス時、ユーザートップ画面にリダイレクトする
+    public function test_users_contents_view_get_ok_hidden()
+    {
+        $content = Content::find(200001);
+        $content->update(
+            [
+                'is_public' => False,
+            ]
+        );
+        $this->actingAs($this->user);
+        $response = $this->get('/users/contents/view/200001');
+        $response->assertRedirect(route('users.index'));
+    }
 }
