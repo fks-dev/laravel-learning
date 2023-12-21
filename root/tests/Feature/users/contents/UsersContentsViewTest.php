@@ -14,28 +14,20 @@ class UsersContentsViewTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->create_user();
+        $this->user = $this->create_user();
         $this->create_course();
         $this->create_content();
-    }
-
-
-    private function login()
-    {
-        $response = $this->post('/users/login', [
-            'username' => 'testUser',
-            'password' => 'testUser',
-        ]);
-        return $response;
     }
 
     // users/contents/view/{content}にアクセスできる
     public function test_users_contents_view_get_ok()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $response = $this->get('/users/contents/view/200001');
         $response->assertOk();
     }
@@ -55,6 +47,7 @@ class UsersContentsViewTest extends TestCase
                 'is_public' => False,
             ]
         );
+        $this->actingAs($this->user);
         $response = $this->get('/users/contents/view/200001');
         $response->assertRedirect(route('users.index'));
     }

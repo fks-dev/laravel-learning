@@ -14,28 +14,21 @@ use App\Models\Course;
 class UsersContentsTest extends TestCase
 {
     use RefreshDatabase;
+
+    private $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->create_user();
+        $this->user = $this->create_user();
         $this->create_course();
         $this->create_content();
-    }
-
-
-    private function login()
-    {
-        $response = $this->post('/users/login', [
-            'username' => 'testUser',
-            'password' => 'testUser',
-        ]);
-        return $response;
     }
 
     // users/contents/{course}にアクセスできる
     public function test_users_contents_get_ok()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $response = $this->get('/users/contents/190001');
         $response->assertOk();
     }
@@ -50,7 +43,7 @@ class UsersContentsTest extends TestCase
     // 対応している公開コンテンツのタイトルがすべて表示されている
     public function test_users_contents_get_ok_all_title()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $response = $this->get('/users/contents/190001');
         $course = Course::find(190001);
         $course->load('contents');
@@ -62,7 +55,7 @@ class UsersContentsTest extends TestCase
     // 非公開コンテンツが表示されていない
     public function test_users_contents_get_ok_hidden()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $course = Course::find(190001);
         $content = $course->contents->first();
         $content->update(
@@ -84,7 +77,7 @@ class UsersContentsTest extends TestCase
             ]
         );
         $contents = $course->contents->sortBy('position');
-        $this->login();
+        $this->actingAs($this->user);
         $response = $this->get('/users/contents/190001');
         $response->assertSeeInOrder($contents->pluck('title')->toArray());
     }
