@@ -19,5 +19,5 @@ class ContentsLog extends Model
         return $this->belongsTo(User::class);
     }
 
-    protected $fillable = ['user_id','content_id', 'completed'];
+    protected $fillable = ['user_id','content_id', 'completed', 'created_at', 'updated_at'];
 }
