@@ -15,10 +15,12 @@ class UsersContentsLogTest extends TestCase
 {
     use RefreshDatabase;
 
+    private $user;
+
     public function setUp(): void
     {
         parent::setUp();
-        $this->create_user();
+        $this->user = $this->create_user();
         $this->create_course();
         $this->create_content();
     }
@@ -57,18 +59,10 @@ class UsersContentsLogTest extends TestCase
         }
     }
 
-    private function login()
-    {
-        $response = $this->post('/users/login', [
-            'username' => 'testUser',
-            'password' => 'testUser',
-        ]);
-        return $response;
-    }
     // users/contents/view/{content}にPOSTメソッドでアクセスできる
     public function test_users_contents_view_post_ok()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $response = $this->post('/users/contents/view/200001',[
             'log' => 0
         ]);
@@ -87,7 +81,7 @@ class UsersContentsLogTest extends TestCase
     //はじめて閲覧したとき閲覧記録が１つ作成される
     public function test_users_contents_view_post_ok_create_log()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $this->post('/users/contents/view/200001',[
             'log' => 0
         ]);
@@ -98,7 +92,7 @@ class UsersContentsLogTest extends TestCase
     //対応するコンテンツ一覧にリダイレクトされる
     public function test_users_contents_view_post_ok_redirect_index()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $response = $this->post('/users/contents/view/200001',[
             'log' => 0
         ]);
@@ -107,7 +101,7 @@ class UsersContentsLogTest extends TestCase
     //保存された閲覧記録が表示されている
     public function test_users_contents_view_get_display_created_log()
     {
-        $this->login();
+        $this->actingAs($this->user);
         $this->post('/users/contents/view/200001',[
             'log' => 0
         ]);
@@ -125,7 +119,7 @@ class UsersContentsLogTest extends TestCase
             'created_at' => '2023-09-01 01:23:45',
             'updated_at' => '2023-09-01 01:23:45',
         ]);
-        $this->login();
+        $this->actingAs($this->user);
         $this->post('/users/contents/view/200001',[
             'log' => 1
         ]);
@@ -143,7 +137,7 @@ class UsersContentsLogTest extends TestCase
             'created_at' => '2023-09-01 01:23:45',
             'updated_at' => '2023-09-01 01:23:45',
         ]);
-        $this->login();
+        $this->actingAs($this->user);
         $this->post('/users/contents/view/200001',[
             'log' => 1
         ]);
