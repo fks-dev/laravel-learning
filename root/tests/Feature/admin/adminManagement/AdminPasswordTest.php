@@ -73,7 +73,7 @@ class AdminPasswordTest extends TestCase
      */
     public function test_admin_admin_management_password_post_ok()
     {
-        //パスワード変更後に管理者ログイン画面にリダイレクトされる
+        //パスワード変更後にアドミン管理画面にリダイレクトされる
         $this->login();
         $response = $this->postNewPassword();
         $response->assertRedirect(route('admin.admin-management.index'));
