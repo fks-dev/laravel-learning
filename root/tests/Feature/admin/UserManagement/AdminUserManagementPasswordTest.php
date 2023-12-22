@@ -15,7 +15,7 @@ class AdminUserManagementPasswordTest extends TestCase
     private $user;
     private $admin;
 
-     /**
+    /**
      * テスト用のユーザー作成
      */
     public function setUp(): void
@@ -57,9 +57,9 @@ class AdminUserManagementPasswordTest extends TestCase
 
         $response = $this->get(route('admin.user-management.password', ['user' => $this->user->id]));
         $response->assertOk();
-     }
+    }
 
-/**
+    /**
      * 管理者が未ログイン時にユーザーのパスワード管理画面にアクセスできないことを確認する
      * @test
      */
