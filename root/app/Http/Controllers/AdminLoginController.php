@@ -29,19 +29,7 @@ class AdminLoginController extends Controller
 
         if (Auth::guard('admin')->check()) {
             $user = Auth::guard('admin')->user();
-
-            // 過去ログを確認
-            $loginLog = AdminLogs::where('admin_id', $user->id)->first();
-
-            if ($loginLog) {
-                $loginLog->updated_at = now();
-                $loginLog->save();
-            } else {
-                $newLoginLog = new AdminLogs();
-                $newLoginLog->admin_id = $user->id;
-                $newLoginLog->updated_at = now();
-                $newLoginLog->save();
-            }
+            AdminLogs::upsert(['admin_id' => $user->id], 'admin_id');
         }
         return redirect()->intended(route('admin.admin-management.index'));
     }
