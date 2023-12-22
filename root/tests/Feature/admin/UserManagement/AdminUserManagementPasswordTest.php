@@ -13,12 +13,16 @@ class AdminUserManagementPasswordTest extends TestCase
     use RefreshDatabase;
 
     private $user;
+    private $admin;
 
+     /**
+     * テスト用のユーザー作成
+     */
     public function setUp(): void
     {
         parent::setUp();
 
-        Admin::factory()->create([
+        $this->admin = Admin::factory()->create([
             'username' => 'testAdmin',
             'password' => Hash::make('testAdmin'),
             'mail_address' => 'testAdmin@admin.com',
@@ -28,17 +32,6 @@ class AdminUserManagementPasswordTest extends TestCase
             'username' => 'testUser',
             'password' => Hash::make('old_password'),
             'mail_address' => 'testUser1@user.com',
-        ]);
-    }
-
-    /**
-     * ログインメソッド
-     */
-    private function login(): void
-    {
-        $this->post('/admin/login', [
-            'username' => 'testAdmin',
-            'password' => 'testAdmin',
         ]);
     }
 
@@ -60,10 +53,22 @@ class AdminUserManagementPasswordTest extends TestCase
      */
     public function test_admin_user_management_password_get_ok()
     {
-        $this->login();
+        $this->actingAs($this->admin, 'admin');
 
         $response = $this->get(route('admin.user-management.password', ['user' => $this->user->id]));
         $response->assertOk();
+     }
+
+/**
+     * 管理者が未ログイン時にユーザーのパスワード管理画面にアクセスできないことを確認する
+     * @test
+     */
+    public function test_admin_user_management_password_get_ok_redirect_without_login()
+    {
+        $response = $this->get(route('admin.user-management.password', ['user' => $this->user->id]));
+
+        //ログイン画面にリダイレクトされるか確認
+        $response->assertRedirect(route('admin.login.index'));
     }
 
     /**
@@ -72,16 +77,11 @@ class AdminUserManagementPasswordTest extends TestCase
      */
     public function test_admin_user_management_password_post_ok_change_password()
     {
-        $this->login();
-
-        // 変更前のパスワードの保持
-        $userPasswordBeforeChange = $this->user->password;
-
+        $this->actingAs($this->admin, 'admin');
         $this->changePassword();
 
-        // 変更後のパスワードを取得し、変化を確認
-        $userPasswordAfterChange = $this->user->fresh()->password;
-        $this->assertNotSame($userPasswordBeforeChange, $userPasswordAfterChange);
+        //変更後のパスワードが期待される値になっているかの確認
+        $this->assertTrue(Hash::check('new_password', $this->user->fresh()->password));
     }
 
     /**
@@ -90,7 +90,7 @@ class AdminUserManagementPasswordTest extends TestCase
      */
     public function test_admin_user_management_password_post_ok_redirect()
     {
-        $this->login();
+        $this->actingAs($this->admin, 'admin');
         $response = $this->changePassword();
 
         $response->assertRedirect(route('admin.user-management.index'));
@@ -102,10 +102,9 @@ class AdminUserManagementPasswordTest extends TestCase
      */
     public function test_admin_user_management_password_post_ok_redirect_message()
     {
-        $this->login();
-        $this->changePassword();
+        $this->actingAs($this->admin, 'admin');
+        $response = $this->changePassword();
 
-        $response = $this->get(route('admin.user-management.index'));
-        $response->assertSee('パスワードが変更されました');
+        $response->assertSessionHas('message', 'パスワードが変更されました');
     }
 }
