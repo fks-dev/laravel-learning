@@ -8,7 +8,7 @@ use App\Http\Requests\StoreUserMgmtRequest;
 use App\Http\Requests\UpdateUserMgmtRequest;
 use App\Models\User;
 use App\Models\Admin;
-use App\Models\UserLogin;
+use App\Models\UserLogs;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
@@ -29,7 +29,7 @@ class UserManagementController extends Controller
     public function index(): View
     {
         $users = User::with('groups')->get();
-        $logins = UserLogin::all();
+        $logins = UserLogs::all();
         $adminUser = $this->getLoginUser();
 
 
