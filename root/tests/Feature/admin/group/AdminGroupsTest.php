@@ -261,4 +261,87 @@ class AdminGroupsTest extends TestCase
         $response = $this->get(route('admin.groups.show', $group->id));
         $response->assertViewIs('admin.groups.show');
     }
+
+    /**
+     * @test
+     */
+    public function test_users_groups_get_ok_unauthenticated_details()
+    {
+        // グループとユーザーを関連付ける
+        $group = $this->createTestGroups();
+        $this->createTestUsers()->groups()->attach($group);
+
+        // グループとコースを関連付ける
+        $course = $this->createTestCourses();
+        $group->courses()->attach($course);
+
+        // ユーザーがゲスト状態（ログアウトの状態）で詳細を取得する
+        $response = $this->get(route('admin.groups.show', $group->id));
+
+        // ログイン画面にリダイレクトされるか確認
+        $response->assertStatus(302)->assertRedirect(route('admin.login.index'));
+    }
+
+    /**
+     * @test
+     */
+    public function test_admin_groups_destroy_ok_delete()
+    {
+        // 管理者としてログイン
+        $this->actingAs($this->admin, 'admin');
+
+        // グループとユーザーを関連付ける
+        $group = $this->createTestGroups();
+        $this->createTestUsers()->groups()->attach($group);
+
+        // グループとコースを関連付ける
+        $course = $this->createTestCourses();
+        $group->courses()->attach($course);
+
+        // 削除を実行し、グループが論理削除されているか確認する。
+        $group->delete();
+        $this->assertSoftDeleted($group);
+    }
+
+    /**
+     * @test
+     */
+    public function test_admin_groups_destroy_ok_redirect()
+    {
+        // 管理者としてログイン
+        $this->actingAs($this->admin, 'admin');
+
+        // グループとユーザーを関連付ける
+        $group = $this->createTestGroups();
+        $this->createTestUsers()->groups()->attach($group);
+
+        // グループとコースを関連付ける
+        $course = $this->createTestCourses();
+        $group->courses()->attach($course);
+
+        // グループの削除後に正しいリダイレクトが行われていることを確認する。
+        $response = $this->delete(route('admin.groups.destroy', $group->id));
+        $response->assertStatus(302)->assertRedirect('admin/groups');
+    }
+
+    /**
+     * @test
+     */
+    public function test_admin_groups_destroy_ok_message()
+    {
+        // 管理者としてログイン
+        $this->actingAs($this->admin, 'admin');
+
+        // グループとユーザーを関連付ける
+        $group = $this->createTestGroups();
+        $this->createTestUsers()->groups()->attach($group);
+
+        // グループとコースを関連付ける
+        $course = $this->createTestCourses();
+        $group->courses()->attach($course);
+
+        // グループが削除された際に適切なメッセージが表示されている確認する。
+        $response = $this->delete(route('admin.groups.destroy', $group->id));
+        $response->assertSessionHas('danger', 'Group' . 'を削除しました');
+    }
 }
