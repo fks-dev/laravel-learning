@@ -17,11 +17,14 @@ class AdminUserManagementTest extends TestCase
     {
         parent::setUp();
 
-        Admin::factory()->create([
+        $adminUser = Admin::factory()->create([
             'username' => 'testAdmin',
             'password' => Hash::make('testAdmin'),
             'mail_address' => 'testAdmin@admin.com',
         ]);
+
+        // Adminユーザーとしてログインする
+        $this->actingAs($adminUser, 'admin');
 
         $this->user = User::factory()->create([
             'username' => 'testUser',
@@ -30,15 +33,24 @@ class AdminUserManagementTest extends TestCase
         ]);
     }
 
-    private function login()
-    {
-        $response = $this->post('/admin/login', [
-            'username' => 'testAdmin',
-            'password' => 'testAdmin',
-        ]);
-        return $response;
-    }
 
+      /**
+     * @test
+     * 未ログイン時ログイン画面にリダイレクトされることを確認
+     **/
+
+    public function test_unauthenticated_user_redirected_to_login()
+{
+
+    // ログアウトして未ログイン状態にする
+    auth()->logout();
+
+    // 未ログインの状態でアクセス
+    $response = $this->get('/admin/user-management');
+
+    // ログイン画面にリダイレクトされることを確認
+    $response->assertRedirect('/admin/login');
+}
 
     /**
      * @test
@@ -47,7 +59,6 @@ class AdminUserManagementTest extends TestCase
 
      public function test_admin_user_management_index_ok()
     {
-        $this->login();
         $response = $this->get('/admin/user-management');
         $response->assertStatus(200);
 
@@ -61,8 +72,6 @@ class AdminUserManagementTest extends TestCase
 
     public function test_admin_user_management_post_ok()
     {
-        $this->login();
-
          //モックデータを使用する
          $userData = [
             'username' => 'newtestUser',
@@ -102,8 +111,6 @@ class AdminUserManagementTest extends TestCase
 
     public function test_admin_user_management_create_get_ok()
     {
-        $this->login();
-
         $response = $this->get('/admin/user-management/create');
 
         $response->assertStatus(200);
@@ -118,8 +125,6 @@ class AdminUserManagementTest extends TestCase
 
      public function test_admin_user_management_search_post_ok()
      {
-        $this->login();
-
          $response = $this->post('/admin/user-management/search', ['name' => $this->user->username]);
 
          // 正しいJSON構造を持っていることを確認
@@ -151,8 +156,6 @@ class AdminUserManagementTest extends TestCase
 
     public function test_admin_user_management_update_patch_ok()
     {
-        $this->login();
-
         $newUsername = 'NewUsername';
         $newMailaddress = 'newtestUser1@user.com';
 
@@ -167,6 +170,9 @@ class AdminUserManagementTest extends TestCase
             'username' => $newUsername,
             'mail_address' => $newMailaddress,
         ]);
+
+        // 更新メッセージがセッションに存在することを確認
+        $this->assertNotNull(session('message'));
     }
 
        /**
@@ -176,12 +182,20 @@ class AdminUserManagementTest extends TestCase
 
       public function test_admin_user_management_destroy_delete_ok()
       {
-        $this->login();
-
         $response = $this->delete("/admin/user-management/{$this->user->id}", ['id' => $this->user->id]);
         $response->assertRedirect('/admin/user-management')->assertStatus(302);
 
-        $this->assertDatabaseMissing( 'users', ['id' => $this->user->id,  'deleted_at' => null]);
+        // 論理削除の確認
+        $this->assertSoftDeleted('users', ['id' => $this->user->id]);
+
+        // deleted_at カラムが適切に設定されていることを確認
+        $this->assertNotNull($this->user->fresh()->deleted_at);
+
+        // データベースから削除されたことを確認
+        $this->assertDatabaseMissing('users',['id' => $this->user->id, 'deleted_at' => null]);
+
+        // 削除メッセージがセッションに存在することを確認
+        $this->assertNotNull(session('danger'));
       }
 
         /**
@@ -190,11 +204,8 @@ class AdminUserManagementTest extends TestCase
      */
       public function test_admin_user_management_edit_get_ok()
       {
-        $this->login();
-
         $response = $this->get("/admin/user-management/{$this->user->id}/edit");
 
         $response->assertStatus(200);
-        $response = $this->get('/admin/user-management/edit');
       }
 }
