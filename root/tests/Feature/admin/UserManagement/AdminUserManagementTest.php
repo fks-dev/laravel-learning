@@ -63,30 +63,37 @@ class AdminUserManagementTest extends TestCase
     {
         $this->login();
 
-        // ランダムなユーザーIDを生成
-        $randomUserId = rand();
-
-        //モックデータを使用する
-        $userData = [
-            'username' => 'testUser',
-            'password' => 'password1',
-            'mail_address' => 'testUser1@user.com',
+         //モックデータを使用する
+         $userData = [
+            'username' => 'newtestUser',
+            'password' => 'newpassword1',
+            'mail_address' => 'newtestUser1@user.com',
         ];
 
-        //ユーザーIDを設定
-        $userDate['id'] = $randomUserId;
+
+        // storeメソッドを呼び出してユーザーを作成
         $response = $this->post('/admin/user-management', $userData);
 
-        //データベースに対するアサーション
+        // データベースにユーザーが作成されたか確認
         $this->assertDatabaseHas('users', [
-            'username' => 'testUser',
-            'mail_address' => 'testUser1@user.com',
+            'username' => $userData['username'],
+            'mail_address' => $userData['mail_address'],
         ]);
-        //パスワードのハッシュ検証
-        $this->assertTrue(Hash::check('password1', User::where('username', 'testUser')->first()->password));
 
-        $response->assertRedirect('/admin/user-management')->assertStatus(302)->assertSessionHas('message', 'testuserを登録しました');
+        // パスワードがHash化されているか確認
+        $user = User::where('username', $userData['username'])->first();
+        $this->assertTrue(Hash::check($userData['password'], $user->password));
+
+        // リダイレクトを確認
+        $response->assertRedirect('/admin/user-management')->assertStatus(302);
+
+        // セッションにメッセージが保存されているか確認
+        $this->assertNotNull(session('message'));
+
+        // セッションのメッセージが期待通りのものか確認
+        $this->assertEquals($userData['username'] . 'を登録しました', session('message'));
     }
+
 
     /**
      * @test
@@ -115,14 +122,26 @@ class AdminUserManagementTest extends TestCase
 
          $response = $this->post('/admin/user-management/search', ['name' => $this->user->username]);
 
-         $response->assertJsonFragment(['name' => $this->user->username])
-             ->assertJsonStructure([
-                 'data' => [
-                     '*' => [
-                         'username',
-                     ]
-                 ],
-             ]);
+         // 正しいJSON構造を持っていることを確認
+         $response->assertJsonStructure([
+            '*' => [
+                'id',
+                'username',
+                'mail_address',
+                'deleted_at',
+                'created_at',
+                'updated_at',
+                ],
+            ]);
+
+        // 正しいデータが含まれていることを確認
+        $response->assertJsonFragment([
+            'id' => $this->user->id,
+            'username' => $this->user->username,
+            'mail_address' => $this->user->mail_address,
+        ]);
+
+        $response->assertStatus(200);
      }
 
      /**
@@ -159,10 +178,10 @@ class AdminUserManagementTest extends TestCase
       {
         $this->login();
 
-        $response = $this->delete("/admin/user-management/{$this->user->id}");
+        $response = $this->delete("/admin/user-management/{$this->user->id}", ['id' => $this->user->id]);
         $response->assertRedirect('/admin/user-management')->assertStatus(302);
 
-        $this->assertDatabaseMissing( $this->user, ['id' => $this->user->id]);
+        $this->assertDatabaseMissing( 'users', ['id' => $this->user->id,  'deleted_at' => null]);
       }
 
         /**
