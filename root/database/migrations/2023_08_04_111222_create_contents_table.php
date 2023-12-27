@@ -19,7 +19,6 @@ return new class extends Migration
             $table->string('title')->comment('タイトル');
             $table->string('youtube_video_id')->nullable()->comment('YouTubeID');
             $table->text('remarks')->nullable()->comment('備考');
-            $table->boolean('is_public')->comment('公開・非公開');
             $table->unsignedSmallInteger('position')->default(0)->comment('ソート番号');
             $table->softDeletesDatetime();
             $table->datetimes();
