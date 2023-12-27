@@ -23,7 +23,6 @@ class ContentSeeder extends Seeder
                         'title'              => sprintf('コンテンツ%d', $sequence->index + 1),
                         'youtube_video_id'   => 'nkqdhXSwEVs',
                         'remarks'            => sprintf('コンテンツ%d', $sequence->index + 1),
-                        'is_public'          => random_int(0, 1),
                         'position'           => $sequence->index + 1,
                         'deleted_at'         => null,
                         'created_at'         => '2022-12-30 11:22:33',

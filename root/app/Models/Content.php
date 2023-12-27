@@ -18,11 +18,9 @@ class Content extends Model
         'text',
         'youtube_video_id',
         'remarks',
-        'is_public',
     ];
 
     protected $casts = [
-        'is_public'    => 'boolean',
     ];
 
     public function course()
