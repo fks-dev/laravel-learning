@@ -33,12 +33,10 @@ class AdminUserManagementTest extends TestCase
         ]);
     }
 
-
     /**
      * @test
      * 未ログイン時ログイン画面にリダイレクトされることを確認
      **/
-
     public function test_unauthenticated_user_redirected_to_login()
     {
         // ログアウトして未ログイン状態にする
@@ -55,7 +53,6 @@ class AdminUserManagementTest extends TestCase
      * @test
      * ユーザー管理画面へのアクセスが正常に行われることを確認
      **/
-
     public function test_admin_user_management_index_ok()
     {
         $response = $this->get('/admin/user-management');
@@ -67,7 +64,6 @@ class AdminUserManagementTest extends TestCase
      * @test
      * ユーザーの新規作成がエラーなく成功することを確認
      */
-
     public function test_admin_user_management_post_ok()
     {
         //モックデータを使用する
@@ -99,12 +95,10 @@ class AdminUserManagementTest extends TestCase
         $this->assertEquals($userData['username'] . 'を登録しました', session('message'));
     }
 
-
     /**
      * @test
      * ユーザーの新規作成画面が正常に表示されることを確認
      */
-
     public function test_admin_user_management_create_get_ok()
     {
         $response = $this->get('/admin/user-management/create');
@@ -116,8 +110,6 @@ class AdminUserManagementTest extends TestCase
      * @test
      * 検索機能が正常に行われることを確認
      */
-
-
     public function test_admin_user_management_search_post_ok()
     {
         $response = $this->post('/admin/user-management/search', ['name' => $this->user->username]);
@@ -147,7 +139,6 @@ class AdminUserManagementTest extends TestCase
      * @test
      * 更新が正常に行われることを確認
      */
-
     public function test_admin_user_management_update_patch_ok()
     {
         $newUsername = 'NewUsername';
@@ -173,7 +164,6 @@ class AdminUserManagementTest extends TestCase
      * @test
      * 削除が正常に行われることを確認
      */
-
     public function test_admin_user_management_destroy_delete_ok()
     {
         $response = $this->delete("/admin/user-management/{$this->user->id}", ['id' => $this->user->id]);
@@ -184,9 +174,6 @@ class AdminUserManagementTest extends TestCase
 
         // deleted_at カラムが適切に設定されていることを確認
         $this->assertNotNull($this->user->fresh()->deleted_at);
-
-        // データベースから削除されたことを確認
-        $this->assertDatabaseMissing('users', ['id' => $this->user->id, 'deleted_at' => null]);
 
         // 削除メッセージがセッションに存在することを確認
         $this->assertNotNull(session('danger'));
