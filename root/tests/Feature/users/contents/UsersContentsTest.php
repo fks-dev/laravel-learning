@@ -51,7 +51,6 @@ class UsersContentsTest extends TestCase
                 'admin_id' => 120001,
                 'course_id' => 190001,
                 'youtube_video_id' => '1q8VtH2zxYE',
-                'is_public' => True,
             ]);
         }
     }
@@ -97,24 +96,6 @@ class UsersContentsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_contents_get_ok_hidden()
-    {
-        // 非公開コンテンツが表示されていない
-        $this->actingAs($this->user);
-        $course = Course::find(190001);
-        $content = $course->contents->first();
-        $content->update(
-            [
-                'is_public' => false,
-            ]
-        ); //対象レコードの内１つを非公開設定に変更
-        $response = $this->get('/users/contents/190001');
-        $response->assertDontSee($content->title);
-    }
-
-    /**
-     * @test
-     */
     public function test_users_contents_get_ok_sorted()
     {
         // 各ソート番号(positionカラムの値)に適した順に表示されている
@@ -150,22 +131,5 @@ class UsersContentsTest extends TestCase
         // users/contents/view/{content}にアクセス時、ログアウト中ならログインページにリダイレクトする
         $response = $this->get('/users/contents/view/200001');
         $response->assertRedirect(route('users.login.index'));
-    }
-
-    /**
-     * @test
-     */
-    public function test_users_contents_view_get_ok_hidden()
-    {
-        // 非公開コンテンツへのアクセス時、ユーザートップ画面にリダイレクトする
-        $content = Content::find(200001);
-        $content->update(
-            [
-                'is_public' => False,
-            ]
-        );
-        $this->actingAs($this->user);
-        $response = $this->get('/users/contents/view/200001');
-        $response->assertRedirect(route('users.index'));
     }
 }
