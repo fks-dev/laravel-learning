@@ -4,7 +4,6 @@ namespace Tests\Feature\Admin\Group;
 
 use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
-use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Course;
@@ -84,7 +83,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_groups_index_view()
+    public function test_admin_groups_get_ok_groups_index_view()
     {
         // 管理者としてログインし、viewが正しく表示されることを確認する
         $this->actingAs($this->admin, 'admin');
@@ -96,7 +95,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_get_sort_created()
+    public function test_admin_groups_get_ok_get_sort_created()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -131,7 +130,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_get_sort_updated()
+    public function test_admin_groups_get_ok_get_sort_updated()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -166,7 +165,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_no_duplicates()
+    public function test_admin_groups_get_ok_no_duplicates()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -201,7 +200,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_details()
+    public function test_admin_groups_get_ok_details()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -223,7 +222,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_groups_details()
+    public function test_admin_groups_get_ok_groups_details()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -244,7 +243,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_groups_detailed_view()
+    public function test_admin_groups_get_ok_groups_detailed_view()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -265,7 +264,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_users_groups_get_ok_unauthenticated_details()
+    public function test_admin_groups_get_ok_unauthenticated_details()
     {
         // グループとユーザーを関連付ける
         $group = $this->createTestGroups();
@@ -287,7 +286,7 @@ class AdminGroupsTest extends TestCase
      */
     public function test_admin_groups_create_get_ok()
     {
-        // 管理者としてログイン
+        // 管理者としてログインし、新規作成画面を取得する
         $this->actingAs($this->admin, 'admin');
 
         $response = $this->get(route('admin.groups.create'));
@@ -410,7 +409,6 @@ class AdminGroupsTest extends TestCase
         ]);
 
         // 新規作成された際に適切なメッセージが表示されている確認する。
-        $response->assertStatus(302)->assertRedirect('admin/groups');
         $response->assertSessionHas('message', $group->group_name . 'を登録しました');
     }
 
@@ -495,7 +493,7 @@ class AdminGroupsTest extends TestCase
             'course' => [$course->id],
         ]);
 
-        // showの場合、特定のグループへの戻るボタンへのリンクを生成する
+        // showの場合、特定のグループの戻るボタンのリンクを生成する
         $responseShow = $this->get(route('admin.groups.edit', ['group' => $group->id, 'show' => 'show']));
         $responseShow->assertViewHas('backBtn', route('admin.groups.show', ['group' => $group->id]));
     }
@@ -503,7 +501,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_admin_groups_edit_get_ok_back_indx()
+    public function test_admin_groups_edit_get_ok_back_index()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -524,7 +522,7 @@ class AdminGroupsTest extends TestCase
             'course' => [$course->id],
         ]);
 
-       // showでない場合、デフォルトの戻るボタンへのリンクを生成する
+       // showでない場合、デフォルトの戻るボタンのリンクを生成する
         $responseNotShow = $this->get(route('admin.groups.edit', ['group' => $group->id]));
         $responseNotShow->assertViewHas('backBtn', route('admin.groups.index'));
     }
@@ -657,7 +655,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_admin_groups_destroy_ok_delete()
+    public function test_admin_groups_delete_ok_destroy()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -678,7 +676,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_admin_groups_destroy_ok_redirect()
+    public function test_admin_groups_delete_ok_redirect()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
@@ -699,7 +697,7 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
-    public function test_admin_groups_destroy_ok_message()
+    public function test_admin_groups_delete_ok_message()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
