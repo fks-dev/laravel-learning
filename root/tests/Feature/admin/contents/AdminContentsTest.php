@@ -8,12 +8,10 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Content;
 use App\Models\Course;
-use Database\Factories\ContentFactory;
 
 class AdminContentsTest extends TestCase
 {
     use RefreshDatabase;
-
 
     private $admin;
     private $course;
@@ -400,8 +398,6 @@ class AdminContentsTest extends TestCase
     public function test_admin_contents_sort_post_ok()
     {
         $this->actingAs($this->admin, 'admin');
-
-        // コンテンツの並び替えを実行
         $this->sortContent();
 
         // 並び替え後のコンテンツの順序を取得
@@ -423,6 +419,4 @@ class AdminContentsTest extends TestCase
 
         $response->assertJson(['message' => '並び替えを保存しました。']);
     }
-
 }
-
