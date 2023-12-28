@@ -213,8 +213,8 @@ class AdminGroupsTest extends TestCase
 
         // グループを新規作成
         $response = $this->post(route('admin.groups.store'), [
-            'group_name' => $group->group_name,
-            'remarks' => $group->remarks,
+            'group_name' => $group['group_name'],
+            'remarks' => $group['remarks'],
             'user' => [$user->id],
             'course' => [$course->id],
         ]);
@@ -307,49 +307,53 @@ class AdminGroupsTest extends TestCase
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
 
+        $group = $this->createTestGroups();
+        $this->createTestCourses();
+        $this->createTestUsers();
+
         // 新しいグループ、ユーザー、コースを作成
-        $updateGroup = Group::factory()->create([
-            'group_name' => 'updateGroup',
-            'remarks' => 'updateGroupRemark',
-        ]);
-        $updatedUser = User::factory()->create([
+
+        $newGroupName = 'newGroup';
+        $newGroupRemarks = 'newGroupRemark';
+
+        $newUser = User::factory()->create([
             'username' => 'updateTestUser',
             'password' => Hash::make('updateTestUser'),
             'mail_address' => 'updateTestUser@test.com',
         ]);
-        $updatedCourse = Course::factory()->create([
+        $newCourse = Course::factory()->create([
             'title' => 'updateCourse',
             'introduction' => 'updateCourseIntro',
             'remarks' => 'updateCourseRemark',
         ]);
 
         // グループを編集
-        $response = $this->patch(route('admin.groups.update', ['group' => $updateGroup->id]), [
-            'group_name' => $updateGroup->group_name,
-            'remarks' => $updateGroup->remarks,
-            'user' => [$updatedUser->id],
-            'course' => [$updatedCourse->id],
+        $response = $this->patch(route('admin.groups.update', ['group' => $group->id]), [
+            'group_name' => $newGroupName,
+            'remarks' => $newGroupRemarks,
+            'user' => $newUser->id,
+            'course' => $newCourse->id,
         ]);
 
         // 編集されたデータがデータベース内に存在することを確認する
         $this->assertDatabaseHas('groups', [
-            'group_name' => $updateGroup->group_name,
-            'remarks' => $updateGroup->remarks,
+            'group_name' => $newGroupName,
+            'remarks' => $newGroupRemarks,
         ]);
         $this->assertDatabaseHas('groups_courses', [
-            'group_id' => $updateGroup->id,
-            'course_id' => $updatedCourse->id,
+            'group_id' => $group->id,
+            'course_id' => $newCourse->id,
         ]);
         $this->assertDatabaseHas('users_groups', [
-            'group_id' => $updateGroup->id,
-            'user_id' => $updatedUser->id,
+            'group_id' => $group->id,
+            'user_id' => $newUser->id,
         ]);
 
         // 編集後に正しいリダイレクトが行われていることを確認する。
         $response->assertStatus(302)->assertRedirect('admin/groups');
 
         // 編集された際に適切なメッセージが表示されている確認する。
-        $response->assertSessionHas('message', $updateGroup->group_name . 'を編集しました');
+        $response->assertSessionHas('message', $newGroupName . 'を編集しました');
     }
 
     /**
