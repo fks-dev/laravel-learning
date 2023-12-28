@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\SelectCourseRequest;
 use App\Models\Course;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Facades\Auth;
 
 class SelectCourseController extends Controller
 {
@@ -76,13 +77,14 @@ class SelectCourseController extends Controller
 
     public function index(SelectCourseRequest $request): view
     {
+        $user = Auth::user();
         $input_check = $request->has('q_id') && $request->has('answer');
         if ($input_check) {
             $this->q_id = (int)$request->input('q_id');
             $this->answer = (string)$request->input('answer');
         } else {
             $q = self::QUESTION[0]; //1問目の質問をviewに渡す
-            return view('users.recommend.index', compact('q'));
+            return view('users.recommend.index', compact('q', 'user'));
         }
 
         if (!isset(self::QUESTION[$this->q_id])) {
@@ -94,7 +96,7 @@ class SelectCourseController extends Controller
         //次の質問が存在するなら$qとしてviewに渡す
         if ($this->next_q_id) {
             $q = self::QUESTION[$this->next_q_id];
-            return view('users.recommend.index', compact('q'));
+            return view('users.recommend.index', compact('q', 'user'));
         }
 
         $this->course = null;
@@ -105,7 +107,7 @@ class SelectCourseController extends Controller
             $this->course = Course::find(self::QUESTION[$this->q_id]['no_course_id']) ?? null;
         }
         if (isset($this->course)) { //回答に対応するCourseが正常に取得できていれば結果表示画面に$courseとして渡す
-            return view('users.recommend.answer', ['course' => $this->course]);
+            return view('users.recommend.answer', ['course' => $this->course, 'user' => $user]);
         } else {
             abort(400);
         }
