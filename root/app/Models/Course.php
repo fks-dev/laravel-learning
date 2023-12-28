@@ -15,6 +15,7 @@ class Course extends Model
         'title',
         'introduction',
         'remarks',
+        'position',
     ];
 
     protected static function boot()

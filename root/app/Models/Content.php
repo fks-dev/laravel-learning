@@ -19,6 +19,7 @@ class Content extends Model
         'youtube_video_id',
         'remarks',
         'is_public',
+        'position',
     ];
 
     protected $casts = [
