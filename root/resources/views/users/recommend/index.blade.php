@@ -6,6 +6,7 @@
 </head>
 
 <body>
+@include('users.header')
 <p>{{ $q['q_order']}}問目</p>
 <p>{{ $q['text'] }}</p>
 
