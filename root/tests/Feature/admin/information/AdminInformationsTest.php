@@ -25,17 +25,17 @@ class AdminInformationsTest extends TestCase
             'mail_address' => 'testAdmin@admin.com',
         ]);
 
-    /**
-     * @test
-     * ログイン
-     */
-    $this->actingAs($this->admin,'admin');
+        /**
+         * @test
+         * ログイン
+         */
+        $this->actingAs($this->admin, 'admin');
 
-    $this->information = Information::factory()->create([
+        $this->information = Information::factory()->create([
             'title' => 'testtitle',
             'text'  => 'testtext',
             'admin_id' => '120001'
-    ]);
+        ]);
     }
 
     /**
@@ -77,12 +77,12 @@ class AdminInformationsTest extends TestCase
             'title' => 'newtestTitle',
             'text' => 'newtestText',
         ];
-        $response = $this -> post('/admin/informations',$information);
-        $this -> assertDatabaseHas('information',[
+        $response = $this->post('/admin/informations', $information);
+        $this->assertDatabaseHas('information', [
             'title' => $information['title'],
             'text' => $information['text'],
         ]);
-        $response -> assertRedirect(route('admin.informations.index'));
+        $response->assertRedirect(route('admin.informations.index'));
         $response->assertSessionHas('message', 'お知らせを登録しました');
     }
 
@@ -116,12 +116,12 @@ class AdminInformationsTest extends TestCase
     {
         $newTitle = 'NewTitle';
         $newText = 'NewText';
-        $response = $this->patch("/admin/informations/{$this->information->id}",[
+        $response = $this->patch("/admin/informations/{$this->information->id}", [
             'title' => $newTitle,
             'text' => $newText,
         ]);
         $response->assertRedirect(route('admin.informations.index'));
-        $this -> assertDatabaseHas('information',[
+        $this->assertDatabaseHas('information', [
             'id' => $this->information->id,
             'title' => $newTitle,
             'text' => $newText,
@@ -135,11 +135,11 @@ class AdminInformationsTest extends TestCase
      */
     public function test_admin_informations_destroy_delete_ok()
     {
-        $response = $this->delete("/admin/informations/{$this->information->id}",[
-            'id' => $this -> information -> id
+        $response = $this->delete("/admin/informations/{$this->information->id}", [
+            'id' => $this->information->id
         ]);
         $response->assertRedirect(route('admin.informations.index'));
-        $this->assertSoftDeleted('information',['id' => $this->information->id]);
+        $this->assertSoftDeleted('information', ['id' => $this->information->id]);
         $this->assertNotNull($this->information->fresh()->deleted_at);
         $this->assertNotNull(session('danger'));
     }
@@ -150,7 +150,7 @@ class AdminInformationsTest extends TestCase
      */
     public function test_admin_informations_edit_get_ok()
     {
-        $response = $this->get("/admin/informations/{$this -> information ->id}/edit");
+        $response = $this->get("/admin/informations/{$this->information->id}/edit");
         $response->assertOk();
         $response->assertViewIs('admin.informations.edit');
     }
