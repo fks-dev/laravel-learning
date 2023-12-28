@@ -25,10 +25,7 @@ class AdminInformationsTest extends TestCase
             'mail_address' => 'testAdmin@admin.com',
         ]);
 
-        /**
-         * @test
-         * ログイン
-         */
+        // ログイン
         $this->actingAs($this->admin, 'admin');
 
         $this->information = Information::factory()->create([
