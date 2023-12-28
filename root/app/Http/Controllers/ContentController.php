@@ -68,7 +68,6 @@ class ContentController extends Controller
             'title'            => $request->title,
             'youtube_video_id' => $request->youtube_video_id,
             'remarks'          => $request->remarks,
-            'is_public'        => $request->is_public,
         ];
 
         Content::create($data);
@@ -110,7 +109,6 @@ class ContentController extends Controller
             'title'              => $request->title,
             'youtube_video_id'   => $request->youtube_video_id,
             'remarks'            => $request->remarks,
-            'is_public'          => $request->is_public,
         ];
 
         $content->update($data);
