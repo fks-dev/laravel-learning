@@ -58,22 +58,11 @@
                     {{-- コンテンツ入力内容 --}}
                     @include('admin.contents.input')
 
-                    {{-- 公開・非公開 --}}
                     <div class="row m-3">
                         <label class="col-sm-2 col-form-label fw-bold">ステータス
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-10 mt-2">
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="is_public" id="inlineRadio1" value="1"
-                                @checked($content->is_public == true) >
-                                <label class="form-check-label" for="inlineRadio1">公開</label>
-                            </div>
-                            <div class="form-check form-check-inline">
-                                <input class="form-check-input" type="radio" name="is_public" id="inlineRadio2" value="0"
-                                @checked($content->is_public == false)>
-                                <label class="form-check-label" for="inlineRadio2">非公開</label>
-                            </div>
                             <div>
                                 <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
                             </div>

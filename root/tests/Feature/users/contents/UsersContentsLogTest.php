@@ -53,7 +53,6 @@ class UsersContentsLogTest extends TestCase
                 'admin_id' => 120001,
                 'course_id' => 190001,
                 'youtube_video_id' => '1q8VtH2zxYE',
-                'is_public' => True,
             ]);
         }
     }
