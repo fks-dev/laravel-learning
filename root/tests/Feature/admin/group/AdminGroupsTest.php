@@ -365,9 +365,6 @@ class AdminGroupsTest extends TestCase
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
 
-        $this->createTestCourses();
-        $this->createTestUsers();
-
         // 新しいグループ、ユーザー、コースを作成
         $updateGroupName = 'updateGroupName';
         $updateGroupRemarks = 'updateGroupRemark';
@@ -384,14 +381,18 @@ class AdminGroupsTest extends TestCase
         ]);
 
         // グループを編集
-        $response = $this->patch(route('admin.groups.update', ['group' => $this->createTestGroups()->id]), [
+        $response = $this->patch(route('admin.groups.update', [
+            'group' => $this->createTestGroups()->id,
+            'user' => $this->createTestUsers()->id,
+            'course' => $this->createTestCourses()->id
+        ]), [
             'group_name' => $updateGroupName,
             'remarks' => $updateGroupRemarks,
             'user' => $updateUser->id,
             'course' => $updateCourse->id,
         ]);
 
-        $updateGroup = Group::where('group_name', 'updateGroupName')->first();
+        $updateGroup = Group::where('group_name', $updateGroupName)->first();
 
         // 編集されたデータがデータベース内に存在することを確認する
         $this->assertDatabaseHas('groups', [
