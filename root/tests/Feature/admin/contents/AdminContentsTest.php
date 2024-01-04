@@ -211,25 +211,17 @@ class AdminContentsTest extends TestCase
 
     /**
      * @test
-     * コンテンツの新規登録が完了すると、該当コースのコンテンツ一覧画面へとリダイレクトすることを確認する
+     * コンテンツの新規登録が完了すると、該当コースのコンテンツ一覧画面へリダイレクトし、リダイレクト先で「コンテンツを登録しました」の表示が出力されることを確認する
      */
     public function test_admin_contents_create_post_ok_redirect()
     {
         $this->actingAs($this->admin, 'admin');
         $response = $this->storeContent();
 
+        //正しいリダイレクトが行われているか確認
         $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
-    }
 
-    /**
-     * @test
-     * コンテンツの新規登録が完了すると、リダイレクト先の該当コースのコンテンツ一覧画面で「コンテンツを登録しました」の表示が出力されることを確認する
-     */
-    public function test_admin_contents_create_post_ok_redirect_message()
-    {
-        $this->actingAs($this->admin, 'admin');
-        $response = $this->storeContent();
-
+        //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'コンテンツを登録しました');
     }
 
@@ -278,25 +270,17 @@ class AdminContentsTest extends TestCase
 
     /**
      * @test
-     * コンテンツの編集が完了すると、該当コースのコンテンツ一覧画面へとリダイレクトすることを確認する
+     * コンテンツの編集が完了すると、該当コースのコンテンツ一覧画面へリダイレクトし、リダイレクト先で「コンテンツを変更しました」の表示が出力されることを確認する
      */
     public function test_admin_contents_edit_patch_ok_redirect()
     {
         $this->actingAs($this->admin, 'admin');
         $response = $this->editContent();
 
+        //正しいリダイレクトが行われているか確認
         $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
-    }
 
-    /**
-     * @test
-     * コンテンツの編集が完了すると、リダイレクト先の該当コースのコンテンツ一覧画面で「コンテンツを変更しました」の表示が出力されることを確認する
-     */
-    public function test_admin_contents_edit_patch_ok_redirect_message()
-    {
-        $this->actingAs($this->admin, 'admin');
-        $response = $this->editContent();
-
+        //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'コンテンツを変更しました');
     }
 
@@ -317,25 +301,17 @@ class AdminContentsTest extends TestCase
 
     /**
      * @test
-     * コンテンツの複製が完了すると、該当コースのコンテンツ一覧画面へとリダイレクトすることを確認する
+     * コンテンツの複製が完了すると、該当コースのコンテンツ一覧画面へリダイレクトし、リダイレクト先で「コンテンツを複製しました」の表示が出力されることを確認する
      */
     public function test_admin_contents_duplicate_post_ok_redirect()
     {
         $this->actingAs($this->admin, 'admin');
         $response = $this->duplicateContent();
 
+        //正しいリダイレクトが行われているか確認
         $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
-    }
 
-    /**
-     * @test
-     * コンテンツの複製が完了すると、リダイレクト先の該当コースのコンテンツ一覧画面で「コンテンツを複製しました」の表示が出力されることを確認する
-     */
-    public function test_admin_contents_duplicate_post_ok_redirect_message()
-    {
-        $this->actingAs($this->admin, 'admin');
-        $response = $this->duplicateContent();
-
+        //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'コンテンツを複製しました。');
     }
 
@@ -363,25 +339,17 @@ class AdminContentsTest extends TestCase
 
     /**
      * @test
-     * コンテンツの削除が完了すると、該当コースのコンテンツ一覧画面へとリダイレクトすることを確認する
+     * コンテンツの削除が完了すると、該当コースのコンテンツ一覧画面へリダイレクトし、リダイレクト先で「コンテンツを削除しました」の表示が出力されることを確認する
      */
     public function test_admin_contents_delete_ok_redirect()
     {
         $this->actingAs($this->admin, 'admin');
         $response = $this->destroyContent();
 
+        //正しいリダイレクトが行われているか確認
         $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
-    }
 
-    /**
-     * @test
-     * コンテンツの削除が完了すると、リダイレクト先の該当コースのコンテンツ一覧画面で「コンテンツを削除しました」の表示が出力されることを確認する
-     */
-    public function test_admin_contents_delete_ok_redirect_message()
-    {
-        $this->actingAs($this->admin, 'admin');
-        $response = $this->destroyContent();
-
+        //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('danger', $this->content->title . 'を削除しました');
     }
 
