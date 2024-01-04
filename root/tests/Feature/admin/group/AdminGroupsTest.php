@@ -198,38 +198,63 @@ class AdminGroupsTest extends TestCase
     /**
      * @test
      */
+    public function test_admin_groups_post_ok_groups_store()
+    {
+        // 管理者としてログイン
+        $this->actingAs($this->admin, 'admin');
+
+        // グループを新規作成
+        $response = $this->post(route('admin.groups.store'), [
+            'group_name' => 'newGroup',
+            'remarks' => 'newGroupRemark',
+        ]);
+
+        // 作成されたデータがデータベース内に存在することを確認する
+        $this->assertDatabaseHas('groups', [
+            'group_name' => 'newGroup',
+            'remarks' => 'newGroupRemark',
+        ]);
+
+        // 新規作成後に正しいリダイレクトが行われていることを確認する。
+        $response->assertStatus(302)->assertRedirect('admin/groups');
+
+        // 新規作成された際に適切なメッセージが表示されている確認する。
+        $response->assertSessionHas('message', 'newGroup' . 'を登録しました');
+    }
+
+
+    /**
+     * @test
+     */
     public function test_admin_groups_post_ok_store()
     {
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
 
         $user = $this->createTestUsers();
-        $group = $this->createTestGroups();
         $course = $this->createTestCourses();
-
-        // グループとコース、ユーザーを関連付ける
-        $group->courses()->attach($course);
-        $group->users()->attach($user);
 
         // グループを新規作成
         $response = $this->post(route('admin.groups.store'), [
-            'group_name' => $group['group_name'],
-            'remarks' => $group['remarks'],
+            'group_name' => 'newGroupName',
+            'remarks' => 'newGroupRemark',
             'user' => [$user->id],
             'course' => [$course->id],
         ]);
 
+        $newGroup = Group::where('group_name', 'newGroupName')->first();
+
         // 作成されたデータがデータベース内に存在することを確認する
         $this->assertDatabaseHas('groups', [
-            'group_name' => $group->group_name,
-            'remarks' => $group->remarks
+            'group_name' => 'newGroupName',
+            'remarks' => 'newGroupRemark',
         ]);
         $this->assertDatabaseHas('groups_courses', [
-            'group_id' => $group->id,
+            'group_id' => $newGroup->id,
             'course_id' => $course->id,
         ]);
         $this->assertDatabaseHas('users_groups', [
-            'group_id' => $group->id,
+            'group_id' => $newGroup->id,
             'user_id' => $user->id,
         ]);
 
@@ -237,7 +262,7 @@ class AdminGroupsTest extends TestCase
         $response->assertStatus(302)->assertRedirect('admin/groups');
 
         // 新規作成された際に適切なメッセージが表示されている確認する。
-        $response->assertSessionHas('message', $group->group_name . 'を登録しました');
+        $response->assertSessionHas('message', 'newGroupName' . 'を登録しました');
     }
 
     /**
@@ -312,7 +337,6 @@ class AdminGroupsTest extends TestCase
         $this->createTestUsers();
 
         // 新しいグループ、ユーザー、コースを作成
-
         $newGroupName = 'newGroup';
         $newGroupRemarks = 'newGroupRemark';
 
