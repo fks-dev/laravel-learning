@@ -45,7 +45,6 @@ class AdminContentsTest extends TestCase
                 'admin_id' => $this->admin->id,
                 'course_id' => $this->course->id,
                 'youtube_video_id' => '1q8VtH2zxYE',
-                'is_public' => true,
                 'position' => $i,
             ]);
         }
@@ -64,7 +63,6 @@ class AdminContentsTest extends TestCase
             'title'            => 'new_content',
             'youtube_video_id' => '2k9dh7SwEVs',
             'remarks'          => 'This is new_content',
-            'is_public'        => true,
         ]);
     }
 
@@ -79,7 +77,6 @@ class AdminContentsTest extends TestCase
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
             'remarks' => 'This is update_content',
-            'is_public' => false,
         ]);
     }
 
@@ -209,7 +206,6 @@ class AdminContentsTest extends TestCase
             'title'            => 'new_content',
             'youtube_video_id' => '2k9dh7SwEVs',
             'remarks'          => 'This is new_content',
-            'is_public'        => true,
         ]);
     }
 
@@ -277,7 +273,6 @@ class AdminContentsTest extends TestCase
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
             'remarks' => 'This is update_content',
-            'is_public' => false,
         ]);
     }
 
@@ -360,7 +355,6 @@ class AdminContentsTest extends TestCase
             'admin_id' => $this->admin->id,
             'course_id' => $this->course->id,
             'youtube_video_id' => '1q8VtH2zxYE',
-            'is_public' => true,
         ]);
 
         //deleted_atカラムが適切に設定されているか確認
