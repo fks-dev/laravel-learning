@@ -365,6 +365,8 @@ class AdminGroupsTest extends TestCase
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
 
+        $group = $this->createGroupWithRelations();
+
         // 新しいグループ、ユーザー、コースを作成
         $updateGroupName = 'updateGroupName';
         $updateGroupRemarks = 'updateGroupRemark';
@@ -381,11 +383,7 @@ class AdminGroupsTest extends TestCase
         ]);
 
         // グループを編集
-        $response = $this->patch(route('admin.groups.update', [
-            'group' => $this->createTestGroups()->id,
-            'user' => $this->createTestUsers()->id,
-            'course' => $this->createTestCourses()->id
-        ]), [
+        $response = $this->patch(route('admin.groups.update', $group['group']->id), [
             'group_name' => $updateGroupName,
             'remarks' => $updateGroupRemarks,
             'user' => $updateUser->id,
