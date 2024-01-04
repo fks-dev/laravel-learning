@@ -332,14 +332,14 @@ class AdminGroupsTest extends TestCase
         // 管理者としてログイン
         $this->actingAs($this->admin, 'admin');
 
-        $this->createTestGroups();
+        $group = $this->createTestGroups();
 
         // 新しいグループを作成
         $updateGroupName = 'updateGroupName';
         $updateGroupRemarks = 'updateGroupRemark';
 
         // グループを編集
-        $response = $this->patch(route('admin.groups.update', ['group' => $this->createTestGroups()->id]), [
+        $response = $this->patch(route('admin.groups.update', ['group' => $group->id]), [
             'group_name' => $updateGroupName,
             'remarks' => $updateGroupRemarks,
         ]);
