@@ -6,7 +6,7 @@
     {{-- CSS --}}
     <link rel="stylesheet" href="/css/select.css">
 
-    @include('admin.groups.head')
+    @include('head')
     <title>グループ編集</title>
 </head>
 <body>

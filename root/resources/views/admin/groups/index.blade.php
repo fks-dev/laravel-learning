@@ -3,7 +3,7 @@
 <head>
     <link rel="stylesheet" href="/css/sort.css">
     <link rel="stylesheet" href="/css/indexTable.css">
-    @include('admin.groups.head')
+    @include('head')
     <title>グループ登録</title>
 </head>
 <body>

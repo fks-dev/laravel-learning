@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="ja">
 <head>
-    @include('admin.groups.head')
+    @include('head')
     <title>コース</title>
 </head>
 <body>
