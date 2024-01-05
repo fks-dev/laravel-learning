@@ -5,7 +5,7 @@
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
     {{-- CSS --}}
     <link rel="stylesheet" href="/css/select.css">
-    @include('admin.groups.head')
+    @include('head')
     <title>グループ登録</title>
 </head>
 <body>
