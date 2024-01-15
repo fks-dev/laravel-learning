@@ -11,7 +11,6 @@ use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Enums\ActionEnum;
 
-
 class AdminMessagesTest extends TestCase
 {
     use RefreshDatabase;
@@ -1181,7 +1180,7 @@ class AdminMessagesTest extends TestCase
      * @test
      * 管理者が未ログイン時に送信済みメッセージの詳細画面にアクセスできないことを確認する
      */
-    public function test_admin_messages_get_ok_sentShow_redirect_without_login()
+    public function test_admin_messages_sent_get_ok_sentShow_redirect_without_login()
     {
         //ログアウトする
         auth()->logout();
