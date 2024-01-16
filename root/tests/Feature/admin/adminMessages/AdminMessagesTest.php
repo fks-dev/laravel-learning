@@ -700,7 +700,6 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHas('message', 'メッセージを送信しました');
     }
 
-
     /**下書き一覧画面**/
 
     /**
@@ -764,7 +763,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestAdminMessages(ActionEnum::DRAFT);
 
         //ビューにアクセス
-        $response = $this->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.draft'));
 
         //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
@@ -1145,7 +1144,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestAdminMessages(ActionEnum::SEND);
 
         //ビューにアクセス
-        $response = $this->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.sent'));
 
         //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
