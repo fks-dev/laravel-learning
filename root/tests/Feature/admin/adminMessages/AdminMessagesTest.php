@@ -1303,10 +1303,13 @@ class AdminMessagesTest extends TestCase
     public function test_admin_messages_dust_get_ok_session()
     {
         //ビューにアクセス
-        $response = $this->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.dust'));
+
+        //ページネーションからメッセージを取得
+        $paginator = $response->viewData('paginator');
 
         //ビューに渡されたページ番号を取得
-        $viewPageNumber = $response->original->getData()['messages']->currentPage();
+        $viewPageNumber = $paginator->currentPage();
 
         //セッションに保存された実際のページ番号を取得
         $sessionPageNumber = session('pageNumber');
