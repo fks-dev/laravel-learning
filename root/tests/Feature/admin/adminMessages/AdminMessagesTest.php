@@ -144,6 +144,9 @@ class AdminMessagesTest extends TestCase
         //ビューにアクセス
         $response = $this->get(route('admin.messages.index'));
 
+        //ページネーションが正しく表示されていることを確認
+        $response->assertSee('pagination');
+
         //ビューに必要なデータが渡されていることを確認
         $response->assertViewHasAll(['messages', 'users', 'adminUser']);
 
@@ -153,9 +156,6 @@ class AdminMessagesTest extends TestCase
         //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
         $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
         $this->assertEquals($expectedOrder, $sortedOrder);
-
-        //ページネーションが正しく表示されていることを確認
-        $response->assertSee('pagination');
     }
 
     /**
@@ -164,16 +164,11 @@ class AdminMessagesTest extends TestCase
      */
     public function test_admin_messages_get_ok_session()
     {
-        //テストデータを準備
-        $this->prepareTestUserMessages();
-
-        //ビューにアクセス
+        //ビューにアクセスし、ビューに渡されたページ番号を取得
         $response = $this->get(route('admin.messages.index'));
-
-        //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
 
-        //セッションに保存された実際のページ番号を取得
+        //セッションに保存されたページ番号を取得
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
@@ -759,22 +754,16 @@ class AdminMessagesTest extends TestCase
      */
     public function test_admin_messages_draft_get_ok_session()
     {
-        //テストデータを準備
-        $this->prepareTestAdminMessages(ActionEnum::DRAFT);
-
-        //ビューにアクセス
+        //ビューにアクセスし、ビューに渡されたページ番号を取得
         $response = $this->get(route('admin.messages.draft'));
-
-        //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
 
-        //セッションに保存された実際のページ番号を取得
+        //セッションに保存されたページ番号を取得
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
         $this->assertEquals($sessionPageNumber, $viewPageNumber);
     }
-
 
     /**下書き編集画面**/
 
@@ -1140,16 +1129,11 @@ class AdminMessagesTest extends TestCase
      */
     public function test_admin_messages_sent_get_ok_session()
     {
-        //テストデータを準備
-        $this->prepareTestAdminMessages(ActionEnum::SEND);
-
-        //ビューにアクセス
+        //ビューにアクセスし、ビューに渡されたページ番号を取得
         $response = $this->get(route('admin.messages.sent'));
-
-        //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
 
-        //セッションに保存された実際のページ番号を取得
+        //セッションに保存されたページ番号を取得
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
@@ -1301,16 +1285,14 @@ class AdminMessagesTest extends TestCase
      */
     public function test_admin_messages_dust_get_ok_session()
     {
-        //ビューにアクセス
+        //ビューにアクセスし、ページネーションのための LengthAwarePaginator のインスタンスを取得
         $response = $this->get(route('admin.messages.dust'));
-
-        //ページネーションからメッセージを取得
         $paginator = $response->viewData('paginator');
 
-        //ビューに渡されたページ番号を取得
+        //インスタンスビューに渡されたページ番号を取得
         $viewPageNumber = $paginator->currentPage();
 
-        //セッションに保存された実際のページ番号を取得
+        //セッションに保存されたページ番号を取得
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
