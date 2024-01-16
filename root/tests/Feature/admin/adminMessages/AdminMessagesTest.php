@@ -875,8 +875,8 @@ class AdminMessagesTest extends TestCase
         return $this->patch(route('admin.messages.update', ['message' => $this->adminMessage->id]), [
             'admin_id' => $this->adminMessage->admin_id,
             'user_id' => $this->adminMessage->user_id,
-            'title' => 'test_admin_message_update',
-            'text' => 'This is test_admin_message_update.',
+            'title' => $this->adminMessage->title,
+            'text' => $this->adminMessage->text,
             ActionEnum::DRAFT->value => 0,
         ]);
     }
@@ -896,8 +896,8 @@ class AdminMessagesTest extends TestCase
         return $this->patch(route('admin.messages.update', ['message' => $this->adminMessage->id]), [
             'admin_id' => $this->adminMessage->admin_id,
             'user_id' => $this->adminMessage->user_id,
-            'title' => 'test_admin_message_update',
-            'text' => 'This is test_admin_message_update.',
+            'title' => $this->adminMessage->title,
+            'text' => $this->adminMessage->text,
             'action' => ActionEnum::SEND->value,
         ]);
     }
@@ -1024,8 +1024,8 @@ class AdminMessagesTest extends TestCase
         $this->patch(route('admin.messages.update', ['message' => $this->adminMessage->id]), [
             'admin_id' => $this->adminMessage->admin_id,
             'user_id' => $this->adminMessage->user_id,
-            'title' => 'test_admin_message_update',
-            'text' => 'This is test_admin_message_update.',
+            'title' => $this->adminMessage->title,
+            'text' => $this->adminMessage->text,
             'action' => ActionEnum::SEND->value,
         ]);
 
