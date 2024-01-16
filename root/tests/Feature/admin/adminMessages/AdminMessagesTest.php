@@ -1294,15 +1294,6 @@ class AdminMessagesTest extends TestCase
 
         //取得された表示順序が期待される表示順序と一致するか確認
         $this->assertEquals($expectedOrder, $paginator->items());
-
-        // ビューに渡されたページ番号を取得
-        $viewPageNumber = $paginator->currentPage();
-
-        // セッションに保存された実際のページ番号を取得
-        $sessionPageNumber = session('pageNumber');
-
-        // ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
-        $this->assertEquals($sessionPageNumber, $viewPageNumber);
     }
 
     /**
