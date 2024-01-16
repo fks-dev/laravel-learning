@@ -88,7 +88,7 @@ class AdminMessagesTest extends TestCase
     }
 
     /**
-     * 更新日時の異なる受信メッセージを100件作成するメソッド
+     * 受信メッセージを100件作成するメソッド
      */
     private function prepareTestUserMessages()
     {
@@ -142,7 +142,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestUserMessages();
 
         //ビューにアクセス
-        $response = $this->actingAs($this->admin)->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.index'));
 
         //ビューに必要なデータが渡されていることを確認
         $response->assertViewHasAll(['messages', 'users', 'adminUser']);
@@ -160,7 +160,7 @@ class AdminMessagesTest extends TestCase
 
     /**
      * @test
-     * 受信メッセージの一覧画面でセッションに正しいページ番号が保存されていることを確認する
+     * 受信一覧画面でセッションに正しいページ番号が保存されていることを確認する
      */
     public function test_admin_messages_get_ok_session()
     {
@@ -168,7 +168,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestUserMessages();
 
         //ビューにアクセス
-        $response = $this->actingAs($this->admin)->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.index'));
 
         //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
@@ -738,7 +738,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestAdminMessages(ActionEnum::DRAFT);
 
         //ビューにアクセス
-        $response = $this->actingAs($this->admin)->get(route('admin.messages.draft'));
+        $response = $this->get(route('admin.messages.draft'));
 
         //ビューに必要なデータが渡されていることを確認
         $response->assertViewHasAll(['messages', 'users', 'adminUser']);
@@ -764,7 +764,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestAdminMessages(ActionEnum::DRAFT);
 
         //ビューにアクセス
-        $response = $this->actingAs($this->admin)->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.index'));
 
         //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
@@ -1145,7 +1145,7 @@ class AdminMessagesTest extends TestCase
         $this->prepareTestAdminMessages(ActionEnum::SEND);
 
         //ビューにアクセス
-        $response = $this->actingAs($this->admin)->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.index'));
 
         //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
@@ -1312,7 +1312,7 @@ class AdminMessagesTest extends TestCase
     public function test_admin_messages_dust_get_ok_session()
     {
         //ビューにアクセス
-        $response = $this->actingAs($this->admin)->get(route('admin.messages.index'));
+        $response = $this->get(route('admin.messages.index'));
 
         //ビューに渡されたページ番号を取得
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
