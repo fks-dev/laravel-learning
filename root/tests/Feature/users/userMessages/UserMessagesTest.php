@@ -368,7 +368,7 @@ class UserMessagesTest extends TestCase
             'reply_message_id' => $this->adminMessage->id,
         ]);
 
-        return $this->post("/users/messages/{$this->adminMessage->id}", [
+        return $this->post("/users/messages/{$this->userMessage->reply_message_id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -387,7 +387,7 @@ class UserMessagesTest extends TestCase
             'reply_message_id' => $this->adminMessage->id,
         ]);
 
-        return $this->post("/users/messages/{$this->adminMessage->id}", [
+        return $this->post("/users/messages/{$this->userMessage->reply_message_id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
