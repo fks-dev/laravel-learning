@@ -113,7 +113,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_get_ok()
     {
-        $response = $this->get(route('users.messages.index'));
+        $response = $this->get('/users/messages');
         $response->assertOk();
     }
 
@@ -126,10 +126,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.index'));
+        $response = $this->get('/users/messages');
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -142,7 +142,7 @@ class UserMessagesTest extends TestCase
         $this->prepareTestAdminMessages();
 
         //ビューにアクセス
-        $response = $this->get(route('users.messages.index'));
+        $response = $this->get('/users/messages');
 
         //ページネーションが正しく表示されていることを確認
         $response->assertSee('pagination');
@@ -165,7 +165,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_get_ok_session()
     {
         //ビューにアクセスし、ビューに渡されたページ番号を取得
-        $response = $this->get(route('users.messages.index'));
+        $response = $this->get('/users/messages');
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
 
         //セッションに保存されたページ番号を取得
@@ -184,10 +184,7 @@ class UserMessagesTest extends TestCase
     private function assertBackRouteFromShow($source, $expectedBackRoute)
     {
         // 受信メッセージの詳細画面にアクセスし、ビューからバックルートの値を取得
-        $response = $this->get(route('users.messages.show', [
-            'message' => $this->adminMessage->id,
-            'source' => $source
-        ]));
+        $response = $this->get("/users/messages/{$this->adminMessage->id}?source={$source}");
         $actualBackRoute =  $response->viewData('backRoute');
 
         // ビューから取得した値が期待される値と一致するか確認
@@ -200,9 +197,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_get_ok_show()
     {
-        $response = $this->get(route('users.messages.show', [
-            'message' => $this->adminMessage->id,
-        ]));
+        $response = $this->get("/users/messages/{$this->adminMessage->id}");
         $response->assertOk();
     }
 
@@ -215,12 +210,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.show', [
-            'message' => $this->adminMessage->id,
-        ]));
+        $response = $this->get("/users/messages/{$this->adminMessage->id}");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -231,7 +224,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_get_ok_show_backroute_from_dust()
     {
         // ゴミ箱画面から遷移してきた場合に期待されるバックルート
-        $expectedBackRoute = route('users.messages.dust');
+        $expectedBackRoute = config('app.url') . '/users/messages/dust';
 
         $this->assertBackRouteFromShow('dust', $expectedBackRoute);
     }
@@ -244,7 +237,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_get_ok_show_backroute_from_index()
     {
         //受信一覧画面から遷移してきら場合に期待されるバックルート
-        $expectedBackRoute = route('users.messages.index');
+        $expectedBackRoute = config('app.url') . '/users/messages';
 
         $this->assertBackRouteFromShow('index', $expectedBackRoute);
     }
@@ -256,7 +249,7 @@ class UserMessagesTest extends TestCase
      */
     public function hiddenMessagesTrue()
     {
-        return $this->post(route('users.messages.hidden', ['message' => $this->adminMessage->id]), [
+        return $this->post("/users/messages/{$this->adminMessage->id}/hidden", [
             'is_hidden' => true,
         ]);
     }
@@ -271,10 +264,9 @@ class UserMessagesTest extends TestCase
             'is_hidden' => true,
         ]);
 
-        return $this->post(route('users.messages.hidden', [
-            'message' => $this->adminMessage->id,
+        return $this->post("/users/messages/{$this->adminMessage->id}/hidden", [
             'is_hidden' => false,
-        ]));
+        ]);
     }
 
     /* @test
@@ -300,7 +292,7 @@ class UserMessagesTest extends TestCase
         $response = $this->hiddenMessagesTrue();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.index'));
+        $response->assertRedirect('/users/messages');
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('danger', $this->adminMessage->title . 'を削除しました');
@@ -331,7 +323,7 @@ class UserMessagesTest extends TestCase
         $response = $this->hiddenMessagesFalse();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.dust'));
+        $response->assertRedirect('/users/messages/dust');
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('success', $this->adminMessage->title . 'を復元しました');
@@ -345,9 +337,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_reply_get_ok()
     {
-        $response = $this->get(route('users.messages.reply', [
-            'message' => $this->adminMessage->id,
-        ]));
+        $response = $this->get("/users/messages/{$this->adminMessage->id}/reply");
         $response->assertOk();
     }
 
@@ -360,12 +350,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.reply', [
-            'message' => $this->adminMessage->id,
-        ]));
+        $response = $this->get("/users/messages/{$this->adminMessage->id}/reply");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**返信メッセージの下書き保存と送信**/
@@ -380,7 +368,7 @@ class UserMessagesTest extends TestCase
             'reply_message_id' => $this->adminMessage->id,
         ]);
 
-        return $this->post(route('users.messages.reply.store', ['message' => $this->userMessage->reply_message_id]), [
+        return $this->post("/users/messages/{$this->adminMessage->id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -399,7 +387,7 @@ class UserMessagesTest extends TestCase
             'reply_message_id' => $this->adminMessage->id,
         ]);
 
-        return $this->post(route('users.messages.reply.store', ['message' => $this->userMessage->reply_message_id]), [
+        return $this->post("/users/messages/{$this->adminMessage->id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -437,9 +425,7 @@ class UserMessagesTest extends TestCase
         $response = $this->replyStoreMessageDraft();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.index', [
-            'message' => $this->userMessage->reply_message_id
-        ]));
+        $response->assertRedirect("/users/messages?message={$this->userMessage->reply_message_id}");
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', '下書きを保存しました');
@@ -474,9 +460,7 @@ class UserMessagesTest extends TestCase
         $response = $this->replyStoreMessageSend();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.index', [
-            'message' => $this->userMessage->reply_message_id
-        ]));
+        $response->assertRedirect("/users/messages?message={$this->userMessage->reply_message_id}");
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'メッセージを返信しました');
@@ -503,7 +487,7 @@ class UserMessagesTest extends TestCase
     private function assertBackRouteFromCreate($source, $expectedBackRoute)
     {
         // メッセージの新規作成画面にアクセスし、ビューからバックルートの値を取得
-        $response = $this->get(route('users.messages.create', ['source' => $source]));
+        $response = $this->get("/users/messages/create?source={$source}");
         $actualBackRoute =  $response->viewData('backRoute');
 
         // ビューから取得した値が期待される値と一致するか確認
@@ -516,7 +500,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_create_get_ok()
     {
-        $response = $this->get(route('users.messages.create'));
+        $response = $this->get('/users/messages/create');
         $response->assertOk();
     }
 
@@ -529,10 +513,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.create'));
+        $response = $this->get('/users/messages/create');
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -543,7 +527,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_create_get_ok_backroute_from_draft()
     {
         //下書き一覧画面から遷移してきた場合に期待されるバックルート
-        $expectedBackRoute = route('users.messages.draft');
+        $expectedBackRoute = config('app.url') . '/users/messages/draft';
 
         $this->assertBackRouteFromCreate('draft', $expectedBackRoute);
     }
@@ -556,7 +540,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_create_get_ok_backroute_from_sent()
     {
         //送信済み一覧覧画面から遷移してきら場合に期待されるバックルート
-        $expectedBackRoute = route('users.messages.sent');
+        $expectedBackRoute = config('app.url') . '/users/messages/sent';
 
         $this->assertBackRouteFromCreate('send', $expectedBackRoute);
     }
@@ -569,7 +553,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_create_get_ok_backroute_from_dust()
     {
         //ゴミ箱画面から遷移してきら場合に期待されるバックルート
-        $expectedBackRoute = route('users.messages.dust');
+        $expectedBackRoute = config('app.url') . '/users/messages/dust';
 
         $this->assertBackRouteFromCreate('dust', $expectedBackRoute);
     }
@@ -582,7 +566,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_create_get_ok_backroute_from_index()
     {
         //受信一覧画面から遷移してきら場合に期待されるバックルート
-        $expectedBackRoute = route('users.messages.index');
+        $expectedBackRoute = config('app.url') . '/users/messages';
 
         $this->assertBackRouteFromCreate('index', $expectedBackRoute);
     }
@@ -599,7 +583,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::DRAFT,
         ]);
 
-        return $this->post(route('users.messages.store'), [
+        return $this->post("/users/messages", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -618,7 +602,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        return $this->post(route('users.messages.store'), [
+        return $this->post("/users/messages", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -655,7 +639,7 @@ class UserMessagesTest extends TestCase
         $response = $this->storeMessageDraft();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.draft'));
+        $response->assertRedirect('/users/messages/draft');
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', '下書きを保存しました');
@@ -689,7 +673,7 @@ class UserMessagesTest extends TestCase
         $response = $this->storeMessageSend();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.index'));
+        $response->assertRedirect('/users/messages');
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'メッセージを送信しました');
@@ -703,7 +687,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_draft_get_ok()
     {
-        $response = $this->get(route('users.messages.draft'));
+        $response = $this->get('/users/messages/draft');
         $response->assertOk();
     }
 
@@ -716,10 +700,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.draft'));
+        $response = $this->get('/users/messages/draft');
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -732,7 +716,7 @@ class UserMessagesTest extends TestCase
         $this->prepareTestUserMessages(ActionEnum::DRAFT);
 
         //ビューにアクセス
-        $response = $this->get(route('users.messages.draft'));
+        $response = $this->get('/users/messages/draft');
 
         //ビューに必要なデータが渡されていることを確認
         $response->assertViewHasAll(['messages', 'admins']);
@@ -755,7 +739,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_draft_get_ok_session()
     {
         //ビューにアクセスし、ビューに渡されたページ番号を取得
-        $response = $this->get(route('users.messages.draft'));
+        $response = $this->get('/users/messages/draft');
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
 
         //セッションに保存されたページ番号を取得
@@ -773,7 +757,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_edit_get_ok()
     {
-        $response = $this->get(route('users.messages.edit', ['message' => $this->userMessage->id]));
+        $response = $this->get("/users/messages/{$this->userMessage->id}/edit");
 
         $response->assertOk();
     }
@@ -787,10 +771,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.edit', ['message' => $this->userMessage->id]));
+        $response = $this->get("/users/messages/{$this->adminMessage->id}/edit");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -806,7 +790,7 @@ class UserMessagesTest extends TestCase
             'reply_message_id' => $this->adminMessage->id,
         ]);
 
-        $response = $this->get(route('users.messages.edit', ['message' => $this->userMessage->id]));
+        $response = $this->get("/users/messages/{$this->userMessage->id}/edit");
 
         //「メッセージ内容」欄に受信メッセージの本文が表示されているか確認
         $response->assertViewHas('reply', $this->adminMessage);
@@ -820,7 +804,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_edit_get_ok_draft()
     {
         //編集するメッセージのアクションが DRAFT の場合
-        $response = $this->get(route('users.messages.edit', ['message' => $this->userMessage->id]));
+        $response = $this->get("/users/messages/{$this->userMessage->id}/edit");
 
         //「メッセージ内容」欄が表示されていないか確認
         $response->assertViewHas('reply', null);
@@ -839,7 +823,7 @@ class UserMessagesTest extends TestCase
             'text' => 'This is test_user_message_update.',
         ]);
 
-        return $this->patch(route('users.messages.update', ['message' => $this->userMessage->id]), [
+        return $this->patch("/users/messages/{$this->userMessage->id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -860,7 +844,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::NO_REPLY,
         ]);
 
-        return $this->patch(route('users.messages.update', ['message' => $this->userMessage->id]), [
+        return $this->patch("/users/messages/{$this->userMessage->id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -881,7 +865,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        return $this->patch(route('users.messages.update', ['message' => $this->userMessage->id]), [
+        return $this->patch("/users/messages/{$this->userMessage->id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -920,7 +904,7 @@ class UserMessagesTest extends TestCase
         $response = $this->updateMessageDraft();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.draft'));
+        $response->assertRedirect('/users/messages/draft');
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', '下書きを保存しました');
@@ -956,7 +940,7 @@ class UserMessagesTest extends TestCase
         $response = $this->updateMessageNoreply();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.draft'));
+        $response->assertRedirect('/users/messages/draft');
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', '下書きを保存しました');
@@ -989,7 +973,7 @@ class UserMessagesTest extends TestCase
         $response = $this->updateMessageSend();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('users.messages.index'));
+        $response->assertRedirect('/users/messages');
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'メッセージを送信しました');
@@ -1009,7 +993,7 @@ class UserMessagesTest extends TestCase
             'reply_message_id' => $this->adminMessage->id,
         ]);
 
-        $this->patch(route('users.messages.update', ['message' => $this->userMessage->id]), [
+        $this->patch("/users/messages/{$this->userMessage->id}", [
             'admin_id' => $this->userMessage->admin_id,
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
@@ -1028,9 +1012,7 @@ class UserMessagesTest extends TestCase
      */
     public function  destroyMessagesDraft()
     {
-        return $this->delete(route('users.messages.destroy', [
-            'message' => $this->userMessage->id,
-        ]));
+        return $this->delete("/users/messages/{$this->userMessage->id}");
     }
 
     /**
@@ -1078,7 +1060,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_sent_get_ok()
     {
-        $response = $this->get(route('users.messages.sent'));
+        $response = $this->get('/users/messages/sent');
         $response->assertOk();
     }
 
@@ -1091,10 +1073,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.sent'));
+        $response = $this->get('/users/messages/sent');
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -1107,7 +1089,7 @@ class UserMessagesTest extends TestCase
         $this->prepareTestUserMessages(ActionEnum::SEND);
 
         // ビューにアクセス
-        $response = $this->get(route('users.messages.sent'));
+        $response = $this->get('/users/messages/sent');
 
         // ビューに必要なデータが渡されていることを確認
         $response->assertViewHasAll(['messages', 'admins']);
@@ -1130,7 +1112,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_sent_get_ok_session()
     {
         //ビューにアクセスし、ビューに渡されたページ番号を取得
-        $response = $this->get(route('users.messages.sent'));
+        $response = $this->get('/users/messages/sent');
         $viewPageNumber = $response->original->getData()['messages']->currentPage();
 
         //セッションに保存されたページ番号を取得
@@ -1153,9 +1135,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        $response = $this->get(route('users.messages.sent.show', [
-            'message' => $this->userMessage->id
-        ]));
+        $response = $this->get("/users/messages/{$this->userMessage->id}/sent");
         $response->assertOk();
     }
 
@@ -1168,12 +1148,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.sent.show', [
-            'message' => $this->userMessage->id,
-        ]));
+        $response = $this->get("/users/messages/{$this->userMessage->id}/sent");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**送信済みメッセージの論理削除**/
@@ -1188,9 +1166,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        return $this->delete(route('users.messages.destroy', [
-            'message' => $this->userMessage->id,
-        ]));
+        return $this->delete("/users/messages/{$this->userMessage->id}");
     }
 
     /**
@@ -1238,7 +1214,7 @@ class UserMessagesTest extends TestCase
      */
     public function test_users_messages_dust_get_ok()
     {
-        $response = $this->get(route('users.messages.dust'));
+        $response = $this->get('/users/messages/dust');
         $response->assertOk();
     }
 
@@ -1251,10 +1227,10 @@ class UserMessagesTest extends TestCase
         //ログアウトする
         auth()->logout();
 
-        $response = $this->get(route('users.messages.dust'));
+        $response = $this->get('/users/messages/dust');
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -1264,7 +1240,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_dust_get_ok_sort()
     {
         //ビューにアクセス
-        $response = $this->get(route('users.messages.dust'));
+        $response = $this->get('/users/messages/dust');
 
         //ページネーションが正しく機能しているか確認
         $response->assertViewHas('paginator');
@@ -1286,7 +1262,7 @@ class UserMessagesTest extends TestCase
     public function test_users_messages_dust_get_ok_session()
     {
         //ビューにアクセスし、ページネーションのための LengthAwarePaginator のインスタンスを取得
-        $response = $this->get(route('users.messages.dust'));
+        $response = $this->get('/users/messages/dust');
         $paginator = $response->viewData('paginator');
 
         //インスタンスからビューに渡されたページ番号を取得
@@ -1311,7 +1287,7 @@ class UserMessagesTest extends TestCase
             'deleted_at' => '2024-01-12 15:20:05',
         ]);
 
-        return $this->post(route('users.messages.restore', ['message' => $this->userMessage->id]), [
+        return $this->post("/users/messages/dust/{$this->userMessage->id}", [
             'deleted_at' => null,
         ]);
     }
@@ -1327,7 +1303,7 @@ class UserMessagesTest extends TestCase
             'deleted_at' => '2024-01-12 15:20:05',
         ]);
 
-        return $this->post(route('users.messages.restore', ['message' => $this->userMessage->id]), [
+        return $this->post("/users/messages/dust/{$this->userMessage->id}", [
             'deleted_at' => null,
         ]);
     }
