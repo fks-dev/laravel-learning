@@ -65,7 +65,7 @@ class AdminPasswordTest extends TestCase
     {
         //ログアウト時にパスワード変更画面にアクセスしたときログインページにリダイレクトする
         $response = $this->get('/admin/admin-management/120001/password');
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -76,7 +76,7 @@ class AdminPasswordTest extends TestCase
         //パスワード変更後にアドミン管理画面にリダイレクトされる
         $this->login();
         $response = $this->postNewPassword();
-        $response->assertRedirect(route('admin.admin-management.index'));
+        $response->assertRedirect('admin/admin-management');
     }
 
     /**
