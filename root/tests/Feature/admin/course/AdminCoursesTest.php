@@ -6,7 +6,6 @@ use Tests\TestCase;
 use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
-use App\Models\Content;
 use App\Models\Course;
 
 class AdminCoursesTest extends TestCase
@@ -15,7 +14,6 @@ class AdminCoursesTest extends TestCase
 
     private $admin;
     private $course;
-    private $content;
 
     // テスト用データの作成
     public function setUp(): void
@@ -32,25 +30,16 @@ class AdminCoursesTest extends TestCase
         // ログイン
         $this->actingAs($this->admin, 'admin');
 
-        $courses = [];
         for ($i = 1; $i <= 5; $i++) {
-            $courses[] = Course::factory()->create([
-                'id' => 200000 + $i,
+            Course::factory()->create([
+                'id' => 190000 + $i,
                 'title' => 'course_' . $i,
                 'introduction' => 'これはテスト用のコースです。',
                 'remarks' => 'This is test_course',
                 'position' => $i,
             ]);
         }
-        $this->course = $courses[0];
-
-        $this->content = Content::factory()->create([
-            'id' => 200000,
-            'course_id' => $this->course->id,
-            'admin_id' => $this->admin->id,
-            'title' => 'test_content',
-            'youtube_video_id' => '1q8VtH2zxYE',
-        ]);
+        $this->course = Course::where('id', 190001)->first();
     }
 
 
@@ -73,30 +62,6 @@ class AdminCoursesTest extends TestCase
 
     /**
      * @test
-     * 該当コースのコンテンツの新規作成ができるか確認
-     */
-    public function test_admin_contents_store_post_ok()
-    {
-        $content = [
-            'course_id' => $this->course->id,
-            'admin_id' => $this->admin->id,
-            'title'            => 'new_content',
-            'youtube_video_id' => '2k9dh7SwEVs',
-            'remarks'          => 'This is new_content',
-        ];
-        $response = $this->post("/admin/contents/{$this->course->id}", $content);
-        $this->assertDatabaseHas('contents', [
-            'course_id' => $this->course->id,
-            'admin_id' => $this->admin->id,
-            'title'            => $content['title'],
-            'youtube_video_id' => $content['youtube_video_id'],
-            'remarks'          => $content['remarks'],
-        ]);
-        $response->assertSessionHas('message', 'コンテンツを登録しました');
-    }
-
-    /**
-     * @test
      * コース一覧画面へのアクセスが正常に行われるか確認
      */
     public function
@@ -104,7 +69,23 @@ class AdminCoursesTest extends TestCase
     {
         $response = $this->get('/admin/courses');
         $response->assertOk();
+        // 事前に作成したコースが表示されるか確認
+        for ($i = 1; $i <= 5; $i++) {
+            $response->assertSee('course_' . $i);
+        };
         $response->assertViewIs('admin.courses.index');
+    }
+
+    /**
+     * @test
+     * コースが一覧画面でソート番号順に表示されていることを確認する
+     */
+    public function
+    test_admin_courses_get_ok_sorted()
+    {
+        $response = $this->get('/admin/courses');
+        $sortedOrder = Course::orderBy('position')->pluck('id')->toArray();
+        $response->assertSeeInOrder($sortedOrder);
     }
 
     /**
@@ -146,10 +127,10 @@ class AdminCoursesTest extends TestCase
      */
     public function test_admin_courses_sort_post_ok()
     {
-        $positions = [200003, 200001, 200005, 200004, 200002];
+        $positions = [190003, 190001, 190005, 190004, 190002];
         $response = $this->postJson(route('admin.courses.sort'), ['positions' => $positions]);
         $sortedOrder = Course::orderBy('position')->pluck('id')->toArray();
-        $expectedOrder = [200003, 200001, 200005, 200004, 200002];
+        $expectedOrder = [190003, 190001, 190005, 190004, 190002];
         $this->assertEquals($expectedOrder, $sortedOrder);
         $response->assertJson(['message' => '並び替えを保存しました。']);
     }
@@ -176,6 +157,7 @@ class AdminCoursesTest extends TestCase
             'introduction' => $newIntroduction,
             'remarks'      => $newRemarks,
         ]);
+        $response->assertSessionHas('message', $newTitle . 'を更新しました');
     }
 
     /**
@@ -190,7 +172,7 @@ class AdminCoursesTest extends TestCase
         $response->assertRedirect(route('admin.courses.index'));
         $this->assertSoftDeleted('courses', ['id' => $this->course->id]);
         $this->assertNotNull($this->course->fresh()->deleted_at);
-        $this->assertNotNull(session('danger'));
+        $response->assertSessionHas('danger', $this->course->title . 'を削除しました');
     }
 
 
