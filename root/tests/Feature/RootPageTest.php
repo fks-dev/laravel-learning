@@ -22,6 +22,6 @@ class RootPageTest extends TestCase
     {
         $response = $this->get('/admin/login');
         // 遷移先が正しいか確認
-        $response->assertSee(route('admin.login.index'));
+        $response->assertSee('/admin/login');
     }
 }
