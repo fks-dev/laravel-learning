@@ -77,7 +77,7 @@ class AdminGroupsTest extends TestCase
         // 管理者としてログインし、一覧画面を取得する
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.groups.index'));
+        $response = $this->get('/admin/groups/');
         $response->assertStatus(200)->assertViewIs('admin.groups.index');
     }
 
@@ -87,10 +87,10 @@ class AdminGroupsTest extends TestCase
     public function test_admin_groups_get_ok_unauthenticated()
     {
         // ユーザーがゲスト状態（ログアウトの状態）で一覧を取得する
-        $response = $this->get(route('admin.groups.index'));
+        $response = $this->get('/admin/groups/');
 
         // ログイン画面にリダイレクトされるか確認
-        $response->assertStatus(302)->assertRedirect(route('admin.login.index'));
+        $response->assertStatus(302)->assertRedirect('/admin/login');
     }
 
     /**
@@ -112,7 +112,7 @@ class AdminGroupsTest extends TestCase
         }
 
         // グループ一覧を取得し、作成日時の順にグループが並んでいるか確認する
-        $response = $this->get(route('admin.groups.index'));
+        $response = $this->get('/admin/groups/');
         $response->assertSeeInOrder(['Group1', 'Group2', 'Group3']);
     }
 
@@ -135,7 +135,7 @@ class AdminGroupsTest extends TestCase
         }
 
         // グループ一覧を取得し、更新日時の順にグループが並んでいるか確認する
-        $response = $this->get(route('admin.groups.index'));
+        $response = $this->get('/admin/groups/');
         $response->assertSeeInOrder(['Group1', 'Group2', 'Group3']);
     }
 
@@ -150,7 +150,7 @@ class AdminGroupsTest extends TestCase
         $relations = $this->createGroupWithRelations();
 
         // グループ詳細を取得し、特定のグループ、ユーザー、コースが表示されていることを確認する
-        $response = $this->get(route('admin.groups.show', $relations['group']->id));
+        $response = $this->get("/admin/groups/{$relations['group']->id}/");
         $response
             ->assertStatus(200)
             ->assertViewIs('admin.groups.show')
@@ -165,10 +165,10 @@ class AdminGroupsTest extends TestCase
         $relations = $this->createGroupWithRelations();
 
         // ユーザーがゲスト状態（ログアウトの状態）で詳細を取得する
-        $response = $this->get(route('admin.groups.show', $relations['group']->id));
+        $response = $this->get("/admin/groups/{$relations['group']->id}/");
 
         // ログイン画面にリダイレクトされるか確認
-        $response->assertStatus(302)->assertRedirect(route('admin.login.index'));
+        $response->assertStatus(302)->assertRedirect('/admin/login');
     }
 
     /**
@@ -179,7 +179,7 @@ class AdminGroupsTest extends TestCase
         // 管理者としてログインし、新規作成画面を取得する
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.groups.create'));
+        $response = $this->get('/admin/groups/create/');
         $response->assertStatus(200)->assertViewIs('admin.groups.create');
     }
 
@@ -189,10 +189,10 @@ class AdminGroupsTest extends TestCase
     public function test_admin_groups_create_get_ok_unauthenticated()
     {
         // ユーザーがゲスト状態（ログアウトの状態）で新規作成画面を取得する
-        $response = $this->get(route('admin.groups.create'));
+        $response = $this->get('/admin/groups/create/');
 
         // ログイン画面にリダイレクトされるか確認
-        $response->assertStatus(302)->assertRedirect(route('admin.login.index'));
+        $response->assertStatus(302)->assertRedirect('/admin/login');
     }
 
     /**
@@ -204,7 +204,7 @@ class AdminGroupsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
 
         // グループを新規作成
-        $response = $this->post(route('admin.groups.store'), [
+        $response = $this->post('/admin/groups/', [
             'group_name' => 'newGroup',
             'remarks' => 'newGroupRemark',
         ]);
@@ -235,7 +235,7 @@ class AdminGroupsTest extends TestCase
         $course = $this->createTestCourses();
 
         // グループを新規作成
-        $response = $this->post(route('admin.groups.store'), [
+        $response = $this->post('/admin/groups/', [
             'group_name' => 'newGroupName',
             'remarks' => 'newGroupRemark',
             'user' => [$user->id],
@@ -276,7 +276,7 @@ class AdminGroupsTest extends TestCase
         $group = $this->createTestGroups();
 
         // 編集画面を取得する
-        $response = $this->get(route('admin.groups.edit', $group->id));
+        $response = $this->get("/admin/groups/{$group->id}/edit");
         $response->assertStatus(200)->assertViewIs('admin.groups.edit');
     }
 
@@ -288,10 +288,10 @@ class AdminGroupsTest extends TestCase
         $group = $this->createTestGroups();
 
         // ユーザーがゲスト状態（ログアウトの状態）で編集画面を取得する
-        $response = $this->get(route('admin.groups.edit', $group->id));
+        $response = $this->get("/admin/groups/{$group->id}/edit");
 
         // ログイン画面にリダイレクトされるか確認
-        $response->assertStatus(302)->assertRedirect(route('admin.login.index'));
+        $response->assertStatus(302)->assertRedirect('/admin/login');
     }
 
     /**
@@ -305,8 +305,8 @@ class AdminGroupsTest extends TestCase
         $group = $this->createTestGroups();
 
         // showの場合、特定のグループへの戻るボタンへのリンクを生成する
-        $response = $this->get(route('admin.groups.edit', ['group' => $group->id, 'show' => 'show']));
-        $response->assertViewHas('backBtn', route('admin.groups.show', ['group' => $group->id]));
+        $response = $this->get("/admin/groups/{$group->id}/edit?show=show");
+        $response->assertViewHas('backBtn', "http://localhost/admin/groups/{$group->id}");
     }
 
     /**
@@ -320,8 +320,8 @@ class AdminGroupsTest extends TestCase
         $group = $this->createTestGroups();
 
        // showでない場合、デフォルトの戻るボタンへのリンクを生成する
-        $response = $this->get(route('admin.groups.edit', ['group' => $group->id]));
-        $response->assertViewHas('backBtn', route('admin.groups.index'));
+        $response = $this->get("/admin/groups/{$group->id}/edit");
+        $response->assertViewHas('backBtn', 'http://localhost/admin/groups');
     }
 
     /**
@@ -339,7 +339,7 @@ class AdminGroupsTest extends TestCase
         $updateGroupRemarks = 'updateGroupRemark';
 
         // グループを編集
-        $response = $this->patch(route('admin.groups.update', ['group' => $group->id]), [
+        $response = $this->patch("/admin/groups/{$group->id}", [
             'group_name' => $updateGroupName,
             'remarks' => $updateGroupRemarks,
         ]);
@@ -383,7 +383,7 @@ class AdminGroupsTest extends TestCase
         ]);
 
         // グループを編集
-        $response = $this->patch(route('admin.groups.update', $group['group']->id), [
+        $response = $this->patch("/admin/groups/{$group['group']->id}", [
             'group_name' => $updateGroupName,
             'remarks' => $updateGroupRemarks,
             'user' => $updateUser->id,
@@ -424,7 +424,7 @@ class AdminGroupsTest extends TestCase
         $relations = $this->createGroupWithRelations();
 
         // 正しいリダイレクトが行われていることを確認
-        $response = $this->delete(route('admin.groups.destroy', $relations['group']->id));
+        $response = $this->delete("admin/groups/{$relations['group']->id}");
         $response->assertStatus(302)->assertRedirect('admin/groups');
 
         // 削除を実行し、グループが論理削除されているか確認
