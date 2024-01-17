@@ -118,7 +118,7 @@ class AdminLoginTest extends TestCase
         $response = $this->logout();
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
