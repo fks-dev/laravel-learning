@@ -70,9 +70,27 @@ class UserMessagesTest extends TestCase
     }
 
     /**
+     * 更新日時の異なるユーザーメッセージを40件作成するメソッド
+     */
+    private function prepareTestUserMessages40($action)
+    {
+        for ($i = 1; $i <= 40; $i++) {
+            UserMessage::factory()->create([
+                'id' => 15000 + $i,
+                'admin_id' => $this->admin->id,
+                'user_id' => $this->user->id,
+                'title' => 'test_user_message_' . $i,
+                'text' => 'This is test_user_message.',
+                'action' => $action,
+                'updated_at' => now()->subDays($i),
+            ]);
+        }
+    }
+
+    /**
      * 更新日時の異なるユーザーメッセージを100件作成するメソッド
      */
-    private function prepareTestUserMessages($action)
+    private function prepareTestUserMessages100($action)
     {
         for ($i = 1; $i <= 100; $i++) {
             UserMessage::factory()->create([
@@ -88,9 +106,27 @@ class UserMessagesTest extends TestCase
     }
 
     /**
+     * 受信メッセージを40件作成するメソッド
+     */
+    private function prepareTestAdminMessages40()
+    {
+        for ($i = 1; $i <= 40; $i++) {
+            AdminMessage::factory()->create([
+                'id' => 16000 + $i,
+                'admin_id' => $this->admin->id,
+                'user_id' => $this->user->id,
+                'title' => 'test_admin_message_' . $i,
+                'text' => 'This is test_admin_message.',
+                'action' => ActionEnum::SEND,
+                'is_hidden' => false,
+            ]);
+        }
+    }
+
+    /**
      * 受信メッセージを100件作成するメソッド
      */
-    private function prepareTestAdminMessages()
+    private function prepareTestAdminMessages100()
     {
         for ($i = 1; $i <= 100; $i++) {
             AdminMessage::factory()->create([
@@ -134,12 +170,36 @@ class UserMessagesTest extends TestCase
 
     /**
      * @test
-     * 受信一覧画面でメッセージが1ページに50件ずつ、idの降順に並んでいることを確認する
+     * 受信一覧画面でメッセージ総数が50件未満の場合、メッセージがidの降順に並んでいることを確認する
      */
-    public function test_users_messages_get_ok_sort()
+    public function test_users_messages_get_ok_sort_less_than_50()
     {
         //テストデータを準備
-        $this->prepareTestAdminMessages();
+        $this->prepareTestAdminMessages40();
+
+        //ビューにアクセス
+        $response = $this->get('/users/messages');
+
+        //ビューに必要なデータが渡されていることを確認
+        $response->assertViewHasAll(['messages', 'admins']);
+
+        //ビューに渡されたメッセージの期待される表示順序
+        $expectedOrder = collect($response->original->getData()['messages'])->sortByDesc('id')->pluck('id')->toArray();
+
+        //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
+        $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
+        $this->assertSame($expectedOrder, $sortedOrder);
+    }
+
+    /**
+     * @test
+     * 受信一覧画面でメッセージ総数が50件以上の場合、
+     * メッセージが1ページに50件ずつ、idの降順に並んでいることを確認する
+     */
+    public function test_users_messages_get_ok_sort_50_or_more()
+    {
+        //テストデータを準備
+        $this->prepareTestAdminMessages100();
 
         //ビューにアクセス
         $response = $this->get('/users/messages');
@@ -155,7 +215,7 @@ class UserMessagesTest extends TestCase
 
         //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
         $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
-        $this->assertEquals($expectedOrder, $sortedOrder);
+        $this->assertSame($expectedOrder, $sortedOrder);
     }
 
     /**
@@ -172,7 +232,7 @@ class UserMessagesTest extends TestCase
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
-        $this->assertEquals($sessionPageNumber, $viewPageNumber);
+        $this->assertSame($sessionPageNumber, $viewPageNumber);
     }
 
     /**受信メッセージ詳細画面**/
@@ -188,7 +248,7 @@ class UserMessagesTest extends TestCase
         $actualBackRoute =  $response->viewData('backRoute');
 
         // ビューから取得した値が期待される値と一致するか確認
-        $this->assertEquals($expectedBackRoute, $actualBackRoute);
+        $this->assertSame($expectedBackRoute, $actualBackRoute);
     }
 
     /**
@@ -491,7 +551,7 @@ class UserMessagesTest extends TestCase
         $actualBackRoute =  $response->viewData('backRoute');
 
         // ビューから取得した値が期待される値と一致するか確認
-        $this->assertEquals($expectedBackRoute, $actualBackRoute);
+        $this->assertSame($expectedBackRoute, $actualBackRoute);
     }
 
     /**
@@ -706,14 +766,13 @@ class UserMessagesTest extends TestCase
         $response->assertRedirect('/users/login');
     }
 
-    /**
-     * @test
-     * 下書き一覧画面でメッセージが1ページに50件ずつ、更新日時の降順に並んでいることを確認する
-     */
-    public function test_users_messages_draft_get_ok_sort()
+    /* @test
+    * 下書き一覧画面でメッセージ総数が50件未満の場合、メッセージが更新日時の降順に並んでいることを確認する
+    */
+    public function test_users_messages_draft_get_ok_sort_less_than_50()
     {
         //テストデータの準備
-        $this->prepareTestUserMessages(ActionEnum::DRAFT);
+        $this->prepareTestUserMessages40(ActionEnum::DRAFT);
 
         //ビューにアクセス
         $response = $this->get('/users/messages/draft');
@@ -726,7 +785,31 @@ class UserMessagesTest extends TestCase
 
         //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
         $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
-        $this->assertEquals($expectedOrder, $sortedOrder);
+        $this->assertSame($expectedOrder, $sortedOrder);
+    }
+
+    /**
+     * @test
+     * 下書き一覧画面でメッセージ総数が50件以上の場合、
+     * メッセージが1ページに50件ずつ、更新日時の降順に並んでいることを確認する
+     */
+    public function test_users_messages_draft_get_ok_sort_50_or_more()
+    {
+        //テストデータの準備
+        $this->prepareTestUserMessages100(ActionEnum::DRAFT);
+
+        //ビューにアクセス
+        $response = $this->get('/users/messages/draft');
+
+        //ビューに必要なデータが渡されていることを確認
+        $response->assertViewHasAll(['messages', 'admins']);
+
+        //ビューに渡されたメッセージの期待される表示順序
+        $expectedOrder = collect($response->original->getData()['messages'])->sortByDesc('updated_at')->pluck('id')->toArray();
+
+        //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
+        $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
+        $this->assertSame($expectedOrder, $sortedOrder);
 
         //ページネーションが正しく表示されていることを確認
         $response->assertSeeTextInOrder(range(1, config('constants.ITEMS_PER_PAGE')));
@@ -746,7 +829,7 @@ class UserMessagesTest extends TestCase
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
-        $this->assertEquals($sessionPageNumber, $viewPageNumber);
+        $this->assertSame($sessionPageNumber, $viewPageNumber);
     }
 
     /**下書き編集画面**/
@@ -1081,12 +1164,36 @@ class UserMessagesTest extends TestCase
 
     /**
      * @test
-     * 送信済み一覧画面でメッセージが1ページに50件ずつ、更新日時の順に並んでいることを確認する
+     * 送信済み一覧画面でメッセージ総数が50件未満の場合、メッセージが更新日時の降順に並んでいることを確認する
      */
-    public function test_users_messages_sent_get_sort()
+    public function test_users_messages_sent_get_ok_sort_less_than_50()
+    {
+        //テストデータを準備
+        $this->prepareTestUserMessages40(ActionEnum::SEND);
+
+        //ビューにアクセス
+        $response = $this->get('/users/messages/sent');
+
+        //ビューに必要なデータが渡されていることを確認
+        $response->assertViewHasAll(['messages', 'admins']);
+
+        //ビューに渡されたメッセージの期待される表示順序
+        $expectedOrder = collect($response->original->getData()['messages'])->sortByDesc('updated_at')->pluck('id')->toArray();
+
+        //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
+        $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
+        $this->assertSame($expectedOrder, $sortedOrder);
+    }
+
+    /**
+     * @test
+     * 送信済み一覧画面でメッセージ総数が50件以上の場合、
+     * メッセージが1ページに50件ずつ、更新日時の順に並んでいることを確認する
+     */
+    public function test_users_messages_sent_get_sort_50_or_more()
     {
         // テストデータを準備
-        $this->prepareTestUserMessages(ActionEnum::SEND);
+        $this->prepareTestUserMessages100(ActionEnum::SEND);
 
         // ビューにアクセス
         $response = $this->get('/users/messages/sent');
@@ -1099,7 +1206,7 @@ class UserMessagesTest extends TestCase
 
         //メッセージ一覧を取得し、取得された表示順序が期待される表示順序と一致するか確認
         $sortedOrder = collect($response->original->getData()['messages'])->pluck('id')->toArray();
-        $this->assertEquals($expectedOrder, $sortedOrder);
+        $this->assertSame($expectedOrder, $sortedOrder);
 
         // ページネーションが正しく表示されているか確認
         $response->assertSeeTextInOrder(range(1, config('constants.ITEMS_PER_PAGE')));
@@ -1119,7 +1226,7 @@ class UserMessagesTest extends TestCase
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
-        $this->assertEquals($sessionPageNumber, $viewPageNumber);
+        $this->assertSame($sessionPageNumber, $viewPageNumber);
     }
 
     /**送信済みメッセージの詳細画面**/
@@ -1252,7 +1359,7 @@ class UserMessagesTest extends TestCase
         $expectedOrder = collect($paginator->items())->sortByDesc('updated_at')->values()->all();
 
         //取得された表示順序が期待される表示順序と一致するか確認
-        $this->assertEquals($expectedOrder, $paginator->items());
+        $this->assertSame($expectedOrder, $paginator->items());
     }
 
     /**
@@ -1272,7 +1379,7 @@ class UserMessagesTest extends TestCase
         $sessionPageNumber = session('pageNumber');
 
         //ビューに渡されたページ番号とセッションに保存された実際のページ番号が一致するか確認
-        $this->assertEquals($sessionPageNumber, $viewPageNumber);
+        $this->assertSame($sessionPageNumber, $viewPageNumber);
     }
 
     /**論理削除したメッセージ復元の復元**/
