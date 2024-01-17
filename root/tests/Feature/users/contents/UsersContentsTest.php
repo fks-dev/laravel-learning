@@ -74,7 +74,7 @@ class UsersContentsTest extends TestCase
         // users/contents/{course}にアクセス時、ログアウト中ならログインページにリダイレクトする
         $response = $this->get('/users/contents/190001');
 
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -130,6 +130,6 @@ class UsersContentsTest extends TestCase
     {
         // users/contents/view/{content}にアクセス時、ログアウト中ならログインページにリダイレクトする
         $response = $this->get('/users/contents/view/200001');
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 }
