@@ -89,7 +89,7 @@ class AdminManagementTest extends TestCase
     {
         //ログアウト中のアクセス時、ログインページにリダイレクトする
         $response = $this->get('/admin/admin-management');
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -155,7 +155,7 @@ class AdminManagementTest extends TestCase
     {
         //ログアウト中のアクセス時、ログインページにリダイレクトする
         $response = $this->get('/admin/admin-management/create');
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -166,7 +166,7 @@ class AdminManagementTest extends TestCase
         //管理者の新規追加時、アドミン管理画面にリダイレクトする
         $this->loginSystemAdmin();
         $response = $this->postNewAdmin();
-        $response->assertRedirect(route('admin.admin-management.index'));
+        $response->assertRedirect('/admin/admin-management');
     }
 
     /**
@@ -201,7 +201,7 @@ class AdminManagementTest extends TestCase
     {
         //ログアウト中のアクセス時、ログインページにリダイレクトする
         $response = $this->get('/admin/admin-management/edit');
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
 
@@ -213,7 +213,7 @@ class AdminManagementTest extends TestCase
         //アドミン情報変更処理実行後、アドミン管理画面にリダイレクトする
         $this->loginAdmin();
         $response = $this->patchEditAdmin();
-        $response->assertRedirect(route('admin.admin-management.index'));
+        $response->assertRedirect('/admin/admin-management');
     }
 
 
@@ -240,7 +240,7 @@ class AdminManagementTest extends TestCase
         $this->loginSystemAdmin();
         $deleteAdmin = Admin::where('username', 'testAdmin1')->first();
         $response = $this->delete("/admin/admin-management/{$deleteAdmin->id}");
-        $response->assertRedirect(route('admin.admin-management.index'));
+        $response->assertRedirect('/admin/admin-management');
     }
 
 

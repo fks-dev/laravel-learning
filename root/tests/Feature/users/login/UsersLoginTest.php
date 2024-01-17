@@ -56,7 +56,7 @@ class UsersLoginTest extends TestCase
         $response = $this->login();
 
         // リダイレクトの確認
-        $response->assertRedirect(route('users.index'));
+        $response->assertRedirect('users/');
     }
 
     /**
@@ -118,7 +118,7 @@ class UsersLoginTest extends TestCase
         $response = $this->logout();
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**

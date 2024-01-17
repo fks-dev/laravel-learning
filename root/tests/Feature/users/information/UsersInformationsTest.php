@@ -43,7 +43,7 @@ class UsersInformationsTest extends TestCase
     public function test_users_informations_get_ok()
     {
         // ユーザーがログインして一覧を取得する
-        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
+        $response = $this->actingAs($this->user)->get('/users/informations/');
 
         $response->assertStatus(200);
     }
@@ -54,10 +54,10 @@ class UsersInformationsTest extends TestCase
     public function test_users_informations_get_ok_unauthenticated()
     {
         // ユーザーがゲスト状態（ログアウトの状態）で一覧を取得する
-        $response = $this->get(route('users.informations.list'));
+        $response = $this->get('/users/informations/');
 
         // ログイン画面にリダイレクトされるか確認
-        $response->assertStatus(302)->assertRedirect(route('users.login.index'));
+        $response->assertStatus(302)->assertRedirect('/users/login');
     }
 
     /**
@@ -74,7 +74,7 @@ class UsersInformationsTest extends TestCase
         $group->informations()->attach($information);
 
         // お知らせの一覧を取得し、特定のお知らせが表示されていることを確認する
-        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
+        $response = $this->actingAs($this->user)->get('/users/informations/');
         $response->assertStatus(200)->assertSee('Information');
     }
 
@@ -100,7 +100,7 @@ class UsersInformationsTest extends TestCase
         }
 
         // お知らせの一覧を取得し、更新日時の順にお知らせが並んでいるか確認
-        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
+        $response = $this->actingAs($this->user)->get('/users/informations/');
         $response->assertSeeInOrder(['Information1', 'Information2' ,'Information3']);
     }
 
@@ -120,7 +120,7 @@ class UsersInformationsTest extends TestCase
         }
 
         // お知らせの一覧を取得し、重複しないことを確認
-        $response = $this->actingAs($this->user)->get(route('users.informations.list'));
+        $response = $this->actingAs($this->user)->get('/users/informations/');
         $this->assertEquals(1, substr_count($response->getContent(), 'Information'));
     }
 
@@ -138,7 +138,7 @@ class UsersInformationsTest extends TestCase
         $group->informations()->attach($information);
 
         // ユーザーがログインして詳細を取得する
-        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
+        $response = $this->actingAs($this->user)->get("users/informations/{$information->id}");
 
         $response->assertStatus(200);
     }
@@ -157,7 +157,7 @@ class UsersInformationsTest extends TestCase
         $group->informations()->attach($information);
 
         // お知らせの詳細を取得し、特定のお知らせが表示されていることを確認する
-        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
+        $response = $this->actingAs($this->user)->get("users/informations/{$information->id}");
         $response->assertSee(['Information', 'InformationText']);
     }
 
@@ -175,10 +175,10 @@ class UsersInformationsTest extends TestCase
         $group->informations()->attach($information);
 
         // ユーザーがゲスト状態（ログアウトの状態）で詳細を取得する
-        $response = $this->get(route('users.informations.show', $information->id));
+        $response = $this->get("users/informations/{$information->id}");
 
         // ログイン画面にリダイレクトされるか確認
-        $response->assertStatus(302)->assertRedirect(route('users.login.index'));
+        $response->assertStatus(302)->assertRedirect('/users/login');
     }
 
     /**
@@ -195,7 +195,7 @@ class UsersInformationsTest extends TestCase
         $group->informations()->attach($information);
 
         // お知らせの詳細を取得し、viewが正しく表示されることを確認する
-        $response = $this->actingAs($this->user)->get(route('users.informations.show', $information->id));
+        $response = $this->actingAs($this->user)->get("users/informations/{$information->id}");
         $response->assertViewIs('users.informations.show')->assertSee(['Information', 'InformationText']);
     }
 

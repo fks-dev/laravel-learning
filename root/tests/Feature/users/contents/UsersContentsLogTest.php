@@ -79,7 +79,7 @@ class UsersContentsLogTest extends TestCase
         $response = $this->post('/users/contents/view/200001', [
             'log' => 0
         ]);
-        $response->assertRedirect(route('users.login.index'));
+        $response->assertRedirect('/users/login');
     }
 
     /**
@@ -107,7 +107,7 @@ class UsersContentsLogTest extends TestCase
         $response = $this->post('/users/contents/view/200001', [
             'log' => 0
         ]);
-        $response->assertRedirect(route('users.contents.index', 190001));
+        $response->assertRedirect('/users/contents/190001');
     }
 
     /**

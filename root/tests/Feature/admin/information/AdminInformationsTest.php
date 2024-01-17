@@ -79,7 +79,7 @@ class AdminInformationsTest extends TestCase
             'title' => $information['title'],
             'text' => $information['text'],
         ]);
-        $response->assertRedirect(route('admin.informations.index'));
+        $response->assertRedirect('/admin/informations/');
         $response->assertSessionHas('message', 'お知らせを登録しました');
     }
 
@@ -117,7 +117,7 @@ class AdminInformationsTest extends TestCase
             'title' => $newTitle,
             'text' => $newText,
         ]);
-        $response->assertRedirect(route('admin.informations.index'));
+        $response->assertRedirect('/admin/informations/');
         $this->assertDatabaseHas('information', [
             'id' => $this->information->id,
             'title' => $newTitle,
@@ -135,7 +135,7 @@ class AdminInformationsTest extends TestCase
         $response = $this->delete("/admin/informations/{$this->information->id}", [
             'id' => $this->information->id
         ]);
-        $response->assertRedirect(route('admin.informations.index'));
+        $response->assertRedirect('/admin/informations/');
         $this->assertSoftDeleted('information', ['id' => $this->information->id]);
         $this->assertNotNull($this->information->fresh()->deleted_at);
         $this->assertNotNull(session('danger'));

@@ -40,7 +40,7 @@ class AdminUserManagementPasswordTest extends TestCase
      */
     private function changePassword()
     {
-        return $this->post(route('admin.user-management.password', ['user' => $this->user->id]), [
+        return $this->post("/admin/user-management/{$this->user->id}/password", [
             'password' => 'old_password',
             'new_password' => 'new_password',
             'new_password_confirmation' => 'new_password',
@@ -55,7 +55,7 @@ class AdminUserManagementPasswordTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.user-management.password', ['user' => $this->user->id]));
+        $response = $this->get("/admin/user-management/{$this->user->id}/password");
         $response->assertOk();
     }
 
@@ -65,10 +65,10 @@ class AdminUserManagementPasswordTest extends TestCase
      */
     public function test_admin_user_management_password_get_ok_redirect_without_login()
     {
-        $response = $this->get(route('admin.user-management.password', ['user' => $this->user->id]));
+        $response = $this->get("/admin/user-management/{$this->user->id}/password");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -93,7 +93,7 @@ class AdminUserManagementPasswordTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->changePassword();
 
-        $response->assertRedirect(route('admin.user-management.index'));
+        $response->assertRedirect('/admin/user-management/');
     }
 
     /**
