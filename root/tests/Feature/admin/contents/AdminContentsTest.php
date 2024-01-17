@@ -57,7 +57,7 @@ class AdminContentsTest extends TestCase
      */
     public function storeContent()
     {
-        return $this->post(route('admin.contents.store', ['course' => $this->course->id]), [
+        return $this->post("/admin/contents/190001", [
             'course_id'        => $this->course->id,
             'admin_id'         => $this->admin->id,
             'title'            => 'new_content',
@@ -71,7 +71,7 @@ class AdminContentsTest extends TestCase
      */
     public function editContent()
     {
-        return $this->patch(route('admin.contents.update', ['content' => $this->content->id]), [
+        return $this->patch("/admin/contents/{$this->content->id}", [
             'admin_id' => $this->admin->id,
             'course_id' => '190002',
             'title' => 'content_1_update',
@@ -85,7 +85,7 @@ class AdminContentsTest extends TestCase
      */
     public function duplicateContent()
     {
-        return $this->post(route('admin.contents.duplicate', ['content' => $this->content->id]));
+        return $this->post("/admin/contents/{$this->content->id}/duplicate");
     }
 
     /**
@@ -93,7 +93,7 @@ class AdminContentsTest extends TestCase
      */
     public function destroyContent()
     {
-        return $this->delete(route('admin.contents.destroy', ['content' => $this->content->id]));
+        return $this->delete("/admin/contents/{$this->content->id}");
     }
 
     /**
@@ -102,7 +102,7 @@ class AdminContentsTest extends TestCase
     public function sortContent()
     {
         $positions = [200003, 200001, 200005, 200004, 200002];
-        return $this->postJson(route('admin.contents.sort'), ['positions' => $positions]);
+        return $this->postJson("/admin/contents/sort", ['positions' => $positions]);
     }
 
     /**
@@ -113,7 +113,7 @@ class AdminContentsTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.contents.index', ['course' => $this->course->id]));
+        $response = $this->get("/admin/contents/190001");
         $response->assertOk();
     }
 
@@ -126,7 +126,7 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $contents = Content::where('course_id', $this->course->id)->orderBy('position')->get();
 
-        $response = $this->get(route('admin.contents.index', ['course' => $this->course->id]));
+        $response = $this->get("/admin/contents/190001");
         $response->assertSeeInOrder($contents->pluck('position')->toArray());
     }
 
@@ -136,10 +136,10 @@ class AdminContentsTest extends TestCase
      */
     public function test_admin_contents_get_ok_redirect_without_login()
     {
-        $response = $this->get(route('admin.contents.index', ['course' => $this->course->id]));
+        $response = $this->get("/admin/contents/190001");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -150,7 +150,7 @@ class AdminContentsTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.contents.show', ['content' => $this->content->id]));
+        $response = $this->get("/admin/contents/{$this->content->id}/show");
         $response->assertOk();
     }
 
@@ -160,10 +160,10 @@ class AdminContentsTest extends TestCase
      */
     public function test_admin_contents_show_get_ok_redirect_without_login()
     {
-        $response = $this->get(route('admin.contents.show', ['content' => $this->content->id]));
+        $response = $this->get("/admin/contents/{$this->content->id}/show");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -174,7 +174,7 @@ class AdminContentsTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.contents.create', ['course' => $this->course->id]));
+        $response = $this->get("/admin/contents/create/190001");
         $response->assertOk();
     }
 
@@ -184,10 +184,10 @@ class AdminContentsTest extends TestCase
      */
     public function test_admin_contents_create_get_ok_redirect_without_login()
     {
-        $response = $this->get(route('admin.contents.create', ['course' => $this->course->id]));
+        $response = $this->get("/admin/contents/create/190001");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -219,7 +219,7 @@ class AdminContentsTest extends TestCase
         $response = $this->storeContent();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
+        $response->assertRedirect("/admin/contents/190001");
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'コンテンツを登録しました');
@@ -233,7 +233,7 @@ class AdminContentsTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        $response = $this->get(route('admin.contents.edit', ['content' => $this->content->id]));
+        $response = $this->get("/admin/contents/{$this->content->id}/edit");
         $response->assertOk();
     }
 
@@ -243,10 +243,10 @@ class AdminContentsTest extends TestCase
      */
     public function test_admin_contents_edit_get_ok_redirect_without_login()
     {
-        $response = $this->get(route('admin.contents.edit', ['content' => $this->content->id]));
+        $response = $this->get("/admin/contents/{$this->content->id}/edit");
 
         //ログイン画面にリダイレクトされるか確認
-        $response->assertRedirect(route('admin.login.index'));
+        $response->assertRedirect('/admin/login');
     }
 
     /**
@@ -278,7 +278,7 @@ class AdminContentsTest extends TestCase
         $response = $this->editContent();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
+        $response->assertRedirect("/admin/contents/190001");
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'コンテンツを変更しました');
@@ -309,7 +309,7 @@ class AdminContentsTest extends TestCase
         $response = $this->duplicateContent();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
+        $response->assertRedirect("/admin/contents/190001");
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'コンテンツを複製しました。');
@@ -347,7 +347,7 @@ class AdminContentsTest extends TestCase
         $response = $this->destroyContent();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect(route('admin.contents.index', ['course' => $this->course->id]));
+        $response->assertRedirect("/admin/contents/190001");
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('danger', $this->content->title . 'を削除しました');
