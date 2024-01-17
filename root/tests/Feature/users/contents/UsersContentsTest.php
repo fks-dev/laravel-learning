@@ -25,7 +25,7 @@ class UsersContentsTest extends TestCase
 
     private function create_user()
     {
-        User::factory()->create([
+        return User::factory()->create([
             'username' => 'testUser',
             'password' => Hash::make('testUser'),
             'mail_address' => 'testUser@user.com',
