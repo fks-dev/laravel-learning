@@ -25,7 +25,7 @@ class UsersContentsTest extends TestCase
 
     private function create_user()
     {
-        User::factory()->create([
+        return User::factory()->create([
             'username' => 'testUser',
             'password' => Hash::make('testUser'),
             'mail_address' => 'testUser@user.com',
@@ -51,6 +51,7 @@ class UsersContentsTest extends TestCase
                 'admin_id' => 120001,
                 'course_id' => 190001,
                 'youtube_video_id' => '1q8VtH2zxYE',
+                'position' => $i,
             ]);
         }
     }
@@ -100,14 +101,10 @@ class UsersContentsTest extends TestCase
     {
         // 各ソート番号(positionカラムの値)に適した順に表示されている
         $course = Course::find(190001);
-        $content = Content::find(200003);
-        $content->update(
-            [
-                'position' => 10
-            ]
-        );
-        $contents = $course->contents->sortBy('position');
+
         $this->actingAs($this->user);
+        $contents = Content::where('course_id', $course->id)->orderBy('position')->get();
+
         $response = $this->get('/users/contents/190001');
         $response->assertSeeInOrder($contents->pluck('title')->toArray());
     }

@@ -26,7 +26,7 @@ class UsersContentsLogTest extends TestCase
 
     private function create_user()
     {
-        User::factory()->create([
+        return User::factory()->create([
             'id' => 110001,
             'username' => 'testUser',
             'password' => Hash::make('testUser'),
