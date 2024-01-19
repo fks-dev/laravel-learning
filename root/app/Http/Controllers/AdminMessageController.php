@@ -96,7 +96,7 @@ class AdminMessageController extends Controller
         $adminUser = Auth::user();
         $adminId = $this->getAdminId();
         $adminMessages = AdminMessage::onlyTrashed()->where('admin_id', $adminId)->get();
-        $messages = $adminMessages->map(function (bool $item):bool {
+        $messages = $adminMessages->map(function (AdminMessage $item):AdminMessage {
             $item->is_hidden = false;
             return $item;
         });
