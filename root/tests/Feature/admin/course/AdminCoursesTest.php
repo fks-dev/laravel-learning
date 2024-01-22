@@ -106,7 +106,7 @@ class AdminCoursesTest extends TestCase
             'introduction' => $course['introduction'],
             'remarks'      => $course['remarks'],
         ]);
-        $response->assertRedirect(route('admin.courses.index'));
+        $response->assertRedirect('/admin/courses');
         $response->assertSessionHas('message', 'コースを登録しました');
     }
 
@@ -128,7 +128,7 @@ class AdminCoursesTest extends TestCase
     public function test_admin_courses_sort_post_ok()
     {
         $positions = [190003, 190001, 190005, 190004, 190002];
-        $response = $this->postJson(route('admin.courses.sort'), ['positions' => $positions]);
+        $response = $this->postJson('/admin/courses/sort', ['positions' => $positions]);
         $sortedOrder = Course::orderBy('position')->pluck('id')->toArray();
         $expectedOrder = [190003, 190001, 190005, 190004, 190002];
         $this->assertEquals($expectedOrder, $sortedOrder);
@@ -150,7 +150,7 @@ class AdminCoursesTest extends TestCase
             'introduction' => $newIntroduction,
             'remarks'      => $newRemarks,
         ]);
-        $response->assertRedirect(route('admin.courses.index'));
+        $response->assertRedirect('/admin/courses');
         $this->assertDatabaseHas('courses', [
             'id' => $this->course->id,
             'title'       => $newTitle,
@@ -169,7 +169,7 @@ class AdminCoursesTest extends TestCase
         $response = $this->delete("/admin/courses/{$this->course->id}", [
             'id' => $this->course->id
         ]);
-        $response->assertRedirect(route('admin.courses.index'));
+        $response->assertRedirect('/admin/courses');
         $this->assertSoftDeleted('courses', ['id' => $this->course->id]);
         $this->assertNotNull($this->course->fresh()->deleted_at);
         $response->assertSessionHas('danger', $this->course->title . 'を削除しました');
