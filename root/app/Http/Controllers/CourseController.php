@@ -82,7 +82,7 @@ class CourseController extends Controller
             'remarks'      => $request->remarks,
         ]);
 
-        return redirect()->route('admin.courses.index');
+        return redirect()->route('admin.courses.index')->with('message', $course->title . 'を更新しました');
     }
 
     /**
