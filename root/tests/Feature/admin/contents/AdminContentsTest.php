@@ -383,7 +383,7 @@ class AdminContentsTest extends TestCase
     }
 
     /**
-     * コンテンツ新規作成_正常系バリデーションチェック
+     * コンテンツ新規作成 & 更新_正常系バリデーションチェック
      */
     public function data_admin_contents_create_post_and_patch_ok_validation_ok()
     {
@@ -491,20 +491,7 @@ class AdminContentsTest extends TestCase
     }
 
     /**
-     * @test
-     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_ok
-     * コンテンツ新規作成時のバリデーションチェック(正常系)
-     */
-    public function test_admin_contents_create_post_ok_validation_ok($data)
-    {
-        $this->actingAs($this->admin, 'admin');
-        $response = $this->post("/admin/contents/190001", $data);
-
-        $response->assertSessionHasNoErrors();
-    }
-
-    /**
-     * 新規作成_正常系エラーバリデーションチェック
+     * 新規作成 & 更新_正常系エラーバリデーションチェック
      */
     public function data_admin_contents_create_post_and_patch_ok_validation_normal_error()
     {
@@ -642,6 +629,19 @@ class AdminContentsTest extends TestCase
 
     /**
      * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_ok
+     * コンテンツ新規作成時のバリデーションチェック(正常系)
+     */
+    public function test_admin_contents_create_post_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+        $response = $this->post("/admin/contents/190001", $data);
+
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
      * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_normal_error
      * コンテンツ新規作成時のバリデーションチェック(正常系エラー)
      */
@@ -657,24 +657,33 @@ class AdminContentsTest extends TestCase
         }
     }
 
-    // /**
-    //  * @test
-    //  * @dataProvider requestProvider
-    //  * コンテンツ更新時のバリデーションチェック
-    //  */
-    // public function test_admin_contents_edit_patch_ok_validation($data, $expectedErrors)
-    // {
-    //     $this->actingAs($this->admin, 'admin');
-    //     $response = $this->patch("/admin/contents/{$this->content->id}", $data);
+    /**
+     * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_ok
+     * コンテンツ更新時のバリデーションチェック(正常系)
+     */
+    public function test_admin_contents_edit_patch_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+        $response = $this->patch("/admin/contents/{$this->content->id}", $data);
 
-    //     if ($expectedErrors) {
-    //         foreach ($expectedErrors as $field => $rule) {
-    //             $response->assertSessionHasErrors([
-    //                 $field => $rule,
-    //             ]);
-    //         }
-    //     } else {
-    //         $response->assertSessionHasNoErrors();
-    //     }
-    // }
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_normal_error
+     * コンテンツ更新時のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_contents_create_patch_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+        $response = $this->patch("/admin/contents/{$this->content->id}", $data);
+
+        foreach ($expectedErrors as $field => $rule) {
+            $response->assertSessionHasErrors([
+                $field => $rule,
+            ]);
+        }
+    }
 }
