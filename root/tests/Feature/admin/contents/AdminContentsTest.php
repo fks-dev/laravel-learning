@@ -381,4 +381,92 @@ class AdminContentsTest extends TestCase
 
         $response->assertJson(['message' => '並び替えを保存しました。']);
     }
+
+    /**
+     * バリデーションチェック用
+     */
+    public function requestProvider()
+    {
+        return [
+            'validation_ok' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'ValidationOk',
+                    'remarks'          => 'Validation Ok',
+                ],
+                'expectedErrors' => [],
+            ],
+            'missing_course_id' => [
+                'data' => [
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'MissingCourseId',
+                    'remarks'          => 'MissingCourseId',
+                ],
+                'expectedErrors' => ['course_id' => 'course idは必ず指定してください。'],
+            ],
+            'missing_title' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'youtube_video_id' => 'MissingTitle',
+                    'remarks'          => 'Missing Title',
+                ],
+                'expectedErrors' => ['title' => 'titleは必ず指定してください。'],
+            ],
+            'missing_youtube_video_id' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'remarks'          => 'Missing Youtube Video Id',
+                ],
+                'expectedErrors' => ['youtube_video_id' => 'youtube video idは必ず指定してください。'],
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider requestProvider
+     * コンテンツ新規作成時のバリデーションチェック
+     */
+    public function test_admin_contents_create_post_ok_validation($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+        $response = $this->post("/admin/contents/190001", $data);
+
+        if ($expectedErrors) {
+            foreach ($expectedErrors as $field => $rule) {
+                $response->assertSessionHasErrors([
+                    $field => $rule,
+                ]);
+            }
+        } else {
+            $response->assertSessionHasNoErrors();
+        }
+    }
+
+    /**
+     * @test
+     * @dataProvider requestProvider
+     * コンテンツ更新時のバリデーションチェック
+     */
+    public function test_admin_contents_edit_patch_ok_validation($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+        $response = $this->patch("/admin/contents/{$this->content->id}", $data);
+
+        if ($expectedErrors) {
+            foreach ($expectedErrors as $field => $rule) {
+                $response->assertSessionHasErrors([
+                    $field => $rule,
+                ]);
+            }
+        } else {
+            $response->assertSessionHasNoErrors();
+        }
+    }
 }
