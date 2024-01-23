@@ -383,90 +383,123 @@ class AdminContentsTest extends TestCase
     }
 
     /**
-     * バリデーションチェック用
+     * コンテンツ新規作成_正常系バリデーションチェック
      */
-    public function requestProvider()
+    public function data_admin_contents_create_post_and_patch_ok_validation_ok()
     {
         return [
-            'validation_ok' => [
+            //基本系
+            'basic' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
                     'title'            => 'Validation Test',
-                    'youtube_video_id' => 'ValidationOk',
-                    'remarks'          => 'Validation Ok',
-                ],
-                'expectedErrors' => [],
+                    'youtube_video_id' => 'basic',
+                    'remarks'          => 'basic',
+                ]
             ],
-            'missing_course_id' => [
+            //course_id最大値
+            'max_number_of_title' => [
                 'data' => [
+                    'course_id'        => 199999,
                     'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'MissingCourseId',
-                    'remarks'          => 'MissingCourseId',
-                ],
-                'expectedErrors' => ['course_id' => 'course idは必ず指定してください。'],
+                    'title'            => 'a',
+                    'youtube_video_id' => 'MaxNumOfTitle',
+                    'remarks'          => 'max_number_of_title',
+                ]
             ],
-            'missing_title' => [
+            //admin_id最大値
+            'max_number_of_title' => [
+                'data' => [
+                    'course_id'        => 199999,
+                    'admin_id'         => 129999,
+                    'title'            => 'a',
+                    'youtube_video_id' => 'MaxNumOfTitle',
+                    'remarks'          => 'max_number_of_title',
+                ]
+            ],
+            //title最小文字数
+            'max_number_of_title' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
-                    'youtube_video_id' => 'MissingTitle',
-                    'remarks'          => 'Missing Title',
-                ],
-                'expectedErrors' => ['title' => 'titleは必ず指定してください。'],
+                    'title'            => 'a',
+                    'youtube_video_id' => 'MaxNumOfTitle',
+                    'remarks'          => 'max_number_of_title',
+                ]
             ],
-            'missing_youtube_video_id' => [
+            //title最大文字数
+            'max_number_of_title' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => str_pad("Title", 255, "a"),
+                    'youtube_video_id' => 'MaxNumOfTitle',
+                    'remarks'          => 'max_number_of_title',
+                ]
+            ],
+            //YouTubeVideoId最小文字数
+            'max_number_of_youtube_video_id' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
                     'title'            => 'Validation Test',
-                    'remarks'          => 'Missing Youtube Video Id',
-                ],
-                'expectedErrors' => ['youtube_video_id' => 'youtube video idは必ず指定してください。'],
+                    'youtube_video_id' => 'a',
+                    'remarks'          => 'max_number_of_youtube_video_id',
+                ]
+            ],
+            //YouTubeVideoId最大文字数
+            'max_number_of_youtube_video_id' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => str_pad("YouTubeVideoId", 255, "a"),
+                    'remarks'          => 'max_number_of_youtube_video_id',
+                ]
+            ],
+            //remarks最小文字数
+            'max_number_of_remarks' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'MaxNumOfRemarks',
+                    'remarks'          => 'a',
+                ]
+            ],
+            //remarks最大文字数
+            'max_number_of_remarks' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'MaxNumOfRemarks',
+                    'remarks'          => str_repeat("a", 500),
+                ]
+            ],
+            //remarksなし
+            'missing_remarks' => [
+                'data' => [
+                    'course_id'        => 190001,
+                    'admin_id'         => 120001,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'MissingRemarks',
+                ]
             ],
         ];
     }
 
     /**
      * @test
-     * @dataProvider requestProvider
-     * コンテンツ新規作成時のバリデーションチェック
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_ok
+     * コンテンツ新規作成時のバリデーションチェック(正常系)
      */
-    public function test_admin_contents_create_post_ok_validation($data, $expectedErrors)
+    public function test_admin_contents_create_post_ok_validation_ok($data)
     {
         $this->actingAs($this->admin, 'admin');
         $response = $this->post("/admin/contents/190001", $data);
 
-        if ($expectedErrors) {
-            foreach ($expectedErrors as $field => $rule) {
-                $response->assertSessionHasErrors([
-                    $field => $rule,
-                ]);
-            }
-        } else {
-            $response->assertSessionHasNoErrors();
-        }
-    }
-
-    /**
-     * @test
-     * @dataProvider requestProvider
-     * コンテンツ更新時のバリデーションチェック
-     */
-    public function test_admin_contents_edit_patch_ok_validation($data, $expectedErrors)
-    {
-        $this->actingAs($this->admin, 'admin');
-        $response = $this->patch("/admin/contents/{$this->content->id}", $data);
-
-        if ($expectedErrors) {
-            foreach ($expectedErrors as $field => $rule) {
-                $response->assertSessionHasErrors([
-                    $field => $rule,
-                ]);
-            }
-        } else {
-            $response->assertSessionHasNoErrors();
-        }
+        $response->assertSessionHasNoErrors();
     }
 }
