@@ -5,9 +5,8 @@ namespace App\Http\Controllers;
 use App\Models\Content;
 use App\Models\Course;
 use App\Models\ContentsLog;
-use App\Http\Requests\StoreContentRequest;
+use App\Http\Requests\ContentRequest;
 use App\Http\Requests\StoreContentLogRequest;
-use App\Http\Requests\UpdateContentRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
@@ -58,7 +57,7 @@ class ContentController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreContentRequest $request, int $course): RedirectResponse
+    public function store(ContentRequest $request, int $course): RedirectResponse
     {
         $user = Auth::user();
 
@@ -99,7 +98,7 @@ class ContentController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateContentRequest $request, Content $content): RedirectResponse
+    public function update(ContentRequest $request, Content $content): RedirectResponse
     {
         $course = $content->course_id;
 
