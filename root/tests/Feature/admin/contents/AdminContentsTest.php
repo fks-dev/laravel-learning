@@ -675,7 +675,7 @@ class AdminContentsTest extends TestCase
      * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_normal_error
      * コンテンツ更新時のバリデーションチェック(正常系エラー)
      */
-    public function test_admin_contents_create_patch_ok_validation_normal_error($data, $expectedErrors)
+    public function test_admin_contents_edit_patch_ok_validation_normal_error($data, $expectedErrors)
     {
         $this->actingAs($this->admin, 'admin');
         $response = $this->patch("/admin/contents/{$this->content->id}", $data);
