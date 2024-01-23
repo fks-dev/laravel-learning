@@ -143,6 +143,9 @@ return [
         'youtube_video_id' => [
             'regex' => ':attributeには空白文字を使用しないでください。',
         ],
+        'remarks' => [
+            'max' => ':attributeは:max文字以内で入力してください。',
+        ],
     ],
 
     /*

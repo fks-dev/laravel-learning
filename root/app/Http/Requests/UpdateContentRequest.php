@@ -25,6 +25,7 @@ class UpdateContentRequest extends FormRequest
             'course_id'        => 'required|numeric',
             'title'            => 'required|string|max:255',
             'youtube_video_id' => 'required|string|max:255|regex:/^\S*$/',
+            'remarks'          => 'max:500'
         ];
 
         return $rules;
@@ -40,7 +41,8 @@ class UpdateContentRequest extends FormRequest
         return [
             'course_id'          => '所属コース',
             'title'              => 'コンテンツ名',
-            'youtube_video_id'   => 'YouTube'
+            'youtube_video_id'   => 'YouTube',
+            'remarks'            => '備考'
         ];
     }
 }
