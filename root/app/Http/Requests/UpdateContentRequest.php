@@ -22,9 +22,9 @@ class UpdateContentRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'course_id'          => 'required',
-            'title'              => 'required',
-            'youtube_video_id'   => 'required',
+            'course_id'        => 'required|numeric',
+            'title'            => 'required|string|max:255',
+            'youtube_video_id' => 'required|string|max:255|regex:/^\S*$/',
         ];
 
         return $rules;
