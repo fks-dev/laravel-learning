@@ -22,7 +22,8 @@ class UpdateContentRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'course_id'        => 'required|numeric',
+            'course_id' => 'required|numeric|between:190001,199999',
+            'admin_id'  => 'required|numeric|between:120001,129999',
             'title'            => 'required|string|max:255',
             'youtube_video_id' => 'required|string|max:255|regex:/^\S*$/',
             'remarks'          => 'max:500'
@@ -39,6 +40,7 @@ class UpdateContentRequest extends FormRequest
     public function attributes()
     {
         return [
+            'admin_id'           => '管理者ID',
             'course_id'          => '所属コース',
             'title'              => 'コンテンツ名',
             'youtube_video_id'   => 'YouTube',

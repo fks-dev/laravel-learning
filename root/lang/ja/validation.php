@@ -146,6 +146,12 @@ return [
         'remarks' => [
             'max' => ':attributeは:max文字以内で入力してください。',
         ],
+        'course_id' => [
+            'between' => ':attributeの値が不正です。',
+        ],
+        'admin_id' => [
+            'between' => ':attributeの値が不正です。',
+        ],
     ],
 
     /*
