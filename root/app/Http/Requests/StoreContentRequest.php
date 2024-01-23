@@ -29,4 +29,18 @@ class StoreContentRequest extends FormRequest
 
         return $rules;
     }
+
+    /**
+     * Get custom attribute names for validation errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes()
+    {
+        return [
+            'course_id'          => '所属コース',
+            'title'              => 'コンテンツ名',
+            'youtube_video_id'   => 'YouTube'
+        ];
+    }
 }
