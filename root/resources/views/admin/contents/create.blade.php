@@ -35,21 +35,13 @@
                         </div>
                     </div>
 
-                    {{-- コース選択 --}}
+                    {{-- コース表示 --}}
                     <div class="row m-3">
                         <label class="col-sm-2 col-form-label fw-bold" for="title">所属コース
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-10">
-                            <select class="form-control" name="course_id" id="course_id">
-                                @foreach ($courses as $index)
-                                    @if ($index->id == $course)
-                                        <option value="{{ $index->id }}" selected>{{ $index->title }}</option>
-                                    @else
-                                        <option value="{{ $index->id }}">{{ $index->title }}</option>
-                                    @endif
-                                @endforeach
-                            </select>
+                            <p class="form-control-static">{{ $course->title }}</p>
                         </div>
                     </div>
 

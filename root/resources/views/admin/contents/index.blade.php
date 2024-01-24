@@ -12,7 +12,7 @@
     @include('admin.header')
     <div class="mt-5 container">
         <div class="d-flex justify-content-between">
-            <h2 class="col">コース名『{{ $courseTitle[0]['title'] }}』のコンテンツ</h2>
+            <h2 class="col">コース名『{{ $course->title }}』のコンテンツ</h2>
             <div class="col-auto me-2">
                 <a class="btn btn-secondary" href="{{ route('admin.courses.index')}}">戻る</a>
             </div>
