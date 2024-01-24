@@ -1,7 +1,9 @@
 <header>
     <nav class="navbar p-0 bg-primary">
         <div class="d-flex justify-content-between align-items-center container-fluid">
-            <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learning</h2>
+            <a href="{{ route('users.index') }}" style="text-decoration: none;">
+                <h2 class="navbar-brand ms-1 fs-3 text-white">laravel-learning</h2>
+            </a>
             <ul class="nav me-2 text-white">
                 @isset($user)
                 <li class="nav-item border-end p-1 d-flex align-items-center">ようこそ{{ $user->username }}さん</li>
