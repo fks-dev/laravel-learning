@@ -438,6 +438,11 @@ class AdminContentsTest extends TestCase
      */
     public function data_admin_contents_create_post_and_patch_ok_validation_normal_error()
     {
+        $validCourseId = 190001;
+        $validTitle = 'Valid value';
+        $validYouTubeVideoId = 'Valid value';
+        $validRemarks = 'Valid value';
+
         return [
             //必須チェック
             'Case: missing_field' => [
@@ -448,13 +453,27 @@ class AdminContentsTest extends TestCase
                     'youtube_video_id' => 'YouTubeは必ず指定してください。'
                 ]
             ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'course_id'        => '',
+                    'title'            => '',
+                    'youtube_video_id' => '',
+                    'remarks'          => $validRemarks,
+                ],
+                'expectedErrors' => [
+                    'course_id'        => '所属コースは必ず指定してください。',
+                    'title'            => 'コンテンツ名は必ず指定してください。',
+                    'youtube_video_id' => 'YouTubeは必ず指定してください。'
+                ]
+            ],
             //integer指定のフィールドの値が数値ではない
             'Case: not_integer' => [
                 'data' => [
                     'course_id'        => "aaaaaa",
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'NotInteger',
-                    'remarks'          => 'not_integer',
+                    'title'            => $validTitle,
+                    'youtube_video_id' => $validYouTubeVideoId,
+                    'remarks'          => $validRemarks,
                 ],
                 'expectedErrors' => [
                     'course_id'        => '所属コースは整数で指定してください。',
@@ -463,7 +482,7 @@ class AdminContentsTest extends TestCase
             //string指定のフィールドの値が文字列ではない
             'Case: not_string' => [
                 'data' => [
-                    'course_id'        => 190001,
+                    'course_id'        => $validCourseId,
                     'title'            => 1,
                     'youtube_video_id' => 2,
                     'remarks'          => 3,
@@ -477,10 +496,10 @@ class AdminContentsTest extends TestCase
             //値がマイナス
             'Case: minus_number' => [
                 'data' => [
-                    'course_id'        => -123456,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'MinusNumber',
-                    'remarks'          => 'minus_number',
+                    'course_id'        => -1,
+                    'title'            => $validTitle,
+                    'youtube_video_id' => $validYouTubeVideoId,
+                    'remarks'          => $validRemarks,
                 ],
                 'expectedErrors' => [
                     'course_id'        => '所属コースには、0以上の数字を指定してください。',
@@ -489,7 +508,7 @@ class AdminContentsTest extends TestCase
             //最大文字数超過
             'Case: over_max_words' => [
                 'data' => [
-                    'course_id'        => 190001,
+                    'course_id'        => $validCourseId,
                     'title'            => str_pad("Title", 256, "a"),
                     'youtube_video_id' => str_pad("YouTubeVideoId", 256, "b"),
                     'remarks'          => str_pad("Remarks", 501, "c"),
