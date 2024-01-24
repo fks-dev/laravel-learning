@@ -22,7 +22,6 @@ class ContentRequest extends FormRequest
     public function rules(): array
     {
         $rules = [
-            'course_id'        => 'required|integer|min:0',
             'title'            => 'required|string|max:255',
             'youtube_video_id' => 'required|string|max:255',
             'remarks'          => 'nullable|string|max:500'
@@ -39,7 +38,6 @@ class ContentRequest extends FormRequest
     public function attributes()
     {
         return [
-            'course_id'          => '所属コース',
             'title'              => 'コンテンツ名',
             'youtube_video_id'   => 'YouTube',
             'remarks'            => '備考'

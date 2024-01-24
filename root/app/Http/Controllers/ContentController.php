@@ -19,12 +19,11 @@ class ContentController extends Controller
     /**
      * Display a listing of the resource.
      */
-    public function index(int $course): View
+    public function index(Course $course): View
     {
-        $courseTitle = Course::select('title')->where('id', $course)->get();
-        $contents = Content::where('course_id', $course)->orderby('position')->get();
+        $contents = Content::where('course_id', $course->id)->orderby('position')->get();
         $adminUser = Auth::user();
-        return view('admin.contents.index', compact('contents', 'course', 'courseTitle', 'adminUser'));
+        return view('admin.contents.index', compact('contents', 'course', 'adminUser'));
     }
 
     /**
@@ -47,22 +46,21 @@ class ContentController extends Controller
     /**
      * Show the form for creating a new resource.
      */
-    public function create(int $course): View
+    public function create(Course $course): View
     {
-        $courses = Course::all();
         $adminUser = Auth::user();
-        return view('admin.contents.create', compact('course', 'courses', 'adminUser'));
+        return view('admin.contents.create', compact('course', 'adminUser'));
     }
 
     /**
      * Store a newly created resource in storage.
      */
-    public function store(ContentRequest $request, int $course): RedirectResponse
+    public function store(ContentRequest $request, Course $course): RedirectResponse
     {
         $user = Auth::user();
 
         $data = [
-            'course_id'        => $request->course_id,
+            'course_id'        => $course->id,
             'admin_id'         => $user->id,
             'title'            => $request->title,
             'youtube_video_id' => $request->youtube_video_id,
@@ -77,7 +75,7 @@ class ContentController extends Controller
     /**
      * show
      */
-    public function show(Content $content):View
+    public function show(Content $content): View
     {
         $admin = $content->admin;
         $adminUser = Auth::user();
@@ -90,9 +88,9 @@ class ContentController extends Controller
      */
     public function edit(Content $content): View
     {
-        $courses = Course::all();
+        $course = $content->course;
         $adminUser = Auth::user();
-        return view('admin.contents.edit', compact('content', 'courses', 'adminUser'));
+        return view('admin.contents.edit', compact('content', 'course', 'adminUser'));
     }
 
     /**
@@ -100,11 +98,12 @@ class ContentController extends Controller
      */
     public function update(ContentRequest $request, Content $content): RedirectResponse
     {
-        $course = $content->course_id;
+        $course = $content->course;
+        $user = Auth::user();
 
         $data = [
-            'course_id'          => $request->course_id,
-            'admin_id'           => Auth()->user()->id,
+            'course_id'          => $course->id,
+            'admin_id'           => $user->id,
             'title'              => $request->title,
             'youtube_video_id'   => $request->youtube_video_id,
             'remarks'            => $request->remarks,
@@ -118,13 +117,11 @@ class ContentController extends Controller
     /**
      * 複製
      */
-    public function duplicate(int $content): RedirectResponse
+    public function duplicate(Content $content): RedirectResponse
     {
-        $original = Content::findOrFail($content);
         $newContent = new Content();
-        $newContent->fill($original->toArray())->save();
-
-        $course = $newContent->course_id;
+        $newContent->fill($content->toArray())->save();
+        $course = $newContent->course;
 
         return redirect()->route('admin.contents.index', compact('course'))->with('message', 'コンテンツを複製しました。');
     }
@@ -134,7 +131,7 @@ class ContentController extends Controller
      */
     public function destroy(Content $content): RedirectResponse
     {
-        $course = $content->course_id;
+        $course = $content->course;
         $content->delete();
         return redirect()->route('admin.contents.index', compact('course'))
                          ->with('danger', $content->title . 'を削除しました');
@@ -149,6 +146,7 @@ class ContentController extends Controller
 
         return view('users.contents.index', compact('contents', 'user', 'course_title'));
     }
+
     public function view(Content $content): View
     {
  //コンテンツ詳細画面
