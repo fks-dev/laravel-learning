@@ -389,7 +389,7 @@ class AdminContentsTest extends TestCase
     {
         return [
             //基本系
-            'basic' => [
+            'Case: basic' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
@@ -398,88 +398,38 @@ class AdminContentsTest extends TestCase
                     'remarks'          => 'basic',
                 ]
             ],
-            //course_id最大値
-            'max_number_of_course_id' => [
+            //最小
+            'Case: min' => [
                 'data' => [
-                    'course_id'        => 199999,
-                    'admin_id'         => 120001,
+                    'course_id'        => 0,
+                    'admin_id'         => 0,
                     'title'            => 'a',
-                    'youtube_video_id' => 'MaxNumOfCourseId',
-                    'remarks'          => 'max_number_of_course_id',
+                    'youtube_video_id' => 'b',
+                    'remarks'          => 'c',
                 ]
             ],
-            //admin_id最大値
-            'max_number_of_admin_id' => [
+            //最大
+            'Case: max' => [
                 'data' => [
                     'course_id'        => 199999,
                     'admin_id'         => 129999,
-                    'title'            => 'a',
-                    'youtube_video_id' => 'MaxNumOfAdminId',
-                    'remarks'          => 'max_number_of_admin_id',
-                ]
-            ],
-            //title最小文字数
-            'min_number_of_title' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'a',
-                    'youtube_video_id' => 'MinNumOfTitle',
-                    'remarks'          => 'min_number_of_title',
-                ]
-            ],
-            //title最大文字数
-            'max_number_of_title' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
                     'title'            => str_pad("Title", 255, "a"),
-                    'youtube_video_id' => 'MaxNumOfTitle',
-                    'remarks'          => 'max_number_of_title',
+                    'youtube_video_id' => str_pad("YouTubeVideoId", 255, "b"),
+                    'remarks'          => str_pad("Remarks", 500, "c"),
                 ]
             ],
-            //YouTubeVideoId最小文字数
-            'min_number_of_youtube_video_id' => [
+            //最大(日本語)
+            'Case: max_ja' => [
                 'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'a',
-                    'remarks'          => 'min_number_of_youtube_video_id',
-                ]
-            ],
-            //YouTubeVideoId最大文字数
-            'max_number_of_youtube_video_id' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => str_pad("YouTubeVideoId", 255, "a"),
-                    'remarks'          => 'max_number_of_youtube_video_id',
-                ]
-            ],
-            //remarks最小文字数
-            'min_number_of_remarks' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'MinNumOfRemarks',
-                    'remarks'          => 'a',
-                ]
-            ],
-            //remarks最大文字数
-            'max_number_of_remarks' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'MaxNumOfRemarks',
-                    'remarks'          => str_repeat("a", 500),
+                    'course_id'        => 199999,
+                    'admin_id'         => 129999,
+                    'title'            => str_pad("タイトル", 255, "あ"),
+                    'youtube_video_id' => str_pad("ユーチューブ", 255, "い"),
+                    'remarks'          => str_pad("備考", 500, "う"),
                 ]
             ],
             //remarksなし
-            'missing_remarks' => [
+            'Case: missing_remarks' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
@@ -496,134 +446,74 @@ class AdminContentsTest extends TestCase
     public function data_admin_contents_create_post_and_patch_ok_validation_normal_error()
     {
         return [
-            //course_idなし
-            'missing_course_id' => [
-                'data' => [
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'MissingCourseId',
-                    'remarks'          => 'missing_course_id',
-                ],
-                'expectedErrors' => ['course_id' => '所属コースは必ず指定してください。']
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'course_id'        => '所属コースは必ず指定してください。',
+                    'admin_id'         => '管理者IDは必ず指定してください。',
+                    'title'            => 'コンテンツ名は必ず指定してください。',
+                    'youtube_video_id' => 'YouTubeは必ず指定してください。'
+                ]
             ],
-            //course_idの値が数値ではない
-            'not_number_course_id' => [
+            //integer指定のフィールドの値が数値ではない
+            'Case: not_integer' => [
                 'data' => [
-                    'course_id'        => "NotNumber",
-                    'admin_id'         => 120001,
+                    'course_id'        => "aaaaaa",
+                    'admin_id'         => "bbbbbb",
                     'title'            => 'Validation Test',
-                    'youtube_video_id' => 'NotNumberCourseId',
-                    'remarks'          => 'not_number_course_id',
+                    'youtube_video_id' => 'NotInteger',
+                    'remarks'          => 'not_integer',
                 ],
-                'expectedErrors' => ['course_id' => '所属コースは整数で指定してください。']
+                'expectedErrors' => [
+                    'course_id'        => '所属コースは整数で指定してください。',
+                    'admin_id'         => '管理者IDは整数で指定してください。'
+                ]
             ],
-            //course_idの値が想定範囲外
-            'out_of_range_course_id' => [
-                'data' => [
-                    'course_id'        => 123456,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'OutOfRangeCourseId',
-                    'remarks'          => 'out_of_range_course_id',
-                ],
-                'expectedErrors' => ['course_id' => '所属コースの値が不正です。']
-            ],
-            //admin_idなし
-            'missing_admin_id' => [
-                'data' => [
-                    'course_id'         => 190001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'MissingAdminId',
-                    'remarks'          => 'missing_admin_id',
-                ],
-                'expectedErrors' => ['admin_id' => '管理者IDは必ず指定してください。']
-            ],
-            //admin_idの値が数値ではない
-            'not_number_admin_id' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => "NotNumber",
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'NotNumberAdminId',
-                    'remarks'          => 'not_number_admin_id',
-                ],
-                'expectedErrors' => ['admin_id' => '管理者IDは整数で指定してください。']
-            ],
-            //admin_idの値が想定範囲外
-            'out_of_range_admin_id' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 111111,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'OutOfRangeAdminId',
-                    'remarks'          => 'out_of_range_admin_id',
-                ],
-                'expectedErrors' => ['admin_id' => '管理者IDの値が不正です。']
-            ],
-            //titleなし
-            'missing_title' => [
+            //string指定のフィールドの値が文字列ではない
+            'Case: not_string' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
-                    'youtube_video_id' => 'MissingTitle',
-                    'remarks'          => 'missing_title',
+                    'title'            => 1,
+                    'youtube_video_id' => 2,
+                    'remarks'          => 3,
                 ],
-                'expectedErrors' => ['title' => 'コンテンツ名は必ず指定してください。']
+                'expectedErrors' => [
+                    'title'            => 'コンテンツ名は文字列を指定してください。',
+                    'youtube_video_id' => 'YouTubeは文字列を指定してください。',
+                    'remarks'          => '備考は文字列を指定してください。'
+                ]
             ],
-            //title文字数が最大文字数より多い
-            'out_of_range_title' => [
+            //値がマイナス
+            'Case: minus_number' => [
+                'data' => [
+                    'course_id'        => -123456,
+                    'admin_id'         => -123456,
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'MinusNumber',
+                    'remarks'          => 'minus_number',
+                ],
+                'expectedErrors' => [
+                    'course_id'        => '所属コースには、0以上の数字を指定してください。',
+                    'admin_id'         => '管理者IDには、0以上の数字を指定してください。'
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
                 'data' => [
                     'course_id'        => 190001,
                     'admin_id'         => 120001,
                     'title'            => str_pad("Title", 256, "a"),
-                    'youtube_video_id' => 'OutOfRangeTitle',
-                    'remarks'          => 'out_of_range_title',
+                    'youtube_video_id' => str_pad("YouTubeVideoId", 256, "b"),
+                    'remarks'          => str_pad("Remarks", 501, "c"),
                 ],
-                'expectedErrors' => ['title' => 'コンテンツ名は、255文字以下で指定してください。']
-            ],
-            //youtube_video_idなし
-            'missing_youtube_video_id' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'remarks'          => 'missing_youtube_video_id',
-                ],
-                'expectedErrors' => ['youtube_video_id' => 'YouTubeは必ず指定してください。']
-            ],
-            //youtube_video_idが最大文字数より多い
-            'missing_youtube_video_id' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => str_pad("YouTubeVideoId", 256, "a"),
-                    'remarks'          => 'missing_youtube_video_id',
-                ],
-                'expectedErrors' => ['youtube_video_id' => 'YouTubeは、255文字以下で指定してください。']
-            ],
-            //youtube_video_idに空白文字が入っている
-            'has_space_youtube_video_id' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => "YouTube Video Id Has Space",
-                    'remarks'          => 'has_space_youtube_video_id',
-                ],
-                'expectedErrors' => ['youtube_video_id' => 'YouTubeには空白文字を使用しないでください。']
-            ],
-            //remarksが最大文字数より多い
-            'out_of_range_remarks' => [
-                'data' => [
-                    'course_id'        => 190001,
-                    'admin_id'         => 120001,
-                    'title'            => 'Validation Test',
-                    'youtube_video_id' => 'OutOfRangeRemarks',
-                    'remarks'          => str_repeat("a", 501),
-                ],
-                'expectedErrors' => ['remarks' => '備考は500文字以内で入力してください。']
-            ],
+                'expectedErrors' => [
+                    'title'            => 'コンテンツ名は、255文字以下で指定してください。',
+                    'youtube_video_id' => 'YouTubeは、255文字以下で指定してください。',
+                    'remarks'          => '備考は、500文字以下で指定してください。'
+                ]
+            ]
         ];
     }
 
