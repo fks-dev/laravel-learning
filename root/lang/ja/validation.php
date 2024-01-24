@@ -140,18 +140,6 @@ return [
         '属性名' => [
             'ルール名' => 'カスタムメッセージ',
         ],
-        'youtube_video_id' => [
-            'regex' => ':attributeには空白文字を使用しないでください。',
-        ],
-        'remarks' => [
-            'max' => ':attributeは:max文字以内で入力してください。',
-        ],
-        'course_id' => [
-            'between' => ':attributeの値が不正です。',
-        ],
-        'admin_id' => [
-            'between' => ':attributeの値が不正です。',
-        ],
     ],
 
     /*
