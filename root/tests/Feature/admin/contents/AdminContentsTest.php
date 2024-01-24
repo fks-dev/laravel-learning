@@ -59,7 +59,6 @@ class AdminContentsTest extends TestCase
     {
         return $this->post("/admin/contents/190001", [
             'course_id'        => $this->course->id,
-            'admin_id'         => $this->admin->id,
             'title'            => 'new_content',
             'youtube_video_id' => '2k9dh7SwEVs',
             'remarks'          => 'This is new_content',
@@ -72,7 +71,6 @@ class AdminContentsTest extends TestCase
     public function editContent()
     {
         return $this->patch("/admin/contents/{$this->content->id}", [
-            'admin_id' => $this->admin->id,
             'course_id' => '190002',
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
@@ -392,7 +390,6 @@ class AdminContentsTest extends TestCase
             'Case: basic' => [
                 'data' => [
                     'course_id'        => 190001,
-                    'admin_id'         => 120001,
                     'title'            => 'Validation Test',
                     'youtube_video_id' => 'basic',
                     'remarks'          => 'basic',
@@ -402,17 +399,15 @@ class AdminContentsTest extends TestCase
             'Case: min' => [
                 'data' => [
                     'course_id'        => 0,
-                    'admin_id'         => 0,
                     'title'            => 'a',
                     'youtube_video_id' => 'b',
-                    'remarks'          => 'c',
+                    'remarks'          => '',
                 ]
             ],
             //最大
             'Case: max' => [
                 'data' => [
                     'course_id'        => 199999,
-                    'admin_id'         => 129999,
                     'title'            => str_pad("Title", 255, "a"),
                     'youtube_video_id' => str_pad("YouTubeVideoId", 255, "b"),
                     'remarks'          => str_pad("Remarks", 500, "c"),
@@ -422,21 +417,19 @@ class AdminContentsTest extends TestCase
             'Case: max_ja' => [
                 'data' => [
                     'course_id'        => 199999,
-                    'admin_id'         => 129999,
                     'title'            => str_pad("タイトル", 255, "あ"),
                     'youtube_video_id' => str_pad("ユーチューブ", 255, "い"),
                     'remarks'          => str_pad("備考", 500, "う"),
                 ]
             ],
-            //remarksなし
-            'Case: missing_remarks' => [
+            //必須のみ
+            'Case: required_only' => [
                 'data' => [
                     'course_id'        => 190001,
-                    'admin_id'         => 120001,
                     'title'            => 'Validation Test',
-                    'youtube_video_id' => 'missing_remarks',
+                    'youtube_video_id' => 'RequiredOnly',
                 ]
-            ],
+            ]
         ];
     }
 
@@ -451,7 +444,6 @@ class AdminContentsTest extends TestCase
                 'data' => [],
                 'expectedErrors' => [
                     'course_id'        => '所属コースは必ず指定してください。',
-                    'admin_id'         => '管理者IDは必ず指定してください。',
                     'title'            => 'コンテンツ名は必ず指定してください。',
                     'youtube_video_id' => 'YouTubeは必ず指定してください。'
                 ]
@@ -460,21 +452,18 @@ class AdminContentsTest extends TestCase
             'Case: not_integer' => [
                 'data' => [
                     'course_id'        => "aaaaaa",
-                    'admin_id'         => "bbbbbb",
                     'title'            => 'Validation Test',
                     'youtube_video_id' => 'NotInteger',
                     'remarks'          => 'not_integer',
                 ],
                 'expectedErrors' => [
                     'course_id'        => '所属コースは整数で指定してください。',
-                    'admin_id'         => '管理者IDは整数で指定してください。'
                 ]
             ],
             //string指定のフィールドの値が文字列ではない
             'Case: not_string' => [
                 'data' => [
                     'course_id'        => 190001,
-                    'admin_id'         => 120001,
                     'title'            => 1,
                     'youtube_video_id' => 2,
                     'remarks'          => 3,
@@ -489,21 +478,18 @@ class AdminContentsTest extends TestCase
             'Case: minus_number' => [
                 'data' => [
                     'course_id'        => -123456,
-                    'admin_id'         => -123456,
                     'title'            => 'Validation Test',
                     'youtube_video_id' => 'MinusNumber',
                     'remarks'          => 'minus_number',
                 ],
                 'expectedErrors' => [
                     'course_id'        => '所属コースには、0以上の数字を指定してください。',
-                    'admin_id'         => '管理者IDには、0以上の数字を指定してください。'
                 ]
             ],
             //最大文字数超過
             'Case: over_max_words' => [
                 'data' => [
                     'course_id'        => 190001,
-                    'admin_id'         => 120001,
                     'title'            => str_pad("Title", 256, "a"),
                     'youtube_video_id' => str_pad("YouTubeVideoId", 256, "b"),
                     'remarks'          => str_pad("Remarks", 501, "c"),

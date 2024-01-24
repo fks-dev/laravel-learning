@@ -23,10 +23,9 @@ class ContentRequest extends FormRequest
     {
         $rules = [
             'course_id'        => 'required|integer|min:0',
-            'admin_id'         => 'required|integer|min:0',
             'title'            => 'required|string|max:255',
             'youtube_video_id' => 'required|string|max:255',
-            'remarks'          => 'string|max:500'
+            'remarks'          => 'nullable|string|max:500'
         ];
 
         return $rules;
@@ -40,7 +39,6 @@ class ContentRequest extends FormRequest
     public function attributes()
     {
         return [
-            'admin_id'           => '管理者ID',
             'course_id'          => '所属コース',
             'title'              => 'コンテンツ名',
             'youtube_video_id'   => 'YouTube',
