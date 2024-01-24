@@ -28,7 +28,7 @@
             @csrf
             <div class="d-flex justify-content-start">
                 <div class="p-2">
-                    <label class="col-form-label" for="name">管理者ID</label>
+                    <label class="col-form-label" for="name">ユーザーID</label>
                 </div>
                 <div class="p-2">
                     <input class="form-control" type="text" name="name" id="name">
@@ -55,8 +55,8 @@
         <table class="table table-striped" id="sortable">
             <thead>
                 <tr>
-                    <th class="col-1 sort" data-sort="asc">管理者ID</th>
-                    <th class="col-2 sort" data-sort="asc">mail</th>
+                    <th class="col-1 sort" data-sort="asc">ユーザーID</th>
+                    <th class="col-2 text-center sort" data-sort="asc">mail</th>
                     <th class="col-2">所属グループ</th>
                     <th class="col text-center sort" data-sort="asc">最終ログイン日時</th>
                     <th class="col text-center sort" data-sort="asc">作成日時</th>
