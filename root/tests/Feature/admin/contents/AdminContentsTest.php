@@ -650,11 +650,7 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->post("/admin/contents/190001", $data);
 
-        foreach ($expectedErrors as $field => $rule) {
-            $response->assertSessionHasErrors([
-                $field => $rule,
-            ]);
-        }
+        $response->assertSessionHasErrors($expectedErrors);
     }
 
     /**
@@ -680,10 +676,6 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->patch("/admin/contents/{$this->content->id}", $data);
 
-        foreach ($expectedErrors as $field => $rule) {
-            $response->assertSessionHasErrors([
-                $field => $rule,
-            ]);
-        }
+        $response->assertSessionHasErrors($expectedErrors);
     }
 }
