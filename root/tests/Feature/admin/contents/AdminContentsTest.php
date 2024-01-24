@@ -58,7 +58,6 @@ class AdminContentsTest extends TestCase
     public function storeContent()
     {
         return $this->post("/admin/contents/190001", [
-            'course_id'        => $this->course->id,
             'title'            => 'new_content',
             'youtube_video_id' => '2k9dh7SwEVs',
             'remarks'          => 'This is new_content',
@@ -71,7 +70,6 @@ class AdminContentsTest extends TestCase
     public function editContent()
     {
         return $this->patch("/admin/contents/{$this->content->id}", [
-            'course_id' => '190002',
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
             'remarks' => 'This is update_content',
@@ -258,8 +256,8 @@ class AdminContentsTest extends TestCase
 
         //データベース上でコンテンツが更新されたか確認
         $this->assertDatabaseHas('contents', [
-            'admin_id' => $this->admin->id,
-            'course_id' => '190002',
+            'course_id'        => $this->course->id,
+            'admin_id'         => $this->admin->id,
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
             'remarks' => 'This is update_content',
@@ -389,7 +387,6 @@ class AdminContentsTest extends TestCase
             //基本系
             'Case: basic' => [
                 'data' => [
-                    'course_id'        => 190001,
                     'title'            => 'Validation Test',
                     'youtube_video_id' => 'basic',
                     'remarks'          => 'basic',
@@ -398,7 +395,6 @@ class AdminContentsTest extends TestCase
             //最小
             'Case: min' => [
                 'data' => [
-                    'course_id'        => 0,
                     'title'            => 'a',
                     'youtube_video_id' => 'b',
                     'remarks'          => '',
@@ -407,7 +403,6 @@ class AdminContentsTest extends TestCase
             //最大
             'Case: max' => [
                 'data' => [
-                    'course_id'        => 199999,
                     'title'            => str_pad("Title", 255, "a"),
                     'youtube_video_id' => str_pad("YouTubeVideoId", 255, "b"),
                     'remarks'          => str_pad("Remarks", 500, "c"),
@@ -416,16 +411,14 @@ class AdminContentsTest extends TestCase
             //最大(日本語)
             'Case: max_ja' => [
                 'data' => [
-                    'course_id'        => 199999,
-                    'title'            => str_pad("タイトル", 255, "あ"),
-                    'youtube_video_id' => str_pad("ユーチューブ", 255, "い"),
-                    'remarks'          => str_pad("備考", 500, "う"),
+                    'title'            => str_repeat('あ', 255),
+                    'youtube_video_id' => str_repeat('い', 255),
+                    'remarks'          => str_repeat('う', 500),
                 ]
             ],
             //必須のみ
             'Case: required_only' => [
                 'data' => [
-                    'course_id'        => 190001,
                     'title'            => 'Validation Test',
                     'youtube_video_id' => 'RequiredOnly',
                 ]
@@ -438,9 +431,6 @@ class AdminContentsTest extends TestCase
      */
     public function data_admin_contents_create_post_and_patch_ok_validation_normal_error()
     {
-        $validCourseId = 190001;
-        $validTitle = 'Valid value';
-        $validYouTubeVideoId = 'Valid value';
         $validRemarks = 'Valid value';
 
         return [
@@ -448,7 +438,6 @@ class AdminContentsTest extends TestCase
             'Case: missing_field' => [
                 'data' => [],
                 'expectedErrors' => [
-                    'course_id'        => '所属コースは必ず指定してください。',
                     'title'            => 'コンテンツ名は必ず指定してください。',
                     'youtube_video_id' => 'YouTubeは必ず指定してください。'
                 ]
@@ -456,33 +445,18 @@ class AdminContentsTest extends TestCase
             //必須項目が空文字
             'Case: null_required_field' => [
                 'data' => [
-                    'course_id'        => '',
                     'title'            => '',
                     'youtube_video_id' => '',
                     'remarks'          => $validRemarks,
                 ],
                 'expectedErrors' => [
-                    'course_id'        => '所属コースは必ず指定してください。',
                     'title'            => 'コンテンツ名は必ず指定してください。',
                     'youtube_video_id' => 'YouTubeは必ず指定してください。'
-                ]
-            ],
-            //integer指定のフィールドの値が数値ではない
-            'Case: not_integer' => [
-                'data' => [
-                    'course_id'        => "aaaaaa",
-                    'title'            => $validTitle,
-                    'youtube_video_id' => $validYouTubeVideoId,
-                    'remarks'          => $validRemarks,
-                ],
-                'expectedErrors' => [
-                    'course_id'        => '所属コースは整数で指定してください。',
                 ]
             ],
             //string指定のフィールドの値が文字列ではない
             'Case: not_string' => [
                 'data' => [
-                    'course_id'        => $validCourseId,
                     'title'            => 1,
                     'youtube_video_id' => 2,
                     'remarks'          => 3,
@@ -493,22 +467,9 @@ class AdminContentsTest extends TestCase
                     'remarks'          => '備考は文字列を指定してください。'
                 ]
             ],
-            //値がマイナス
-            'Case: minus_number' => [
-                'data' => [
-                    'course_id'        => -1,
-                    'title'            => $validTitle,
-                    'youtube_video_id' => $validYouTubeVideoId,
-                    'remarks'          => $validRemarks,
-                ],
-                'expectedErrors' => [
-                    'course_id'        => '所属コースには、0以上の数字を指定してください。',
-                ]
-            ],
             //最大文字数超過
             'Case: over_max_words' => [
                 'data' => [
-                    'course_id'        => $validCourseId,
                     'title'            => str_pad("Title", 256, "a"),
                     'youtube_video_id' => str_pad("YouTubeVideoId", 256, "b"),
                     'remarks'          => str_pad("Remarks", 501, "c"),
@@ -532,6 +493,7 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->post("/admin/contents/190001", $data);
 
+        $response->assertRedirect("/admin/contents/190001");
         $response->assertSessionHasNoErrors();
     }
 
@@ -545,6 +507,7 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->post("/admin/contents/190001", $data);
 
+        $response->assertStatus(302);
         $response->assertSessionHasErrors($expectedErrors);
     }
 
@@ -558,6 +521,7 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->patch("/admin/contents/{$this->content->id}", $data);
 
+        $response->assertRedirect("/admin/contents/190001");
         $response->assertSessionHasNoErrors();
     }
 
@@ -571,6 +535,7 @@ class AdminContentsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
         $response = $this->patch("/admin/contents/{$this->content->id}", $data);
 
+        $response->assertStatus(302);
         $response->assertSessionHasErrors($expectedErrors);
     }
 }
