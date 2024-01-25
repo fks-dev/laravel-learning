@@ -78,7 +78,7 @@ class ContentController extends Controller
     /**
      * show
      */
-    public function show(Content $content):View
+    public function show(Content $content): View
     {
         $admin = $content->admin;
         $adminUser = Auth::user();
@@ -138,12 +138,12 @@ class ContentController extends Controller
         $course = $content->course_id;
         $content->delete();
         return redirect()->route('admin.contents.index', compact('course'))
-                         ->with('danger', $content->title . 'を削除しました');
+            ->with('danger', $content->title . 'を削除しました');
     }
 
     public function list(Course $course): View
     {
- //コンテンツ一覧画面
+        //コンテンツ一覧画面
         $user = Auth::user();
         $course_title = $course->title;
         $contents = Content::where('course_id', $course->id)->get();
@@ -152,7 +152,7 @@ class ContentController extends Controller
     }
     public function view(Content $content): View
     {
- //コンテンツ詳細画面
+        //コンテンツ詳細画面
         $user = Auth::user();
         $title = $content->title;
         return view('users.contents.show', compact('content', 'user', 'title'));
