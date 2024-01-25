@@ -17,7 +17,7 @@ class InformationController extends Controller
      * Display a listing of the resource.
      */
 
-    private function getAdminId() :int
+    private function getAdminId(): int
     {
         return Auth::guard('admin')->user()->id;
     }
@@ -104,18 +104,18 @@ class InformationController extends Controller
         return redirect()->route('admin.informations.index')->with('danger', $information->title . 'を削除しました');
     }
 
-public function list(): View
-{
-    $user = $this->getCurrentUser();
+    public function list(): View
+    {
+        $user = $this->getCurrentUser();
 
-    $informations = $user->groups()->with('informations')->get()
-        ->pluck('informations')
-        ->flatten()
-        ->unique('id')
-        ->sortByDesc('updated_at');
+        $informations = $user->groups()->with('informations')->get()
+            ->pluck('informations')
+            ->flatten()
+            ->unique('id')
+            ->sortByDesc('updated_at');
 
-    return view('users.informations.index', compact('informations', 'user'));
-}
+        return view('users.informations.index', compact('informations', 'user'));
+    }
 
     public function show(Information $information): View
     {
