@@ -491,9 +491,12 @@ class AdminContentsTest extends TestCase
     public function test_admin_contents_create_post_ok_validation_ok($data)
     {
         $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/contents/create/190001");
         $response = $this->post("/admin/contents/190001", $data);
 
-        $response->assertRedirect("/admin/contents/190001");
+        $response->assertStatus(302)->assertRedirect("/admin/contents/190001");
         $response->assertSessionHasNoErrors();
     }
 
@@ -505,9 +508,12 @@ class AdminContentsTest extends TestCase
     public function test_admin_contents_create_post_ok_validation_normal_error($data, $expectedErrors)
     {
         $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/contents/create/190001");
         $response = $this->post("/admin/contents/190001", $data);
 
-        $response->assertStatus(302);
+        $response->assertStatus(302)->assertRedirect("/admin/contents/create/190001");
         $response->assertSessionHasErrors($expectedErrors);
     }
 
@@ -519,9 +525,12 @@ class AdminContentsTest extends TestCase
     public function test_admin_contents_edit_patch_ok_validation_ok($data)
     {
         $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/contents/{$this->content->id}/edit");
         $response = $this->patch("/admin/contents/{$this->content->id}", $data);
 
-        $response->assertRedirect("/admin/contents/190001");
+        $response->assertStatus(302)->assertRedirect("/admin/contents/190001");
         $response->assertSessionHasNoErrors();
     }
 
@@ -533,9 +542,12 @@ class AdminContentsTest extends TestCase
     public function test_admin_contents_edit_patch_ok_validation_normal_error($data, $expectedErrors)
     {
         $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/contents/{$this->content->id}/edit");
         $response = $this->patch("/admin/contents/{$this->content->id}", $data);
 
-        $response->assertStatus(302);
+        $response->assertStatus(302)->assertRedirect("/admin/contents/{$this->content->id}/edit");
         $response->assertSessionHasErrors($expectedErrors);
     }
 }
