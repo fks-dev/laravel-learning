@@ -470,9 +470,9 @@ class AdminContentsTest extends TestCase
             //最大文字数超過
             'Case: over_max_words' => [
                 'data' => [
-                    'title'            => str_pad("Title", 256, "a"),
-                    'youtube_video_id' => str_pad("YouTubeVideoId", 256, "b"),
-                    'remarks'          => str_pad("Remarks", 501, "c"),
+                    'title'            => str_repeat('a', 256),
+                    'youtube_video_id' => str_repeat('b', 256),
+                    'remarks'          => str_repeat('c', 501),
                 ],
                 'expectedErrors' => [
                     'title'            => 'コンテンツ名は、255文字以下で指定してください。',
