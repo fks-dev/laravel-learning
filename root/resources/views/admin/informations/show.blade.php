@@ -6,20 +6,20 @@
 <body>
     @include('admin.header')
     <div class="container mt-3 border">
-        <div class="mb-4 p-3 border rounded" style="background-color: #f5f5f5;">
-            <a class="text-decoration-none" href="{{ route('admin.informations.index') }}">お知らせ一覧</a>
+        <div class="mb-2">
+            <a class="btn btn-secondary" href="{{ route('admin.informations.index') }}">戻る</a>
         </div>
         <h3 class="rounded-top p-2 card-header text-success shadow-sm" style="background-color :#cdeee0">{{ $information->title }}</h3>
-        <div class="d-flex">
+        <div class="d-flex flex-column">
             <div class="p-3">
                 <h4>本文</h4>
                 <div>
-                    <ul class="text-center" style="padding-left:0px !important;">
+                    <ul style="padding-left:0px !important;">
                         <li class="list-unstyled">{{ $information->text }}</li>
                     </ul>
                 </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex flex-column">
                 <div class="mt-2 p-2">
                     <div class="fw-bold fs-5">作成日時</div>
                     <div>{{ $information->created_at }}</div>
