@@ -403,9 +403,9 @@ class AdminContentsTest extends TestCase
             //最大
             'Case: max' => [
                 'data' => [
-                    'title'            => str_pad("Title", 255, "a"),
-                    'youtube_video_id' => str_pad("YouTubeVideoId", 255, "b"),
-                    'remarks'          => str_pad("Remarks", 500, "c"),
+                    'title'            => str_repeat('a', 255),
+                    'youtube_video_id' => str_repeat('b', 255),
+                    'remarks'          => str_repeat('c', 500),
                 ]
             ],
             //最大(日本語)
