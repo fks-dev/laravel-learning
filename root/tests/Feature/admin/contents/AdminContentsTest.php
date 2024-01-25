@@ -58,8 +58,6 @@ class AdminContentsTest extends TestCase
     public function storeContent()
     {
         return $this->post("/admin/contents/190001", [
-            'course_id'        => $this->course->id,
-            'admin_id'         => $this->admin->id,
             'title'            => 'new_content',
             'youtube_video_id' => '2k9dh7SwEVs',
             'remarks'          => 'This is new_content',
@@ -72,8 +70,6 @@ class AdminContentsTest extends TestCase
     public function editContent()
     {
         return $this->patch("/admin/contents/{$this->content->id}", [
-            'admin_id' => $this->admin->id,
-            'course_id' => '190002',
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
             'remarks' => 'This is update_content',
@@ -260,8 +256,8 @@ class AdminContentsTest extends TestCase
 
         //データベース上でコンテンツが更新されたか確認
         $this->assertDatabaseHas('contents', [
-            'admin_id' => $this->admin->id,
-            'course_id' => '190002',
+            'course_id'        => $this->course->id,
+            'admin_id'         => $this->admin->id,
             'title' => 'content_1_update',
             'youtube_video_id' => '1q8VtUpdate',
             'remarks' => 'This is update_content',
@@ -380,5 +376,178 @@ class AdminContentsTest extends TestCase
         $response = $this->sortContent();
 
         $response->assertJson(['message' => '並び替えを保存しました。']);
+    }
+
+    /**
+     * コンテンツ新規作成 & 更新_正常系バリデーションチェック
+     */
+    public function data_admin_contents_create_post_and_patch_ok_validation_ok()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'basic',
+                    'remarks'          => 'basic',
+                ]
+            ],
+            //最小
+            'Case: min' => [
+                'data' => [
+                    'title'            => 'a',
+                    'youtube_video_id' => 'b',
+                    'remarks'          => '',
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'title'            => str_repeat('a', 255),
+                    'youtube_video_id' => str_repeat('b', 255),
+                    'remarks'          => str_repeat('c', 500),
+                ]
+            ],
+            //最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'title'            => str_repeat('あ', 255),
+                    'youtube_video_id' => str_repeat('い', 255),
+                    'remarks'          => str_repeat('う', 500),
+                ]
+            ],
+            //必須のみ
+            'Case: required_only' => [
+                'data' => [
+                    'title'            => 'Validation Test',
+                    'youtube_video_id' => 'RequiredOnly',
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * 新規作成 & 更新_正常系エラーバリデーションチェック
+     */
+    public function data_admin_contents_create_post_and_patch_ok_validation_normal_error()
+    {
+        $validRemarks = 'Valid value';
+
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'title'            => 'コンテンツ名は必ず指定してください。',
+                    'youtube_video_id' => 'YouTubeは必ず指定してください。'
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'title'            => '',
+                    'youtube_video_id' => '',
+                    'remarks'          => $validRemarks,
+                ],
+                'expectedErrors' => [
+                    'title'            => 'コンテンツ名は必ず指定してください。',
+                    'youtube_video_id' => 'YouTubeは必ず指定してください。'
+                ]
+            ],
+            //string指定のフィールドの値が文字列ではない
+            'Case: not_string' => [
+                'data' => [
+                    'title'            => 1,
+                    'youtube_video_id' => 2,
+                    'remarks'          => 3,
+                ],
+                'expectedErrors' => [
+                    'title'            => 'コンテンツ名は文字列を指定してください。',
+                    'youtube_video_id' => 'YouTubeは文字列を指定してください。',
+                    'remarks'          => '備考は文字列を指定してください。'
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'title'            => str_repeat('a', 256),
+                    'youtube_video_id' => str_repeat('b', 256),
+                    'remarks'          => str_repeat('c', 501),
+                ],
+                'expectedErrors' => [
+                    'title'            => 'コンテンツ名は、255文字以下で指定してください。',
+                    'youtube_video_id' => 'YouTubeは、255文字以下で指定してください。',
+                    'remarks'          => '備考は、500文字以下で指定してください。'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_ok
+     * コンテンツ新規作成時のバリデーションチェック(正常系)
+     */
+    public function test_admin_contents_create_post_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/contents/create/190001");
+        $response = $this->post("/admin/contents/190001", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/contents/190001");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_normal_error
+     * コンテンツ新規作成時のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_contents_create_post_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/contents/create/190001");
+        $response = $this->post("/admin/contents/190001", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/contents/create/190001");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_ok
+     * コンテンツ更新時のバリデーションチェック(正常系)
+     */
+    public function test_admin_contents_edit_patch_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/contents/{$this->content->id}/edit");
+        $response = $this->patch("/admin/contents/{$this->content->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/contents/190001");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_contents_create_post_and_patch_ok_validation_normal_error
+     * コンテンツ更新時のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_contents_edit_patch_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/contents/{$this->content->id}/edit");
+        $response = $this->patch("/admin/contents/{$this->content->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/contents/{$this->content->id}/edit");
+        $response->assertSessionHasErrors($expectedErrors);
     }
 }
