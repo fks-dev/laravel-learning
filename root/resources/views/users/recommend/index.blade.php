@@ -3,18 +3,19 @@
 <head>
     @include('head')
     <link rel="stylesheet" href="/css/recommend.css">
+    <link rel="stylesheet" href="/css/user_index.css">
     <title>動画相性診断</title>
 </head>
 
 <body>
 @include('users.header')
 <div class="container my-4">
-    <div class="card text-bg-info" style="text-align: center;">
-        <div class="card-body shadow-sm">
+    <div class="card bg-primary-subtitle">
+        <div class="card-body text-center">
             <h3>{{ $q['q_order']}}問目</h3>
-            <p>{{ $q['text'] }}</p>
         </div>
     </div>
+    <p>{{ $q['text'] }}</p>
     <div class="d-grid gap-2">
         <form method="get" action="{{ route('users.select-courses.index') }}" class="answer">
             <input type="hidden" value="{{ $q['q_id'] }}" name="q_id">
