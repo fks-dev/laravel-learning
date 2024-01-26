@@ -56,7 +56,7 @@
                         </label>
                         <div class="col-sm-10 mt-2">
                             <div>
-                                <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
+                                <input class="form-contorl btn btn-primary mt-3" type="submit" value="更新">
                             </div>
                         </div>
                     </div>
