@@ -1,0 +1,20 @@
+.container {
+    border: 1px solid #ccc;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);
+    max-width: 400px;
+}
+
+.container h3 {
+    margin-top: 10px;
+    padding-bottom: 10px;
+}
+
+.answer {
+    margin-top: 20px;
+    padding-right: calc(var(--bs-gutter-x) * .5);
+    padding-left: calc(var(--bs-gutter-x) * .5);
+    display: flex;
+    flex-direction: column;
+}
