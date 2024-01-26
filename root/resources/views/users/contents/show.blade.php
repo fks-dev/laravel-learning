@@ -25,7 +25,7 @@
                 <form action="{{route('users.contents.record',$content)}}" method="post" class="col">
                     @csrf
                     <input type="hidden" id="log" name="log" value="1">
-                    <button type="submit" class="btn btn-primary">終了</button>
+                    <button type="submit" class="btn btn-primary">完了</button>
                 </form>
                 <form action="{{route('users.contents.record',$content)}}" method="post" class="col">
                     @csrf
