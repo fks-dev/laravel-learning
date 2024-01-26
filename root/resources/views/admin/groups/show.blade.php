@@ -11,7 +11,7 @@
             <a class="btn btn-secondary" href="{{ route('admin.groups.index') }}">戻る</a>
         </div>
         <h3 class="rounded-top p-2 card-header text-success shadow-sm" style="background-color: #cdeee0">{{ $group->group_name }}</h3>
-        <div class="d-flex">
+        <div class="d-flex flex-column">
             <div class="p-3">
                 <h4>所属コース</h4>
                 <div>
@@ -32,7 +32,7 @@
                     </ul>
                 </div>
             </div>
-            <div class="d-flex">
+            <div class="d-flex flex-column">
                 <div class="mt-2 p-3">
                     <div class="fw-bold fs-5">作成日時</div>
                     <div>{{ $group->created_at }}</div>
