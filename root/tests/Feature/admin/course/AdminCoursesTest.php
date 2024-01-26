@@ -34,8 +34,6 @@ class AdminCoursesTest extends TestCase
             Course::factory()->create([
                 'id' => 190000 + $i,
                 'title' => 'course_' . $i,
-                'introduction' => 'これはテスト用のコースです。',
-                'remarks' => 'This is test_course',
                 'position' => $i,
             ]);
         }
@@ -97,14 +95,10 @@ class AdminCoursesTest extends TestCase
     {
         $course = [
             'title'       => 'newtestTitle',
-            'introduction' => 'newtestIntroduction',
-            'remarks'      => 'This is new_course',
         ];
         $response = $this->post('/admin/courses', $course);
         $this->assertDatabaseHas('courses', [
             'title'       => $course['title'],
-            'introduction' => $course['introduction'],
-            'remarks'      => $course['remarks'],
         ]);
         $response->assertRedirect('/admin/courses');
         $response->assertSessionHas('message', 'コースを登録しました');
@@ -147,15 +141,11 @@ class AdminCoursesTest extends TestCase
         $newRemarks = 'NewRemarks';
         $response = $this->patch("/admin/courses/{$this->course->id}", [
             'title'       => $newTitle,
-            'introduction' => $newIntroduction,
-            'remarks'      => $newRemarks,
         ]);
         $response->assertRedirect('/admin/courses');
         $this->assertDatabaseHas('courses', [
             'id' => $this->course->id,
             'title'       => $newTitle,
-            'introduction' => $newIntroduction,
-            'remarks'      => $newRemarks,
         ]);
         $response->assertSessionHas('message', $newTitle . 'を更新しました');
     }

@@ -24,20 +24,10 @@
                         </div>
                     </div>
 
-                    <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="introduction">コース紹介</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" name="introduction" id="introduction" rows="5"></textarea>
-                        </div>
+                    <div class="m-3">
+                        <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
                     </div>
 
-                    <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold" for="remarks">備考</label>
-                        <div class="col-sm-10">
-                            <textarea class="form-control" name="remarks" id="remarks" rows="5"></textarea>
-                            <input class="form-contorl btn btn-primary mt-3" type="submit" value="登録">
-                        </div>
-                    </div>
                 </div>
             </form>
         </div>

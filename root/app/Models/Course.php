@@ -13,8 +13,6 @@ class Course extends Model
 
     protected $fillable = [
         'title',
-        'introduction',
-        'remarks',
         'position',
     ];
 

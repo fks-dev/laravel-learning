@@ -55,8 +55,6 @@ class CourseController extends Controller
 
         Course::create([
             'title'       => $request->title,
-            'introduction' => $request->introduction,
-            'remarks'      => $request->remarks,
         ]);
 
         return redirect()->route('admin.courses.index')->with('message', 'コースを登録しました');
@@ -78,8 +76,6 @@ class CourseController extends Controller
     {
         $course->update([
             'title'       => $request->title,
-            'introduction' => $request->introduction,
-            'remarks'      => $request->remarks,
         ]);
 
         return redirect()->route('admin.courses.index')->with('message', $course->title . 'を更新しました');
