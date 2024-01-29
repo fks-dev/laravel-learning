@@ -2,14 +2,14 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreInformationRequest;
-use App\Http\Requests\UpdateInformationRequest;
+use App\Http\Requests\InformationRequest;
 use Illuminate\Support\Facades\Auth;
 use App\Models\Information;
 use App\Models\Group;
 use Illuminate\View\View;
 use App\Models\Admin;
 use App\Models\User;
+use Illuminate\Http\RedirectResponse;
 
 class InformationController extends Controller
 {
@@ -48,7 +48,7 @@ class InformationController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreInformationRequest $request)
+    public function store(InformationRequest $request): RedirectResponse
     {
         $groups = $request->input('group', []);
         $admin_id = $this->getAdminId();
@@ -82,7 +82,7 @@ class InformationController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateInformationRequest $request, Information $information)
+    public function update(InformationRequest $request, Information $information)
     {
         $groups = $request->input('group', []);
         $information->groups()->sync($groups);

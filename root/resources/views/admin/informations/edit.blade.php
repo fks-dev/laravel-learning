@@ -1,15 +1,27 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     @include('head')
     <title>お知らせ編集</title>
 </head>
+
 <body>
     @include('admin.header')
     <div class="mt-3 container">
         <a href="{{ route('admin.informations.index') }}">&lt;&lt;戻る</a>
         <div class="border">
             <div class="p-2 bg-secondary text-white">お知らせ編集</div>
+
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
 
             <form action="{{ route('admin.informations.update', $information) }}" method="post">
                 @csrf
@@ -21,7 +33,7 @@
                             <span class="text-danger fw-bold">＊</span>
                         </label>
                         <div class="col-sm-10">
-                            <input class="form-control" type="text" name="title" id="title"  value="{{ $information->title }}" required>
+                            <input class="form-control" type="text" name="title" id="title" value="{{ $information->title }}" required>
                         </div>
                     </div>
 
@@ -51,4 +63,5 @@
     {{-- footer --}}
     @include('footer')
 </body>
+
 </html>

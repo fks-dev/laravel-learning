@@ -13,6 +13,16 @@
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規お知らせ登録</div>
 
+            @if($errors->any())
+            <div class="alert alert-danger">
+                <ul>
+                    @foreach($errors->all() as $error)
+                    <li>{{ $error }}</li>
+                    @endforeach
+                </ul>
+            </div>
+            @endif
+
             <form action="{{ route('admin.informations.store') }}" method="post">
                 @csrf
                 <div class="mx-5 px-5">
@@ -34,7 +44,9 @@
                     </div>
 
                     <div class="row m-3">
-                        <label class="col-sm-2 col-form-label fw-bold">対象グループ</label>
+                        <label class="col-sm-2 col-form-label fw-bold">対象グループ
+                            <span class="text-danger fw-bold">＊</span>
+                        </label>
                         <div class="col-sm-10">
                             <select class="form-select" name="group[]" id="group" multiple>
                                 @foreach($groups as $group)
