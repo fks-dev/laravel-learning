@@ -51,8 +51,6 @@ class AdminGroupsTest extends TestCase
     {
         return Course::factory()->create([
             'title' => 'Course',
-            'introduction' => 'CourseIntro',
-            'remarks' => 'CourseRemark',
         ]);
     }
 
@@ -378,8 +376,6 @@ class AdminGroupsTest extends TestCase
         ]);
         $updateCourse = Course::factory()->create([
             'title' => 'updateCourse',
-            'introduction' => 'updateCourseIntro',
-            'remarks' => 'updateCourseRemark',
         ]);
 
         // グループを編集

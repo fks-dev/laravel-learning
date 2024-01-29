@@ -37,8 +37,6 @@ class UsersContentsTest extends TestCase
         Course::factory()->create([
             'id' => 190001,
             'title' => 'test_course',
-            'introduction' => 'これはテスト用のコースです。',
-            'remarks' => 'This is test_course'
         ]);
     }
 
