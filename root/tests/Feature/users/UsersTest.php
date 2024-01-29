@@ -86,8 +86,6 @@ class UsersTest extends TestCase
             $course = Course::factory()->create([
                 'id' => 190000 + $i,
                 'title' => "testCourse_$i",
-                'introduction' => "testCourse_$i",
-                'remarks' => "testCourse_$i"
             ]);
             $CourseInstances[] = $course;
         }
