@@ -4,7 +4,7 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Http\Requests\UserPasswordRequest;
-use App\Http\Requests\StoreUseRequest;
+use App\Http\Requests\StoreUserRequest;
 use App\Http\Requests\UpdateUserRequest;
 use App\Models\User;
 use App\Models\Admin;
@@ -72,7 +72,7 @@ class UserManagementController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreUseRequest $request): RedirectResponse
+    public function store(StoreUserRequest $request): RedirectResponse
     {
         User::create([
             'username'     => $request->username,
