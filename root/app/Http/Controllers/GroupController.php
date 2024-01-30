@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreGroupRequest;
-use App\Http\Requests\UpdateGroupRequest;
+use App\Http\Requests\GroupRequest;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use App\Models\Group;
@@ -38,7 +37,7 @@ class GroupController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreGroupRequest $request): RedirectResponse
+    public function store(GroupRequest $request): RedirectResponse
     {
         Group::create([
             'group_name' => $request->group_name,
@@ -86,7 +85,7 @@ class GroupController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateGroupRequest $request, Group $group): RedirectResponse
+    public function update(GroupRequest $request, Group $group): RedirectResponse
     {
         $group->update([
             'group_name' => $request->group_name,
