@@ -32,7 +32,7 @@ class AdminInformationsTest extends TestCase
         $this->information = Information::factory()->create([
             'title' => 'testtitle',
             'text'  => 'testtext',
-            'admin_id' => '120001'
+            'admin_id' => '120001',
         ]);
     }
 
@@ -74,12 +74,12 @@ class AdminInformationsTest extends TestCase
         $information = [
             'title' => 'newtestTitle',
             'text' => 'newtestText',
-            'group' => ['180010']
+            'group' => ['180010'],
         ];
         $response = $this->post('/admin/informations', $information);
         $this->assertDatabaseHas('information', [
             'title' => $information['title'],
-            'text' => $information['text']
+            'text' => $information['text'],
         ]);
         $response->assertRedirect('/admin/informations/');
         $response->assertSessionHas('message', 'お知らせを登録しました');
@@ -119,13 +119,13 @@ class AdminInformationsTest extends TestCase
         $response = $this->patch("/admin/informations/{$this->information->id}", [
             'title' => $newTitle,
             'text' => $newText,
-            'group' => $newGroup
+            'group' => $newGroup,
         ]);
         $response->assertRedirect('/admin/informations/');
         $this->assertDatabaseHas('information', [
             'id' => $this->information->id,
             'title' => $newTitle,
-            'text' => $newText
+            'text' => $newText,
         ]);
         $this->assertNotNull(session('message'));
     }
