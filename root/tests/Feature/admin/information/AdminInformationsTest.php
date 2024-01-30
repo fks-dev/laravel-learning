@@ -74,7 +74,7 @@ class AdminInformationsTest extends TestCase
         $information = [
             'title' => 'newtestTitle',
             'text' => 'newtestText',
-            'group' => ['180010'],
+            'group' => ['180001'],
         ];
         $response = $this->post('/admin/informations', $information);
         $this->assertDatabaseHas('information', [
@@ -115,7 +115,7 @@ class AdminInformationsTest extends TestCase
     {
         $newTitle = 'NewTitle';
         $newText = 'NewText';
-        $newGroup = ['180010'];
+        $newGroup = ['180001'];
         $response = $this->patch("/admin/informations/{$this->information->id}", [
             'title' => $newTitle,
             'text' => $newText,
