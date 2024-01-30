@@ -7,6 +7,7 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\Information;
+use App\Models\Group;
 
 class AdminInformationsTest extends TestCase
 {
@@ -73,11 +74,12 @@ class AdminInformationsTest extends TestCase
         $information = [
             'title' => 'newtestTitle',
             'text' => 'newtestText',
+            'group' => ['180010']
         ];
         $response = $this->post('/admin/informations', $information);
         $this->assertDatabaseHas('information', [
             'title' => $information['title'],
-            'text' => $information['text'],
+            'text' => $information['text']
         ]);
         $response->assertRedirect('/admin/informations/');
         $response->assertSessionHas('message', 'お知らせを登録しました');
@@ -113,15 +115,17 @@ class AdminInformationsTest extends TestCase
     {
         $newTitle = 'NewTitle';
         $newText = 'NewText';
+        $newGroup = ['180010'];
         $response = $this->patch("/admin/informations/{$this->information->id}", [
             'title' => $newTitle,
             'text' => $newText,
+            'group' => $newGroup
         ]);
         $response->assertRedirect('/admin/informations/');
         $this->assertDatabaseHas('information', [
             'id' => $this->information->id,
             'title' => $newTitle,
-            'text' => $newText,
+            'text' => $newText
         ]);
         $this->assertNotNull(session('message'));
     }
