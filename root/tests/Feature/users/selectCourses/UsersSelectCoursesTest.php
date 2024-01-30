@@ -78,12 +78,12 @@ class UsersSelectCoursesTest extends TestCase
     public function provideTestDataForFirstAndSecondQuestions()
     {
         return [
-            [0, SelectCourseController::YES, SelectCourseController::QUESTION[1]['text']],
-            [0, SelectCourseController::NO, SelectCourseController::QUESTION[2]['text']],
-            [1, SelectCourseController::YES, SelectCourseController::QUESTION[3]['text']],
-            [1, SelectCourseController::NO, SelectCourseController::QUESTION[4]['text']],
-            [2, SelectCourseController::YES, SelectCourseController::QUESTION[5]['text']],
-            [2, SelectCourseController::NO, SelectCourseController::QUESTION[6]['text']],
+            [SelectCourseController::QUESTION[0]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[1]['text']],
+            [SelectCourseController::QUESTION[0]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[2]['text']],
+            [SelectCourseController::QUESTION[1]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[3]['text']],
+            [SelectCourseController::QUESTION[1]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[4]['text']],
+            [SelectCourseController::QUESTION[2]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[5]['text']],
+            [SelectCourseController::QUESTION[2]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[6]['text']],
         ];
     }
 
@@ -106,14 +106,14 @@ class UsersSelectCoursesTest extends TestCase
     public function provideTestDataForThirdQuestion()
     {
         return [
-            [3, SelectCourseController::YES, SelectCourseController::QUESTION[3]['yes_course_id']],
-            [3, SelectCourseController::NO, SelectCourseController::QUESTION[3]['no_course_id']],
-            [4, SelectCourseController::YES, SelectCourseController::QUESTION[4]['yes_course_id']],
-            [4, SelectCourseController::NO, SelectCourseController::QUESTION[4]['no_course_id']],
-            [5, SelectCourseController::YES, SelectCourseController::QUESTION[5]['yes_course_id']],
-            [5, SelectCourseController::NO, SelectCourseController::QUESTION[5]['no_course_id']],
-            [6, SelectCourseController::YES, SelectCourseController::QUESTION[6]['yes_course_id']],
-            [6, SelectCourseController::NO, SelectCourseController::QUESTION[6]['no_course_id']],
+            [SelectCourseController::QUESTION[3]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[3]['yes_course_id']],
+            [SelectCourseController::QUESTION[3]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[3]['no_course_id']],
+            [SelectCourseController::QUESTION[4]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[4]['yes_course_id']],
+            [SelectCourseController::QUESTION[4]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[4]['no_course_id']],
+            [SelectCourseController::QUESTION[5]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[5]['yes_course_id']],
+            [SelectCourseController::QUESTION[5]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[5]['no_course_id']],
+            [SelectCourseController::QUESTION[6]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[6]['yes_course_id']],
+            [SelectCourseController::QUESTION[6]['q_id'], SelectCourseController::NO, SelectCourseController::QUESTION[6]['no_course_id']],
         ];
     }
 
