@@ -9,9 +9,9 @@ use Illuminate\Support\Facades\Auth;
 
 class SelectCourseController extends Controller
 {
-    private const YES = 'yes';
-    private const NO = 'no';
-    private const QUESTION = [
+    public const YES = 'yes';
+    public const NO = 'no';
+    public const QUESTION = [
         # q_id 質問固有の番号
         # q_order 何問目の質問か
         # text 質問文
