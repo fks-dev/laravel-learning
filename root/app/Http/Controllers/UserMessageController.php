@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ActionEnum;
-use App\Http\Requests\StoreMessageRequest;
-use App\Http\Requests\UpdateMessageRequest;
+use App\Http\Requests\MessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -43,11 +42,11 @@ class UserMessageController extends Controller
     {
         $userId = $this->getUserId();
         $messages = AdminMessage::withTrashed()
-                                ->where('user_id', $userId)
-                                ->where('action', '=', ActionEnum::SEND)
-                                ->where('is_hidden', '=', false)
-                                ->orderByDesc('id')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('user_id', $userId)
+            ->where('action', '=', ActionEnum::SEND)
+            ->where('is_hidden', '=', false)
+            ->orderByDesc('id')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.index', compact('messages', 'admins'));
@@ -60,9 +59,9 @@ class UserMessageController extends Controller
     {
         $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
-                                ->where('action', '!=', ActionEnum::SEND)
-                                ->orderByDesc('updated_at')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('action', '!=', ActionEnum::SEND)
+            ->orderByDesc('updated_at')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.draftIndex', compact('messages', 'admins'));
@@ -75,9 +74,9 @@ class UserMessageController extends Controller
     {
         $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
-                                ->where('action', '=', ActionEnum::SEND)
-                                ->orderByDesc('updated_at')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('action', '=', ActionEnum::SEND)
+            ->orderByDesc('updated_at')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.sentIndex', compact('messages', 'admins'));
@@ -144,7 +143,7 @@ class UserMessageController extends Controller
     /**
      * Store a newly created resource in storage.f
      */
-    public function store(StoreMessageRequest $request): RedirectResponse
+    public function store(MessageRequest $request): RedirectResponse
     {
         $userId = $this->getUserId();
 
@@ -205,7 +204,7 @@ class UserMessageController extends Controller
     /**
      * 返信登録
      */
-    public function replyStore(StoreMessageRequest $request, $message): RedirectResponse
+    public function replyStore(MessageRequest $request, $message): RedirectResponse
     {
         $userId = $this->getUserId();
 
@@ -252,7 +251,7 @@ class UserMessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMessageRequest $request, UserMessage $message): RedirectResponse
+    public function update(MessageRequest $request, UserMessage $message): RedirectResponse
     {
         $userId = $this->getUserId();
 
