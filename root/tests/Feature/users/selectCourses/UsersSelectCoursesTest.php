@@ -7,67 +7,13 @@ use Illuminate\Foundation\Testing\RefreshDatabase;
 use Illuminate\Support\Facades\Hash;
 use App\Models\User;
 use App\Models\Course;
+use App\Http\Controllers\SelectCourseController;
 
 class UsersSelectCoursesTest extends TestCase
 {
     use RefreshDatabase;
 
     private $user;
-    private const YES = 'yes';
-    private const NO = 'no';
-    private const QUESTION = [
-        [
-            'q_id' => 0,
-            'q_order' => 1,
-            'text' => "最初の質問です。0ですか？",
-            self::YES => 1,
-            self::NO => 2
-        ], [
-            'q_id' => 1,
-            'q_order' => 2,
-            'text' => "2問目です。1ですか？",
-            self::YES => 3,
-            self::NO => 4
-        ], [
-            'q_id' => 2,
-            'q_order' => 2,
-            'text' => "2問目です。2ですか？",
-            self::YES => 5,
-            self::NO => 6
-        ], [
-            'q_id' => 3,
-            'q_order' => 3,
-            'text' => "3問目です。3ですか？",
-            self::YES => null,
-            self::NO => null,
-            'yes_course_id' => 190001,
-            'no_course_id' => 190002,
-        ], [
-            'q_id' => 4,
-            'q_order' => 3,
-            'text' => "3問目です。4ですか？",
-            self::YES => null,
-            self::NO => null,
-            'yes_course_id' => 190001,
-            'no_course_id' => 190002,
-        ], [
-            'q_id' => 5,
-            'q_order' => 3,
-            'text' => "3問目です。5ですか？",
-            self::YES => null,
-            self::NO => null,
-            'yes_course_id' => 190001,
-            'no_course_id' => 190002,
-        ], [
-            'q_id' => 6,
-            'q_order' => 3,
-            'text' => "3問目です。6ですか？",
-            self::YES => null,
-            self::NO => null,
-            'yes_course_id' => 190001,
-            'no_course_id' => 190002,
-        ],
-    ];
 
     /**
      * テスト用データを作成
@@ -108,7 +54,7 @@ class UsersSelectCoursesTest extends TestCase
         $response->assertOk();
 
         //最初の質問が表示されているか確認
-        $response->assertSee(self::QUESTION[0]['text']);
+        $response->assertSee(SelectCourseController::QUESTION[0]['text']);
     }
 
     /**
@@ -132,12 +78,12 @@ class UsersSelectCoursesTest extends TestCase
     public function provideTestDataForFirstAndSecondQuestions()
     {
         return [
-            [0, self::YES, self::QUESTION[1]['text']],
-            [0, self::NO, self::QUESTION[2]['text']],
-            [1, self::YES, self::QUESTION[3]['text']],
-            [1, self::NO, self::QUESTION[4]['text']],
-            [2, self::YES, self::QUESTION[5]['text']],
-            [2, self::NO, self::QUESTION[6]['text']],
+            [0, SelectCourseController::YES, SelectCourseController::QUESTION[1]['text']],
+            [0, SelectCourseController::NO, SelectCourseController::QUESTION[2]['text']],
+            [1, SelectCourseController::YES, SelectCourseController::QUESTION[3]['text']],
+            [1, SelectCourseController::NO, SelectCourseController::QUESTION[4]['text']],
+            [2, SelectCourseController::YES, SelectCourseController::QUESTION[5]['text']],
+            [2, SelectCourseController::NO, SelectCourseController::QUESTION[6]['text']],
         ];
     }
 
@@ -160,14 +106,14 @@ class UsersSelectCoursesTest extends TestCase
     public function provideTestDataForThirdQuestion()
     {
         return [
-            [3, self::YES, self::QUESTION[3]['yes_course_id']],
-            [3, self::NO, self::QUESTION[3]['no_course_id']],
-            [4, self::YES, self::QUESTION[4]['yes_course_id']],
-            [4, self::NO, self::QUESTION[4]['no_course_id']],
-            [5, self::YES, self::QUESTION[5]['yes_course_id']],
-            [5, self::NO, self::QUESTION[5]['no_course_id']],
-            [6, self::YES, self::QUESTION[6]['yes_course_id']],
-            [6, self::NO, self::QUESTION[6]['no_course_id']],
+            [3, SelectCourseController::YES, SelectCourseController::QUESTION[3]['yes_course_id']],
+            [3, SelectCourseController::NO, SelectCourseController::QUESTION[3]['no_course_id']],
+            [4, SelectCourseController::YES, SelectCourseController::QUESTION[4]['yes_course_id']],
+            [4, SelectCourseController::NO, SelectCourseController::QUESTION[4]['no_course_id']],
+            [5, SelectCourseController::YES, SelectCourseController::QUESTION[5]['yes_course_id']],
+            [5, SelectCourseController::NO, SelectCourseController::QUESTION[5]['no_course_id']],
+            [6, SelectCourseController::YES, SelectCourseController::QUESTION[6]['yes_course_id']],
+            [6, SelectCourseController::NO, SelectCourseController::QUESTION[6]['no_course_id']],
         ];
     }
 
@@ -192,5 +138,31 @@ class UsersSelectCoursesTest extends TestCase
 
         //コースのコンテンツへのリンクが正しく表示されているか確認
         $response->assertSee("/users/contents/$expectedCourseId");
+    }
+
+    /**
+     * データプロバイダ: 正常系エラーバリデーションチェックに対するテストデータ
+     */
+    public function provideTestDataForValidationNormalError()
+    {
+        return [
+            //q_idの値が数値でない数値ではない場合
+            ['a', SelectCourseController::YES],
+            //answerの値が文字列でない場合
+            [SelectCourseController::QUESTION[0]['q_id'], 123],
+        ];
+    }
+
+    /**
+     * @test
+     * おすすめ動画診断時の正常系エラーバリデーションチェック
+     * @dataProvider provideTestDataForValidationNormalError
+     */
+    public function test_users_select_courses_get_ok_validation_normal_error($q_id, $answer)
+    {
+        $response = $this->get("/users/select-courses?q_id=$q_id&answer=$answer");
+
+        //abort(400)が呼び出されることを確認
+        $response->assertStatus(400);
     }
 }
