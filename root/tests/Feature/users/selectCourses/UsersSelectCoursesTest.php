@@ -146,7 +146,7 @@ class UsersSelectCoursesTest extends TestCase
     public function provideTestDataForValidationNormalError()
     {
         return [
-            //q_idの値が数値でない数値ではない場合
+            //q_idの値が数値でない場合
             ['a', SelectCourseController::YES],
             //answerの値が文字列でない場合
             [SelectCourseController::QUESTION[0]['q_id'], 123],
