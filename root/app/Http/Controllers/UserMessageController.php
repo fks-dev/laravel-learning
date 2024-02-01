@@ -154,7 +154,7 @@ class UserMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($request->has(ActionEnum::SEND->value)) {
+        if ($request->input('sendType')) {
             $data['action'] = ActionEnum::SEND;
             UserMessage::create($data);
             return redirect()->route('users.messages.index')->with('message', 'メッセージを送信しました');
@@ -216,7 +216,7 @@ class UserMessageController extends Controller
             'reply_message_id' => $message,
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
+        if ($request->input('sendType')) {
             $data['action'] = ActionEnum::NO_REPLY;
             UserMessage::create($data);
             return redirect()->route('users.messages.index', compact('message'))->with('message', '下書きを保存しました');
@@ -262,7 +262,7 @@ class UserMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
+        if ($request->input('sendType')) {
             $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
             $message->update($data);
             return redirect()->route('users.messages.draft')->with('message', '下書きを保存しました');

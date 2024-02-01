@@ -23,6 +23,9 @@ class MessageRequest extends FormRequest
     {
         return [
             'title'   => 'required|max:255',
+            'user_id' => 'required',
+            'text' => 'required|max:255',
+            'sendType' => 'required',
         ];
     }
 
@@ -35,7 +38,10 @@ class MessageRequest extends FormRequest
     public function attributes()
     {
         return [
-            'title'              => 'メッセージタイトル'
+            'title'              => '件名',
+            'user_id' => 'ユーザーID',
+            'text' => '本文',
+            'sendType' => '送信タイプ',
         ];
     }
 }

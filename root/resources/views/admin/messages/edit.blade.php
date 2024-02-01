@@ -57,8 +57,8 @@
                 <div class="row m-3">
                     <label class="col-sm-2 col-form-label fw-bold"></label>
                     <div class="col-sm-10">
-                        <button class="form-contorl btn btn-primary" type="submit" name="{{ App\Enums\ActionEnum::SEND->value }}">送信</button>
-                        <button class="form-contorl btn btn-secondary" type="submit" name="{{ App\Enums\ActionEnum::DRAFT->value }}">下書き</button>
+                    <button class="form-contorl btn btn-primary mt-3" type="submit" name="sendType" value="{{ App\Enums\ActionEnum::SEND->value }}">送信</button>
+                            <button class="form-contorl btn btn-secondary mt-3" type="submit" name="sendType" value="{{ App\Enums\ActionEnum::DRAFT->value }}">下書き</button>
                     </div>
                 </div>
 

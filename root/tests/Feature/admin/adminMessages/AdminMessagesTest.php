@@ -105,7 +105,7 @@ class AdminMessagesTest extends TestCase
         }
     }
 
-     /**
+    /**
      * 受信メッセージを40件作成するメソッド
      */
     private function prepareTestUserMessages40()
@@ -434,6 +434,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => '下書き',
         ]);
     }
@@ -453,6 +454,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 1,
             ActionEnum::SEND->value => '送信',
         ]);
     }
@@ -471,7 +473,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->user->id,
             'title' => 'test_admin_message',
             'text' => 'This is test_admin_message.',
-            'action' => ActionEnum::NO_REPLY,
+            'action' => ActionEnum::DRAFT,
             'reply_message_id' => $this->userMessage->id,
         ]);
     }
@@ -649,6 +651,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => '下書き',
         ]);
     }
@@ -663,11 +666,12 @@ class AdminMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        return $this->post("/admin/messages", [
+        return $this->post('/admin/messages', [
             'admin_id' => $this->adminMessage->admin_id,
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 1,
             ActionEnum::SEND->value => '送信',
         ]);
     }
@@ -734,7 +738,7 @@ class AdminMessagesTest extends TestCase
         $response = $this->storeMessageSend();
 
         // 正しいリダイレクトが行われているか確認
-        $response->assertRedirect('/admin/messages');
+        $response->assertRedirect('/admin/messages/');
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'メッセージを送信しました');
@@ -914,6 +918,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => 0,
         ]);
     }
@@ -935,6 +940,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => 0,
         ]);
     }
@@ -956,6 +962,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 1,
             'action' => ActionEnum::SEND->value,
         ]);
     }
@@ -1059,7 +1066,7 @@ class AdminMessagesTest extends TestCase
         $response = $this->updateMessageSend();
 
         //正しいリダイレクトが行われているか確認
-        $response->assertRedirect('/admin/messages');
+        $response->assertRedirect('/admin/messages/');
 
         //正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('message', 'メッセージを送信しました');
@@ -1084,6 +1091,7 @@ class AdminMessagesTest extends TestCase
             'user_id' => $this->adminMessage->user_id,
             'title' => $this->adminMessage->title,
             'text' => $this->adminMessage->text,
+            'sendType' => 1,
             'action' => ActionEnum::SEND->value,
         ]);
 
@@ -1165,7 +1173,7 @@ class AdminMessagesTest extends TestCase
         $response->assertRedirect('/admin/login');
     }
 
-     /**
+    /**
      * @test
      * 送信済み一覧画面でメッセージ総数が50件未満の場合、メッセージが更新日時の降順に並んでいることを確認する
      */

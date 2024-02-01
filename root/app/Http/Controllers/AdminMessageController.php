@@ -152,22 +152,26 @@ class AdminMessageController extends Controller
     public function store(MessageRequest $request): RedirectResponse
     {
         $adminId = $this->getAdminId();
-
+        $sendType = (int) $request->input('sendType');
         $data = [
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
             'text'     => $request->text,
+            'action'   => $sendType
         ];
 
-        if ($request->has(ActionEnum::SEND->value)) {
-            $data['action'] = ActionEnum::SEND;
-            AdminMessage::create($data);
-            return redirect()->route('admin.messages.index')->with('message', 'メッセージを送信しました');
-        } else {
-            $data['action'] = ActionEnum::DRAFT;
-            AdminMessage::create($data);
-            return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
+        switch ($sendType) {
+            case ActionEnum::SEND->value:
+                AdminMessage::create($data);
+                return redirect()->route('admin.messages.index')->with('message', 'メッセージを送信しました');
+
+            case ActionEnum::DRAFT->value:
+                AdminMessage::create($data);
+                return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
+
+            default:
+                abort(400, '不正なリクエストです。');
         }
     }
 
@@ -239,27 +243,31 @@ class AdminMessageController extends Controller
     public function replyStore(MessageRequest $request, $message)
     {
         $adminId = $this->getAdminId();
-
+        $sendType = (int) $request->input('sendType');
         $data = [
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
             'text'     => $request->text,
             'reply_message_id' => $message,
+            'action' => $sendType
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
-            $data['action'] = ActionEnum::NO_REPLY;
-            AdminMessage::create($data);
-            return redirect()->route('admin.messages.index', compact('message'))->with('message', '下書きを保存しました');
-        } else {
-            $data['action'] = ActionEnum::SEND;
-            AdminMessage::create($data);
-            // 返信フラッグ
-            $userMessage = UserMessage::find($message);
-            $userMessage->is_replied = true;
-            $userMessage->save();
-            return redirect()->route('admin.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
+        switch ($sendType) {
+            case ActionEnum::SEND->value:
+                AdminMessage::create($data);
+                // 返信フラッグ
+                $userMessage = UserMessage::find($message);
+                $userMessage->is_replied = true;
+                $userMessage->save();
+                return redirect()->route('admin.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
+
+            case ActionEnum::DRAFT->value:
+                AdminMessage::create($data);
+                return redirect()->route('admin.messages.index', compact('message'))->with('message', '下書きを保存しました');
+
+            default:
+                abort(400, '不正なリクエストです。');
         }
     }
 
