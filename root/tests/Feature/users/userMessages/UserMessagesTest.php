@@ -433,6 +433,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => '下書き',
         ]);
     }
@@ -452,6 +453,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 1,
             ActionEnum::SEND->value => '送信',
         ]);
     }
@@ -470,7 +472,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->user->id,
             'title' => 'test_user_message',
             'text' => 'This is test_user_message.',
-            'action' => ActionEnum::NO_REPLY,
+            'action' => ActionEnum::DRAFT,
             'reply_message_id' => $this->adminMessage->id,
         ]);
     }
@@ -648,6 +650,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => '下書き',
         ]);
     }
@@ -667,6 +670,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 1,
             ActionEnum::SEND->value => '送信',
         ]);
     }
@@ -911,6 +915,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => 0,
         ]);
     }
@@ -932,6 +937,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 0,
             ActionEnum::DRAFT->value => 0,
         ]);
     }
@@ -953,6 +959,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 1,
             'action' => ActionEnum::SEND->value,
         ]);
     }
@@ -1081,6 +1088,7 @@ class UserMessagesTest extends TestCase
             'user_id' => $this->userMessage->user_id,
             'title' => $this->userMessage->title,
             'text' => $this->userMessage->text,
+            'sendType' => 1,
             'action' => ActionEnum::SEND->value,
         ]);
 
