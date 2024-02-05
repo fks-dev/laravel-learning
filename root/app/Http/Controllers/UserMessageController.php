@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ActionEnum;
-use App\Http\Requests\MessageRequest;
+use App\Http\Requests\UserMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -143,7 +143,7 @@ class UserMessageController extends Controller
     /**
      * Store a newly created resource in storage.f
      */
-    public function store(MessageRequest $request): RedirectResponse
+    public function store(UserMessageRequest $request): RedirectResponse
     {
         $userId = $this->getUserId();
         $sendType = (int) $request->input('sendType');
@@ -208,7 +208,7 @@ class UserMessageController extends Controller
     /**
      * 返信登録
      */
-    public function replyStore(MessageRequest $request, $message): RedirectResponse
+    public function replyStore(UserMessageRequest $request, $message): RedirectResponse
     {
         $userId = $this->getUserId();
         $sendType = (int) $request->input('sendType');
@@ -259,7 +259,7 @@ class UserMessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(MessageRequest $request, UserMessage $message): RedirectResponse
+    public function update(UserMessageRequest $request, UserMessage $message): RedirectResponse
     {
         $userId = $this->getUserId();
 

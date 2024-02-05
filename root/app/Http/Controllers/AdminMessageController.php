@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ActionEnum;
-use App\Http\Requests\MessageRequest;
+use App\Http\Requests\AdminMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -149,7 +149,7 @@ class AdminMessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(MessageRequest $request): RedirectResponse
+    public function store(AdminMessageRequest $request): RedirectResponse
     {
         $adminId = $this->getAdminId();
         $sendType = (int) $request->input('sendType');
@@ -240,7 +240,7 @@ class AdminMessageController extends Controller
     /**
      * 返信登録
      */
-    public function replyStore(MessageRequest $request, $message)
+    public function replyStore(AdminMessageRequest $request, $message)
     {
         $adminId = $this->getAdminId();
         $sendType = (int) $request->input('sendType');
@@ -291,7 +291,7 @@ class AdminMessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(MessageRequest $request, AdminMessage $message)
+    public function update(AdminMessageRequest $request, AdminMessage $message)
     {
         $adminId = $this->getAdminId();
 
