@@ -23,7 +23,6 @@ class UserMessageRequest extends FormRequest
     {
         return [
             'title'   => 'required|max:255',
-            'user_id' => 'required',
             'text' => 'required|max:255',
             'sendType' => 'required',
         ];
