@@ -220,15 +220,14 @@ class UserMessageController extends Controller
             'reply_message_id' => $message,
             'action'   => $sendType
         ];
-
         switch ($sendType) {
             case ActionEnum::SEND->value:
                 UserMessage::create($data);
-            // 返信フラッグ
-            $adminMessage = AdminMessage::find($message);
-            $adminMessage->is_replied = true;
-            $adminMessage->save();
-            return redirect()->route('users.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
+                // 返信フラッグ
+                    $adminMessage = AdminMessage::find($message);
+                    $adminMessage->is_replied = true;
+                    $adminMessage->save();
+                return redirect()->route('users.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
 
             case ActionEnum::DRAFT->value:
                 UserMessage::create($data);
