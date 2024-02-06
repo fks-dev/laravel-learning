@@ -24,6 +24,7 @@ class UserMessageRequest extends FormRequest
         return [
             'title'   => 'required|max:255',
             'text' => 'required|max:255',
+            'admin_id' => 'required',
             'sendType' => 'required',
         ];
     }
@@ -38,9 +39,10 @@ class UserMessageRequest extends FormRequest
     {
         return [
             'title'              => '件名',
-            'user_id' => 'ユーザーID',
+            'admin_id' => '管理者ID',
             'text' => '本文',
             'sendType' => '送信タイプ',
+
         ];
     }
 }
