@@ -2,10 +2,9 @@
 
 namespace App\Http\Requests;
 
-use App\Enums\ActionEnum;
 use Illuminate\Foundation\Http\FormRequest;
 
-class UpdateMessageRequest extends FormRequest
+class AdminMessageRequest extends FormRequest
 {
     /**
      * Determine if the user is authorized to make this request.
@@ -24,6 +23,25 @@ class UpdateMessageRequest extends FormRequest
     {
         return [
             'title'   => 'required|max:255',
+            'user_id' => 'required',
+            'text' => 'required|max:255',
+            'sendType' => 'required',
+        ];
+    }
+
+
+    /**
+     * Get custom attribute names for validation errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes()
+    {
+        return [
+            'title'              => '件名',
+            'user_id' => 'ユーザーID',
+            'text' => '本文',
+            'sendType' => '送信タイプ',
         ];
     }
 }

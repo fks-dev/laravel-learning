@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ActionEnum;
-use App\Http\Requests\StoreMessageRequest;
-use App\Http\Requests\UpdateMessageRequest;
+use App\Http\Requests\AdminMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -44,11 +43,11 @@ class AdminMessageController extends Controller
     {
         $adminId = $this->getAdminId();
         $messages = UserMessage::withTrashed()
-                                ->where('admin_id', $adminId)
-                                ->where('action', '=', ActionEnum::SEND)
-                                ->where('is_hidden', '=', false)
-                                ->orderByDesc('id')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('admin_id', $adminId)
+            ->where('action', '=', ActionEnum::SEND)
+            ->where('is_hidden', '=', false)
+            ->orderByDesc('id')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -62,9 +61,9 @@ class AdminMessageController extends Controller
     {
         $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
-                                ->where('action', '!=', ActionEnum::SEND)
-                                ->orderByDesc('updated_at')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('action', '!=', ActionEnum::SEND)
+            ->orderByDesc('updated_at')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -78,9 +77,9 @@ class AdminMessageController extends Controller
     {
         $adminId = $this->getAdminId();
         $messages = AdminMessage::where('admin_id', $adminId)
-                                ->where('action', '=', ActionEnum::SEND)
-                                ->orderByDesc('updated_at')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('action', '=', ActionEnum::SEND)
+            ->orderByDesc('updated_at')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -150,25 +149,29 @@ class AdminMessageController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreMessageRequest $request): RedirectResponse
+    public function store(AdminMessageRequest $request): RedirectResponse
     {
         $adminId = $this->getAdminId();
-
+        $sendType = (int) $request->input('sendType');
         $data = [
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
             'text'     => $request->text,
+            'action'   => $sendType
         ];
 
-        if ($request->has(ActionEnum::SEND->value)) {
-            $data['action'] = ActionEnum::SEND;
-            AdminMessage::create($data);
-            return redirect()->route('admin.messages.index')->with('message', 'メッセージを送信しました');
-        } else {
-            $data['action'] = ActionEnum::DRAFT;
-            AdminMessage::create($data);
-            return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
+        switch ($sendType) {
+            case ActionEnum::SEND->value:
+                AdminMessage::create($data);
+                return redirect()->route('admin.messages.index')->with('message', 'メッセージを送信しました');
+
+            case ActionEnum::DRAFT->value:
+                AdminMessage::create($data);
+                return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
+
+            default:
+                abort(400, '不正なリクエストです。');
         }
     }
 
@@ -237,30 +240,34 @@ class AdminMessageController extends Controller
     /**
      * 返信登録
      */
-    public function replyStore(StoreMessageRequest $request, $message)
+    public function replyStore(AdminMessageRequest $request, $message)
     {
         $adminId = $this->getAdminId();
-
+        $sendType = (int) $request->input('sendType');
         $data = [
             'admin_id' => $adminId,
             'user_id'  => $request->user_id,
             'title'    => $request->title,
             'text'     => $request->text,
             'reply_message_id' => $message,
+            'action' => $sendType
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
-            $data['action'] = ActionEnum::NO_REPLY;
-            AdminMessage::create($data);
-            return redirect()->route('admin.messages.index', compact('message'))->with('message', '下書きを保存しました');
-        } else {
-            $data['action'] = ActionEnum::SEND;
-            AdminMessage::create($data);
-            // 返信フラッグ
-            $userMessage = UserMessage::find($message);
-            $userMessage->is_replied = true;
-            $userMessage->save();
-            return redirect()->route('admin.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
+        switch ($sendType) {
+            case ActionEnum::SEND->value:
+                AdminMessage::create($data);
+                // 返信フラッグ
+                $userMessage = UserMessage::find($message);
+                $userMessage->is_replied = true;
+                $userMessage->save();
+                return redirect()->route('admin.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
+
+            case ActionEnum::DRAFT->value:
+                AdminMessage::create($data);
+                return redirect()->route('admin.messages.index', compact('message'))->with('message', '下書きを保存しました');
+
+            default:
+                abort(400, '不正なリクエストです。');
         }
     }
 
@@ -284,7 +291,7 @@ class AdminMessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMessageRequest $request, AdminMessage $message)
+    public function update(AdminMessageRequest $request, AdminMessage $message)
     {
         $adminId = $this->getAdminId();
 

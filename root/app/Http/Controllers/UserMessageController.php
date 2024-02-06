@@ -3,8 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Enums\ActionEnum;
-use App\Http\Requests\StoreMessageRequest;
-use App\Http\Requests\UpdateMessageRequest;
+use App\Http\Requests\UserMessageRequest;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Session;
 use Illuminate\Support\Facades\Auth;
@@ -43,11 +42,11 @@ class UserMessageController extends Controller
     {
         $userId = $this->getUserId();
         $messages = AdminMessage::withTrashed()
-                                ->where('user_id', $userId)
-                                ->where('action', '=', ActionEnum::SEND)
-                                ->where('is_hidden', '=', false)
-                                ->orderByDesc('id')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('user_id', $userId)
+            ->where('action', '=', ActionEnum::SEND)
+            ->where('is_hidden', '=', false)
+            ->orderByDesc('id')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.index', compact('messages', 'admins'));
@@ -60,9 +59,9 @@ class UserMessageController extends Controller
     {
         $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
-                                ->where('action', '!=', ActionEnum::SEND)
-                                ->orderByDesc('updated_at')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('action', '!=', ActionEnum::SEND)
+            ->orderByDesc('updated_at')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.draftIndex', compact('messages', 'admins'));
@@ -75,9 +74,9 @@ class UserMessageController extends Controller
     {
         $userId = $this->getUserId();
         $messages = UserMessage::where('user_id', $userId)
-                                ->where('action', '=', ActionEnum::SEND)
-                                ->orderByDesc('updated_at')
-                                ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->where('action', '=', ActionEnum::SEND)
+            ->orderByDesc('updated_at')
+            ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.sentIndex', compact('messages', 'admins'));
@@ -144,25 +143,29 @@ class UserMessageController extends Controller
     /**
      * Store a newly created resource in storage.f
      */
-    public function store(StoreMessageRequest $request): RedirectResponse
+    public function store(UserMessageRequest $request): RedirectResponse
     {
         $userId = $this->getUserId();
-
+        $sendType = (int) $request->input('sendType');
         $data = [
             'admin_id' => $request->admin_id,
             'user_id'  => $userId,
             'title'    => $request->title,
             'text'     => $request->text,
+            'action'   => $sendType
         ];
 
-        if ($request->has(ActionEnum::SEND->value)) {
-            $data['action'] = ActionEnum::SEND;
-            UserMessage::create($data);
-            return redirect()->route('users.messages.index')->with('message', 'メッセージを送信しました');
-        } else {
-            $data['action'] = ActionEnum::DRAFT;
-            UserMessage::create($data);
-            return redirect()->route('users.messages.draft')->with('message', '下書きを保存しました');
+        switch ($sendType) {
+            case ActionEnum::SEND->value:
+                UserMessage::create($data);
+                return redirect()->route('users.messages.index')->with('message', 'メッセージを送信しました');
+
+            case ActionEnum::DRAFT->value:
+                UserMessage::create($data);
+                return redirect()->route('users.messages.draft')->with('message', '下書きを保存しました');
+
+            default:
+                abort(400, '不正なリクエストです。');
         }
     }
 
@@ -205,30 +208,33 @@ class UserMessageController extends Controller
     /**
      * 返信登録
      */
-    public function replyStore(StoreMessageRequest $request, $message): RedirectResponse
+    public function replyStore(UserMessageRequest $request, $message): RedirectResponse
     {
         $userId = $this->getUserId();
-
+        $sendType = (int) $request->input('sendType');
         $data = [
             'admin_id' => $request->admin_id,
             'user_id'  => $userId,
             'title'    => $request->title,
             'text'     => $request->text,
             'reply_message_id' => $message,
+            'action'   => $sendType
         ];
+        switch ($sendType) {
+            case ActionEnum::SEND->value:
+                UserMessage::create($data);
+                // 返信フラッグ
+                    $adminMessage = AdminMessage::find($message);
+                    $adminMessage->is_replied = true;
+                    $adminMessage->save();
+                return redirect()->route('users.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
-            $data['action'] = ActionEnum::NO_REPLY;
-            UserMessage::create($data);
-            return redirect()->route('users.messages.index', compact('message'))->with('message', '下書きを保存しました');
-        } else {
-            $data['action'] = ActionEnum::SEND;
-            UserMessage::create($data);
-            // 返信フラッグ
-            $adminMessage = AdminMessage::find($message);
-            $adminMessage->is_replied = true;
-            $adminMessage->save();
-            return redirect()->route('users.messages.index', compact('message'))->with('message', 'メッセージを返信しました');
+            case ActionEnum::DRAFT->value:
+                UserMessage::create($data);
+                return redirect()->route('users.messages.index', compact('message'))->with('message', '下書きを保存しました');
+
+            default:
+                abort(400, '不正なリクエストです。');
         }
     }
 
@@ -252,7 +258,7 @@ class UserMessageController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateMessageRequest $request, UserMessage $message): RedirectResponse
+    public function update(UserMessageRequest $request, UserMessage $message): RedirectResponse
     {
         $userId = $this->getUserId();
 
