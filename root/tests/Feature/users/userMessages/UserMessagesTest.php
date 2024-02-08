@@ -10,6 +10,8 @@ use App\Models\User;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Enums\ActionEnum;
+use App\Http\Requests\UserMessageRequest;
+use Illuminate\Support\Facades\Validator;
 
 class UserMessagesTest extends TestCase
 {
@@ -1489,5 +1491,145 @@ class UserMessagesTest extends TestCase
 
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('success', $this->userMessage->title . 'を復元しました。');
+    }
+
+    /**
+     * ユーザメッセージリクエスト_正常系バリデーションチェック
+     */
+    public function data_users_messages_post_ok_request_validation_ok()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'admin_id' => 120001,
+                    'title'    => 'Validation Test',
+                    'text'     => 'basic',
+                    'sendType' => 1,
+                ]
+            ],
+            //最小
+            'Case: min' => [
+                'data' => [
+                    'admin_id' => 120001,
+                    'title'    => 'a',
+                    'text'     => 'b',
+                    'sendType' => 1,
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'admin_id' => 120011,
+                    'title'    => str_repeat('a', 255),
+                    'text'     => str_repeat('b', 255),
+                    'sendType' => 1,
+                ]
+            ],
+            //文字数最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'admin_id' => 120001,
+                    'title'    => str_repeat('あ', 255),
+                    'text'     => str_repeat('い', 255),
+                    'sendType' => 1,
+                ]
+            ],
+            //送信タイプ下書き
+            'Case: max_ja' => [
+                'data' => [
+                    'admin_id' => 120001,
+                    'title'    => 'Validation Test',
+                    'text'     => 'basic',
+                    'sendType' => 0,
+                ]
+            ],
+            //送信タイプ未返信
+            'Case: max_ja' => [
+                'data' => [
+                    'admin_id' => 120001,
+                    'title'    => 'Validation Test',
+                    'text'     => 'basic',
+                    'sendType' => 2,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * ユーザメッセージリクエスト_正常系エラーバリデーションチェック
+     */
+    public function data_users_messages_post_ok_request_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'title'    => ['件名は必ず指定してください。'],
+                    'text'     => ['本文は必ず指定してください。'],
+                    'admin_id' => ['管理者IDは必ず指定してください。'],
+                    'sendType' => ['送信タイプは必ず指定してください。'],
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'admin_id' => '',
+                    'title'    => '',
+                    'text'     => '',
+                    'sendType' => '',
+                ],
+                'expectedErrors' => [
+                    'title'    => ['件名は必ず指定してください。'],
+                    'text'     => ['本文は必ず指定してください。'],
+                    'admin_id' => ['管理者IDは必ず指定してください。'],
+                    'sendType' => ['送信タイプは必ず指定してください。'],
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'admin_id' => 120001,
+                    'title'    => str_repeat('a', 256),
+                    'text'     => str_repeat('b', 256),
+                    'sendType' => 1,
+                ],
+                'expectedErrors' => [
+                    'title' => ['件名は、255文字以下で指定してください。'],
+                    'text'  => ['本文は、255文字以下で指定してください。'],
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_users_messages_post_ok_request_validation_ok
+     * ユーザーが下書き、送信、未返信を選択してメッセージを送信するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_users_messages_post_ok_send_request_validation($data)
+    {
+        //リクエストで定義したルールを取得
+        $request = new UserMessageRequest();
+        $validator = Validator::make($data, $request->rules());
+
+        $this->assertTrue($validator->passes());
+    }
+
+    /**
+     * @test
+     * @dataProvider data_users_messages_post_ok_request_validation_normal_error
+     * ユーザーが下書き、送信、未返信を選択してメッセージを送信するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_users_messages_post_ok_send_request_validation_normal_error($data, $expectedErrors)
+    {
+        //リクエストで定義したルール、アトリビュートを取得
+        $request = new UserMessageRequest();
+        $validator = Validator::make($data, $request->rules(),$request->messages(),$request->attributes());
+
+        $this->assertTrue($validator->fails());
+        //期待するエラーと実際のエラーを比較
+        $this->assertSame($expectedErrors, $validator->errors()->getMessages());
     }
 }
