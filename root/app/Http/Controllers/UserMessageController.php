@@ -277,6 +277,7 @@ class UserMessageController extends Controller
             'user_id'  => $userId,
             'title'    => $request->title,
             'text'     => $request->text,
+            'action'   => $sendType,
         ];
 
         if ($sendType === ActionEnum::DRAFT->value) {
@@ -291,7 +292,6 @@ class UserMessageController extends Controller
             $adminMessage->is_replied = true;
             $adminMessage->save();
         }
-        $data['action'] = ActionEnum::SEND;
         $message->update($data);
         return redirect()->route('users.messages.index')->with('message', 'メッセージを送信しました');
     }
