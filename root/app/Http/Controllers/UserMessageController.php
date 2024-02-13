@@ -12,7 +12,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\RedirectResponse;
 
 class UserMessageController extends Controller
@@ -35,6 +37,11 @@ class UserMessageController extends Controller
         return Admin::all();
     }
 
+    private function getCurrentUser(): User
+    {
+        return Auth::user();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -48,7 +55,7 @@ class UserMessageController extends Controller
             ->orderByDesc('id')
             ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.index', compact('messages', 'admins', 'user'));
     }
@@ -64,7 +71,7 @@ class UserMessageController extends Controller
             ->orderByDesc('updated_at')
             ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.draftIndex', compact('messages', 'admins', 'user'));
     }
@@ -80,7 +87,7 @@ class UserMessageController extends Controller
             ->orderByDesc('updated_at')
             ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         return view('users.messages.sentIndex', compact('messages', 'admins', 'user'));
     }
@@ -98,7 +105,7 @@ class UserMessageController extends Controller
         });
         $adminMessages  = AdminMessage::where('is_hidden', true)->where('user_id', $userId)->get();
         $combinedMessages = $messages->concat($adminMessages)->sortByDesc('updated_at');
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         $action = ActionEnum::cases();
 
@@ -140,7 +147,7 @@ class UserMessageController extends Controller
             $backRoute = route('users.messages.index');
         }
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('users.messages.create', compact('admins', 'currentPage', 'backRoute', 'user'));
     }
@@ -188,7 +195,7 @@ class UserMessageController extends Controller
             $backRoute = route('users.messages.index');
         }
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('users.messages.show', compact('message', 'admins', 'source', 'currentPage', 'backRoute', 'user'));
     }
@@ -198,7 +205,7 @@ class UserMessageController extends Controller
         $source = true;
         $backRoute = route('users.messages.sent');
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
         return view('users.messages.show', compact('message', 'source', 'admins', 'currentPage', 'backRoute', 'user'));
     }
@@ -209,7 +216,7 @@ class UserMessageController extends Controller
     public function reply(AdminMessage $message): view
     {
         $admin = $message->admin;
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         return view('users.messages.reply', compact('message', 'admin', 'user'));
     }
 
@@ -252,7 +259,7 @@ class UserMessageController extends Controller
     public function edit(UserMessage $message): view
     {
         $admins = $this->getAdminAll();
-        $user = Auth::user();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
 
         if ($message->action === ActionEnum::NO_REPLY) {
