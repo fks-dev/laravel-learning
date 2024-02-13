@@ -493,7 +493,7 @@ class AdminGroupsTest extends TestCase
             'Case: missing_field' => [
                 'data' => [],
                 'expectedErrors' => [
-                    'group_name' => 'group nameは必ず指定してください。',
+                    'group_name' => 'グループ名は必ず指定してください。',
                 ]
             ],
             //必須項目が空文字
@@ -503,7 +503,7 @@ class AdminGroupsTest extends TestCase
                     'remarks' => $validRemarks,
                 ],
                 'expectedErrors' => [
-                    'group_name' => 'group nameは必ず指定してください。',
+                    'group_name' => 'グループ名は必ず指定してください。',
                 ]
             ],
             //string指定のフィールドの値が文字列ではない
@@ -513,8 +513,8 @@ class AdminGroupsTest extends TestCase
                     'remarks' => 2,
                 ],
                 'expectedErrors' => [
-                    'group_name' => 'group nameは文字列を指定してください。',
-                    'remarks' => 'remarksは文字列を指定してください。',
+                    'group_name' => 'グループ名は文字列を指定してください。',
+                    'remarks' => '備考は文字列を指定してください。',
                 ]
             ],
             //最大文字数超過
@@ -524,8 +524,8 @@ class AdminGroupsTest extends TestCase
                     'remarks' => str_repeat('b', 501),
                 ],
                 'expectedErrors' => [
-                    'group_name' => 'group nameは、255文字以下で指定してください。',
-                    'remarks' => 'remarksは、500文字以下で指定してください。'
+                    'group_name' => 'グループ名は、255文字以下で指定してください。',
+                    'remarks' => '備考は、500文字以下で指定してください。'
                 ]
             ],
         ];
