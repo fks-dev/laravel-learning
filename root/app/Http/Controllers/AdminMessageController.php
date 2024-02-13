@@ -305,7 +305,10 @@ class AdminMessageController extends Controller
         ];
 
         if ($sendType === ActionEnum::DRAFT->value) {
-            $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
+            if($message->action === ActionEnum::NO_REPLY)
+            {
+                $data['action'] = ActionEnum::NO_REPLY;
+            }
             $message->update($data);
             return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
         }
