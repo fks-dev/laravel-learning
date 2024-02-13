@@ -261,6 +261,7 @@ class UserMessageController extends Controller
     public function update(UserMessageRequest $request, UserMessage $message): RedirectResponse
     {
         $userId = $this->getUserId();
+        $sendType = (int) $request->input('sendType');
 
         $data = [
             'admin_id' => $request->admin_id,
@@ -269,7 +270,7 @@ class UserMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
+        if ($sendType === ActionEnum::DRAFT->value) {
             $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
             $message->update($data);
             return redirect()->route('users.messages.draft')->with('message', '下書きを保存しました');

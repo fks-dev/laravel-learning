@@ -294,6 +294,7 @@ class AdminMessageController extends Controller
     public function update(AdminMessageRequest $request, AdminMessage $message)
     {
         $adminId = $this->getAdminId();
+        $sendType = (int) $request->input('sendType');
 
         $data = [
             'admin_id' => $adminId,
@@ -302,7 +303,7 @@ class AdminMessageController extends Controller
             'text'     => $request->text,
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
+        if ($sendType === ActionEnum::DRAFT->value) {
             $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
             $message->update($data);
             return redirect()->route('admin.messages.draft')->with('message', '下書きを保存しました');
