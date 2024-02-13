@@ -6,6 +6,7 @@
 </head>
 
 <body>
+@include('users.header')
 <div class="mt-5 container">
     <div class="d-flex justify-content-between">
         <h2 class="col">送信済み一覧</h2>

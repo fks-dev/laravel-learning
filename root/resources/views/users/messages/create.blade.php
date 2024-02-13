@@ -7,6 +7,7 @@
 </head>
 
 <body>
+    @include('users.header')
     <div class="mt-3 container">
         <a href="{{ $backRoute }}?page={{ $currentPage }}">&lt;&lt;戻る</a>
         <div class="border">
