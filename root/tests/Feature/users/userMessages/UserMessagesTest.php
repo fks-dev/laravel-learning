@@ -1712,7 +1712,7 @@ class UserMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        //下書き画面へ移動し、データをpost
+        //下書き画面へ移動し、データをpatch
         $this->get("/users/messages/{$this->userMessage->id}");
         $response = $this->patch("/users/messages/{$this->userMessage->id}",$data);
 
