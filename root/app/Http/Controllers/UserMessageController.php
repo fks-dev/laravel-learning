@@ -287,10 +287,8 @@ class UserMessageController extends Controller
             'action'   => $sendType,
         ];
 
-        if ($sendType === ActionEnum::DRAFT->value)
-        {
-            if($message->action === ActionEnum::NO_REPLY)
-            {
+        if ($sendType === ActionEnum::DRAFT->value) {
+            if ($message->action === ActionEnum::NO_REPLY) {
                 $data['action'] = ActionEnum::NO_REPLY;
             }
             $message->update($data);

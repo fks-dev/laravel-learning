@@ -305,8 +305,7 @@ class AdminMessageController extends Controller
         ];
 
         if ($sendType === ActionEnum::DRAFT->value) {
-            if($message->action === ActionEnum::NO_REPLY)
-            {
+            if ($message->action === ActionEnum::NO_REPLY) {
                 $data['action'] = ActionEnum::NO_REPLY;
             }
             $message->update($data);
