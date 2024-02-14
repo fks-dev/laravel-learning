@@ -12,7 +12,9 @@ use Illuminate\Pagination\LengthAwarePaginator;
 use App\Models\AdminMessage;
 use App\Models\UserMessage;
 use App\Models\Admin;
+use App\Models\User;
 use Illuminate\Contracts\View\View;
+use Illuminate\Foundation\Auth\User as AuthUser;
 use Illuminate\Http\RedirectResponse;
 
 class UserMessageController extends Controller
@@ -35,6 +37,11 @@ class UserMessageController extends Controller
         return Admin::all();
     }
 
+    private function getCurrentUser(): User
+    {
+        return Auth::user();
+    }
+
     /**
      * Display a listing of the resource.
      */
@@ -48,8 +55,9 @@ class UserMessageController extends Controller
             ->orderByDesc('id')
             ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
-        return view('users.messages.index', compact('messages', 'admins'));
+        return view('users.messages.index', compact('messages', 'admins', 'user'));
     }
 
     /**
@@ -63,8 +71,9 @@ class UserMessageController extends Controller
             ->orderByDesc('updated_at')
             ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
-        return view('users.messages.draftIndex', compact('messages', 'admins'));
+        return view('users.messages.draftIndex', compact('messages', 'admins', 'user'));
     }
 
     /**
@@ -78,8 +87,9 @@ class UserMessageController extends Controller
             ->orderByDesc('updated_at')
             ->paginate(config('constants.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
-        return view('users.messages.sentIndex', compact('messages', 'admins'));
+        return view('users.messages.sentIndex', compact('messages', 'admins', 'user'));
     }
 
     /**
@@ -95,6 +105,7 @@ class UserMessageController extends Controller
         });
         $adminMessages  = AdminMessage::where('is_hidden', true)->where('user_id', $userId)->get();
         $combinedMessages = $messages->concat($adminMessages)->sortByDesc('updated_at');
+        $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
         $action = ActionEnum::cases();
 
@@ -109,7 +120,7 @@ class UserMessageController extends Controller
             ['path' => route('users.messages.dust')]
         );
 
-        return view('users.messages.dust', compact('paginator', 'action'));
+        return view('users.messages.dust', compact('paginator', 'action', 'user'));
     }
 
     // 復元
@@ -136,8 +147,9 @@ class UserMessageController extends Controller
             $backRoute = route('users.messages.index');
         }
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('users.messages.create', compact('admins', 'currentPage', 'backRoute'));
+        return view('users.messages.create', compact('admins', 'currentPage', 'backRoute', 'user'));
     }
 
     /**
@@ -183,8 +195,9 @@ class UserMessageController extends Controller
             $backRoute = route('users.messages.index');
         }
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('users.messages.show', compact('message', 'admins', 'source', 'currentPage', 'backRoute'));
+        return view('users.messages.show', compact('message', 'admins', 'source', 'currentPage', 'backRoute', 'user'));
     }
 
     public function sentShow(UserMessage $message, Request $request): view
@@ -192,8 +205,9 @@ class UserMessageController extends Controller
         $source = true;
         $backRoute = route('users.messages.sent');
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
-        return view('users.messages.show', compact('message', 'source', 'admins', 'currentPage', 'backRoute'));
+        return view('users.messages.show', compact('message', 'source', 'admins', 'currentPage', 'backRoute', 'user'));
     }
 
     /**
@@ -202,7 +216,8 @@ class UserMessageController extends Controller
     public function reply(AdminMessage $message): view
     {
         $admin = $message->admin;
-        return view('users.messages.reply', compact('message', 'admin'));
+        $user = $this->getCurrentUser();
+        return view('users.messages.reply', compact('message', 'admin', 'user'));
     }
 
     /**
@@ -244,6 +259,7 @@ class UserMessageController extends Controller
     public function edit(UserMessage $message): view
     {
         $admins = $this->getAdminAll();
+        $user = $this->getCurrentUser();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
 
         if ($message->action === ActionEnum::NO_REPLY) {
@@ -252,7 +268,7 @@ class UserMessageController extends Controller
             $reply = null;
         }
 
-        return view('users.messages.edit', compact('message', 'admins', 'reply', 'currentPage'));
+        return view('users.messages.edit', compact('message', 'admins', 'reply', 'currentPage', 'user'));
     }
 
     /**
@@ -261,16 +277,22 @@ class UserMessageController extends Controller
     public function update(UserMessageRequest $request, UserMessage $message): RedirectResponse
     {
         $userId = $this->getUserId();
+        $sendType = (int) $request->input('sendType');
 
         $data = [
             'admin_id' => $request->admin_id,
             'user_id'  => $userId,
             'title'    => $request->title,
             'text'     => $request->text,
+            'action'   => $sendType,
         ];
 
-        if ($request->has(ActionEnum::DRAFT->value)) {
-            $data['action'] = $message->action === ActionEnum::NO_REPLY ? ActionEnum::NO_REPLY : ActionEnum::DRAFT;
+        if ($sendType === ActionEnum::DRAFT->value)
+        {
+            if($message->action === ActionEnum::NO_REPLY)
+            {
+                $data['action'] = ActionEnum::NO_REPLY;
+            }
             $message->update($data);
             return redirect()->route('users.messages.draft')->with('message', '下書きを保存しました');
         }
@@ -281,7 +303,6 @@ class UserMessageController extends Controller
             $adminMessage->is_replied = true;
             $adminMessage->save();
         }
-        $data['action'] = ActionEnum::SEND;
         $message->update($data);
         return redirect()->route('users.messages.index')->with('message', 'メッセージを送信しました');
     }
