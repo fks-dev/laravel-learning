@@ -5,6 +5,7 @@
     <title>返信</title>
 </head>
 <body>
+@include('users.header')
 <div class="mt-3 container">
     <a href="{{ route('users.messages.show', $message) }}">&lt;&lt;戻る</a>
     <div class="border">
