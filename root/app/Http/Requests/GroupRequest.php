@@ -26,4 +26,17 @@ class GroupRequest extends FormRequest
             'remarks'          => 'nullable|string|max:500'
         ];
     }
+
+    /**
+     * Get custom attribute names for validation errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes()
+    {
+        return [
+            'group_name' => 'グループ名',
+            'remarks' => '備考',
+        ];
+    }
 }

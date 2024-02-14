@@ -15,6 +15,7 @@ class AdminGroupsTest extends TestCase
     use RefreshDatabase;
 
     private $admin;
+    private $group;
 
     public function setUp(): void
     {
@@ -100,8 +101,7 @@ class AdminGroupsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
 
         // 3つのグループを作成し、作成日時を設定する
-        for ($i = 1; $i <= 3; $i++)
-        {
+        for ($i = 1; $i <= 3; $i++) {
             Group::factory()->create([
                 'group_name' => 'Group' . $i,
                 'remarks' => 'GroupRemark',
@@ -123,8 +123,7 @@ class AdminGroupsTest extends TestCase
         $this->actingAs($this->admin, 'admin');
 
         // 3つのグループを作成し、更新日時を設定する
-        for ($i = 1; $i <= 3; $i++)
-        {
+        for ($i = 1; $i <= 3; $i++) {
             Group::factory()->create([
                 'group_name' => 'Group' . $i,
                 'remarks' => 'GroupRemark',
@@ -152,7 +151,7 @@ class AdminGroupsTest extends TestCase
         $response
             ->assertStatus(200)
             ->assertViewIs('admin.groups.show')
-            ->assertSee(['Group', 'GroupRemark', 'testUser' ,'Course']);
+            ->assertSee(['Group', 'GroupRemark', 'testUser', 'Course']);
     }
 
     /**
@@ -317,7 +316,7 @@ class AdminGroupsTest extends TestCase
 
         $group = $this->createTestGroups();
 
-       // showでない場合、デフォルトの戻るボタンへのリンクを生成する
+        // showでない場合、デフォルトの戻るボタンへのリンクを生成する
         $response = $this->get("/admin/groups/{$group->id}/edit");
         $response->assertViewHas('backBtn', 'http://localhost/admin/groups');
     }
@@ -432,5 +431,170 @@ class AdminGroupsTest extends TestCase
 
         // 削除メッセージがセッションに存在することを確認
         $this->assertNotNull(session('danger'));
+    }
+
+    /**
+     * グループ新規作成　& 更新_正常系バリデーションチェック
+     */
+    public function data_admin_groups_create_post_and_patch_ok_validation()
+    {
+        return [
+            //基本型
+            'Case: basic' => [
+                'data' => [
+                    'group_name' => 'Validation Test',
+                    'remarks' => 'basic',
+                ]
+            ],
+            //最小
+            'Case: min' => [
+                'data' => [
+                    'group_name' => 'a',
+                    'remarks' => '',
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'group_name' => str_repeat('a', 255),
+                    'remarks' => str_repeat('b', 500),
+                ]
+            ],
+            //最大（日本語）
+            'Case: max_ja' => [
+                'data' => [
+                    'group_name' => str_repeat('あ', 255),
+                    'remarks' => str_repeat('い', 500),
+                ]
+            ],
+            //必須のみ
+            'Case: required_only' => [
+                'data' => [
+                    'group_name' => 'Validation Test',
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * グループ新規作成　& 更新_正常系エラーバリデーションチェック
+     */
+    public function data_admin_groups_create_post_and_patch_ok_validation_normal_error()
+    {
+        $validRemarks = 'Valid value';
+
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'group_name' => 'グループ名は必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'group_name' => '',
+                    'remarks' => $validRemarks,
+                ],
+                'expectedErrors' => [
+                    'group_name' => 'グループ名は必ず指定してください。',
+                ]
+            ],
+            //string指定のフィールドの値が文字列ではない
+            'Case: not_string' => [
+                'data' => [
+                    'group_name' => 1,
+                    'remarks' => 2,
+                ],
+                'expectedErrors' => [
+                    'group_name' => 'グループ名は文字列を指定してください。',
+                    'remarks' => '備考は文字列を指定してください。',
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'group_name' => str_repeat('a', 256),
+                    'remarks' => str_repeat('b', 501),
+                ],
+                'expectedErrors' => [
+                    'group_name' => 'グループ名は、255文字以下で指定してください。',
+                    'remarks' => '備考は、500文字以下で指定してください。'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_groups_create_post_and_patch_ok_validation
+     * グループ新規作成時のバリデーションチェック（正常系）
+     */
+    public function test_admin_groups_create_post_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/groups/create");
+        $response = $this->post("/admin/groups", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/groups");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_groups_create_post_and_patch_ok_validation_normal_error
+     * グループ新規作成時のバリデーションチェック（正常系エラー）
+     */
+    public function test_admin_groups_create_post_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/groups/create");
+        $response = $this->post("/admin/groups", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/groups/create/");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_groups_create_post_and_patch_ok_validation
+     * コンテンツ更新時のバリデーションチェック（正常系）
+     */
+    public function test_admin_groups_edit_patch_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $group = $this->createTestGroups();
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/groups/{$group->id}/edit");
+        $response = $this->patch("/admin/groups/{$group->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/groups");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_groups_create_post_and_patch_ok_validation_normal_error
+     * コンテンツ更新時のバリデーションチェック（正常系エラー）
+     */
+    public function test_admin_groups_edit_patch_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        $group = $this->createTestGroups();
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/groups/{$group->id}/edit");
+        $response = $this->patch("/admin/groups/{$group->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/groups/{$group->id}/edit");
+        $response->assertSessionHasErrors($expectedErrors);
     }
 }
