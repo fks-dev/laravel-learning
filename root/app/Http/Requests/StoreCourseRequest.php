@@ -22,7 +22,19 @@ class StoreCourseRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'title'  => 'required',
+            'title' => 'required|string|max:255',
+        ];
+    }
+
+    /**
+     * Get custom attribute names for validation errors.
+     *
+     * @return array<string, string>
+     */
+    public function attributes()
+    {
+        return [
+            'title' => 'コース名'
         ];
     }
 }
