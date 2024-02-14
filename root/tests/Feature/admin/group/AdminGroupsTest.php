@@ -26,11 +26,6 @@ class AdminGroupsTest extends TestCase
             'password' => Hash::make('testAdmin'),
             'mail_address' => 'testAdmin@test.com',
         ]);
-
-        $this->group = Group::factory()->create([
-            'id' => 180001,
-            'group_name' => 'test_group',
-        ]);
     }
 
     // ユーザーのテストデータを作成
@@ -574,9 +569,11 @@ class AdminGroupsTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
+        $group = $this->createTestGroups();
+
         //編集画面に移動し、データをpatch
-        $this->get("/admin/groups/{$this->group->id}/edit");
-        $response = $this->patch("/admin/groups/{$this->group->id}", $data);
+        $this->get("/admin/groups/{$group->id}/edit");
+        $response = $this->patch("/admin/groups/{$group->id}", $data);
 
         $response->assertStatus(302)->assertRedirect("/admin/groups");
         $response->assertSessionHasNoErrors();
@@ -591,11 +588,13 @@ class AdminGroupsTest extends TestCase
     {
         $this->actingAs($this->admin, 'admin');
 
-        //編集画面に移動し、データをpatch
-        $this->get("/admin/groups/{$this->group->id}/edit");
-        $response = $this->patch("/admin/groups/{$this->group->id}", $data);
+        $group = $this->createTestGroups();
 
-        $response->assertStatus(302)->assertRedirect("/admin/groups/{$this->group->id}/edit");
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/groups/{$group->id}/edit");
+        $response = $this->patch("/admin/groups/{$group->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/groups/{$group->id}/edit");
         $response->assertSessionHasErrors($expectedErrors);
     }
 }
