@@ -176,4 +176,158 @@ class AdminCoursesTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.courses.edit');
     }
+
+
+
+    /**
+     * コンテンツ新規作成 & 更新_正常系バリデーションチェック
+     */
+    public function data_admin_courses_create_post_and_patch_ok_validation_ok()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'title' => 'Validation Test'
+                ]
+            ],
+            //最小
+            'Case: min' => [
+                'data' => [
+                    'title' => 'a'
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'title' => str_repeat('a', 255)
+                ]
+            ],
+            //最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'title' => str_repeat('あ', 255)
+                ]
+            ],
+            //必須のみ
+            'Case: required_only' => [
+                'data' => [
+                    'title' => 'Validation Test'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * コース新規作成 & 更新_正常系エラーバリデーションチェック
+     */
+    public function data_admin_courses_create_post_and_patch_ok_validation_normal_error()
+    {
+        $validRemarks = 'Valid value';
+
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'title' => 'コース名は必ず指定してください。'
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'title' => ''
+                ],
+                'expectedErrors' => [
+                    'title' => 'コース名は必ず指定してください。'
+                ]
+            ],
+            //string指定のフィールドの値が文字列ではない
+            'Case: not_string' => [
+                'data' => [
+                    'title' => 1
+                ],
+                'expectedErrors' => [
+                    'title' => 'コース名は文字列を指定してください。'
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'title' => str_repeat('a', 256)
+                ],
+                'expectedErrors' => [
+                    'title' => 'コース名は、255文字以下で指定してください。'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_courses_create_post_and_patch_ok_validation_ok
+     * コース新規作成時のバリデーションチェック(正常系)
+     */
+    public function test_admin_courses_create_post_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/courses/create");
+        $response = $this->post("/admin/courses", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/courses");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_courses_create_post_and_patch_ok_validation_normal_error
+     * コース新規作成時のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_courses_create_post_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/courses/create");
+        $response = $this->post("/admin/courses", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/courses/create");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_courses_create_post_and_patch_ok_validation_ok
+     * コンテンツ更新時のバリデーションチェック(正常系)
+     */
+    public function test_admin_courses_edit_patch_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/courses/{$this->course->id}/edit");
+        $response = $this->patch("/admin/courses/{$this->course->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/courses");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_courses_create_post_and_patch_ok_validation_normal_error
+     * コンテンツ更新時のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_courses_edit_patch_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/courses/{$this->course->id}/edit");
+        $response = $this->patch("/admin/courses/{$this->course->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/courses/{$this->course->id}/edit");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
 }
