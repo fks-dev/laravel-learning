@@ -1507,7 +1507,6 @@ class AdminMessagesTest extends TestCase
                     'title' => 'Validation Test',
                     'text' => 'basic',
                     'sendType' => 1,
-                    ActionEnum::SEND->value => '送信',
                 ]
             ],
             // //最小
@@ -1516,7 +1515,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => 'a',
                     'text'     => 'b',
                     'sendType' => 1,
-                    ActionEnum::SEND->value => '送信',
                 ]
             ],
             //最大
@@ -1525,7 +1523,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => str_repeat('a', 255),
                     'text'     => str_repeat('b', 255),
                     'sendType' => 1,
-                    ActionEnum::SEND->value => '送信',
                 ]
             ],
             //文字数最大(日本語)
@@ -1534,7 +1531,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => str_repeat('あ', 255),
                     'text'     => str_repeat('い', 255),
                     'sendType' => 1,
-                    ActionEnum::SEND->value => '送信',
                 ]
             ],
         ];
@@ -1564,7 +1560,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => '',
                     'text'     => '',
                     'sendType' => '',
-                    ActionEnum::SEND->value => '送信',
                 ],
                 'expectedErrors' => [
                     'title'    => '件名は必ず指定してください。',
@@ -1580,7 +1575,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => str_repeat('a', 256),
                     'text'     => str_repeat('b', 256),
                     'sendType' => 1,
-                    ActionEnum::SEND->value => '送信',
                 ],
                 'expectedErrors' => [
                     'title' => '件名は、255文字以下で指定してください。',
@@ -1594,7 +1588,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => 'Validation Test',
                     'text'     => 'basic',
                     'sendType' => 'aaaaaa',
-                    ActionEnum::SEND->value => '送信',
                 ],
                 'expectedErrors' => [
                     'user_id' => 'ユーザーIDは整数で指定してください。',
@@ -1736,7 +1729,6 @@ class AdminMessagesTest extends TestCase
                     'title' => 'Validation Test',
                     'text' => 'basic',
                     'sendType' => 0,
-                    ActionEnum::DRAFT->value => '下書き',
                 ]
             ],
             // //最小
@@ -1745,7 +1737,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => 'a',
                     'text'     => 'b',
                     'sendType' => 0,
-                    ActionEnum::DRAFT->value => '下書き',
                 ]
             ],
             //最大
@@ -1754,7 +1745,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => str_repeat('a', 255),
                     'text'     => str_repeat('b', 255),
                     'sendType' => 0,
-                    ActionEnum::DRAFT->value => '下書き',
                 ]
             ],
             //文字数最大(日本語)
@@ -1763,7 +1753,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => str_repeat('あ', 255),
                     'text'     => str_repeat('い', 255),
                     'sendType' => 0,
-                    ActionEnum::DRAFT->value => '下書き',
                 ]
             ],
         ];
@@ -1793,7 +1782,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => '',
                     'text'     => '',
                     'sendType' => '',
-                    ActionEnum::SEND->value => '下書き',
                 ],
                 'expectedErrors' => [
                     'title'    => '件名は必ず指定してください。',
@@ -1809,7 +1797,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => str_repeat('a', 256),
                     'text'     => str_repeat('b', 256),
                     'sendType' => 0,
-                    ActionEnum::SEND->value => '下書き',
                 ],
                 'expectedErrors' => [
                     'title' => '件名は、255文字以下で指定してください。',
@@ -1823,7 +1810,6 @@ class AdminMessagesTest extends TestCase
                     'title'    => 'Validation Test',
                     'text'     => 'basic',
                     'sendType' => 'aaaaaa',
-                    ActionEnum::SEND->value => '下書き',
                 ],
                 'expectedErrors' => [
                     'user_id' => 'ユーザーIDは整数で指定してください。',
