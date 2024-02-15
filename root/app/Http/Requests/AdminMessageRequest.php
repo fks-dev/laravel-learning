@@ -23,9 +23,9 @@ class AdminMessageRequest extends FormRequest
     {
         return [
             'title'   => 'required|max:255',
-            'user_id' => 'required',
+            'user_id' => 'required|integer',
             'text' => 'required|max:255',
-            'sendType' => 'required',
+            'sendType' => 'required|integer',
         ];
     }
 
