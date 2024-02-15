@@ -223,7 +223,6 @@ class AdminCoursesTest extends TestCase
      */
     public function data_admin_courses_create_post_and_patch_ok_validation_normal_error()
     {
-        $validRemarks = 'Valid value';
 
         return [
             //必須チェック
