@@ -2,8 +2,7 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\StoreCourseRequest;
-use App\Http\Requests\UpdateCourseRequest;
+use App\Http\Requests\CourseRequest;
 use Illuminate\Http\Request;
 use App\Models\Course;
 use Illuminate\Support\Facades\DB;
@@ -50,7 +49,7 @@ class CourseController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreCourseRequest $request): RedirectResponse
+    public function store(CourseRequest $request): RedirectResponse
     {
 
         Course::create([
@@ -72,7 +71,7 @@ class CourseController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateCourseRequest $request, Course $course): RedirectResponse
+    public function update(CourseRequest $request, Course $course): RedirectResponse
     {
         $course->update([
             'title'       => $request->title,
