@@ -180,7 +180,7 @@ class AdminCoursesTest extends TestCase
 
 
     /**
-     * コンテンツ新規作成 & 更新_正常系バリデーションチェック
+     * コース新規作成 & 更新_正常系バリデーションチェック
      */
     public function data_admin_courses_create_post_and_patch_ok_validation_ok()
     {
@@ -299,7 +299,7 @@ class AdminCoursesTest extends TestCase
     /**
      * @test
      * @dataProvider data_admin_courses_create_post_and_patch_ok_validation_ok
-     * コンテンツ更新時のバリデーションチェック(正常系)
+     * コース更新時のバリデーションチェック(正常系)
      */
     public function test_admin_courses_edit_patch_ok_validation_ok($data)
     {
@@ -316,7 +316,7 @@ class AdminCoursesTest extends TestCase
     /**
      * @test
      * @dataProvider data_admin_courses_create_post_and_patch_ok_validation_normal_error
-     * コンテンツ更新時のバリデーションチェック(正常系エラー)
+     * コース更新時のバリデーションチェック(正常系エラー)
      */
     public function test_admin_courses_edit_patch_ok_validation_normal_error($data, $expectedErrors)
     {
