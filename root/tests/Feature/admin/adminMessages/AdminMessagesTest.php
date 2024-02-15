@@ -1494,7 +1494,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHas('success', $this->adminMessage->title . 'を復元しました。');
     }
 
-        /**
+    /**
      *
      *  管理者メッセージの新規作成＆更新後の送信リクエスト_正常系バリデーションチェック
      */
@@ -1642,7 +1642,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-        /**
+    /**
      * @test
      * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_ok
      * 管理者が下書きメッセージを送信するリクエストのバリデーションチェック(正常系)
@@ -1715,7 +1715,7 @@ class AdminMessagesTest extends TestCase
             'action' => ActionEnum::SEND,
         ]);
 
-        //下書き画面へ移動し、データをpost
+        //下書き画面へ移動し、データをpatch
         $this->get("/admin/messages/{$this->adminMessage->id}");
         $response = $this->patch("/admin/messages/{$this->adminMessage->id}",$data);
 
@@ -1769,7 +1769,7 @@ class AdminMessagesTest extends TestCase
         ];
     }
 
-       /**
+    /**
      *
      * 管理者メッセージ下書きの新規作成＆更新_正常系エラーバリデーションチェック
      */
@@ -1850,7 +1850,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-        /**
+    /**
      * @test
      * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation
      * 管理者が返信メッセージを下書き保存するリクエストのバリデーションチェック(正常系)
@@ -1871,7 +1871,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-        /**
+    /**
      * @test
      * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation
      * 管理者が下書きメッセージを更新するリクエストのバリデーションチェック(正常系)
@@ -1894,7 +1894,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHasNoErrors();
     }
 
-            /**
+    /**
      * @test
      * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation_normal_error
      * 管理者が新規メッセージを下書き保存するリクエストのバリデーションチェック(正常系エラー)
@@ -1909,7 +1909,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHasErrors($expectedErrors);
     }
 
-        /**
+    /**
      * @test
      * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation_normal_error
      * 管理者が返信メッセージを下書き保存するリクエストのバリデーションチェック(正常系エラー)
@@ -1929,7 +1929,7 @@ class AdminMessagesTest extends TestCase
         $response->assertSessionHasErrors($expectedErrors);
     }
 
-        /**
+    /**
      * @test
      * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation_normal_error
      * 管理者が下書きメッセージを更新するリクエストのバリデーションチェック(正常系エラー)
