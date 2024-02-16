@@ -176,6 +176,8 @@ class AdminLoginTest extends TestCase
      */
     public function data_admin_login_post_ok_validation_normal_error()
     {
+        $incorrectValue = 'a';
+
         return [
             //必須チェック
             'Case: missing_field' => [
@@ -187,12 +189,45 @@ class AdminLoginTest extends TestCase
             ],
             //必須項目が空文字
             'Case: null_required_field' => [
-                'data' => [],
+                'data' => [
+                    'username' => '',
+                    'password' => '',
+                ],
                 'expectedErrors' => [
                     'username' => 'ユーザー名は必ず指定してください。',
                     'password' => 'パスワードは必ず指定してください。',
                 ]
             ],
+            //ユーザー名は正しいが、パスワードが誤っている
+            'Case: correct_username_and_incorrect_password' => [
+                'data' => [
+                    'username' => 'testAdmin',
+                    'password' => $incorrectValue,
+                ],
+                'expectedErrors' => [
+                    'failed' => 'ログイン情報が登録されていません。'
+                ]
+            ],
+            //パスワードは正しいが、ユーザー名が誤っている
+            'Case: correct_password_and_incorrect_username' => [
+                'data' => [
+                    'username' => $incorrectValue,
+                    'password' => 'testAdmin',
+                ],
+                'expectedErrors' => [
+                    'failed' => 'ログイン情報が登録されていません。'
+                ]
+            ],
+            //ユーザー名とパスワード両方誤っている
+            'Case: incorrect_username_and_password' => [
+                'data' => [
+                    'username' => $incorrectValue,
+                    'password' => $incorrectValue,
+                ],
+                'expectedErrors' => [
+                    'failed' => 'ログイン情報が登録されていません。'
+                ]
+            ]
         ];
     }
 
@@ -204,7 +239,7 @@ class AdminLoginTest extends TestCase
     public function test_admin_login_post_ok_validation_ok($data)
     {
         $this->get("/admin/login");
-        $response = $this->post("/admin/login",$data);
+        $response = $this->post("/admin/login", $data);
 
         $response->assertStatus(302)->assertRedirect("/admin/admin-management");
         $response->assertSessionHasNoErrors();
@@ -215,10 +250,10 @@ class AdminLoginTest extends TestCase
      * @dataProvider data_admin_login_post_ok_validation_normal_error
      * ログイン時のバリデーションチェック（正常系エラー）
      */
-    public function test_admin_post_ok_validation_normal_error($data,$expectedErrors)
+    public function test_admin_post_ok_validation_normal_error($data, $expectedErrors)
     {
         $this->get("/admin/login");
-        $response = $this->post("/admin/login",$data);
+        $response = $this->post("/admin/login", $data);
 
         $response->assertStatus(302)->assertRedirect("/admin/login");
         $response->assertSessionHasErrors($expectedErrors);
