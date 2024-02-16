@@ -153,4 +153,74 @@ class AdminLoginTest extends TestCase
         $tokenAfterLogout = session('_token');
         $this->assertNotSame($tokenBeforeLogout, $tokenAfterLogout);
     }
+
+
+    /**
+     * ログイン時の正常系バリデーションチェック
+     */
+    public function data_admin_login_post_ok_validation_ok()
+    {
+        return [
+            //必須チェック
+            'Case: basic' => [
+                'data' => [
+                    'username' => 'testAdmin',
+                    'password' => 'testAdmin',
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * ログイン時の正常系エラーバリデーションチェック
+     */
+    public function data_admin_login_post_ok_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'username' => 'ユーザー名は必ず指定してください。',
+                    'password' => 'パスワードは必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'username' => 'ユーザー名は必ず指定してください。',
+                    'password' => 'パスワードは必ず指定してください。',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_login_post_ok_validation_ok
+     * ログイン時のバリデーションチェック(正常系)
+     */
+    public function test_admin_login_post_ok_validation_ok($data)
+    {
+        $this->get("/admin/login");
+        $response = $this->post("/admin/login",$data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/admin-management");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_login_post_ok_validation_normal_error
+     * ログイン時のバリデーションチェック（正常系エラー）
+     */
+    public function test_admin_post_ok_validation_normal_error($data,$expectedErrors)
+    {
+        $this->get("/admin/login");
+        $response = $this->post("/admin/login",$data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/login");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
 }
