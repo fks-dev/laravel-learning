@@ -35,4 +35,12 @@ class AdminLoginRequest extends FormRequest
             throw ValidationException::withMessages(['failed' => __('auth.failed')]);
         }
     }
+
+    public function attributes()
+    {
+        return [
+            'username' => 'ユーザー名',
+            'password' => 'パスワード',
+        ];
+    }
 }
