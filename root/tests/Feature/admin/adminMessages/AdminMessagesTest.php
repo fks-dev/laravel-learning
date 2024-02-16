@@ -1493,4 +1493,447 @@ class AdminMessagesTest extends TestCase
         // 正しいセッションメッセージが表示されているか確認
         $response->assertSessionHas('success', $this->adminMessage->title . 'を復元しました。');
     }
+
+    /**
+     *
+     *  管理者メッセージの新規作成＆更新後の送信リクエスト_正常系バリデーションチェック
+     */
+    public function data_admin_messages_post_and_patch_ok_request_validation_ok()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'title' => 'Validation Test',
+                    'text' => 'basic',
+                    'sendType' => 1,
+                ]
+            ],
+            // //最小
+            'Case: min' => [
+                'data' => [
+                    'title'    => 'a',
+                    'text'     => 'b',
+                    'sendType' => 1,
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'title'    => str_repeat('a', 255),
+                    'text'     => str_repeat('b', 255),
+                    'sendType' => 1,
+                ]
+            ],
+            //文字数最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'title'    => str_repeat('あ', 255),
+                    'text'     => str_repeat('い', 255),
+                    'sendType' => 1,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     *
+     * 管理者メッセージ新規作成＆更新後の送信リクエスト_正常系エラーバリデーションチェック
+     */
+    public function data_admin_messages_post_and_patch_ok_request_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'title'    => '件名は必ず指定してください。',
+                    'text'     => '本文は必ず指定してください。',
+                    'user_id' => 'ユーザーIDは必ず指定してください。',
+                    'sendType' => '送信タイプは必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'user_id' => '',
+                    'title'    => '',
+                    'text'     => '',
+                    'sendType' => '',
+                ],
+                'expectedErrors' => [
+                    'title'    => '件名は必ず指定してください。',
+                    'text'     => '本文は必ず指定してください。',
+                    'user_id' => 'ユーザーIDは必ず指定してください。',
+                    'sendType' => '送信タイプは必ず指定してください。',
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'user_id' => 110001,
+                    'title'    => str_repeat('a', 256),
+                    'text'     => str_repeat('b', 256),
+                    'sendType' => 1,
+                ],
+                'expectedErrors' => [
+                    'title' => '件名は、255文字以下で指定してください。',
+                    'text'  => '本文は、255文字以下で指定してください。',
+                ]
+            ],
+            //integer指定のフィールドの値が数値ではない
+            'Case: not_integer' => [
+                'data' => [
+                    'user_id' => 'dddddd',
+                    'title'    => 'Validation Test',
+                    'text'     => 'basic',
+                    'sendType' => 'aaaaaa',
+                ],
+                'expectedErrors' => [
+                    'user_id' => 'ユーザーIDは整数で指定してください。',
+                    'sendType' => '送信タイプは整数で指定してください。'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_ok
+     * 管理者が新規メッセージを送信するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_admin_messages_post_ok_send_validation($data)
+    {
+        $data['user_id'] = $this->user->id;
+
+        //新規メッセージ画面へ移動し、データをpost
+        $this->get('/admin/messages');
+        $response = $this->post('/admin/messages',$data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/messages");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_ok
+     * 管理者が返信メッセージを送信するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_admin_messages_post_ok_send_reply_validation($data)
+    {
+        //テストデータの準備
+        $data['user_id'] = $this->user->id;
+        $this->adminMessage->update([
+            'reply_message_id' => $this->userMessage->id,
+        ]);
+
+        //返信画面へ移動し、データをpost
+        $this->get("/admin/messages/{$this->adminMessage->reply_message_id}");
+        $response = $this->post("/admin/messages/{$this->adminMessage->reply_message_id}",$data);
+
+        $response->assertRedirect("/admin/messages?message={$this->adminMessage->reply_message_id}");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_ok
+     * 管理者が下書きメッセージを送信するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_admin_messages_patch_ok_send_update_validation($data)
+    {
+        $data['user_id'] = $this->user->id;
+
+        //テストデータの準備
+        $this->adminMessage->update([
+            'title' => 'test_user_message_update',
+            'text' => 'This is test_user_message_update.',
+            'action' => ActionEnum::SEND,
+        ]);
+
+        //下書き画面へ移動し、データをpatch
+        $this->get("/admin/messages/{$this->adminMessage->id}");
+        $response = $this->patch("/admin/messages/{$this->adminMessage->id}",$data);
+
+        $response->assertRedirect("/admin/messages");
+        $response->assertSessionHasNoErrors();
+    }
+
+     /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_normal_error
+     * 管理者が新規メッセージを送信するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_messages_post_ok_send_validation_normal_error($data, $expectedErrors)
+    {
+        //新規メッセージ画面へ移動し、データをpost
+        $this->get('/admin/messages');
+        $response = $this->post('/admin/messages',$data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/messages");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+     /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_normal_error
+     * 管理者が返信メッセージを送信するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_messages_post_ok_send__reply_validation_normal_error($data, $expectedErrors)
+    {
+        //テストデータの準備
+        $this->userMessage->update([
+            'reply_message_id' => $this->adminMessage->id,
+        ]);
+
+        //返信画面へ移動し、データをpost
+        $this->get("/admin/messages/{$this->userMessage->reply_message_id}");
+        $response = $this->post("/admin/messages/{$this->userMessage->reply_message_id}",$data);
+
+        $response->assertRedirect("/admin/messages/{$this->userMessage->reply_message_id}");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+     /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_request_validation_normal_error
+     * 管理者が下書きメッセージを送信するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_messages_patch_ok_send_update_validation_normal_error($data,$expectedErrors)
+    {
+        //テストデータの準備
+        $this->adminMessage->update([
+            'title' => 'test_admin_message_update',
+            'text' => 'This is test_admin_message_update.',
+            'action' => ActionEnum::SEND,
+        ]);
+
+        //下書き画面へ移動し、データをpatch
+        $this->get("/admin/messages/{$this->adminMessage->id}");
+        $response = $this->patch("/admin/messages/{$this->adminMessage->id}",$data);
+
+        $response->assertRedirect("/admin/messages/{$this->adminMessage->id}");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     *
+     * 管理者メッセージ下書きの新規作成＆更新_正常系バリデーションチェック
+     */
+    public function data_admin_messages_post_and_patch_ok_draft_validation()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'title' => 'Validation Test',
+                    'text' => 'basic',
+                    'sendType' => 0,
+                ]
+            ],
+            // //最小
+            'Case: min' => [
+                'data' => [
+                    'title'    => 'a',
+                    'text'     => 'b',
+                    'sendType' => 0,
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'title'    => str_repeat('a', 255),
+                    'text'     => str_repeat('b', 255),
+                    'sendType' => 0,
+                ]
+            ],
+            //文字数最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'title'    => str_repeat('あ', 255),
+                    'text'     => str_repeat('い', 255),
+                    'sendType' => 0,
+                ]
+            ],
+        ];
+    }
+
+    /**
+     *
+     * 管理者メッセージ下書きの新規作成＆更新_正常系エラーバリデーションチェック
+     */
+    public function data_admin_messages_post_and_patch_ok_draft_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'title'    => '件名は必ず指定してください。',
+                    'text'     => '本文は必ず指定してください。',
+                    'user_id' => 'ユーザーIDは必ず指定してください。',
+                    'sendType' => '送信タイプは必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'user_id' => '',
+                    'title'    => '',
+                    'text'     => '',
+                    'sendType' => '',
+                ],
+                'expectedErrors' => [
+                    'title'    => '件名は必ず指定してください。',
+                    'text'     => '本文は必ず指定してください。',
+                    'user_id' => 'ユーザーIDは必ず指定してください。',
+                    'sendType' => '送信タイプは必ず指定してください。',
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'user_id' => 110001,
+                    'title'    => str_repeat('a', 256),
+                    'text'     => str_repeat('b', 256),
+                    'sendType' => 0,
+                ],
+                'expectedErrors' => [
+                    'title' => '件名は、255文字以下で指定してください。',
+                    'text'  => '本文は、255文字以下で指定してください。',
+                ]
+            ],
+            //integer指定のフィールドの値が数値ではない
+            'Case: not_integer' => [
+                'data' => [
+                    'user_id' => 'dddddd',
+                    'title'    => 'Validation Test',
+                    'text'     => 'basic',
+                    'sendType' => 'aaaaaa',
+                ],
+                'expectedErrors' => [
+                    'user_id' => 'ユーザーIDは整数で指定してください。',
+                    'sendType' => '送信タイプは整数で指定してください。'
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation
+     * 管理者が新規メッセージを下書き保存するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_admin_messages_post_ok_send_draft_validation($data)
+    {
+        $data['user_id'] = $this->user->id;
+
+        //新規作成画面へ移動し、データをpost
+        $this->get('/admin/messages');
+        $response = $this->post('/admin/messages',$data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/messages/draft");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation
+     * 管理者が返信メッセージを下書き保存するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_admin_messages_post_ok_reply_draft_validation($data)
+    {
+        //テストデータの準備
+        $data['user_id'] = $this->user->id;
+        $this->adminMessage->update([
+            'reply_message_id' => $this->userMessage->id,
+        ]);
+
+        //下書きの返信画面へ移動し、データをpost
+        $this->get("/admin/messages/{$this->adminMessage->reply_message_id}");
+        $response = $this->post("/admin/messages/{$this->adminMessage->reply_message_id}",$data);
+
+        $response->assertRedirect("/admin/messages?message={$this->adminMessage->reply_message_id}");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation
+     * 管理者が下書きメッセージを更新するリクエストのバリデーションチェック(正常系)
+     */
+    public function test_admin_messages_patch_ok_update_draft_validation($data)
+    {
+        $data['user_id'] = $this->user->id;
+        //テストデータの準備
+        $this->userMessage->update([
+            'title' => 'test_admin_message_update',
+            'text' => 'This is test_admin_message_update.',
+            'action' => ActionEnum::DRAFT,
+        ]);
+
+        //下書き画面へ移動し、データをpatch
+        $this->get("/admin/messages/{$this->adminMessage->id}");
+        $response = $this->patch("/admin/messages/{$this->adminMessage->id}",$data);
+
+        $response->assertRedirect("/admin/messages/draft");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation_normal_error
+     * 管理者が新規メッセージを下書き保存するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_messages_post_ok_send_draft_request_normal_error($data,$expectedErrors)
+    {
+        //新規作成画面へ移動し、データをpost
+        $this->get('/admin/messages');
+        $response = $this->post('/admin/messages',$data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/messages");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation_normal_error
+     * 管理者が返信メッセージを下書き保存するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_messages_post_ok_reply_draft_request_normal_error($data,$expectedErrors)
+    {
+        //テストデータの準備
+        $this->adminMessage->update([
+            'reply_message_id' => $this->userMessage->id,
+        ]);
+
+        //返信画面へ移動し、データをpost
+        $this->get("/admin/messages/{$this->adminMessage->reply_message_id}");
+        $response = $this->post("/admin/messages/{$this->adminMessage->reply_message_id}",$data);
+
+        $response->assertRedirect("/admin/messages/{$this->adminMessage->reply_message_id}");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_messages_post_and_patch_ok_draft_validation_normal_error
+     * 管理者が下書きメッセージを更新するリクエストのバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_messages_patch_ok_update_draft_validation_normal_error($data,$expectedErrors)
+    {
+        //テストデータの準備
+        $this->adminMessage->update([
+            'title' => 'test_admin_message_update',
+            'text' => 'This is test_admin_message_update.',
+            'action' => ActionEnum::DRAFT,
+        ]);
+
+        //下書き画面へ移動し、データをpatch
+        $this->get("/admin/messages/{$this->adminMessage->id}");
+        $response = $this->patch("/admin/messages/{$this->adminMessage->id}",$data);
+
+        $response->assertRedirect("/admin/messages/{$this->adminMessage->id}");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
 }
