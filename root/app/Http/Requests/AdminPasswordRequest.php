@@ -23,8 +23,15 @@ class AdminPasswordRequest extends FormRequest
     public function rules(): array
     {
         return [
-            'password' => 'required|current_password',
-            'new_password' => 'required|confirmed',
+            'password' => 'required|current_password|max:255',
+            'new_password' => 'required|confirmed|max:255',
+        ];
+    }
+
+    public function attributes()
+    {
+        return [
+            'password' => 'パスワード',
         ];
     }
 }
