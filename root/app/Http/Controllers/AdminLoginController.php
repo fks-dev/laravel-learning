@@ -37,11 +37,11 @@ class AdminLoginController extends Controller
     /**
      * ログアウト
      */
-    public function logout(Request $request): RedirectResponse
+    public function logout(): RedirectResponse
     {
         Auth::guard('admin')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        session()->invalidate();
+        session()->regenerateToken();
         return to_route('admin.login.index');
     }
 }
