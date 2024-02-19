@@ -300,4 +300,248 @@ class AdminManagementTest extends TestCase
             ]);
         }
     }
+
+        /**
+     *
+     *  管理者アカウントの更新後の送信リクエスト_正常系バリデーションチェック
+     */
+    public function data_admin_management_patch_ok_update_validation_ok()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'username' => 'createdAdmin',
+                    'mail_address' => 'createdAdmin@admin.com',
+                ]
+            ],
+            // //最小
+            'Case: min' => [
+                'data' => [
+                    'username'    => 'a',
+                    'mail_address'     => 'b',
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'username'    => str_repeat('a', 255),
+                    'mail_address'     => str_repeat('b', 255),
+                ]
+            ],
+            //文字数最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'username'    => str_repeat('あ', 255),
+                    'mail_address'     => 'createdAdmin@admin.com',
+                ]
+            ],
+        ];
+    }
+
+     /**
+     *
+     * 管理者アカウントの更新後の送信リクエスト_正常系エラーバリデーションチェック
+     */
+    public function data_admin_management_patch_ok_update_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'username'    => '管理者IDは必ず指定してください。',
+                    'mail_address'     => 'メールアドレスは必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'username'    => '',
+                    'mail_address'     => '',
+                ],
+                'expectedErrors' => [
+                    'username'    => '管理者IDは必ず指定してください。',
+                    'mail_address'     => 'メールアドレスは必ず指定してください。',
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'username'    => str_repeat('a', 256),
+                    'mail_address'     => str_repeat('b', 256),
+                ],
+                'expectedErrors' => [
+                    'username' => '管理者IDは、255文字以下で指定してください。',
+                    'mail_address'  => 'メールアドレスは、255文字以下で指定してください。',
+                ]
+            ],
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_management_patch_ok_update_validation_ok
+     */
+    public function test_admin_management_patch_ok_validation($data)
+    {
+
+        $this->loginAdmin();
+        //アドミン情報変更画面にアクセス
+        $response = $this->get('/admin/admin-management/edit');
+
+        //アドミン情報変更処理実行後、アドミン管理画面にリダイレクトする
+        $updateAdmin = Admin::where('username', 'testAdmin1')->first();
+        $response = $this->patch("/admin/admin-management/{$updateAdmin->id}",$data);
+        $response->assertRedirect('/admin/admin-management');
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_management_patch_ok_update_validation_normal_error
+     */
+    public function test_admin_admin_management_patch_ok_validation_normal_error($data,$expectedErrors)
+    {
+        $this->loginAdmin();
+        //アドミン情報変更画面にアクセス
+        $response = $this->get('/admin/admin-management/edit');
+
+        //アドミン情報変更処理実行後、アドミン情報変更画面にリダイレクトする
+        $updateAdmin = Admin::where('username', 'testAdmin1')->first();
+        $response = $this->patch("/admin/admin-management/{$updateAdmin->id}",$data);
+        $response->assertStatus(302)->assertRedirect('/admin/admin-management/edit');
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     *
+     *  管理者アカウント新規作成の送信リクエスト_正常系バリデーションチェック
+     */
+    public function data_admin_management_post_ok_store_validation_ok()
+    {
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'username' => 'createdAdmin',
+                    'password' => 'testAdmin',
+                    'mail_address' => 'createdAdmin@admin.com',
+                ]
+            ],
+            // //最小
+            'Case: min' => [
+                'data' => [
+                    'username'    => 'a',
+                    'password' => 'c',
+                    'mail_address'     => 'b',
+                ]
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'username'    => str_repeat('a', 255),
+                    'password' => str_repeat('c', 255),
+                    'mail_address'     => str_repeat('b', 255),
+                ]
+            ],
+            //文字数最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'username'    => str_repeat('あ', 255),
+                    'password' => 'testAdmin',
+                    'mail_address'     => 'createdAdmin@admin.com',
+                ]
+            ],
+        ];
+    }
+
+     /**
+     *
+     * 管理者アカウント新規作成の送信リクエスト_正常系エラーバリデーションチェック
+     */
+    public function data_admin_management_post_ok_store_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'username'    => '管理者IDは必ず指定してください。',
+                    'password' => 'パスワードは必ず指定してください。',
+                    'mail_address'     => 'メールアドレスは必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'username'    => '',
+                    'mail_address'     => '',
+                ],
+                'expectedErrors' => [
+                    'username'    => '管理者IDは必ず指定してください。',
+                    'password' => 'パスワードは必ず指定してください。',
+                    'mail_address'     => 'メールアドレスは必ず指定してください。',
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'username'    => str_repeat('a', 256),
+                    'password' => str_repeat('c', 256),
+                    'mail_address'     => str_repeat('b', 256).'@a',
+                ],
+                'expectedErrors' => [
+                    'username' => '管理者IDは、255文字以下で指定してください。',
+                    'password' => 'パスワードは、255文字以下で指定してください。',
+                    'mail_address'  => 'メールアドレスは、255文字以下で指定してください。',
+                ]
+            ],
+            //管理者IDが重複
+            'Case: not_unique_username' => [
+                'data' => [
+                    'username'    => 'testAdmin1',
+                    'password' => 'testAdmin',
+                    'mail_address' => 'createdAdmin@admin.com',
+                ],
+                'expectedErrors' => [
+                    'username'    => '管理者IDの値は既に存在しています。',
+                ]
+            ],
+
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_management_post_ok_store_validation_ok
+     */
+    public function test_admin_management_post_ok_store_validation_ok($data)
+    {
+
+        $this->loginSystemAdmin();
+        //管理者新規追加画面にアクセス
+        $response = $this->get('/admin/admin-management/create');
+
+        //管理者の新規追加時、アドミン管理画面にリダイレクトする
+        $response = $this->post('/admin/admin-management',$data);
+        $response->assertRedirect('/admin/admin-management');
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_management_post_ok_store_validation_normal_error
+     */
+    public function test_admin_management_post_ok_store_validation_normal_error($data,$expectedErrors)
+    {
+        $this->loginSystemAdmin();
+        //管理者新規追加画面にアクセス
+        $response = $this->get('/admin/admin-management/create');
+
+        //管理者の新規追加時、管理者新規追加画面にリダイレクトする
+        $response = $this->post('/admin/admin-management',$data);
+        $response->assertStatus(302)->assertRedirect('/admin/admin-management/create');
+        $response->assertSessionHasErrors($expectedErrors);
+    }
 }
