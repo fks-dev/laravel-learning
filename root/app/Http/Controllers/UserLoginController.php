@@ -38,11 +38,11 @@ class UserLoginController extends Controller
     /**
      * ログアウト
      */
-    public function logout(Request $request): RedirectResponse
+    public function logout(): RedirectResponse
     {
         Auth::guard('web')->logout();
-        $request->session()->invalidate();
-        $request->session()->regenerateToken();
+        session()->invalidate();
+        session()->regenerateToken();
         return to_route('users.login.index');
     }
 }
