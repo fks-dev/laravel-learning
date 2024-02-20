@@ -12,7 +12,10 @@
 <body>
     @include('admin.header')
     <div class="mt-3 container">
-        <a href="{{ $backBtn }}">&lt;&lt;戻る</a>
+        <div class="mb-2">
+            <a class="btn btn-secondary" href="{{ $backBtn }}">戻る</a>
+        </div>
+
         <div class="border">
             <div class="p-2 bg-secondary text-white">グループ編集</div>
 
