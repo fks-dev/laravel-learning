@@ -10,7 +10,7 @@
         <main>
             <h1>Laravel-learing</h1>
             <p class="lead">Laravel-learningのデフォルトページです。</p>
-            <a href="{{ route('admin.login.index') }}" class="btn btn-primary">ログイン画面へ</a>
+            <a href="{{ route('users.login.index') }}" class="btn btn-primary">ログイン画面へ</a>
         </main>
     </div>
     {{-- footer --}}
