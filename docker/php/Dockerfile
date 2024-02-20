@@ -1,8 +1,8 @@
-FROM php:8.2.3-apache
+FROM php:8.2.16-apache
 # php.iniをコピー
 COPY ./php.ini /usr/local/etc/php/
 # composer インストール (マルチステージビルド)
-COPY --from=composer:2.5.4 /usr/bin/composer /usr/bin/composer
+COPY --from=composer:2.7.1 /usr/bin/composer /usr/bin/composer
 # コマンド実行
 # apt(Advanced Package Tool) パッケージインストール
 RUN apt-get update && apt-get install -y --no-install-recommends \
