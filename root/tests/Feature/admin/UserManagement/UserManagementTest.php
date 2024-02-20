@@ -8,7 +8,7 @@ use Illuminate\Support\Facades\Hash;
 use App\Models\Admin;
 use App\Models\User;
 
-class AdminUserManagementTest extends TestCase
+class UserManagementTest extends TestCase
 {
     use RefreshDatabase;
     private $user;
