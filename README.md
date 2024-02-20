@@ -2,7 +2,7 @@
 
 ## 資料
 
-<https://github.com/epkotsoftware/dev-docs/tree/main/repositories/dev-laravel-learning>
+<https://github.com/epkotsoftware/dev-laravel-learning-docs/blob/main/README.md>
 
 ## 環境構築手順
 
