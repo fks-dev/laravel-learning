@@ -11,7 +11,9 @@
 <body>
     @include('admin.header')
     <div class="mt-3 container">
-        <a href="{{ route('admin.groups.index') }}">&lt;&lt;戻る</a>
+        <div class="mb-2">
+            <a class="btn btn-secondary" href="{{ route('admin.groups.index') }}">戻る</a>
+        </div>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規グループ登録</div>
 

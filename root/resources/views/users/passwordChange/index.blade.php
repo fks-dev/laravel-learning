@@ -10,7 +10,9 @@
 <body>
     @include('users.header')
     <main>
-        <a class="ms-3 mt-3" href="{{ route('users.index') }}">&lt;&lt;戻る</a>
+        <div class="mb-2">
+            <a class="btn btn-secondary" href="{{ route('users.index') }}">戻る</a>
+        </div>
         <div class="container-md mt-4">
             <div class="card">
                 <div class="card-header">
