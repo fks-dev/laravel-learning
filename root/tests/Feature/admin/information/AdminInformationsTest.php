@@ -155,4 +155,184 @@ class AdminInformationsTest extends TestCase
         $response->assertOk();
         $response->assertViewIs('admin.informations.edit');
     }
+
+    /**
+     * お知らせ新規作成 & 更新_正常系バリデーションチェック
+     */
+    public function data_admin_informations_create_post_and_patch_ok_validation_ok()
+    {
+        $groupId = ['180001'];
+        return [
+            //基本系
+            'Case: basic' => [
+                'data' => [
+                    'title' => 'Validation Test',
+                    'text' => 'basic',
+                    'group' => $groupId,
+                ],
+            ],
+            //最小
+            'Case: min' => [
+                'data' => [
+                    'title' => 'a',
+                    'text' => 'b',
+                    'group' => $groupId,
+                ],
+            ],
+            //最大
+            'Case: max' => [
+                'data' => [
+                    'title' => str_repeat('a', 255),
+                    'text' => str_repeat('b', 500),
+                    'group' => $groupId,
+                ],
+            ],
+            //最大(日本語)
+            'Case: max_ja' => [
+                'data' => [
+                    'title' => str_repeat('あ', 255),
+                    'text' => str_repeat('い', 500),
+                    'group' => $groupId,
+                ],
+            ],
+            //必須のみ
+            'Case: required_only' => [
+                'data' => [
+                    'title' => 'Validation Test',
+                    'group' => $groupId,
+                ],
+            ]
+        ];
+    }
+
+    /**
+     * 新規作成 & 更新_正常系エラーバリデーションチェック
+     */
+    public function data_admin_informations_create_post_and_patch_ok_validation_normal_error()
+    {
+        return [
+            //必須チェック
+            'Case: missing_field' => [
+                'data' => [],
+                'expectedErrors' => [
+                    'title' => 'お知らせタイトルは必ず指定してください。',
+                    'group' => '対象グループは必ず指定してください。',
+                ]
+            ],
+            //必須項目が空文字
+            'Case: null_required_field' => [
+                'data' => [
+                    'title' => '',
+                    'group' => '',
+                ],
+                'expectedErrors' => [
+                    'title' => 'お知らせタイトルは必ず指定してください。',
+                    'group' => '対象グループは必ず指定してください。',
+                ]
+            ],
+            //string指定のフィールドの値が文字列ではない
+            'Case: not_string' => [
+                'data' => [
+                    'title' => 1,
+                    'text' => 2,
+                    'group' => ['180001'],
+                ],
+                'expectedErrors' => [
+                    'title' => 'お知らせタイトルは文字列を指定してください。',
+                    'text' => '本文は文字列を指定してください。',
+                ]
+            ],
+            //最大文字数超過
+            'Case: over_max_words' => [
+                'data' => [
+                    'title' => str_repeat('a', 256),
+                    'text' => str_repeat('b', 501),
+                    'group' => ['180001'],
+                ],
+                'expectedErrors' => [
+                    'title' => 'お知らせタイトルは、255文字以下で指定してください。',
+                    'text' => '本文は、500文字以下で指定してください。',
+                ]
+            ],
+            //groupに渡す値が配列ではない
+            'Case: not_array' => [
+                'data' => [
+                    'title' => 'Validation Test',
+                    'text' => 'Validation Test',
+                    'group' => 180001,
+                ],
+                'expectedErrors' => [
+                    'group' => '対象グループは配列でなくてはなりません。'
+                ]
+            ]
+        ];
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_informations_create_post_and_patch_ok_validation_ok
+     * お知らせ新規作成時のバリデーションチェック(正常系)
+     */
+    public function test_admin_informations_create_post_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("/admin/informations/create");
+        $response = $this->post("/admin/informations", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/informations");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_informations_create_post_and_patch_ok_validation_normal_error
+     * お知らせ新規作成のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_informations_create_post_ok_validation_normal_error($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //新規作成画面に移動し、データをpost
+        $this->get("admin/informations/create");
+        $response = $this->post("admin/informations", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/informations/create");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_informations_create_post_and_patch_ok_validation_ok
+     * コンテンツ更新時のバリデーションチェック(正常系)
+     */
+    public function test_admin_informations_edit_patch_ok_validation_ok($data)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("/admin/informations/{$this->information->id}/edit");
+        $response = $this->patch("/admin/informations/{$this->information->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("/admin/informations");
+        $response->assertSessionHasNoErrors();
+    }
+
+    /**
+     * @test
+     * @dataProvider data_admin_informations_create_post_and_patch_ok_validation_normal_error
+     * コンテンツ更新時のバリデーションチェック(正常系エラー)
+     */
+    public function test_admin_informations_patch_ok_validation_normal_errors($data, $expectedErrors)
+    {
+        $this->actingAs($this->admin, 'admin');
+
+        //編集画面に移動し、データをpatch
+        $this->get("admin/informations/{$this->information->id}/edit");
+        $response = $this->patch("/admin/informations/{$this->information->id}", $data);
+
+        $response->assertStatus(302)->assertRedirect("admin/informations/{$this->information->id}/edit");
+        $response->assertSessionHasErrors($expectedErrors);
+    }
 }
