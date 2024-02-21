@@ -23,7 +23,7 @@ class SortRequest extends FormRequest
     {
         return [
             'positions' => 'required|array',
-            'positions.*' => 'required|string|max:255',
+            'positions.*' => 'required|integer',
         ];
     }
 
