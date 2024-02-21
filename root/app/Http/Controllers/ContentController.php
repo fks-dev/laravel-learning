@@ -35,7 +35,7 @@ class ContentController extends Controller
 
         DB::transaction(function () use ($positions) {
             foreach ($positions as $index => $id) {
-                Content::where('id',$id)->update(['position' => $index + 1]);
+                Content::where('id', $id)->update(['position' => $index + 1]);
             }
         });
 
