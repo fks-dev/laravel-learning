@@ -3,7 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Http\Requests\CourseRequest;
-use Illuminate\Http\Request;
+use App\Http\Requests\SortRequest;
 use App\Models\Course;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Facades\Auth;
@@ -24,7 +24,7 @@ class CourseController extends Controller
         return view('admin.courses.index', compact('courses', 'adminUser'));
     }
 
-    public function sort(Request $request): JsonResponse
+    public function sort(SortRequest $request): JsonResponse
     {
         $positions = $request->input('positions');
 

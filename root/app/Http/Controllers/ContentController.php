@@ -6,8 +6,8 @@ use App\Models\Content;
 use App\Models\Course;
 use App\Models\ContentsLog;
 use App\Http\Requests\ContentRequest;
+use App\Http\Requests\SortRequest;
 use App\Http\Requests\StoreContentLogRequest;
-use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
 use Illuminate\View\View;
@@ -29,7 +29,7 @@ class ContentController extends Controller
     /**
      * 並び替え
      */
-    public function sort(Request $request): JsonResponse
+    public function sort(SortRequest $request): JsonResponse
     {
         $positions = $request->input('positions');
 
