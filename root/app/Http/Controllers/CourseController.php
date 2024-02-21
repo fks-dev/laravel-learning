@@ -30,7 +30,7 @@ class CourseController extends Controller
 
         DB::transaction(function () use ($positions) {
             foreach ($positions as $index => $id) {
-                Course::find($id)->update(['position' => $index + 1]);
+                Course::where('id',$id)->update(['position' => $index + 1]);
             }
         });
 
