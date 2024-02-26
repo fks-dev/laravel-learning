@@ -1,12 +1,21 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     @include('head')
     <title>コース</title>
 </head>
+
 <body>
     @include('admin.header')
     <div class="mt-5 container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.groups.index') }}">グループ一覧</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>グループ詳細</a></li>
+            </ol>
+        </nav>
         <div class="mb-2">
             <a class="btn btn-secondary" href="{{ route('admin.groups.index') }}">戻る</a>
         </div>
@@ -19,7 +28,7 @@
                         <div>
                             <ul>
                                 @foreach ($group->courses as $course)
-                                    <li class="align-items-center list-unstyled">{{ $course->title }}</li>
+                                <li class="align-items-center list-unstyled">{{ $course->title }}</li>
                                 @endforeach
                             </ul>
                         </div>
@@ -29,7 +38,7 @@
                         <div>
                             <ul>
                                 @foreach ($group->users as $user)
-                                    <li class="align-items-center list-unstyled">{{ $user->username }}</li>
+                                <li class="align-items-center list-unstyled">{{ $user->username }}</li>
                                 @endforeach
                             </ul>
                         </div>
