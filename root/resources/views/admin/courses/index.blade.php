@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     @include('head')
     {{-- CSRFトークン --}}
@@ -8,9 +9,16 @@
     <link rel="stylesheet" href="/css/course.css">
     <title>コース一覧</title>
 </head>
+
 <body>
     @include('admin.header')
     <div class="mt-5 container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
+                <li class="breadcrumb-item active" aria-current="page">コース一覧</li>
+            </ol>
+        </nav>
         @include('admin.menu')
         <div class="d-flex justify-content-between">
             <h2 class="col">コース一覧</h2>
@@ -18,16 +26,16 @@
                 <a class="btn btn-primary" href="{{ route('admin.courses.create')}}">&plus;追加</a>
             </div>
         </div>
-{{-- 登録・削除　メッセージ --}}
+        {{-- 登録・削除　メッセージ --}}
         <div id="message">
             @if (session('message'))
-                <div class="alert alert-success">
+            <div class="alert alert-success">
                 {{ session('message') }}
-                </div>
+            </div>
             @elseif (session('danger'))
             <div class="alert alert-danger">
                 {{ session('danger') }}
-                </div>
+            </div>
             @endif
         </div>
 
@@ -44,31 +52,30 @@
                     <th class="col-2 text-center">作成日時</th>
                     <th class="col-2 text-center">更新日時</th>
                     <th class="col-2 text-center">Actions</th>
-                    </tr>
+                </tr>
             </thead>
 
             <tbody id="tableBody">
 
                 @foreach ($courses as $course)
-                    <tr data-id="{{ $course->id }}">
-                        <td class="align-middle">
-                            <a href="{{ route('admin.contents.index', $course) }}">{{ $course->title }}</a>
-                        </td>
-                        <td class="align-middle text-center">{{ $course->created_at }}</td>
-                        <td class="align-middle text-center">{{ $course->updated_at }}</td>
+                <tr data-id="{{ $course->id }}">
+                    <td class="align-middle">
+                        <a href="{{ route('admin.contents.index', $course) }}">{{ $course->title }}</a>
+                    </td>
+                    <td class="align-middle text-center">{{ $course->created_at }}</td>
+                    <td class="align-middle text-center">{{ $course->updated_at }}</td>
 
-                        <td class="text-center">
-                            <a class="btn btn-success" href="{{ route('admin.courses.edit', $course->id) }}">編集</a>
+                    <td class="text-center">
+                        <a class="btn btn-success" href="{{ route('admin.courses.edit', $course->id) }}">編集</a>
 
-                            <form action="{{ route('admin.courses.destroy', $course) }}" method="post" class="d-inline">
-                                @csrf
-                                @method('delete')
-                                <input class="btn btn-danger" type="submit" value="削除"
-                                onClick="return confirm('本当に削除しますか？');">
-                            </form>
+                        <form action="{{ route('admin.courses.destroy', $course) }}" method="post" class="d-inline">
+                            @csrf
+                            @method('delete')
+                            <input class="btn btn-danger" type="submit" value="削除" onClick="return confirm('本当に削除しますか？');">
+                        </form>
 
-                        </td>
-                    </tr>
+                    </td>
+                </tr>
                 @endforeach
 
             </tbody>
@@ -80,4 +87,5 @@
     {{-- footer --}}
     @include('footer')
 </body>
+
 </html>
