@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="ja">
+
 <head>
     <!-- Choices.jsのCSS -->
     <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/choices.js/public/assets/styles/choices.min.css">
@@ -9,9 +10,17 @@
     @include('head')
     <title>グループ編集</title>
 </head>
+
 <body>
     @include('admin.header')
     <div class="mt-3 container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.groups.index') }}">グループ一覧</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>グループ編集</a></li>
+            </ol>
+        </nav>
         <div class="mb-2">
             <a class="btn btn-secondary" href="{{ $backBtn }}">戻る</a>
         </div>
@@ -39,11 +48,10 @@
                             <select class="form-select" name="course[]" id="course" multiple>
                                 <option disabled>コースを選んでください</option>
                                 @foreach ($courses as $course)
-                                    <option value="{{ $course->id }}"
-                                        @if ($group->courses->contains($course->id)) selected @endif>
-                                        {{ $course->title }}
-                                    </option>
-                            @endforeach
+                                <option value="{{ $course->id }}" @if ($group->courses->contains($course->id)) selected @endif>
+                                    {{ $course->title }}
+                                </option>
+                                @endforeach
                             </select>
                         </div>
                     </div>
@@ -54,10 +62,9 @@
                             <select class="form-select" name="user[]" id="user" multiple>
                                 <option disabled>ユーザーを選択してください</option>
                                 @foreach ($users as $user)
-                                    <option value="{{ $user->id }}"
-                                        @if ($group->users->contains($user->id)) selected @endif>
-                                        {{ $user->username }}
-                                    </option>
+                                <option value="{{ $user->id }}" @if ($group->users->contains($user->id)) selected @endif>
+                                    {{ $user->username }}
+                                </option>
                                 @endforeach
                             </select>
                         </div>
@@ -75,10 +82,11 @@
             </form>
         </div>
     </div>
-@include('admin.groups.courseSelect')
-@include('admin.groups.userSelect')
+    @include('admin.groups.courseSelect')
+    @include('admin.groups.userSelect')
 
-{{-- footer --}}
-@include('footer')
+    {{-- footer --}}
+    @include('footer')
 </body>
+
 </html>
