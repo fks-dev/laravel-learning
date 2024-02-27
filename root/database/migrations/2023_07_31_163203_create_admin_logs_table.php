@@ -19,7 +19,7 @@ return new class extends Migration
 
             $table->foreign('admin_id')->references('id')->on('admins')->onDelete('cascade');
         });
-        DB::statement('ALTER TABLE admin_logs AUTO_INCREMENT = '.config('database.auto_increment.admin_logs'));
+        DB::statement('ALTER TABLE admin_logs AUTO_INCREMENT = '.config('project.database.auto_increment.admin_logs'));
     }
 
     /**

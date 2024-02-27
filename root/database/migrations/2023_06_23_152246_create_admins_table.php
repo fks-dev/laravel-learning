@@ -21,7 +21,7 @@ return new class extends Migration
             $table->softDeletesDatetime();
             $table->datetimes();
         });
-        DB::statement('ALTER TABLE admins AUTO_INCREMENT = '.config('database.auto_increment.admins'));
+        DB::statement('ALTER TABLE admins AUTO_INCREMENT = '.config('project.database.auto_increment.admins'));
     }
 
     /**

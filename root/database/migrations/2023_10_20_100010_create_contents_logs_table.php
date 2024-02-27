@@ -27,7 +27,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->foreign('content_id')->references('id')->on('contents')->onDelete('cascade');
         });
-        DB::statement('ALTER TABLE contents_logs AUTO_INCREMENT = '.config('database.auto_increment.contents_logs'));
+        DB::statement('ALTER TABLE contents_logs AUTO_INCREMENT = '.config('project.database.auto_increment.contents_logs'));
     }
 
     /**

@@ -18,8 +18,8 @@ class GroupInformationSeeder extends Seeder
                 ->count(10)
                 ->sequence(function ($sequence) {
                     return [
-                        'group_id' => config('database.auto_increment.groups'),
-                        'information_id' => $sequence->index + config('database.auto_increment.information'),
+                        'group_id' => config('project.database.auto_increment.groups'),
+                        'information_id' => $sequence->index + config('project.database.auto_increment.information'),
                     ];
                 })
                 ->create();
