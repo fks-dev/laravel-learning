@@ -9,6 +9,13 @@
 <body>
     @include('admin.header')
     <div class="mt-3 container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.informations.index') }}">お知らせ一覧</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>お知らせ編集</a></li>
+            </ol>
+        </nav>
         <div class="mb-2">
             <a class="btn btn-secondary" href="{{ route('admin.informations.index') }}">戻る</a>
         </div>
