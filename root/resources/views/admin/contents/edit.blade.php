@@ -7,6 +7,13 @@
 <body>
     @include('admin.header')
     <div class="mt-3 container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
+                <li class="breadcrumb-item"><a href="{{ route('admin.contents.index', $content->course_id) }}">コンテンツ一覧</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>コンテンツ編集</a></li>
+            </ol>
+        </nav>
         <div class="mb-2">
             <a class="btn btn-secondary" href="{{ route('admin.contents.index', $content->course_id) }}">戻る</a>
         </div>
