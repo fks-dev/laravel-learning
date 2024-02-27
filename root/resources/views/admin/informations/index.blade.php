@@ -11,6 +11,12 @@
 <body>
     @include('admin.header')
     <div class="mt-5 container">
+        <nav style="--bs-breadcrumb-divider: '>';" aria-current="page">
+            <ol class="breadcrumb">
+                <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
+                <li class="breadcrumb-item"><a>お知らせ一覧</a></li>
+            </ol>
+        </nav>
         @include('admin.menu')
         <div class="d-flex justify-content-between">
             <h2 class="col">お知らせ一覧</h2>
