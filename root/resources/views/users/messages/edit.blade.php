@@ -6,6 +6,14 @@
 </head>
 <body>
 <div class="mt-3 container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('users.messages.index') }}">受信一覧</a></li>
+          <li class="breadcrumb-item"><a href="{{ route('users.messages.draft') }}?page={{ $currentPage }}">下書き一覧</a></li>
+          <li class="breadcrumb-item active" aria-current="page">編集</li>
+        </ol>
+    </nav>
         <div class="mb-2">
             <a class="btn btn-secondary" href="{{ route('users.messages.draft') }}?page={{ $currentPage }}">戻る</a>
         </div>
