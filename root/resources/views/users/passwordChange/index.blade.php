@@ -9,7 +9,7 @@
 
 <body>
     @include('users.header')
-    <main>
+    <div class="mt-3 container">
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
@@ -80,7 +80,7 @@
                 </div>
             </div>
         </div>
-    </main>
+    </div>
     {{-- footer --}}
     @include('footer')
 </body>
