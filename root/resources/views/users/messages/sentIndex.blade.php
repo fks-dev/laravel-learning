@@ -8,6 +8,13 @@
 <body>
 @include('users.header')
 <div class="mt-5 container">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+        <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
+        <li class="breadcrumb-item"><a href="{{ route('users.messages.index') }}">受信一覧</a></li>
+        <li class="breadcrumb-item active" aria-current="page">送信済み一覧</li>
+        </ol>
+    </nav>
     <div class="d-flex justify-content-between">
         <h2 class="col">送信済み一覧</h2>
         <div class="col-auto">
