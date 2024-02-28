@@ -13,7 +13,7 @@
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
-              <li class="breadcrumb-item active" aria-current="page">ユーザー画面</li>
+              <li class="breadcrumb-item active" aria-current="page">ユーザーパスワード変更</li>
             </ol>
         </nav>
         <div class="mb-2">
