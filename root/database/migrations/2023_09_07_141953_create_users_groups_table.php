@@ -24,7 +24,7 @@ return new class extends Migration
 
             $table->unique(['user_id', 'group_id']);
         });
-        DB::statement('ALTER TABLE users_groups AUTO_INCREMENT = '.config('database.auto_increment.users_groups'));
+        DB::statement('ALTER TABLE users_groups AUTO_INCREMENT = '.config('project.database.auto_increment.users_groups'));
     }
 
     /**

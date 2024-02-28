@@ -18,8 +18,8 @@ class UsersGroupSeeder extends Seeder
                 ->count(10)
                 ->sequence(function($sequence) {
                     return [
-                        'group_id'   => $sequence->index + config('database.auto_increment.groups'),
-                        'user_id'    => $sequence->index + config('database.auto_increment.users'),
+                        'group_id'   => $sequence->index + config('project.database.auto_increment.groups'),
+                        'user_id'    => $sequence->index + config('project.database.auto_increment.users'),
                         'deleted_at' => null,
                         'created_at' => now(),
                         'updated_at' => now(),

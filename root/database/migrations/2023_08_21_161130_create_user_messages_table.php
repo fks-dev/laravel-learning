@@ -29,7 +29,7 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users');
 
         });
-        DB::statement('ALTER TABLE user_messages AUTO_INCREMENT = '.config('database.auto_increment.user_messages'));
+        DB::statement('ALTER TABLE user_messages AUTO_INCREMENT = '.config('project.database.auto_increment.user_messages'));
     }
 
     /**

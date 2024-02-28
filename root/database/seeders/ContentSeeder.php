@@ -18,8 +18,8 @@ class ContentSeeder extends Seeder
                 ->count(20)
                 ->sequence(function ($sequence) {
                     return [
-                        'course_id'          => config('database.auto_increment.courses') + random_int(0, 9),
-                        'admin_id'           => config('database.auto_increment.admins') + random_int(0, 10),
+                        'course_id'          => config('project.database.auto_increment.courses') + random_int(0, 9),
+                        'admin_id'           => config('project.database.auto_increment.admins') + random_int(0, 10),
                         'title'              => sprintf('コンテンツ%d', $sequence->index + 1),
                         'youtube_video_id'   => 'nkqdhXSwEVs',
                         'remarks'            => sprintf('コンテンツ%d', $sequence->index + 1),

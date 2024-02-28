@@ -21,7 +21,7 @@ return new class extends Migration
             $table->longText('exception');
             $table->datetime('failed_at')->useCurrent();
         });
-        DB::statement('ALTER TABLE failed_jobs AUTO_INCREMENT = '.config('database.auto_increment.failed_jobs'));
+        DB::statement('ALTER TABLE failed_jobs AUTO_INCREMENT = '.config('project.database.auto_increment.failed_jobs'));
     }
 
     /**
