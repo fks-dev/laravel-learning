@@ -12,7 +12,7 @@
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
-                <li class="breadcrumb-item active" aria-current="page">グループ一覧</li>ï
+                <li class="breadcrumb-item active" aria-current="page">グループ一覧</li>
             </ol>
         </nav>
         @include('admin.menu')
