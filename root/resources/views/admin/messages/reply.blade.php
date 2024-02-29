@@ -10,8 +10,8 @@
         <ol class="breadcrumb">
         <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
         <li class="breadcrumb-item"><a href="{{ route('admin.messages.index') }}">受信一覧</a></li>
-        <li class="breadcrumb-item"><a href="{{ route('admin.messages.show', $message) }}">メッセージ内容</a></li>
-        <li class="breadcrumb-item active" aria-current="page">返信</li>
+        <li class="breadcrumb-item"><a href="{{ route('admin.messages.show', $message) }}">メッセージ詳細</a></li>
+        <li class="breadcrumb-item active" aria-current="page">メッセージ返信</li>
         </ol>
     </nav>
         <div class="mb-2">
