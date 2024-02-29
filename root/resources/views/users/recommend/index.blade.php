@@ -10,6 +10,12 @@
 <body>
 @include('users.header')
 <div class="container my-4">
+    <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+        <ol class="breadcrumb">
+          <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
+          <li class="breadcrumb-item active" aria-current="page">おすすめ動画診断</li>
+        </ol>
+    </nav>
     <div class="card bg-primary-subtitle">
         <div class="card-body text-center">
             <h3>{{ $q['q_order']}}問目</h3>
