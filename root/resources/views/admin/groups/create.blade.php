@@ -17,7 +17,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.groups.index') }}">グループ一覧</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a>グループ新規作成</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>新規グループ登録</a></li>
             </ol>
         </nav>
         <div class="mb-2">

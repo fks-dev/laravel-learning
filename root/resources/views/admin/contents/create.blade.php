@@ -11,7 +11,7 @@
             <ol class="breadcrumb">
                 <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
                 <li class="breadcrumb-item"><a href="{{ route('admin.contents.index', $course) }}">コンテンツ一覧</a></li>
-                <li class="breadcrumb-item active" aria-current="page"><a>コンテンツ新規作成</a></li>
+                <li class="breadcrumb-item active" aria-current="page"><a>新規コンテンツ登録</a></li>
             </ol>
         </nav>
         <div class="mb-2">

@@ -13,7 +13,7 @@
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.messages.index') }}">受信一覧</a></li>
-            <li class="breadcrumb-item active" aria-current="page">新規メッセージ</li>
+            <li class="breadcrumb-item active" aria-current="page">新規メッセージ作成</li>
             </ol>
         </nav>
         <div class="mb-2">

@@ -10,7 +10,7 @@
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
-            <li class="breadcrumb-item"><a href="{{ route('admin.user-management.index') }}">ユーザー 一覧画面</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('admin.user-management.index') }}">ユーザー一覧</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.user-management.edit', $user) }}">ユーザー編集</a></li>
             <li class="breadcrumb-item active" aria-current="page">パスワード変更</li>
             </ol>

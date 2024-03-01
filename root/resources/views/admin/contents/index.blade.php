@@ -14,11 +14,11 @@
         <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
             <ol class="breadcrumb">
               <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
-              <li class="breadcrumb-item active" aria-current="page">コース名『{{ $course->title }}』のコンテンツ一覧</li>
+              <li class="breadcrumb-item active" aria-current="page">『{{ $course->title }}』のコンテンツ一覧</li>
             </ol>
         </nav>
         <div class="d-flex justify-content-between">
-            <h2 class="col">コース名『{{ $course->title }}』のコンテンツ</h2>
+            <h2 class="col">『{{ $course->title }}』のコンテンツ</h2>
             <div class="col-auto me-2">
                 <a class="btn btn-secondary" href="{{ route('admin.courses.index')}}">戻る</a>
             </div>
