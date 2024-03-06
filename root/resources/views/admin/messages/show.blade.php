@@ -11,8 +11,10 @@
             <ol class="breadcrumb">
             <li class="breadcrumb-item"><a href="{{ route('admin.admin-management.index') }}">管理画面トップ</a></li>
             <li class="breadcrumb-item"><a href="{{ route('admin.messages.index') }}">受信一覧</a></li>
-            @if ( $source )
+            @if ( $backRoute === route('admin.messages.sent'))
             <li class="breadcrumb-item"><a href="{{ $backRoute }}?page={{$currentPage}}">送信済み一覧</a></li>
+            @elseif($backRoute == route('admin.messages.dust'))
+            <li class="breadcrumb-item"><a href="{{ $backRoute }}?page={{$currentPage}}">ゴミ箱一覧</a></li>
             @endif
             <li class="breadcrumb-item active" aria-current="page">メッセージ詳細</li>
             </ol>
