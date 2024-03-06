@@ -19,7 +19,7 @@
             </ol>
         </nav>
         <div class="d-flex justify-content-between">
-            <h2 class="col">コース名『{{ $course->title }}』のコンテンツ</h2>
+            <h2 class="col">『{{ $course->title }}』のコンテンツ</h2>
             <div class="col-auto me-2">
                 <a class="btn btn-secondary" href="{{ route('admin.courses.index')}}">戻る</a>
             </div>
