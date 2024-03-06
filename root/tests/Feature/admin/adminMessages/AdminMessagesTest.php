@@ -819,7 +819,7 @@ class AdminMessagesTest extends TestCase
         $this->assertSame($expectedOrder, $sortedOrder);
 
         //ページネーションが正しく表示されていることを確認
-        $response->assertSeeTextInOrder(range(1, config('constants.ITEMS_PER_PAGE')));
+        $response->assertSeeTextInOrder(range(1, config('project.ITEMS_PER_PAGE')));
     }
 
     /**
@@ -1220,7 +1220,7 @@ class AdminMessagesTest extends TestCase
         $this->assertSame($expectedOrder, $sortedOrder);
 
         // ページネーションが正しく表示されているか確認
-        $response->assertSeeTextInOrder(range(1, config('constants.ITEMS_PER_PAGE')));
+        $response->assertSeeTextInOrder(range(1, config('project.ITEMS_PER_PAGE')));
     }
 
     /**
