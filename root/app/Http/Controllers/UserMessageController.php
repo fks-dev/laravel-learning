@@ -53,7 +53,7 @@ class UserMessageController extends Controller
             ->where('action', '=', ActionEnum::SEND)
             ->where('is_hidden', '=', false)
             ->orderByDesc('id')
-            ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->paginate(config('project.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -69,7 +69,7 @@ class UserMessageController extends Controller
         $messages = UserMessage::where('user_id', $userId)
             ->where('action', '!=', ActionEnum::SEND)
             ->orderByDesc('updated_at')
-            ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->paginate(config('project.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -85,7 +85,7 @@ class UserMessageController extends Controller
         $messages = UserMessage::where('user_id', $userId)
             ->where('action', '=', ActionEnum::SEND)
             ->orderByDesc('updated_at')
-            ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->paginate(config('project.ITEMS_PER_PAGE'));
         $admins = $this->getAdminAll();
         $user = $this->getCurrentUser();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -110,7 +110,7 @@ class UserMessageController extends Controller
         $action = ActionEnum::cases();
 
         // カスタムページネーション
-        $ItemsPerPage = config('constants.ITEMS_PER_PAGE');
+        $ItemsPerPage = config('project.ITEMS_PER_PAGE');
         $page = $request->get('page', self::DEFAULT_PAGE_NUMBER);
         $paginator = new LengthAwarePaginator(
             $combinedMessages->forPage($page, $ItemsPerPage),
