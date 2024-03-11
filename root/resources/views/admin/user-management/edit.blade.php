@@ -22,10 +22,6 @@
             <li class="breadcrumb-item active" aria-current="page">ユーザー編集</li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.user-management.index') }}">戻る</a>
-        </div>
-
         <div class="border">
             <div class="p-2 bg-secondary text-white">ユーザー編集</div>
 
