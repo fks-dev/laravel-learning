@@ -20,9 +20,6 @@
                 <li class="breadcrumb-item active" aria-current="page"><a>新規グループ登録</a></li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.groups.index') }}">戻る</a>
-        </div>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規グループ登録</div>
 

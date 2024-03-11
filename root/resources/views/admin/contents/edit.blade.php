@@ -15,9 +15,6 @@
                 <li class="breadcrumb-item active" aria-current="page"><a>コンテンツ編集</a></li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.contents.index', $content->course_id) }}">戻る</a>
-        </div>
         <div class="border">
             <div class="p-2 bg-secondary text-white">コンテンツ編集</div>
 

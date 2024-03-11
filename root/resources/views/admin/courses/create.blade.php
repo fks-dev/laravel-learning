@@ -16,10 +16,6 @@
                 <li class="breadcrumb-item active" aria-current="page">新規コース登録</li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.courses.index') }}">戻る</a>
-        </div>
-
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規コース登録</div>
 
