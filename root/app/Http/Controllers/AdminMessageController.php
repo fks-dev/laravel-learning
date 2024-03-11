@@ -47,7 +47,7 @@ class AdminMessageController extends Controller
             ->where('action', '=', ActionEnum::SEND)
             ->where('is_hidden', '=', false)
             ->orderByDesc('id')
-            ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->paginate(config('project.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -63,7 +63,7 @@ class AdminMessageController extends Controller
         $messages = AdminMessage::where('admin_id', $adminId)
             ->where('action', '!=', ActionEnum::SEND)
             ->orderByDesc('updated_at')
-            ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->paginate(config('project.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -79,7 +79,7 @@ class AdminMessageController extends Controller
         $messages = AdminMessage::where('admin_id', $adminId)
             ->where('action', '=', ActionEnum::SEND)
             ->orderByDesc('updated_at')
-            ->paginate(config('constants.ITEMS_PER_PAGE'));
+            ->paginate(config('project.ITEMS_PER_PAGE'));
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         Session::put('pageNumber', $request->get('page', self::DEFAULT_PAGE_NUMBER));
@@ -104,7 +104,7 @@ class AdminMessageController extends Controller
         $action = ActionEnum::cases();
 
         // カスタムページネーション
-        $ItemsPerPage = config('constants.ITEMS_PER_PAGE');
+        $ItemsPerPage = config('project.ITEMS_PER_PAGE');
         $page = $request->get('page', self::DEFAULT_PAGE_NUMBER);
         $paginator = new LengthAwarePaginator(
             $combinedMessages->forPage($page, $ItemsPerPage),
@@ -181,6 +181,7 @@ class AdminMessageController extends Controller
     public function show(UserMessage $message, Request $request)
     {
         $source = $request->input('source');
+        file_put_contents('log.txt3', $source);
         if ($source === 'dust') {
             $source = true;
             $backRoute = route('admin.messages.dust');
@@ -188,6 +189,7 @@ class AdminMessageController extends Controller
             $source = false;
             $backRoute = route('admin.messages.index');
         }
+        file_put_contents('log.txt3', $backRoute);
         $users = $this->getUserAll();
         $adminUser = Auth::user();
         $currentPage = Session::get('pageNumber', self::DEFAULT_PAGE_NUMBER);
