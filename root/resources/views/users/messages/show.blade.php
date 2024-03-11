@@ -18,9 +18,6 @@
             </ol>
         </nav>
         <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ $backRoute }}?page={{$currentPage}}">戻る</a>
-        </div>
-        <div class="mb-2">
             @if ( $source == false )
                 <a class="btn btn-success" href="{{ route('users.messages.reply', $message) }}">返信</a>
             @endif

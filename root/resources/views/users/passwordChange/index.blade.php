@@ -16,9 +16,6 @@
               <li class="breadcrumb-item active" aria-current="page">ユーザーパスワード変更</li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('users.index') }}">戻る</a>
-        </div>
         <div class="container-md mt-4">
             <div class="card">
                 <div class="card-header">
