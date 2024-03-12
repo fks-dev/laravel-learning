@@ -15,9 +15,6 @@
                 <li class="breadcrumb-item active" aria-current="page"><a>コンテンツ詳細</a></li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.contents.index', $content->course_id) }}">戻る</a>
-        </div>
         <div class="mt-3">
             <h3 class="rounded-top p-2 card-header text-success shadow-sm" style="background-color: #cdeee0">{{ $content->title }}</h3>
             <div class="border">

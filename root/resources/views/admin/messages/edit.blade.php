@@ -15,9 +15,6 @@
         <li class="breadcrumb-item active" aria-current="page">メッセージ編集</li>
         </ol>
     </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.messages.draft') }}?page={{ $currentPage }}">戻る</a>
-        </div>
     <div class="border">
         <div class="p-2 bg-secondary text-white">先生にメッセージを作成</div>
 

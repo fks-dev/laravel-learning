@@ -16,9 +16,6 @@
                 <li class="breadcrumb-item active" aria-current="page"><a>新規お知らせ登録</a></li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.informations.index') }}">戻る</a>
-        </div>
         <div class="border">
             <div class="p-2 bg-secondary text-white">新規お知らせ登録</div>
 

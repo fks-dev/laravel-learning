@@ -14,9 +14,6 @@
           <li class="breadcrumb-item active" aria-current="page">返信</li>
         </ol>
     </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('users.messages.show', $message) }}">戻る</a>
-        </div>
     <div class="border">
         <div class="p-2 bg-secondary text-white">返信</div>
 

@@ -15,9 +15,6 @@
             <li class="breadcrumb-item active" aria-current="page">パスワード変更</li>
             </ol>
         </nav>
-        <div class="mb-2">
-            <a class="btn btn-secondary" href="{{ route('admin.user-management.edit', $user) }}">戻る</a>
-        </div>
         <div class="border">
             <div class="p-2 bg-secondary text-white">パスワード変更</div>
 
