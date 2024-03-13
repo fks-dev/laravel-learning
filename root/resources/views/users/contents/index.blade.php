@@ -9,9 +9,12 @@
 <body>
     @include('users.header')
     <main class="container-md mt-4">
-        <div class="mb-4 p-3 border rounded" style="background-color: #f5f5f5;">
-            <a class="text-decoration-none" href="{{ route('users.index') }}">HOME</a>
-        </div>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
+            <li class="breadcrumb-item active" aria-current="page">コンテンツ一覧</li>
+            </ol>
+        </nav>
         <div class="border rounded">
             <div class="rounded-top p-2 card-header text-primary shadow-sm" style="background-color: #d3e6fd">
                 <p>{{ $course_title }}</p>
