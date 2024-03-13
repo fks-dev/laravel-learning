@@ -17,7 +17,6 @@ return new class extends Migration
             $table->string('token');
             $table->datetime('created_at')->nullable();
         });
-        DB::statement('ALTER TABLE password_reset_tokens AUTO_INCREMENT = '.config('project.database.auto_increment.password_reset_tokens'));
     }
 
     /**

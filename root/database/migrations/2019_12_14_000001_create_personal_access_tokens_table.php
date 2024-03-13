@@ -22,7 +22,6 @@ return new class extends Migration
             $table->datetime('expires_at')->nullable();
             $table->datetimes();
         });
-        DB::statement('ALTER TABLE personal_access_tokens AUTO_INCREMENT = '.config('project.database.auto_increment.personal_access_tokens'));
     }
 
     /**
