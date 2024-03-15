@@ -159,7 +159,7 @@ class AdminInformationsTest extends TestCase
     /**
      * お知らせ新規作成 & 更新_正常系バリデーションチェック
      */
-    public function data_admin_informations_create_post_and_patch_ok_validation_ok()
+    public static function data_admin_informations_create_post_and_patch_ok_validation_ok()
     {
         $groupId = ['180001'];
         return [
@@ -208,7 +208,7 @@ class AdminInformationsTest extends TestCase
     /**
      * 新規作成 & 更新_正常系エラーバリデーションチェック
      */
-    public function data_admin_informations_create_post_and_patch_ok_validation_normal_error()
+    public static function data_admin_informations_create_post_and_patch_ok_validation_normal_error()
     {
         return [
             //必須チェック

@@ -182,7 +182,7 @@ class AdminCoursesTest extends TestCase
     /**
      * コース新規作成 & 更新_正常系バリデーションチェック
      */
-    public function data_admin_courses_create_post_and_patch_ok_validation_ok()
+    public static function data_admin_courses_create_post_and_patch_ok_validation_ok()
     {
         return [
             //基本系
@@ -221,7 +221,7 @@ class AdminCoursesTest extends TestCase
     /**
      * コース新規作成 & 更新_正常系エラーバリデーションチェック
      */
-    public function data_admin_courses_create_post_and_patch_ok_validation_normal_error()
+    public static function data_admin_courses_create_post_and_patch_ok_validation_normal_error()
     {
 
         return [

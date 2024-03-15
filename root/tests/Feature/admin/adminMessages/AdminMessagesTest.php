@@ -1498,7 +1498,7 @@ class AdminMessagesTest extends TestCase
      *
      *  管理者メッセージの新規作成＆更新後の送信リクエスト_正常系バリデーションチェック
      */
-    public function data_admin_messages_post_and_patch_ok_request_validation_ok()
+    public static function data_admin_messages_post_and_patch_ok_request_validation_ok()
     {
         return [
             //基本系
@@ -1540,7 +1540,7 @@ class AdminMessagesTest extends TestCase
      *
      * 管理者メッセージ新規作成＆更新後の送信リクエスト_正常系エラーバリデーションチェック
      */
-    public function data_admin_messages_post_and_patch_ok_request_validation_normal_error()
+    public static function data_admin_messages_post_and_patch_ok_request_validation_normal_error()
     {
         return [
             //必須チェック
@@ -1720,7 +1720,7 @@ class AdminMessagesTest extends TestCase
      *
      * 管理者メッセージ下書きの新規作成＆更新_正常系バリデーションチェック
      */
-    public function data_admin_messages_post_and_patch_ok_draft_validation()
+    public static function data_admin_messages_post_and_patch_ok_draft_validation()
     {
         return [
             //基本系
@@ -1762,7 +1762,7 @@ class AdminMessagesTest extends TestCase
      *
      * 管理者メッセージ下書きの新規作成＆更新_正常系エラーバリデーションチェック
      */
-    public function data_admin_messages_post_and_patch_ok_draft_validation_normal_error()
+    public static function data_admin_messages_post_and_patch_ok_draft_validation_normal_error()
     {
         return [
             //必須チェック

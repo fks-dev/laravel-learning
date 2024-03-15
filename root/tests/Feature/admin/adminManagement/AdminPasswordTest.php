@@ -112,7 +112,7 @@ class AdminPasswordTest extends TestCase
      *
      *  管理者アカウントのパスワード更新後の送信リクエスト_正常系バリデーションチェック
      */
-    public function data_admin_password_post_ok_update_validation_ok()
+    public static function data_admin_password_post_ok_update_validation_ok()
     {
         return [
             //基本系
@@ -146,7 +146,7 @@ class AdminPasswordTest extends TestCase
      *
      * 管理者アカウントのパスワード更新後の送信リクエスト_正常系エラーバリデーションチェック
      */
-    public function data_admin_password_post_ok_update_validation_normal_error()
+    public static function data_admin_password_post_ok_update_validation_normal_error()
     {
         return [
             //必須チェック
