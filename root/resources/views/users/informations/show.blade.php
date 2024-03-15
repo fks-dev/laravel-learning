@@ -8,10 +8,13 @@
 <body>
     @include('users.header')
     <div class="container-md mt-4">
-        <div class="mb-4 p-3 border rounded" style="background-color: #f5f5f5;">
-            <a class="text-decoration-none" href="{{ route('users.index') }}">HOME</a> /
-            <a class="text-decoration-none" href="{{ route('users.informations.list') }}">お知らせ一覧</a>
-        </div>
+        <nav style="--bs-breadcrumb-divider: '>';" aria-label="breadcrumb">
+            <ol class="breadcrumb">
+            <li class="breadcrumb-item"><a href="{{ route('users.index') }}">ユーザー画面トップ</a></li>
+            <li class="breadcrumb-item"><a href="{{ route('users.informations.list') }}">お知らせ一覧</a></li>
+            <li class="breadcrumb-item active" aria-current="page">お知らせ</li>
+            </ol>
+        </nav>
         <div class="border rounded">
             <div class="rounded-top p-2 card-header text-success shadow-sm" style="background-color: #cdeee0">
                 <p>{{$information->title}}</p>
