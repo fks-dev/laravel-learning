@@ -63,14 +63,18 @@ chmod -R 777 bootstrap/cache/
 chmod -R 777 storage/
 ```
 
-#### マルチログインについて
+#### データベースの初期化
+
+[Laravel初期設定](#laravel初期設定)後に実行してください。  
 
 ```bash
 # ■ Webサーバーで入力
 cd /var/www/root
-# テーブルの作成＆初期データを挿入
-php artisan migrate --seed
+# テーブルの再作成＆初期データを挿入
+php artisan migrate:fresh --seed
 ```
+
+#### マルチログインについて
 
 - 管理者側へログイン
   - <http://127.0.0.1/admin/login> ログイン画面

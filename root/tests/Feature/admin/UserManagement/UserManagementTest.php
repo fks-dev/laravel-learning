@@ -193,7 +193,7 @@ class UserManagementTest extends TestCase
      *
      *  ユーザーアカウントの更新後の送信リクエスト_正常系バリデーションチェック
      */
-    public function data_admin_user_management_patch_ok_update_validation_ok()
+    public static function data_admin_user_management_patch_ok_update_validation_ok()
     {
         return [
             //基本系
@@ -231,7 +231,7 @@ class UserManagementTest extends TestCase
      *
      * ユーザーアカウントの更新後の送信リクエスト_正常系エラーバリデーションチェック
      */
-    public function data_admin_user_management_patch_ok_update_validation_normal_error()
+    public static function data_admin_user_management_patch_ok_update_validation_normal_error()
     {
         return [
             //必須チェック
@@ -302,7 +302,7 @@ class UserManagementTest extends TestCase
      *
      *  ユーザーアカウント新規作成の送信リクエスト_正常系バリデーションチェック
      */
-    public function data_admin_user_management_post_ok_store_validation_ok()
+    public static function data_admin_user_management_post_ok_store_validation_ok()
     {
         return [
             //基本系
@@ -344,7 +344,7 @@ class UserManagementTest extends TestCase
      *
      * ユーザーアカウント新規作成の送信リクエスト_正常系エラーバリデーションチェック
      */
-    public function data_admin_user_management_post_ok_store_validation_normal_error()
+    public static function data_admin_user_management_post_ok_store_validation_normal_error()
     {
         return [
             //必須チェック

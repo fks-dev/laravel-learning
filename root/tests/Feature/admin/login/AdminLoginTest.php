@@ -158,7 +158,7 @@ class AdminLoginTest extends TestCase
     /**
      * ログイン時の正常系バリデーションチェック
      */
-    public function data_admin_login_post_ok_validation_ok()
+    public static function data_admin_login_post_ok_validation_ok()
     {
         return [
             //必須チェック
@@ -174,7 +174,7 @@ class AdminLoginTest extends TestCase
     /**
      * ログイン時の正常系エラーバリデーションチェック
      */
-    public function data_admin_login_post_ok_validation_normal_error()
+    public static function data_admin_login_post_ok_validation_normal_error()
     {
         $incorrectValue = 'a';
 

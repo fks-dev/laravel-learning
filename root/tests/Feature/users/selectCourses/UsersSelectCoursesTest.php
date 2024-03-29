@@ -75,7 +75,7 @@ class UsersSelectCoursesTest extends TestCase
     /**
      * データプロバイダ: 1問目と2問目の質問に対するテストデータ
      */
-    public function provideTestDataForFirstAndSecondQuestions()
+    public static function data_users_select_courses_get_ok_answer_question()
     {
         return [
             [SelectCourseController::QUESTION[0]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[1]['text']],
@@ -90,7 +90,7 @@ class UsersSelectCoursesTest extends TestCase
     /**
      * @test
      * ユーザーが1問目または2問目の質問に対して回答をした場合、次の質問が正しく表示されていることを確認する
-     * @dataProvider provideTestDataForFirstAndSecondQuestions
+     * @dataProvider data_users_select_courses_get_ok_answer_question
      */
     public function test_users_select_courses_get_ok_answer_question($q_id, $answer, $NextQuestionText)
     {
@@ -103,7 +103,7 @@ class UsersSelectCoursesTest extends TestCase
     /**
      * データプロバイダ: 3問目の質問に対するテストデータ
      */
-    public function provideTestDataForThirdQuestion()
+    public static function data_users_select_courses_get_ok_answer_third_question()
     {
         return [
             [SelectCourseController::QUESTION[3]['q_id'], SelectCourseController::YES, SelectCourseController::QUESTION[3]['yes_course_id']],
@@ -120,7 +120,7 @@ class UsersSelectCoursesTest extends TestCase
     /**
      * @test
      * ユーザーが3問目の質問に対して回答をした場合、回答に対応したコースが正しく表示されていることを確認する
-     * @dataProvider provideTestDataForThirdQuestion
+     * @dataProvider data_users_select_courses_get_ok_answer_third_question
      */
     public function test_users_select_courses_get_ok_answer_third_question($q_id, $answer, $expectedCourseId)
     {
@@ -143,7 +143,7 @@ class UsersSelectCoursesTest extends TestCase
     /**
      * データプロバイダ: 正常系エラーバリデーションチェックに対するテストデータ
      */
-    public function provideTestDataForValidationNormalError()
+    public static function data_users_select_courses_get_ok_validation_normal_error()
     {
         return [
             //q_idの値が数値でない場合
@@ -156,7 +156,7 @@ class UsersSelectCoursesTest extends TestCase
     /**
      * @test
      * おすすめ動画診断時の正常系エラーバリデーションチェック
-     * @dataProvider provideTestDataForValidationNormalError
+     * @dataProvider data_users_select_courses_get_ok_validation_normal_error
      */
     public function test_users_select_courses_get_ok_validation_normal_error($q_id, $answer)
     {
