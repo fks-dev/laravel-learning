@@ -1,5 +1,8 @@
 # イロハボードLaravel化
 
+## 研修生へ
+[プロジェクト把握時に一読をお願いします](https://github.com/epkotsoftware/dev-laravel-learning/issues/383)
+
 ## 資料
 
 <https://github.com/epkotsoftware/dev-laravel-learning-docs/blob/main/README.md>
