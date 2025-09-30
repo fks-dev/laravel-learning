@@ -35,12 +35,11 @@ class UsersSelectCoursesTest extends TestCase
         //診断結果用のコースを作成
         Course::factory()->create([
             'id' => 190001,
-            'title' => 'test_course_yes',
+            'title' => 'test_course_1',
         ]);
-
         Course::factory()->create([
             'id' => 190002,
-            'title' => 'test_course_no',
+            'title' => 'test_course_2',
         ]);
     }
 
@@ -134,7 +133,7 @@ class UsersSelectCoursesTest extends TestCase
 
         //期待されるテキストが表示されているか確認
         $expectedTitle = Course::find($expectedCourseId)['title'];
-        $response->assertSee("あなたへのおすすめ動画は{$expectedTitle}です。");
+        $response->assertSee("あなたへのおすすめ動画コースは{$expectedTitle}です。");
 
         //コースのコンテンツへのリンクが正しく表示されているか確認
         $response->assertSee("/users/contents/$expectedCourseId");
